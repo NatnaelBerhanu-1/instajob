@@ -9,8 +9,6 @@ class CustomCommonCard extends StatelessWidget {
   final double? width;
   final double? height;
   final Color? bgColor;
-  final int? index;
-  final int? selectedIndex;
   final BoxShadow? boxShadow;
   final BorderRadius? borderRadius;
   final Color? borderColor;
@@ -24,8 +22,6 @@ class CustomCommonCard extends StatelessWidget {
       this.borderRadius,
       this.borderColor,
       this.width,
-      this.index,
-      this.selectedIndex,
       this.height})
       : super(key: key);
 
@@ -34,8 +30,6 @@ class CustomCommonCard extends StatelessWidget {
     return GestureDetector(
         onTap: onTap,
         child: Container(
-          width: width,
-          height: height,
           decoration: BoxDecoration(
             borderRadius: borderRadius ?? BorderRadius.circular(10),
             color: bgColor ?? MyColors.white,

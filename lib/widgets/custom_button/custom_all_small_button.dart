@@ -5,7 +5,6 @@ import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 
 import '../../utils/my_colors.dart';
-import '../../utils/my_images.dart';
 
 class CustomCheckbox extends StatelessWidget {
   final Function(bool?)? onchanged;
@@ -43,7 +42,9 @@ class CustomCheckbox extends StatelessWidget {
 
 class CustomSocialButton extends StatelessWidget {
   final VoidCallback? onTap;
-  const CustomSocialButton({Key? key, this.onTap}) : super(key: key);
+  final String? image;
+  const CustomSocialButton({Key? key, this.onTap, this.image})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +54,7 @@ class CustomSocialButton extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: ImageButton(
-          image: MyImages.google,
+          image: image,
           height: 30,
           width: 30,
         ),

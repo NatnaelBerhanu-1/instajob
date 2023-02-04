@@ -58,4 +58,8 @@ class MyImages {
   static String rightArrow = "$baseUrl/right_arrow.png";
   static String arrowWhite = "$baseUrl/arrow white.png";
   static String logo1 = "$baseUrl/logo.png";
+  static String cancelGreen = "$baseUrl/cancel_green.png";
+  static String instaLogo_ = "$baseUrl/insta_logo_.png";
+  static String bg = "$baseUrl/BG.png";
+  static String startArrow = "$baseUrl/start arrow.png";
 }

@@ -40,8 +40,8 @@ class CustomButton extends StatelessWidget {
         decoration: BoxDecoration(
             color: bgColor ?? MyColors.white,
             borderRadius: borderRadius ?? BorderRadius.circular(10),
-            border:
-                Border.all(color: borderColor ?? MyColors.white, width: 1.2)),
+            border: Border.all(
+                color: borderColor ?? MyColors.transparent, width: 1.2)),
         child: Center(
           child: Text(
             "$title",
@@ -68,6 +68,7 @@ class CustomIconButton extends StatelessWidget {
   final Color? backgroundColor;
   final Color? fontColor;
   final Color? borderColor;
+  final Color? iconColor;
 
   const CustomIconButton(
       {Key? key,
@@ -80,7 +81,8 @@ class CustomIconButton extends StatelessWidget {
       this.borderRadius,
       this.fontSize,
       this.fontColor,
-      this.borderColor})
+      this.borderColor,
+      this.iconColor})
       : super(key: key);
 
   @override
@@ -95,6 +97,7 @@ class CustomIconButton extends StatelessWidget {
               borderRadius: borderRadius ?? BorderRadius.circular(10),
               border: Border.all(color: borderColor ?? Colors.transparent)),
           child: ListTile(
+            leading: SizedBox(),
             title: Text(
               "$title",
               textAlign: TextAlign.center,
@@ -108,8 +111,8 @@ class CustomIconButton extends StatelessWidget {
             trailing: ImageButton(
               padding: EdgeInsets.only(right: 10),
               image: image,
-              color: MyColors.white,
-              height: 12,
+              color: iconColor ?? MyColors.white,
+              // height: 12,
             ),
           )
           /* Row(

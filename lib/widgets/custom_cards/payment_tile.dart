@@ -30,8 +30,14 @@ class PaymentTile extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(7),
-            border: Border.all(color: MyColors.white, width: 1.2),
-            color: MyColors.white),
+            color: MyColors.white,
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.grey.withOpacity(0.10),
+                  spreadRadius: 5,
+                  blurRadius: 7,
+                  offset: Offset(2, 3))
+            ]),
         child: Padding(
           padding:
               const EdgeInsets.only(right: 20.0, top: 11, left: 15, bottom: 15),

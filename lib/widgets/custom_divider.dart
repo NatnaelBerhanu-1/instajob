@@ -22,3 +22,7 @@ class CustomDivider extends StatelessWidget {
     );
   }
 }
+
+Divider divider() {
+  return Divider(color: MyColors.black);
+}
