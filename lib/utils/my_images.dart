@@ -1,6 +1,7 @@
 class MyImages {
   static String baseUrl = "assets/images";
 
+  static String instaJobLogo = "$baseUrl/instajob_logo.png";
   static String logo = "$baseUrl/logo.png";
   static String about = "$baseUrl/about.png";
   static String addCard = "$baseUrl/add_card.png";
