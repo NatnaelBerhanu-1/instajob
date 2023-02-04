@@ -5,11 +5,18 @@ import 'package:insta_job/dialog/custom_dialog.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_app_bar.dart';
 import 'package:insta_job/widgets/custom_button/custom_all_small_button.dart';
-import 'package:insta_job/widgets/custom_divider.dart';
+import 'package:insta_job/widgets/custom_cards/payment_tile.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  int? selectedIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +48,26 @@ class SplashScreen extends StatelessWidget {
                   buildDialog(context, CustomDialog());
                 },
               ),
-              CustomDivider(),
+              PaymentTile(
+                onClick: () {
+                  setState(() {
+                    selectedIndex = 1;
+                  });
+                },
+                image: MyImages.apple,
+                selectedIndex: selectedIndex,
+                index: 1,
+              ),
+              PaymentTile(
+                onClick: () {
+                  setState(() {
+                    selectedIndex = 2;
+                  });
+                },
+                selectedIndex: selectedIndex,
+                index: 2,
+                image: MyImages.google,
+              ),
             ],
           ),
         ),
