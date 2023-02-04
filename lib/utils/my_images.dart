@@ -56,4 +56,6 @@ class MyImages {
   static String visaCardBlue = "$baseUrl/visa_card_blue.png";
   static String visible = "$baseUrl/visible.png";
   static String rightArrow = "$baseUrl/right_arrow.png";
+  static String arrowWhite = "$baseUrl/arrow white.png";
+  static String logo1 = "$baseUrl/logo.png";
 }
