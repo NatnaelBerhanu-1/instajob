@@ -54,4 +54,5 @@ class MyImages {
   static String verified = "$baseUrl/verified.png";
   static String visaCardBlue = "$baseUrl/visa_card_blue.png";
   static String visible = "$baseUrl/visible.png";
+  static String rightArrow = "$baseUrl/right_arrow.png";
 }

@@ -1,6 +1,11 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
+import 'package:insta_job/dialog/custom_dialog.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_app_bar.dart';
+import 'package:insta_job/widgets/custom_button/custom_all_small_button.dart';
+import 'package:insta_job/widgets/custom_divider.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -31,6 +36,12 @@ class SplashScreen extends StatelessWidget {
                 suffixIcon: MyImages.visible,
                 prefixIcon: MyImages.lock,
               ),
+              CustomSocialButton(
+                onTap: () {
+                  buildDialog(context, CustomDialog());
+                },
+              ),
+              CustomDivider(),
             ],
           ),
         ),
