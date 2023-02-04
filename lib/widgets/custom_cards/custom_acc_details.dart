@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:insta_job/screens/splash_screen.dart';
 import 'package:insta_job/utils/my_colors.dart';
+import 'package:insta_job/utils/my_images.dart';
 
 import '../custom_button/custom_img_button.dart';
 
@@ -21,8 +22,8 @@ class CustomAccDetails extends StatelessWidget {
               image: img,
             ),
             CustomCommonText(
-              // text: title,
-              // txtClr: MyColors.grey,
+              text: title,
+              txtClr: MyColors.grey,
               fontSize: 13,
               fontWeight: FontWeight.normal,
             ),

@@ -3,11 +3,12 @@
 import 'package:flutter/material.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
+import 'package:insta_job/widgets/custom_app_bar.dart';
 import 'package:insta_job/widgets/custom_cards/custom_acc_details.dart';
+import 'package:insta_job/widgets/custom_cards/custom_user_type_card.dart';
 
 import '../widgets/custom_button/custom_img_button.dart';
 import '../widgets/custom_cards/custom_job_boards_card.dart';
-import '../widgets/custom_cards/custom_user_type_card.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({Key? key}) : super(key: key);
