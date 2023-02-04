@@ -4,7 +4,7 @@ import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
 
 import '../custom_button/custom_img_button.dart';
-import 'custom_common_card.dart';
+import '../custom_cards/custom_common_card.dart';
 
 class CustomAccDetails extends StatelessWidget {
   final String? img;

@@ -3,7 +3,7 @@ import 'package:insta_job/screens/splash_screen.dart';
 import 'package:insta_job/utils/my_colors.dart';
 
 import '../../utils/my_images.dart';
-import 'custom_common_card.dart';
+import '../custom_cards/custom_common_card.dart';
 
 class CustomJobBoardsCard extends StatelessWidget {
   const CustomJobBoardsCard({Key? key}) : super(key: key);

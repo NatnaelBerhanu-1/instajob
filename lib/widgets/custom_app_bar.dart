@@ -45,7 +45,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
   Widget build(BuildContext context) {
     return AppBar(
       elevation: 0,
-      centerTitle: true,
+      // centerTitle: true,
       backgroundColor: Colors.transparent,
       title: Text(
         "${widget.title}",
