@@ -11,7 +11,7 @@ class CustomDivider extends StatelessWidget {
       children: [
         Expanded(
           flex: 0,
-          child: CommonText(
+          child: CustomCommonText(
             text: "Sign Up with",
             fontColor: MyColors.grey,
           ),

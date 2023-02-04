@@ -47,22 +47,20 @@ class CustomCommonCard extends StatelessWidget {
   }
 }
 
-class CommonText extends StatelessWidget {
+class CustomCommonText extends StatelessWidget {
   final String? text;
   final double? fontSize;
   final FontWeight? fontWeight;
   final Color? fontColor;
-  final bool isRequired;
   final TextDecoration? decoration;
   final TextOverflow? overflow;
 
-  const CommonText(
+  const CustomCommonText(
       {super.key,
       this.text,
       this.fontSize,
       this.fontWeight,
       this.fontColor,
-      this.isRequired = false,
       this.decoration,
       this.overflow});
 

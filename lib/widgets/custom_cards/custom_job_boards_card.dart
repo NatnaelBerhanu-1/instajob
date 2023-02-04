@@ -3,6 +3,7 @@ import 'package:insta_job/screens/splash_screen.dart';
 import 'package:insta_job/utils/my_colors.dart';
 
 import '../../utils/my_images.dart';
+import 'custom_common_card.dart';
 
 class CustomJobBoardsCard extends StatelessWidget {
   const CustomJobBoardsCard({Key? key}) : super(key: key);
@@ -22,7 +23,7 @@ class CustomJobBoardsCard extends StatelessWidget {
       ),
       child: CustomCommonText(
         text: "Enterprise",
-        txtClr: MyColors.white,
+        fontColor: MyColors.white,
         fontSize: 20,
         fontWeight: FontWeight.w800,
       ),

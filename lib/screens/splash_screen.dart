@@ -8,6 +8,7 @@ import 'package:insta_job/widgets/custom_cards/custom_acc_details.dart';
 import 'package:insta_job/widgets/custom_cards/custom_user_type_card.dart';
 
 import '../widgets/custom_button/custom_img_button.dart';
+import '../widgets/custom_cards/custom_common_card.dart';
 import '../widgets/custom_cards/custom_job_boards_card.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -58,28 +59,3 @@ class SplashScreen extends StatelessWidget {
   }
 }
 
-class CustomCommonText extends StatelessWidget {
-  final String? text;
-  final Color? txtClr;
-  final double? fontSize;
-  final FontWeight? fontWeight;
-  const CustomCommonText({
-    Key? key,
-    this.text,
-    this.fontSize,
-    this.fontWeight,
-    this.txtClr,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      "$text",
-      style: TextStyle(
-        color: txtClr ?? MyColors.black,
-        fontSize: fontSize ?? 15,
-        fontWeight: fontWeight ?? FontWeight.w500,
-      ),
-    );
-  }
-}

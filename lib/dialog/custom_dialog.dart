@@ -59,9 +59,9 @@ class _CustomDialogState extends State<CustomDialog> {
                 height: 60,
                 width: 70,
               ),
-              CommonText(text: "Are you sure!"),
+              CustomCommonText(text: "Are you sure!"),
               SizedBox(height: 5),
-              CommonText(
+              CustomCommonText(
                 text: "You want to LogOut",
                 fontColor: MyColors.grey,
                 fontSize: 14,
@@ -84,7 +84,7 @@ class _CustomDialogState extends State<CustomDialog> {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           vertical: 12.0, horizontal: 30),
-                      child: CommonText(
+                      child: CustomCommonText(
                         text: "No",
                         fontColor: selectedIndex == 1
                             ? MyColors.white
@@ -108,7 +108,7 @@ class _CustomDialogState extends State<CustomDialog> {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           vertical: 12.0, horizontal: 30),
-                      child: CommonText(
+                      child: CustomCommonText(
                         text: "Yes",
                         fontColor: selectedIndex == 2
                             ? MyColors.white

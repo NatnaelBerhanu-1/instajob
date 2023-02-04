@@ -4,6 +4,7 @@ import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
 
 import '../custom_button/custom_img_button.dart';
+import 'custom_common_card.dart';
 
 class CustomAccDetails extends StatelessWidget {
   final String? img;
@@ -23,7 +24,7 @@ class CustomAccDetails extends StatelessWidget {
             ),
             CustomCommonText(
               text: title,
-              txtClr: MyColors.grey,
+              fontColor: MyColors.grey,
               fontSize: 13,
               fontWeight: FontWeight.normal,
             ),
