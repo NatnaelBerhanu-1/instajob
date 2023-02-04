@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:insta_job/screens/splash_screen.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
-import 'package:insta_job/widgets/custom_img_button.dart';
+
+import '../custom_button/custom_img_button.dart';
 
 class CustomAccDetails extends StatelessWidget {
   final String? img;

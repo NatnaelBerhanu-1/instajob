@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/screens/splash_screen.dart';
 import 'package:insta_job/utils/my_colors.dart';
-import 'package:insta_job/widgets/custom_img_button.dart';
 
 import '../../utils/my_images.dart';
+import '../custom_button/custom_img_button.dart';
 
 class UserTypeCard extends StatelessWidget {
   const UserTypeCard({Key? key}) : super(key: key);
