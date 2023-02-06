@@ -4,18 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../utils/my_colors.dart';
-import 'custom_button/custom_img_button.dart';
 
 class CustomTextField extends StatelessWidget {
   final String? label;
   final String? hint;
-  final String? image;
   final Color? color;
   final Color? fillColor;
   final Color? lblColor;
   final Color? hintColor;
-  final String? prefixIcon;
-  final String? suffixIcon;
+  final Widget? prefixIcon;
+  final Widget? suffixIcon;
   final int? maxLine;
   final int? maxLength;
   final TextEditingController? controller;
@@ -36,7 +34,6 @@ class CustomTextField extends StatelessWidget {
     this.autofocus = false,
     this.obscureText,
     this.onPressed,
-    this.image,
     this.color,
     this.validator,
     this.inputFormatter,
@@ -81,14 +78,12 @@ class CustomTextField extends StatelessWidget {
             filled: true,
             isDense: true,
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(10)),
+              borderRadius: BorderRadius.all(Radius.circular(12)),
               borderSide: BorderSide(color: MyColors.grey, width: 1.5),
             ),
             // prefixText: "+973",
-            prefixIcon: ImageButton(image: prefixIcon),
-            suffixIcon: ImageButton(
-              image: suffixIcon,
-            ),
+            prefixIcon: prefixIcon,
+            suffixIcon: suffixIcon,
             hintText: "$hint",
             hintStyle: TextStyle(
               color: hintColor ?? MyColors.grey,
@@ -96,17 +91,16 @@ class CustomTextField extends StatelessWidget {
               fontSize: 15,
             ),
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(7)),
+              borderRadius: BorderRadius.all(Radius.circular(12)),
               borderSide: BorderSide(
                   color: color ?? MyColors.grey.withOpacity(.40), width: 1.5),
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(7)),
-              borderSide: BorderSide(
-                  color: color ?? MyColors.grey.withOpacity(.40), width: 1.5),
+              borderRadius: BorderRadius.all(Radius.circular(12)),
+              borderSide: BorderSide(color: color ?? MyColors.blue, width: 1.5),
             ),
             errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(7)),
+              borderRadius: BorderRadius.all(Radius.circular(12)),
               borderSide: BorderSide(color: color ?? MyColors.grey, width: 1.5),
             ),
           ),

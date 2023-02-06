@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:insta_job/screens/search_pages/applicants_page.dart';
-import 'package:insta_job/screens/splash_screen.dart';
+import 'package:insta_job/screens/home_page.dart';
 
 void main() => runApp(const MyApp());
 
@@ -10,7 +9,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: Applicants(),
+      home: HomePage(),
     );
   }
 }

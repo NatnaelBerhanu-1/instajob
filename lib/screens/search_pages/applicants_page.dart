@@ -1,8 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:insta_job/globals.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_app_bar.dart';
@@ -170,7 +168,7 @@ class Applicants extends StatelessWidget {
                   ),
                   Positioned(
                     top: 10,
-                    left: MediaQuery.of(context).size.height * 0.16,
+                    left: MediaQuery.of(context).size.height * 0.175,
                     child: CircleAvatar(
                       radius: 40,
                       child: ImageButton(

@@ -60,7 +60,7 @@ Widget uploadPhotoCard() {
     borderRadius: BorderRadius.circular(10),
     borderColor: MyColors.lightBlue,
     child: Padding(
-      padding: const EdgeInsets.symmetric(vertical: 30),
+      padding: const EdgeInsets.symmetric(vertical: 45),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

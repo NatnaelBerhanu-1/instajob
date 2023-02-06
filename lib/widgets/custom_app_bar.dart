@@ -60,7 +60,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
               child: Padding(
                 padding: EdgeInsets.only(left: 0, top: 0, bottom: 0, right: 0),
                 child: Image.asset(
-                  widget.leadingImage ?? MyImages.user,
+                  widget.leadingImage ?? MyImages.backArrow,
                   height: 30,
                   width: 30,
                 ),

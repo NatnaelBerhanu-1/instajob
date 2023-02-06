@@ -2,6 +2,9 @@ class MyImages {
   static String baseUrl = "assets/images";
 
   static String instaJobLogo = "$baseUrl/instajob_logo.png";
+  static String bgCurve = "$baseUrl/background_curve.png";
+  static String arrow_white_circle = "$baseUrl/arrow_white_circle.png";
+  static String bg_search_girl = "$baseUrl/bg_search_girl.png";
   static String logo = "$baseUrl/logo.png";
   static String about = "$baseUrl/about.png";
   static String addCard = "$baseUrl/add_card.png";
@@ -51,6 +54,7 @@ class MyImages {
   static String twitter = "$baseUrl/twitter.png";
   static String upload = "$baseUrl/upload.png";
   static String user = "$baseUrl/user.png";
+  static String user_4x = "$baseUrl/user_4x.png";
   static String userFilled = "$baseUrl/user_filled.png";
   static String verified = "$baseUrl/verified.png";
   static String visaCardBlue = "$baseUrl/visa_card_blue.png";
