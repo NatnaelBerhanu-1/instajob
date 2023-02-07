@@ -104,14 +104,14 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
                   onSubmitted: (pin) async {},
                 ),
                 SizedBox(height: 40),
-                CustomCommonText(
+                CommonText(
                   text: "I didn't receive the code",
                   fontWeight: FontWeight.w400,
                   fontColor: MyColors.grey,
                   fontSize: 13,
                 ),
                 SizedBox(height: 15),
-                CustomCommonText(
+                CommonText(
                   text: "Resend",
                   fontWeight: FontWeight.w500,
                   fontColor: MyColors.blue,

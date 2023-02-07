@@ -1,8 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 
 import '../../utils/my_colors.dart';
+import '../custom_cards/custom_common_card.dart';
 import 'custom_img_button.dart';
 
 class CustomButton extends StatelessWidget {
@@ -35,10 +37,10 @@ class CustomButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: height ?? MediaQuery.of(context).size.height * 0.052,
+        height: height ?? MediaQuery.of(context).size.height * 0.075,
         width: width ?? MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
-            color: bgColor ?? MyColors.white,
+            color: bgColor ?? MyColors.blue,
             borderRadius: borderRadius ?? BorderRadius.circular(10),
             border: Border.all(
                 color: borderColor ?? MyColors.transparent, width: 1.2)),
@@ -46,7 +48,7 @@ class CustomButton extends StatelessWidget {
           child: Text(
             "$title",
             style: TextStyle(
-              fontSize: fontSize ?? 15,
+              fontSize: fontSize ?? 16,
               fontWeight: fontWeight ?? FontWeight.w500,
               color: fontColor ?? MyColors.white,
             ),
@@ -114,40 +116,37 @@ class CustomIconButton extends StatelessWidget {
               color: iconColor ?? MyColors.white,
               // height: 12,
             ),
-          )
-          /* Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Spacer(),
-            Expanded(
-              flex: 6,
-              child: Text(
-                "$title",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: fontSize ?? 16,
-                  color: fontColor ?? MyColors.white,
-                  overflow: TextOverflow.clip,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
+          )),
+    );
+  }
+}
+
+class DottedButton extends StatelessWidget {
+  const DottedButton({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return DottedBorder(
+      borderType: BorderType.RRect,
+      radius: Radius.circular(5),
+      strokeWidth: 1,
+      strokeCap: StrokeCap.round,
+      dashPattern: [8, 4],
+      color: MyColors.blue.withOpacity(0.70),
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(
+            color: Colors.blue.shade50, borderRadius: BorderRadius.circular(5)),
+        child: Padding(
+          padding: const EdgeInsets.all(18.0),
+          child: Center(
+            child: CommonText(
+              text: "Add New Card",
+              fontColor: MyColors.blue,
             ),
-            // SizedBox(width: 40),
-            // Spacer(),
-            image == null
-                ? const SizedBox()
-                : Expanded(
-                    flex: 1,
-                    child: ImageButton(
-                      padding: EdgeInsets.only(right: 10),
-                      image: image,
-                      color: MyColors.white,
-                      height: 12,
-                    ),
-                  ),
-          ],
-        ),*/
           ),
+        ),
+      ),
     );
   }
 }

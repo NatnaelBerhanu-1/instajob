@@ -29,7 +29,7 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
             children: [
               SizedBox(height: 70),
               Center(
-                child: CustomCommonText(
+                child: CommonText(
                   text: "Welcome",
                   fontWeight: FontWeight.bold,
                   fontSize: 25,
@@ -76,7 +76,7 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                   children: [
                     Image.asset(MyImages.instaLogo_),
                     SizedBox(height: 5),
-                    CustomCommonText(
+                    CommonText(
                       text: "Employee instantly",
                       // fontWeight: FontWeight.bold,
                       fontColor: MyColors.grey,

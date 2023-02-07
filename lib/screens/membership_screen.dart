@@ -36,7 +36,7 @@ class MemberShipScreen extends StatelessWidget {
                               MyImages.instaLogo_,
                               color: MyColors.white,
                             ),
-                            CustomCommonText(
+                            CommonText(
                               text: "Employee instantly",
                               fontColor: MyColors.white,
                             ),

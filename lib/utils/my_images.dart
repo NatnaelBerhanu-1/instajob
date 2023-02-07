@@ -5,6 +5,7 @@ class MyImages {
   static String bgCurve = "$baseUrl/background_curve.png";
   static String arrow_white_circle = "$baseUrl/arrow_white_circle.png";
   static String bg_search_girl = "$baseUrl/bg_search_girl.png";
+  static String arrowBlueLeft = "$baseUrl/arrow_blue_left.png";
   static String logo = "$baseUrl/logo.png";
   static String about = "$baseUrl/about.png";
   static String addCard = "$baseUrl/add_card.png";
@@ -15,14 +16,16 @@ class MyImages {
   static String businessAndTrade = "$baseUrl/business_and_trade.png";
   static String business = "$baseUrl/business.png";
   static String camera = "$baseUrl/camera.png";
+  static String diamond = "$baseUrl/diamond.png";
   static String cancel = "$baseUrl/cancle.png";
   static String cancelSub = "$baseUrl/cancle_sub.png";
   static String completed = "$baseUrl/completed.png";
   static String completedPana = "$baseUrl/Completed_pana.png";
   static String component = "$baseUrl/component.png";
-  static String date = "$baseUrl/date.png";
+  static String cal = "$baseUrl/date.png";
   static String email = "$baseUrl/email.png";
   static String enterprise = "$baseUrl/enterprise.png";
+  static String enterprise1 = "$baseUrl/enterprise1.png";
   static String facebook = "$baseUrl/facebook.png";
   static String google = "$baseUrl/google.png";
   static String houseSearching = "$baseUrl/house_searching.png";
@@ -66,4 +69,7 @@ class MyImages {
   static String instaLogo_ = "$baseUrl/insta_logo_.png";
   static String bg = "$baseUrl/BG.png";
   static String startArrow = "$baseUrl/start arrow.png";
+  static String staffMeeting = "$baseUrl/staff-meeting.png";
+  static String jobUser = "$baseUrl/job_user.png";
+  static String bag = "$baseUrl/bag.png";
 }

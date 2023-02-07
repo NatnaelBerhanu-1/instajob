@@ -39,7 +39,7 @@ class _HomePageState extends State<HomePage> {
                           height: 100,
                           width: 100,
                         ),
-                        CustomCommonText(
+                        CommonText(
                           text: "John Smith",
                           fontSize: 25,
                           fontWeight: FontWeight.w500,
@@ -57,7 +57,7 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
               SizedBox(height: 15),
-              CustomCommonText(
+              CommonText(
                 text: "Account Details",
                 fontSize: 14,
                 fontWeight: FontWeight.w500,

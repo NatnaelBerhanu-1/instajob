@@ -26,19 +26,19 @@ class SetPassword extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CustomCommonText(
+              CommonText(
                 text: "Set your Password",
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
               ),
               SizedBox(height: 80),
-              CustomTextField(
+              IconTextField(
                 prefixIcon: ImageButton(image: MyImages.lock),
                 suffixIcon: ImageButton(image: MyImages.visible),
                 hint: "**********",
               ),
               SizedBox(height: 30),
-              CustomTextField(
+              IconTextField(
                 prefixIcon: ImageButton(image: MyImages.lock),
                 suffixIcon: ImageButton(image: MyImages.visible),
                 hint: "confirm password",

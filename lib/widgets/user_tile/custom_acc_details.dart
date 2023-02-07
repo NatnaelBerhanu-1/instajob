@@ -42,7 +42,7 @@ class CustomAccDetails extends StatelessWidget {
                 image: img,
                 color: index == selectedIndex ? MyColors.white : MyColors.blue,
               ),
-              CustomCommonText(
+              CommonText(
                 text: title,
                 fontColor:
                     index == selectedIndex ? MyColors.white : MyColors.black,

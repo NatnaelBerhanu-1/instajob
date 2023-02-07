@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:insta_job/globals.dart';
+import 'package:insta_job/screens/bottom_navigation_screen/search_pages/job_opening_page.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
@@ -19,7 +21,7 @@ class AssignCompaniesTile extends StatelessWidget {
       decoration: BoxDecoration(
           color: MyColors.white,
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: MyColors.grey),
+          border: Border.all(color: MyColors.grey.withOpacity(.30)),
           boxShadow: [
             BoxShadow(
                 color: Colors.grey.withOpacity(0.10),
@@ -28,6 +30,9 @@ class AssignCompaniesTile extends StatelessWidget {
                 offset: Offset(2, 3))
           ]),
       child: ListTile(
+        onTap: () {
+          push(context: context, screen: JobOpeningScreen());
+        },
         shape: RoundedRectangleBorder(
             side: BorderSide(color: MyColors.grey),
             borderRadius: BorderRadius.circular(10)),
@@ -67,7 +72,7 @@ Widget uploadPhotoCard() {
           ImageButton(
             image: MyImages.upload,
           ),
-          CustomCommonText(
+          CommonText(
             text: "Upload Photo",
             fontColor: MyColors.blue,
           )

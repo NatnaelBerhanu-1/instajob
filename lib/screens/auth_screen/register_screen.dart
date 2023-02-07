@@ -37,7 +37,7 @@ class RegisterScreen extends StatelessWidget {
                           child: Column(
                             children: [
                               Image.asset(MyImages.instaLogo_),
-                              CustomCommonText(
+                              CommonText(
                                 text: "Employee instantly",
                                 fontColor: MyColors.grey,
                               ),
@@ -76,25 +76,25 @@ class RegisterScreen extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 30),
-                      CustomTextField(
+                      IconTextField(
                         prefixIcon: ImageButton(image: MyImages.userFilled),
                         suffixIcon: ImageButton(image: MyImages.verified),
                         hint: "alexies@mygmail.com",
                       ),
                       SizedBox(height: 15),
-                      CustomTextField(
+                      IconTextField(
                         prefixIcon: ImageButton(image: MyImages.email),
                         suffixIcon: ImageButton(image: MyImages.verified),
                         hint: "alexies@mygmail.com",
                       ),
                       SizedBox(height: 15),
-                      CustomTextField(
+                      IconTextField(
                         prefixIcon: ImageButton(image: MyImages.lock),
                         suffixIcon: ImageButton(image: MyImages.visible),
                         hint: "password",
                       ),
                       SizedBox(height: 15),
-                      CustomTextField(
+                      IconTextField(
                         prefixIcon: ImageButton(image: MyImages.lock),
                         suffixIcon: ImageButton(image: MyImages.visible),
                         hint: "confirm password",

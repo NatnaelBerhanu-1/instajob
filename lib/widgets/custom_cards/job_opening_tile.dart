@@ -16,7 +16,7 @@ class JobOpeningTile extends StatelessWidget {
         decoration: BoxDecoration(
             color: MyColors.white,
             borderRadius: BorderRadius.circular(10),
-            border: Border.all(color: MyColors.grey),
+            border: Border.all(color: MyColors.grey.withOpacity(.30)),
             boxShadow: [
               BoxShadow(
                   color: Colors.grey.withOpacity(0.10),
@@ -29,7 +29,7 @@ class JobOpeningTile extends StatelessWidget {
           child: Row(
             children: [
               ImageButton(image: MyImages.suitcase),
-              CustomCommonText(
+              CommonText(
                 text: "Job Opening",
                 fontSize: 14,
                 fontColor: MyColors.black,
@@ -51,7 +51,7 @@ class JobOpeningTile extends StatelessWidget {
                         width: 14,
                       ),
                       SizedBox(width: 5),
-                      CustomCommonText(
+                      CommonText(
                         text: "applied",
                         fontSize: 12,
                         fontColor: MyColors.white,

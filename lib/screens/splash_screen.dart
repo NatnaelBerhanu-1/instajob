@@ -23,7 +23,7 @@ class SplashScreen extends StatelessWidget {
             child: Center(
               child: Column(
                 children: [
-                  CustomCommonText(
+                  CommonText(
                     text: "Welcome",
                     fontWeight: FontWeight.bold,
                     fontSize: 25,
@@ -42,7 +42,7 @@ class SplashScreen extends StatelessWidget {
                     width: 50,
                   ),
                   SizedBox(height: 10),
-                  CustomCommonText(
+                  CommonText(
                     text: "Get Started",
                     fontWeight: FontWeight.bold,
                     fontSize: 19,

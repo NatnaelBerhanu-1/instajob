@@ -47,7 +47,7 @@ class UserTypeCard extends StatelessWidget {
                       top: 45, right: 25, left: 25, bottom: 10),
                   child: Column(
                     children: [
-                      CustomCommonText(
+                      CommonText(
                         text: title,
                         fontColor: index == selectedIndex
                             ? MyColors.white

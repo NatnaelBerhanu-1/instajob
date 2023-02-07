@@ -26,27 +26,27 @@ class ForgotPassword extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CustomCommonText(
+              CommonText(
                 text: "Forgot Password",
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
               ),
               SizedBox(height: 5),
-              CustomCommonText(
+              CommonText(
                 text: "Enter your email address to retrieve password",
                 fontWeight: FontWeight.w400,
                 fontColor: MyColors.grey,
                 fontSize: 13,
               ),
               SizedBox(height: 50),
-              CustomTextField(
+              IconTextField(
                 prefixIcon: ImageButton(image: MyImages.email),
                 suffixIcon: ImageButton(image: MyImages.verified),
                 hint: "alexies@mygmail.com",
               ),
               SizedBox(height: 40),
               Center(
-                child: CustomCommonText(
+                child: CommonText(
                   text: "I didn't receive the code",
                   fontWeight: FontWeight.w400,
                   fontColor: MyColors.grey,
@@ -55,7 +55,7 @@ class ForgotPassword extends StatelessWidget {
               ),
               SizedBox(height: 15),
               Center(
-                child: CustomCommonText(
+                child: CommonText(
                   text: "Resend",
                   fontWeight: FontWeight.w500,
                   fontColor: MyColors.blue,

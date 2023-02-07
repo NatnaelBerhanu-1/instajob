@@ -30,18 +30,18 @@ class WelcomeScreen extends StatelessWidget {
             ),
             Center(child: Image.asset(MyImages.instaLogo_)),
             Center(
-              child: CustomCommonText(
+              child: CommonText(
                 text: "Employee instantly",
               ),
             ),
             SizedBox(height: 50),
-            CustomCommonText(
+            CommonText(
               text: "Welcome",
               fontWeight: FontWeight.bold,
               fontSize: 25,
             ),
             SizedBox(height: 5),
-            CustomCommonText(
+            CommonText(
               text:
                   "Login in to your existing account or register to make new\naccount.",
               fontWeight: FontWeight.w400,

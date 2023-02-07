@@ -42,7 +42,7 @@ class DeniedCandidateTile extends StatelessWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          CustomCommonText(
+                          CommonText(
                             text: "Candidate",
                             fontSize: 14,
                             fontColor: MyColors.black,
@@ -50,7 +50,7 @@ class DeniedCandidateTile extends StatelessWidget {
                             fontWeight: FontWeight.w400,
                           ),
                           SizedBox(height: 5),
-                          CustomCommonText(
+                          CommonText(
                             text: "2714 wasterrn ave.",
                             fontSize: 12,
                             fontColor: MyColors.black,
@@ -70,7 +70,7 @@ class DeniedCandidateTile extends StatelessWidget {
                         borderRadius: BorderRadius.circular(5),
                         child: Padding(
                           padding: const EdgeInsets.all(4.0),
-                          child: CustomCommonText(
+                          child: CommonText(
                             text: "4 year degree",
                             fontSize: 12,
                             fontColor: MyColors.white,
@@ -85,7 +85,7 @@ class DeniedCandidateTile extends StatelessWidget {
                         borderRadius: BorderRadius.circular(5),
                         child: Padding(
                           padding: const EdgeInsets.all(4.0),
-                          child: CustomCommonText(
+                          child: CommonText(
                             text: "6+ year",
                             fontSize: 12,
                             fontColor: MyColors.white,

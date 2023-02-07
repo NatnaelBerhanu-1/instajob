@@ -33,14 +33,14 @@ class BecameAnEmployer extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        CustomCommonText(
+                        CommonText(
                           text: "Became An Employer",
                           fontColor: MyColors.black,
                           fontWeight: FontWeight.w500,
                           fontSize: 20,
                         ),
                         SizedBox(height: 20),
-                        CustomCommonText(
+                        CommonText(
                           text: "add client information and Job details",
                           fontSize: 13,
                         ),
@@ -58,19 +58,19 @@ class BecameAnEmployer extends StatelessWidget {
               child: Column(
                 children: [
                   SizedBox(height: 20),
-                  CustomTextField(
+                  IconTextField(
                     prefixIcon: ImageButton(image: MyImages.userFilled),
                     suffixIcon: ImageButton(image: MyImages.verified),
                     hint: "Company Name",
                   ),
                   SizedBox(height: 20),
-                  CustomTextField(
+                  IconTextField(
                     prefixIcon: ImageButton(image: MyImages.phone),
                     suffixIcon: SizedBox(),
                     hint: "9685568565",
                   ),
                   SizedBox(height: 20),
-                  CustomTextField(
+                  IconTextField(
                     prefixIcon: ImageButton(image: MyImages.internet),
                     suffixIcon: SizedBox(),
                     hint: "www.organize.com",
