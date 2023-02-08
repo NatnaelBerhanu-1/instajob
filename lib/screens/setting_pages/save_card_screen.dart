@@ -126,15 +126,13 @@ class _SaveCardScreenState extends State<SaveCardScreen> {
                                     )),
                           )),
                     ),
+                    SizedBox(width: 7),
                     Expanded(
                         flex: 0,
-                        child: Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: Image.asset(
-                            MyImages.filter,
-                            height: 30,
-                            width: 30,
-                          ),
+                        child: Image.asset(
+                          MyImages.filter,
+                          height: 30,
+                          width: 30,
                         ))
                   ],
                 ),
