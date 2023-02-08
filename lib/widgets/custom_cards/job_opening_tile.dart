@@ -8,7 +8,8 @@ import '../../utils/my_colors.dart';
 import '../custom_button/custom_img_button.dart';
 
 class JobOpeningTile extends StatelessWidget {
-  const JobOpeningTile({Key? key}) : super(key: key);
+  final bool? isFav;
+  const JobOpeningTile({Key? key, this.isFav}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +29,13 @@ class JobOpeningTile extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10),
           child: Row(
             children: [
-              ImageButton(image: MyImages.suitcase),
+              ImageButton(
+                image: MyImages.suitcase,
+                height: 40,
+                width: 40,
+                padding: EdgeInsets.zero,
+              ),
+              SizedBox(width: 10),
               CommonText(
                 text: "Job Opening",
                 fontSize: 14,
@@ -37,31 +44,42 @@ class JobOpeningTile extends StatelessWidget {
                 fontWeight: FontWeight.w400,
               ),
               Spacer(),
-              CustomCommonCard(
-                bgColor: MyColors.lightBlue,
-                borderRadius: BorderRadius.circular(5),
-                child: Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Row(
-                    children: [
-                      ImageButton(
-                        image: MyImages.safety,
+              isFav == true
+                  ? Padding(
+                      padding: const EdgeInsets.only(right: 10.0),
+                      child: ImageButton(
+                        image: MyImages.fav,
+                        color: MyColors.grey,
                         padding: EdgeInsets.zero,
-                        height: 14,
-                        width: 14,
+                        height: 20,
+                        width: 20,
                       ),
-                      SizedBox(width: 5),
-                      CommonText(
-                        text: "applied",
-                        fontSize: 12,
-                        fontColor: MyColors.white,
-                        overflow: TextOverflow.clip,
-                        fontWeight: FontWeight.w400,
+                    )
+                  : CustomCommonCard(
+                      bgColor: MyColors.lightBlue,
+                      borderRadius: BorderRadius.circular(5),
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Row(
+                          children: [
+                            ImageButton(
+                              image: MyImages.safety,
+                              padding: EdgeInsets.zero,
+                              height: 14,
+                              width: 14,
+                            ),
+                            SizedBox(width: 5),
+                            CommonText(
+                              text: "applied",
+                              fontSize: 12,
+                              fontColor: MyColors.white,
+                              overflow: TextOverflow.clip,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ],
+                        ),
                       ),
-                    ],
-                  ),
-                ),
-              )
+                    ),
             ],
           ),
         ));

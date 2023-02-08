@@ -60,7 +60,12 @@ class _CustomAppBarState extends State<CustomAppBar> {
                     width: widget.width ?? 30,
                   ),
           )),
-      actions: [widget.actions ?? SizedBox()],
+      actions: [
+        Padding(
+          padding: const EdgeInsets.only(right: 5.0),
+          child: widget.actions ?? SizedBox(),
+        )
+      ],
     );
   }
 }

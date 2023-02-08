@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:insta_job/screens/bottom_navigation_screen/search_pages/job_position_screen.dart';
+import 'package:insta_job/screens/setting_pages/save_card_screen.dart';
 
 import 'utils/my_colors.dart';
 
@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: MyColors.white,
         colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.white),
       ),
-      home: JobPositionScreen(),
+      home: SaveCardScreen(),
     );
   }
 }

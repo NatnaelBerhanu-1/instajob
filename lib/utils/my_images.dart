@@ -38,7 +38,7 @@ class MyImages {
   static String microphone = "$baseUrl/microphone.png";
   static String msg = "$baseUrl/msg.png";
   static String nextArrow = "$baseUrl/next_arrow.png";
-  static String noPath = "$baseUrl/NoPath.png";
+  static String delete = "$baseUrl/delete.png";
   static String notification = "$baseUrl/notification.png";
   static String path = "$baseUrl/path.png";
   static String paypal = "$baseUrl/paypal.png";
@@ -72,4 +72,6 @@ class MyImages {
   static String staffMeeting = "$baseUrl/staff-meeting.png";
   static String jobUser = "$baseUrl/job_user.png";
   static String bag = "$baseUrl/bag.png";
+  static String fav = "$baseUrl/fav.png";
+  static String filter = "$baseUrl/filter.png";
 }

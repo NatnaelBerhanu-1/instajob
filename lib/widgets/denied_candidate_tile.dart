@@ -16,7 +16,7 @@ class DeniedCandidateTile extends StatelessWidget {
         decoration: BoxDecoration(
             color: MyColors.white,
             borderRadius: BorderRadius.circular(10),
-            border: Border.all(color: MyColors.grey),
+            border: Border.all(color: MyColors.grey.withOpacity(.30)),
             boxShadow: [
               BoxShadow(
                   color: Colors.grey.withOpacity(0.10),
@@ -34,9 +34,7 @@ class DeniedCandidateTile extends StatelessWidget {
                   Row(
                     children: [
                       CircleAvatar(
-                        backgroundColor: MyColors.transparent,
                         radius: 20,
-                        backgroundImage: AssetImage(MyImages.google),
                       ),
                       SizedBox(width: 10),
                       Column(
@@ -66,14 +64,14 @@ class DeniedCandidateTile extends StatelessWidget {
                   Row(
                     children: [
                       CustomCommonCard(
-                        bgColor: MyColors.lightBlue,
+                        bgColor: MyColors.lightBlue.withOpacity(.20),
                         borderRadius: BorderRadius.circular(5),
                         child: Padding(
                           padding: const EdgeInsets.all(4.0),
                           child: CommonText(
                             text: "4 year degree",
                             fontSize: 12,
-                            fontColor: MyColors.white,
+                            fontColor: MyColors.blue,
                             overflow: TextOverflow.clip,
                             fontWeight: FontWeight.w400,
                           ),
@@ -81,14 +79,14 @@ class DeniedCandidateTile extends StatelessWidget {
                       ),
                       SizedBox(width: 10),
                       CustomCommonCard(
-                        bgColor: Colors.purpleAccent,
+                        bgColor: Colors.purpleAccent.withOpacity(.30),
                         borderRadius: BorderRadius.circular(5),
                         child: Padding(
                           padding: const EdgeInsets.all(4.0),
                           child: CommonText(
                             text: "6+ year",
                             fontSize: 12,
-                            fontColor: MyColors.white,
+                            fontColor: Colors.purpleAccent,
                             overflow: TextOverflow.clip,
                             fontWeight: FontWeight.w400,
                           ),
@@ -105,6 +103,134 @@ class DeniedCandidateTile extends StatelessWidget {
                 height: 14,
                 width: 14,
               ),
+            ],
+          ),
+        ));
+  }
+}
+
+Widget buildDeniedCandidateTile() {
+  return ListView.builder(
+      itemCount: 7,
+      itemBuilder: (c, i) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
+          child: DeniedCandidateTile(),
+        );
+      });
+}
+
+class SearchJobTile extends StatelessWidget {
+  const SearchJobTile({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        decoration: BoxDecoration(
+            color: MyColors.white,
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: MyColors.grey.withOpacity(.30)),
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.grey.withOpacity(0.10),
+                  spreadRadius: 5,
+                  blurRadius: 7,
+                  offset: Offset(2, 3))
+            ]),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10),
+          child: Row(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Image.asset(MyImages.suitcase),
+                      SizedBox(width: 10),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CommonText(
+                            text: "Candidate",
+                            fontSize: 14,
+                            fontColor: MyColors.black,
+                            overflow: TextOverflow.clip,
+                            fontWeight: FontWeight.w400,
+                          ),
+                          SizedBox(height: 5),
+                          CommonText(
+                            text: "2714 wasterrn ave. ann arbo MI",
+                            fontSize: 12,
+                            fontColor: MyColors.grey,
+                            overflow: TextOverflow.clip,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 10),
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  Row(
+                    children: [
+                      CustomCommonCard(
+                        bgColor: MyColors.lightBlue.withOpacity(.20),
+                        borderRadius: BorderRadius.circular(5),
+                        child: Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: CommonText(
+                            text: "Full Time",
+                            fontSize: 12,
+                            fontColor: MyColors.blue,
+                            overflow: TextOverflow.clip,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      CustomCommonCard(
+                        bgColor: Colors.cyan.withOpacity(.20),
+                        borderRadius: BorderRadius.circular(5),
+                        child: Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: CommonText(
+                            text: "60k+",
+                            fontSize: 12,
+                            fontColor: Colors.cyan,
+                            overflow: TextOverflow.clip,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      CustomCommonCard(
+                        bgColor: Colors.purpleAccent.withOpacity(.30),
+                        borderRadius: BorderRadius.circular(5),
+                        child: Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: CommonText(
+                            text: "Senior Level",
+                            fontSize: 12,
+                            fontColor: Colors.purpleAccent,
+                            overflow: TextOverflow.clip,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+              Spacer(),
+              ImageButton(
+                image: MyImages.fav,
+                color: MyColors.grey,
+                padding: EdgeInsets.zero,
+                height: 20,
+                width: 20,
+              ),
+              SizedBox(width: 15),
             ],
           ),
         ));

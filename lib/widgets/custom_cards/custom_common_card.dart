@@ -48,7 +48,7 @@ class CommonText extends StatelessWidget {
   final Color? fontColor;
   final TextDecoration? decoration;
   final TextOverflow? overflow;
-
+  final bool? padding;
   const CommonText(
       {super.key,
       this.text,
@@ -56,18 +56,22 @@ class CommonText extends StatelessWidget {
       this.fontWeight,
       this.fontColor,
       this.decoration,
-      this.overflow});
+      this.overflow,
+      this.padding});
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      "$text",
-      style: TextStyle(
-        fontSize: fontSize ?? 15,
-        color: fontColor ?? MyColors.black,
-        decoration: decoration ?? TextDecoration.none,
-        fontWeight: fontWeight ?? FontWeight.w400,
-        overflow: overflow,
+    return Padding(
+      padding: padding == true ? const EdgeInsets.all(5.0) : EdgeInsets.zero,
+      child: Text(
+        "$text",
+        style: TextStyle(
+          fontSize: fontSize ?? 15,
+          color: fontColor ?? MyColors.black,
+          decoration: decoration ?? TextDecoration.none,
+          fontWeight: fontWeight ?? FontWeight.w400,
+          overflow: overflow,
+        ),
       ),
     );
   }

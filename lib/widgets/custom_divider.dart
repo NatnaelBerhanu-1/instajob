@@ -23,6 +23,6 @@ class CustomDivider extends StatelessWidget {
   }
 }
 
-Divider divider() {
-  return Divider(color: MyColors.grey);
+Divider divider({Color? color}) {
+  return Divider(color: color ?? MyColors.grey);
 }

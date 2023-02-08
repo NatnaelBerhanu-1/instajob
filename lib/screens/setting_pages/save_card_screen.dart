@@ -8,6 +8,12 @@ import '../../../utils/my_colors.dart';
 import '../../../widgets/custom_app_bar.dart';
 import '../../widgets/custom_button/custom_btn.dart';
 
+final List<String> list = [
+  "Detroit MI",
+  "Job Distance Locator",
+  "30 Miles Away"
+];
+
 class SaveCardScreen extends StatefulWidget {
   const SaveCardScreen({Key? key}) : super(key: key);
 
@@ -17,6 +23,7 @@ class SaveCardScreen extends StatefulWidget {
 
 class _SaveCardScreenState extends State<SaveCardScreen> {
   int sIndex = 0;
+  int sqIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,10 +89,93 @@ class _SaveCardScreenState extends State<SaveCardScreen> {
                   userName: "Paypal",
                 ),
                 SizedBox(height: 40),
-                DottedButton()
+                DottedButton(),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                          height: 40,
+                          // width: MediaQuery.of(context).size.width - 30,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              border: Border.all(color: MyColors.blue),
+                              color: MyColors.white),
+                          child: Row(
+                            children: List.generate(
+                                list.length,
+                                (index) => Expanded(
+                                      child: Container(
+                                        height: 40,
+                                        // width: MediaQuery.of(context).size.width - 30,
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(30),
+                                            border: Border.all(
+                                                color: MyColors.white),
+                                            color: MyColors.white),
+                                        child: CustomFilterTile(
+                                          onClick: () {
+                                            sqIndex = index;
+                                            setState(() {});
+                                          },
+                                          selectedIndex: sqIndex,
+                                          index: index,
+                                          title: list[index],
+                                        ),
+                                      ),
+                                    )),
+                          )),
+                    ),
+                    Expanded(
+                        flex: 0,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Image.asset(
+                            MyImages.filter,
+                            height: 30,
+                            width: 30,
+                          ),
+                        ))
+                  ],
+                ),
               ],
             ),
           ),
         ));
+  }
+}
+
+class CustomFilterTile extends StatelessWidget {
+  final String? title;
+  final int? index;
+  final int? selectedIndex;
+  final void Function()? onClick;
+  const CustomFilterTile(
+      {Key? key, this.index, this.selectedIndex, this.onClick, this.title})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onClick,
+      child: Container(
+          // height: MediaQuery.of(context).size.height,
+          // width: MediaQuery.of(context).size.width * 0.3,
+          decoration: BoxDecoration(
+            color: index == selectedIndex ? MyColors.blue : MyColors.white,
+            borderRadius: BorderRadius.circular(30),
+          ),
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text('$title',
+                  style: TextStyle(
+                      fontSize: 10,
+                      color: index == selectedIndex
+                          ? MyColors.white
+                          : MyColors.blue)),
+            ),
+          )),
+    );
   }
 }
