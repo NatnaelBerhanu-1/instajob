@@ -74,4 +74,5 @@ class MyImages {
   static String bag = "$baseUrl/bag.png";
   static String fav = "$baseUrl/fav.png";
   static String filter = "$baseUrl/filter.png";
+  static String locationBlue = "$baseUrl/location_blue.png";
 }

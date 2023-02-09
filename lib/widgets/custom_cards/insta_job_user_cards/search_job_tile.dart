@@ -1,14 +1,13 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:insta_job/utils/my_colors.dart';
+import 'package:insta_job/utils/my_images.dart';
+import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
+import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 
-import '../utils/my_colors.dart';
-import '../utils/my_images.dart';
-import 'custom_button/custom_img_button.dart';
-import 'custom_cards/custom_common_card.dart';
-
-class DeniedCandidateTile extends StatelessWidget {
-  const DeniedCandidateTile({Key? key}) : super(key: key);
+class SearchJobTile extends StatelessWidget {
+  const SearchJobTile({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,9 +32,7 @@ class DeniedCandidateTile extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      CircleAvatar(
-                        radius: 20,
-                      ),
+                      Image.asset(MyImages.suitcase),
                       SizedBox(width: 10),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,9 +46,9 @@ class DeniedCandidateTile extends StatelessWidget {
                           ),
                           SizedBox(height: 5),
                           CommonText(
-                            text: "2714 wasterrn ave.",
+                            text: "2714 wasterrn ave. ann arbo MI",
                             fontSize: 12,
-                            fontColor: MyColors.black,
+                            fontColor: MyColors.grey,
                             overflow: TextOverflow.clip,
                             fontWeight: FontWeight.w400,
                           ),
@@ -69,9 +66,24 @@ class DeniedCandidateTile extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.all(4.0),
                           child: CommonText(
-                            text: "4 year degree",
+                            text: "Full Time",
                             fontSize: 12,
                             fontColor: MyColors.blue,
+                            overflow: TextOverflow.clip,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      CustomCommonCard(
+                        bgColor: Colors.cyan.withOpacity(.20),
+                        borderRadius: BorderRadius.circular(5),
+                        child: Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: CommonText(
+                            text: "60k+",
+                            fontSize: 12,
+                            fontColor: Colors.cyan,
                             overflow: TextOverflow.clip,
                             fontWeight: FontWeight.w400,
                           ),
@@ -84,7 +96,7 @@ class DeniedCandidateTile extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.all(4.0),
                           child: CommonText(
-                            text: "6+ year",
+                            text: "Senior Level",
                             fontSize: 12,
                             fontColor: Colors.purpleAccent,
                             overflow: TextOverflow.clip,
@@ -98,24 +110,15 @@ class DeniedCandidateTile extends StatelessWidget {
               ),
               Spacer(),
               ImageButton(
-                image: MyImages.rightArrow,
+                image: MyImages.fav,
+                color: MyColors.grey,
                 padding: EdgeInsets.zero,
-                height: 14,
-                width: 14,
+                height: 20,
+                width: 20,
               ),
+              SizedBox(width: 15),
             ],
           ),
         ));
   }
-}
-
-Widget buildDeniedCandidateTile() {
-  return ListView.builder(
-      itemCount: 7,
-      itemBuilder: (c, i) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
-          child: DeniedCandidateTile(),
-        );
-      });
 }
