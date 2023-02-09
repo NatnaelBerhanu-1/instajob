@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
+import 'package:insta_job/widgets/custom_cards/notifications_tile/message_tile.dart';
 
 import '../../../../widgets/custom_cards/insta_job_user_cards/occupation_details_tile.dart';
 
@@ -67,22 +68,36 @@ class _OccupationDetailsScreenState extends State<OccupationDetailsScreen> {
               ),
             ),
           ),
-          Expanded(
-            child: ListView.builder(
-                itemCount: 6,
-                shrinkWrap: true,
-                itemBuilder: (c, i) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: OccupationDetailTile(
-                        heading: "Activities",
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Text('data'),
-                        )),
-                  );
-                }),
-          )
+          if (sIndex == 0) ...[
+            Expanded(
+              child: ListView.builder(
+                  itemCount: 6,
+                  shrinkWrap: true,
+                  itemBuilder: (c, i) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: OccupationDetailTile(
+                          heading: "Activities",
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Text('data'),
+                          )),
+                    );
+                  }),
+            )
+          ] else if (sIndex == 1) ...[
+            Expanded(
+              child: ListView.builder(
+                  itemCount: 6,
+                  shrinkWrap: true,
+                  itemBuilder: (c, i) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: MessageTile(),
+                    );
+                  }),
+            )
+          ]
         ],
       ),
     ));
