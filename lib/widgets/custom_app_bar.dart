@@ -10,6 +10,8 @@ class CustomAppBar extends StatefulWidget {
   final bool? centerTitle;
   final double? height;
   final double? width;
+  final double? leadingWidth;
+  final double? toolbarHeight;
   final String? title;
   final Color? color;
   final Widget? actions;
@@ -24,6 +26,8 @@ class CustomAppBar extends StatefulWidget {
     this.width,
     this.actions,
     this.centerTitle,
+    this.leadingWidth,
+    this.toolbarHeight,
   }) : super(key: key);
 
   @override
@@ -37,6 +41,8 @@ class _CustomAppBarState extends State<CustomAppBar> {
       elevation: 0,
       centerTitle: widget.centerTitle ?? true,
       backgroundColor: Colors.white,
+      leadingWidth: widget.leadingWidth ?? 56,
+      toolbarHeight: widget.toolbarHeight ?? kToolbarHeight,
       title: Text(
         "${widget.title}",
         style: TextStyle(

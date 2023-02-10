@@ -30,6 +30,7 @@ class CustomCommonCard extends StatelessWidget {
     return GestureDetector(
         onTap: onTap,
         child: Container(
+          alignment: Alignment.center,
           decoration: BoxDecoration(
             borderRadius: borderRadius ?? BorderRadius.circular(10),
             color: bgColor ?? MyColors.white,

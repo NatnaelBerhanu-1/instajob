@@ -15,11 +15,11 @@ leaveSheet(BuildContext context) {
       context: context,
       builder: (BuildContext context) {
         return SizedBox(
-          height: 400,
+          height: 500,
           child: Stack(
             children: [
               Container(
-                height: 100,
+                height: 300,
                 decoration: BoxDecoration(
                     color: MyColors.transparent,
                     borderRadius: BorderRadius.only(

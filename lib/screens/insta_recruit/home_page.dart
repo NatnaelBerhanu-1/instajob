@@ -3,8 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
+import 'package:insta_job/widgets/custom_bottom_tile.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
-import 'package:insta_job/widgets/custom_chip_container.dart';
 import 'package:insta_job/widgets/user_tile/custom_acc_details.dart';
 
 class HomePage extends StatefulWidget {

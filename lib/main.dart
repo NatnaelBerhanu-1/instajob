@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:insta_job/screens/insta_job_user/bottom_nav_screen/user_account/occupation_details_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:insta_job/bloc/changeValue_bloc.dart';
+import 'package:insta_job/screens/insta_job_user/bottom_nav_screen/search_pages/search_jobs_screen.dart';
 
 import 'utils/my_colors.dart';
 
@@ -12,12 +14,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        scaffoldBackgroundColor: MyColors.white,
-        colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.white),
+    return MultiBlocProvider(
+      providers: [BlocProvider(create: (_) => IndexBloc())],
+      child: MaterialApp(
+        theme: ThemeData(
+          scaffoldBackgroundColor: MyColors.white,
+          colorScheme:
+              ColorScheme.fromSwatch().copyWith(secondary: Colors.white),
+        ),
+        home: SearchJobsScreen(),
       ),
-      home: OccupationDetailsScreen(),
     );
   }
 }

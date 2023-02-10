@@ -36,7 +36,8 @@ dependencies:
   pinput: ^2.2.12
   flutter_slidable: ^2.0.0
   flutter_datetime_picker: ^1.5.1
-
+  flutter_bloc: ^8.1.1
+#  solid_bottom_sheet: ^0.1.10
 
 
   # The following adds the Cupertino Icons font to your application.
