@@ -23,7 +23,6 @@ class CustomFilterCard extends StatelessWidget {
       children: [
         CommonText(
           text: "$heading",
-          fontSize: 14,
         ),
         SizedBox(height: 9),
         CustomCommonCard(
@@ -32,6 +31,7 @@ class CustomFilterCard extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(10.0),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -49,9 +49,12 @@ class CustomFilterCard extends StatelessWidget {
                 ),
                 SizedBox(height: 10),
                 divider(color: MyColors.grey.withOpacity(.40)),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: children,
+                Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: children,
+                  ),
                 )
               ],
             ),
@@ -62,7 +65,7 @@ class CustomFilterCard extends StatelessWidget {
   }
 }
 
-Widget buildTitleTile({String? label}) {
+Widget buildTitleTile({String? label, bool hideDivider = false}) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -73,7 +76,7 @@ Widget buildTitleTile({String? label}) {
         fontColor: MyColors.grey,
       ),
       SizedBox(height: 5),
-      divider(color: MyColors.grey.withOpacity(.40)),
+      hideDivider ? SizedBox() : divider(color: MyColors.grey.withOpacity(.40)),
     ],
   );
 }

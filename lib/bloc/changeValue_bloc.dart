@@ -1,29 +1,45 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class InitialState {}
+// class InitialState extends Equatable {
+//   @override
+//   // TODO: implement props
+//   List<Object?> get props => [];
+// }
 
-class IndexState extends InitialState {
-  final int index;
+class IndexState extends Equatable {
+  final int isSelected;
 
-  IndexState(this.index);
+  IndexState(this.isSelected);
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
 }
 
-class Event {}
+class Event extends Equatable {
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+}
 
 class ChangeIndex extends Event {
   final int index;
 
   ChangeIndex(this.index);
+  @override
+  List<Object?> get props => [index];
 }
 
-class IndexBloc extends Bloc<Event, InitialState> {
+class IndexBloc extends Bloc<Event, IndexState> {
   int sIndex = 0;
-  IndexBloc() : super(InitialState()) {
-    on<ChangeIndex>((event, emit) {
-      print("object");
-      sIndex = event.index;
-
-      emit(IndexState(sIndex));
-    });
+  IndexBloc() : super(IndexState(0)) {
+    on<ChangeIndex>((event, emit) => (_mapSelectCategoryEventToState));
   }
+}
+
+void _mapSelectCategoryEventToState(
+    ChangeIndex event, Emitter<IndexState> emit) async {
+  emit(IndexState(event.index));
+  // emit();
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:insta_job/globals.dart';
 import 'package:insta_job/utils/my_colors.dart';
 
 import '../custom_button/custom_img_button.dart';
@@ -33,7 +32,13 @@ class CustomAccDetails extends StatelessWidget {
         width: width,
         decoration: BoxDecoration(
             color: index == selectedIndex ? MyColors.blue : MyColors.white,
-            boxShadow: [normalBoxShadow]),
+            boxShadow: [
+              BoxShadow(
+                color: MyColors.grey.withOpacity(0.12),
+                spreadRadius: 5,
+                blurRadius: 10,
+              )
+            ]),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 35.0),
           child: Column(

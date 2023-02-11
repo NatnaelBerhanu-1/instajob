@@ -5,12 +5,15 @@ import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 
 class ConfirmDetailTile extends StatelessWidget {
-  final String? title;
+  // final String? title;
   final String? heading;
   final Widget child;
-  const ConfirmDetailTile(
-      {Key? key, this.title, this.heading, required this.child})
-      : super(key: key);
+  const ConfirmDetailTile({
+    Key? key,
+    // this.title,
+    this.heading,
+    required this.child,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,17 +32,24 @@ class ConfirmDetailTile extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(15.0),
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                child,
-                Spacer(),
-                CommonText(
-                  text: "Confirm",
-                  fontColor: Colors.orange,
+                Expanded(child: child),
+                // Spacer(),
+                Expanded(
+                  flex: 0,
+                  child: CommonText(
+                    text: "Confirm",
+                    fontColor: Colors.orange,
+                  ),
                 ),
                 SizedBox(width: 15),
-                CommonText(
-                  text: "Edit",
-                  fontColor: MyColors.blue,
+                Expanded(
+                  flex: 0,
+                  child: CommonText(
+                    text: "Edit",
+                    fontColor: MyColors.blue,
+                  ),
                 ),
               ],
             ),

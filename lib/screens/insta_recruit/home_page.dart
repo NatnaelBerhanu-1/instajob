@@ -8,7 +8,8 @@ import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:insta_job/widgets/user_tile/custom_acc_details.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  final bool isUserInterface;
+  const HomePage({Key? key, this.isUserInterface = false}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -64,16 +65,41 @@ class _HomePageState extends State<HomePage> {
                 fontColor: MyColors.grey,
               ),
               SizedBox(height: 25),
-              CustomAccDetails(
-                onTap: () {
-                  selectedIndex = 1;
-                  setState(() {});
-                },
-                index: 1,
-                selectedIndex: selectedIndex,
-                width: double.infinity,
-                img: MyImages.rate,
-                title: "Feedbacks",
+              Row(
+                children: [
+                  widget.isUserInterface
+                      ? Expanded(
+                          child: CustomAccDetails(
+                            onTap: () {
+                              selectedIndex = 1;
+                              setState(() {});
+                            },
+                            index: 1,
+                            selectedIndex: selectedIndex,
+                            width: double.infinity,
+                            img: MyImages.rate,
+                            title: "Feedbacks",
+                          ),
+                        )
+                      : Text('',
+                          style: TextStyle(
+                            height: 0,
+                          )),
+                  SizedBox(width: 15),
+                  Expanded(
+                    child: CustomAccDetails(
+                      onTap: () {
+                        selectedIndex = 1;
+                        setState(() {});
+                      },
+                      index: 1,
+                      selectedIndex: selectedIndex,
+                      width: double.infinity,
+                      img: MyImages.rate,
+                      title: "Feedbacks",
+                    ),
+                  ),
+                ],
               ),
               SizedBox(height: 25),
               Row(

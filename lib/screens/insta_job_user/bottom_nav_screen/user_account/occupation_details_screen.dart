@@ -3,10 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/changeValue_bloc.dart';
-import 'package:insta_job/bottom_sheet/bottom_sheet.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
-import 'package:insta_job/widgets/custom_cards/notifications_tile/message_tile.dart';
 
 import '../../../../widgets/custom_cards/insta_job_user_cards/occupation_details_tile.dart';
 
@@ -26,13 +24,13 @@ class _OccupationDetailsScreenState extends State<OccupationDetailsScreen> {
     "Worker Requirement",
     "Worker Characteristics",
   ];
-  // int sIndex = 0;
+  int sIndex = 0;
   @override
   Widget build(BuildContext context) {
-    var blocData = context.read<IndexBloc>().sIndex;
+    // var blocData = context.read<IndexBloc>().sIndex;
     return Scaffold(
         body: SafeArea(
-      child: BlocBuilder<IndexBloc, InitialState>(
+      child: BlocBuilder<IndexBloc, IndexState>(
           buildWhen: (p, c) => p != c,
           builder: (context, state) {
             return Column(
@@ -48,19 +46,19 @@ class _OccupationDetailsScreenState extends State<OccupationDetailsScreen> {
                             list.length,
                             (index) => GestureDetector(
                                   onTap: () {
-                                    context
-                                        .read<IndexBloc>()
-                                        .add(ChangeIndex(index));
-                                    print(" BLOC INDEX -> $blocData");
-                                    leaveSheet(context);
-                                    // sIndex = index;
-                                    // setState(() {});
+                                    // context
+                                    //     .read<IndexBloc>()
+                                    //     .add(ChangeIndex(index));
+                                    // print(" BLOC INDEX -> $blocData");
+                                    // leaveSheet(context);
+                                    sIndex = index;
+                                    setState(() {});
                                   },
                                   child: CustomCommonCard(
-                                    bgColor: blocData == index
+                                    bgColor: sIndex == index
                                         ? MyColors.blue
                                         : MyColors.transparent,
-                                    borderRadius: blocData == index
+                                    borderRadius: sIndex == index
                                         ? BorderRadius.circular(10)
                                         : BorderRadius.circular(0),
                                     child: Padding(
@@ -68,7 +66,7 @@ class _OccupationDetailsScreenState extends State<OccupationDetailsScreen> {
                                       child: Text(
                                         list[index],
                                         style: TextStyle(
-                                          color: blocData == index
+                                          color: sIndex == index
                                               ? MyColors.white
                                               : MyColors.blue,
                                         ),
@@ -80,7 +78,7 @@ class _OccupationDetailsScreenState extends State<OccupationDetailsScreen> {
                     ),
                   ),
                 ),
-                if (blocData == 0) ...[
+                if (sIndex == 0) ...[
                   Expanded(
                     child: ListView.builder(
                         itemCount: 6,
@@ -97,15 +95,75 @@ class _OccupationDetailsScreenState extends State<OccupationDetailsScreen> {
                           );
                         }),
                   )
-                ] else if (blocData == 1) ...[
+                ] else if (sIndex == 1) ...[
                   Expanded(
                     child: ListView.builder(
                         itemCount: 6,
                         shrinkWrap: true,
                         itemBuilder: (c, i) {
                           return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: MessageTile(),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 6, horizontal: 12),
+                            child: OccupationDetailTile(
+                                heading: "Work Activities",
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Text('data'),
+                                )),
+                          );
+                        }),
+                  )
+                ] else if (sIndex == 2) ...[
+                  Expanded(
+                    child: ListView.builder(
+                        itemCount: 6,
+                        shrinkWrap: true,
+                        itemBuilder: (c, i) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 6, horizontal: 12),
+                            child: OccupationDetailTile(
+                                heading: "Skills",
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Text('data'),
+                                )),
+                          );
+                        }),
+                  )
+                ] else if (sIndex == 3) ...[
+                  Expanded(
+                    child: ListView.builder(
+                        itemCount: 6,
+                        shrinkWrap: true,
+                        itemBuilder: (c, i) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 6, horizontal: 12),
+                            child: OccupationDetailTile(
+                                heading: "Abilities",
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Text('data'),
+                                )),
+                          );
+                        }),
+                  )
+                ] else if (sIndex == 4) ...[
+                  Expanded(
+                    child: ListView.builder(
+                        itemCount: 6,
+                        shrinkWrap: true,
+                        itemBuilder: (c, i) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 6, horizontal: 12),
+                            child: OccupationDetailTile(
+                                heading: "Wages & Employment Trends",
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Text('data'),
+                                )),
                           );
                         }),
                   )
