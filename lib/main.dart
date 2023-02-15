@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/changeValue_bloc.dart';
-import 'package:insta_job/screens/insta_recruit/home_page.dart';
+import 'package:insta_job/screens/insta_job_user/bottom_nav_screen/user_account/save_jobs/save_jobs_screen.dart';
 
 import 'utils/my_colors.dart';
 
@@ -22,9 +22,7 @@ class MyApp extends StatelessWidget {
           colorScheme:
               ColorScheme.fromSwatch().copyWith(secondary: Colors.white),
         ),
-        home: HomePage(
-            // isUserInterface: true,
-            ),
+        home: SaveJobsScreen(),
       ),
     );
   }

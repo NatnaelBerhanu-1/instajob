@@ -3,14 +3,15 @@
 import 'package:flutter/material.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/utils/my_images.dart';
-import 'package:insta_job/widgets/custom_cards/assign_companies_tile.dart';
 import 'package:insta_job/widgets/custom_cards/insta_job_user_cards/filter_tiles/custom_filter_tile.dart';
-import 'package:insta_job/widgets/custom_cards/insta_job_user_cards/search_job_tile.dart';
-import 'package:insta_job/widgets/custom_chip.dart';
+import 'package:insta_job/widgets/custom_cards/insta_job_user_cards/map_tile.dart';
 
 import '../../../../utils/my_colors.dart';
 import '../../../../widgets/custom_app_bar.dart';
 import '../../../../widgets/custom_button/custom_img_button.dart';
+import '../../../../widgets/custom_cards/assign_companies_tile.dart';
+import '../../../../widgets/custom_cards/insta_job_user_cards/search_job_tile.dart';
+import '../../../../widgets/custom_chip.dart';
 import '../../../insta_recruit/bottom_navigation_screen/user_account/setting_pages/save_card_screen.dart';
 import 'filter_screen.dart';
 
@@ -22,8 +23,8 @@ class SearchJobsScreen extends StatefulWidget {
 }
 
 class _SearchJobsScreenState extends State<SearchJobsScreen> {
-  int sqIndex = 0;
-  int sIndex = 0;
+  int filterIndex = 0;
+  int searchIndex = 1;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,10 +71,10 @@ class _SearchJobsScreenState extends State<SearchJobsScreen> {
                                             color: MyColors.white),
                                         child: CustomFilterTile(
                                           onClick: () {
-                                            sqIndex = index;
+                                            filterIndex = index;
                                             setState(() {});
                                           },
-                                          selectedIndex: sqIndex,
+                                          selectedIndex: filterIndex,
                                           index: index,
                                           title: list[index],
                                         ),
@@ -103,50 +104,103 @@ class _SearchJobsScreenState extends State<SearchJobsScreen> {
                   ],
                 ),
                 SizedBox(height: 20),
-                Row(
-                  children: [
-                    Expanded(
-                        child: CustomSearchChip(
-                      onTap: () {
-                        sIndex = 1;
-                        setState(() {});
-                      },
-                      image: MyImages.suitcase,
-                      index: 1,
-                      selectedIndex: sIndex,
-                      title: "Search Jobs",
-                    )),
-                    SizedBox(width: 15),
-                    Expanded(
-                        child: CustomSearchChip(
-                      onTap: () {
-                        sIndex = 2;
-                        setState(() {});
-                      },
-                      index: 2,
-                      selectedIndex: sIndex,
-                      title: "Search Companies",
-                    )),
-                  ],
-                ),
-                SizedBox(height: 20),
-                Expanded(
-                  child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: 7,
-                      itemBuilder: (c, i) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 7, horizontal: 5),
-                          child: sIndex == 1
-                              ? SearchJobTile()
-                              : AssignCompaniesTile(
-                                  leadingImage: MyImages.businessAndTrade,
-                                  title: "Ford",
-                                ),
-                        );
-                      }),
-                )
+                if (filterIndex == 0) ...[
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                                child: CustomSearchChip(
+                              onTap: () {
+                                searchIndex = 1;
+                                setState(() {});
+                              },
+                              image: MyImages.suitcase,
+                              index: 1,
+                              selectedIndex: searchIndex,
+                              title: "Search Jobs",
+                            )),
+                            SizedBox(width: 15),
+                            Expanded(
+                                child: CustomSearchChip(
+                              onTap: () {
+                                searchIndex = 2;
+                                setState(() {});
+                              },
+                              index: 2,
+                              selectedIndex: searchIndex,
+                              title: "Search Companies",
+                            )),
+                          ],
+                        ),
+                        SizedBox(height: 20),
+                        Expanded(
+                          child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: 7,
+                              itemBuilder: (c, i) {
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 7, horizontal: 5),
+                                  child: searchIndex == 1
+                                      ? SearchJobTile()
+                                      : AssignCompaniesTile(
+                                          leadingImage:
+                                              MyImages.businessAndTrade,
+                                          title: "Ford",
+                                        ),
+                                );
+                              }),
+                        ),
+                      ],
+                    ),
+                  )
+                ] else if (filterIndex == 1 || filterIndex == 2) ...[
+                  Expanded(
+                      child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Slider(
+                          value: 10,
+                          onChanged: (val) {},
+                          max: 80,
+                          min: 10,
+                        ),
+                        Stack(
+                          children: [
+                            Container(
+                              height: MediaQuery.of(context).size.height * 0.74,
+                              color: MyColors.grey,
+                            ),
+                            Positioned(
+                              bottom: 20,
+                              left: 0,
+                              right: 0,
+                              child: SizedBox(
+                                height: 250,
+                                width: MediaQuery.of(context).size.width,
+                                child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    shrinkWrap: true,
+                                    itemCount: 10,
+                                    itemBuilder: (c, i) {
+                                      return Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8.0, vertical: 10),
+                                        child: MapTile(),
+                                      );
+                                    }),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ))
+                ] else
+                  ...[],
               ],
             ),
           ),

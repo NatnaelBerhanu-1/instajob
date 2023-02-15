@@ -105,8 +105,10 @@ class CustomCareerTile extends StatelessWidget {
 }
 
 class AppliedTile extends StatelessWidget {
+  final bool isFav;
   const AppliedTile({
     Key? key,
+    this.isFav = false,
   }) : super(key: key);
 
   @override
@@ -136,7 +138,7 @@ class AppliedTile extends StatelessWidget {
                   ),
                 ),
                 Spacer(),
-                Icon(Icons.favorite, color: MyColors.red),
+                isFav ? Icon(Icons.favorite, color: MyColors.red) : SizedBox(),
               ],
             ),
             SizedBox(height: 10),

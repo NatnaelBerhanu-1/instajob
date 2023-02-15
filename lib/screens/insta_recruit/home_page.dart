@@ -24,7 +24,7 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: CustomBottomNavigation(),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.only(right: 15.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -58,33 +58,36 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
               SizedBox(height: 15),
-              CommonText(
-                text: "Account Details",
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                fontColor: MyColors.grey,
+              Padding(
+                padding: const EdgeInsets.only(left: 15.0),
+                child: CommonText(
+                  text: "Account Details",
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  fontColor: MyColors.grey,
+                ),
               ),
               SizedBox(height: 25),
               Row(
                 children: [
                   widget.isUserInterface
                       ? Expanded(
-                          child: CustomAccDetails(
-                            onTap: () {
-                              selectedIndex = 1;
-                              setState(() {});
-                            },
-                            index: 1,
-                            selectedIndex: selectedIndex,
-                            width: double.infinity,
-                            img: MyImages.rate,
-                            title: "Feedbacks",
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 15.0),
+                            child: CustomAccDetails(
+                              onTap: () {
+                                selectedIndex = 1;
+                                setState(() {});
+                              },
+                              index: 1,
+                              selectedIndex: selectedIndex,
+                              width: double.infinity,
+                              img: MyImages.resume1,
+                              title: "Edit Resume/Bio",
+                            ),
                           ),
                         )
-                      : Text('',
-                          style: TextStyle(
-                            height: 0,
-                          )),
+                      : SizedBox(),
                   SizedBox(width: 15),
                   Expanded(
                     child: CustomAccDetails(
@@ -102,50 +105,57 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
               SizedBox(height: 25),
-              Row(
-                children: [
-                  Expanded(
-                    child: CustomAccDetails(
+              Padding(
+                padding: const EdgeInsets.only(left: 15.0),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: CustomAccDetails(
+                            onTap: () {
+                              selectedIndex = 2;
+                              setState(() {});
+                            },
+                            index: 2,
+                            selectedIndex: selectedIndex,
+                            width: double.infinity,
+                            img: MyImages.subscribe,
+                            title: "Subscribe",
+                          ),
+                        ),
+                        SizedBox(width: 15),
+                        Expanded(
+                          child: CustomAccDetails(
+                            onTap: () {
+                              selectedIndex = 3;
+                              setState(() {});
+                            },
+                            index: 3,
+                            selectedIndex: selectedIndex,
+                            width: double.infinity,
+                            img: MyImages.automateMsg,
+                            title: "Automate Message",
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 25),
+                    CustomAccDetails(
                       onTap: () {
-                        selectedIndex = 2;
+                        selectedIndex = 4;
                         setState(() {});
                       },
-                      index: 2,
+                      index: 4,
                       selectedIndex: selectedIndex,
                       width: double.infinity,
-                      img: MyImages.subscribe,
-                      title: "Subscribe",
+                      img: MyImages.settings,
+                      title: "Settings",
                     ),
-                  ),
-                  SizedBox(width: 15),
-                  Expanded(
-                    child: CustomAccDetails(
-                      onTap: () {
-                        selectedIndex = 3;
-                        setState(() {});
-                      },
-                      index: 3,
-                      selectedIndex: selectedIndex,
-                      width: double.infinity,
-                      img: MyImages.automateMsg,
-                      title: "Automate Message",
-                    ),
-                  ),
-                ],
+                    SizedBox(height: 25),
+                  ],
+                ),
               ),
-              SizedBox(height: 25),
-              CustomAccDetails(
-                onTap: () {
-                  selectedIndex = 4;
-                  setState(() {});
-                },
-                index: 4,
-                selectedIndex: selectedIndex,
-                width: double.infinity,
-                img: MyImages.settings,
-                title: "Settings",
-              ),
-              SizedBox(height: 25),
             ],
           ),
         ),
