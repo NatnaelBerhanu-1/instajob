@@ -68,7 +68,8 @@ class _SaveJobsScreenState extends State<SaveJobsScreen> {
                                 SliverGridDelegateWithFixedCrossAxisCount(
                                     crossAxisCount: 2,
                                     crossAxisSpacing: 0,
-                                    mainAxisSpacing: 0),
+                                    mainAxisSpacing: 0,
+                                    childAspectRatio: 6.2 / 5),
                           ),
                         ),
                         Padding(

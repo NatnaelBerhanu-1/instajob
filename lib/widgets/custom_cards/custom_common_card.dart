@@ -77,3 +77,34 @@ class CommonText extends StatelessWidget {
     );
   }
 }
+
+class CustomUnderlineTxt extends StatelessWidget {
+  final String? title;
+  final Color? color;
+  final double? size;
+  final FontWeight? fontWeight;
+  final VoidCallback? onTap;
+  const CustomUnderlineTxt(
+      {Key? key,
+      this.title,
+      this.color,
+      this.size,
+      this.onTap,
+      this.fontWeight})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Text(
+        "$title",
+        style: TextStyle(
+            fontSize: size ?? 15,
+            fontWeight: fontWeight ?? FontWeight.w500,
+            color: color ?? MyColors.blue,
+            decoration: TextDecoration.underline),
+      ),
+    );
+  }
+}

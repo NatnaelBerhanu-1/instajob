@@ -14,22 +14,24 @@ leaveSheet(BuildContext context) {
       )),
       context: context,
       builder: (BuildContext context) {
-        return SizedBox(
-          height: 500,
-          child: Stack(
-            children: [
-              Container(
-                height: 300,
-                decoration: BoxDecoration(
-                    color: MyColors.transparent,
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(20),
-                      topLeft: Radius.circular(20),
-                    )),
-              ),
-              Image.asset(MyImages.resume),
-              // Column(),
-            ],
+        return Scaffold(
+          body: SizedBox(
+            height: 500,
+            child: Stack(
+              children: [
+                Container(
+                  height: 300,
+                  decoration: BoxDecoration(
+                      color: MyColors.transparent,
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(20),
+                        topLeft: Radius.circular(20),
+                      )),
+                ),
+                Image.asset(MyImages.resume),
+                // Column(),
+              ],
+            ),
           ),
         );
       });

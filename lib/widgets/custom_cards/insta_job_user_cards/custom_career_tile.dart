@@ -16,88 +16,91 @@ class CustomCareerTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-          border: Border.all(color: MyColors.grey.withOpacity(.30)),
-          color: MyColors.white,
-          boxShadow: [normalBoxShadow],
-          borderRadius: BorderRadius.circular(10)),
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CustomCommonCard(
-                  bgColor: MyColors.lightBlue.withOpacity(.25),
-                  child: Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: ImageButton(
-                      image: MyImages.suitcase,
-                      color: MyColors.blue,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 7),
+      child: Container(
+        decoration: BoxDecoration(
+            border: Border.all(color: MyColors.grey.withOpacity(.30)),
+            color: MyColors.white,
+            boxShadow: [normalBoxShadow],
+            borderRadius: BorderRadius.circular(10)),
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CustomCommonCard(
+                    bgColor: MyColors.lightBlue.withOpacity(.25),
+                    child: Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: ImageButton(
+                        image: MyImages.suitcase,
+                        color: MyColors.blue,
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(width: 12),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CommonText(
-                      text: "Administrative Support",
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    SizedBox(height: 7),
-                    // CommonText(text: "Company Name", fontSize: 15),
-                    Text.rich(
-                      TextSpan(
-                          text: "Code: ",
-                          style: TextStyle(color: MyColors.grey),
-                          children: [
-                            TextSpan(
-                              text: "43-9022.00",
-                              style: TextStyle(
-                                  color: MyColors.black,
-                                  fontWeight: FontWeight.w500),
-                            )
-                          ]),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            SizedBox(height: 10),
-            divider(), SizedBox(height: 5),
-            CustomCommonCard(
-              bgColor: MyColors.grey.withOpacity(.30),
-              borderRadius: BorderRadius.circular(5),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text.rich(
-                  TextSpan(
-                      text: "Occupation:  ",
-                      style: TextStyle(color: MyColors.grey),
-                      children: [
+                  SizedBox(width: 12),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CommonText(
+                        text: "Administrative Support",
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      SizedBox(height: 7),
+                      // CommonText(text: "Company Name", fontSize: 15),
+                      Text.rich(
                         TextSpan(
-                          text: "shipping,receiving and another",
-                          style: TextStyle(
-                              color: MyColors.black,
-                              fontWeight: FontWeight.w500),
-                        )
-                      ]),
+                            text: "Code: ",
+                            style: TextStyle(color: MyColors.grey),
+                            children: [
+                              TextSpan(
+                                text: "43-9022.00",
+                                style: TextStyle(
+                                    color: MyColors.black,
+                                    fontWeight: FontWeight.w500),
+                              )
+                            ]),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              SizedBox(height: 10),
+              divider(), SizedBox(height: 5),
+              CustomCommonCard(
+                bgColor: MyColors.grey.withOpacity(.30),
+                borderRadius: BorderRadius.circular(5),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text.rich(
+                    TextSpan(
+                        text: "Occupation:  ",
+                        style: TextStyle(color: MyColors.grey),
+                        children: [
+                          TextSpan(
+                            text: "shipping,receiving and another",
+                            style: TextStyle(
+                                color: MyColors.black,
+                                fontWeight: FontWeight.w500),
+                          )
+                        ]),
+                  ),
                 ),
               ),
-            ),
-            SizedBox(height: 5),
-            // SizedBox(height: 10),
-            // CommonText(
-            //     text: "Civil Engineer",
-            //     fontColor: MyColors.blue,
-            //     fontSize: 13),
-            // CommonText(text: "Company Name", fontSize: 15),
-          ],
+              SizedBox(height: 5),
+              // SizedBox(height: 10),
+              // CommonText(
+              //     text: "Civil Engineer",
+              //     fontColor: MyColors.blue,
+              //     fontSize: 13),
+              // CommonText(text: "Company Name", fontSize: 15),
+            ],
+          ),
         ),
       ),
     );

@@ -77,4 +77,5 @@ class MyImages {
   static String locationBlue = "$baseUrl/location_blue.png";
   static String notifyBg = "$baseUrl/notifyBg.png";
   static String resume1 = "$baseUrl/resume1.png";
+  static String resumeImg = "$baseUrl/resume_img.png";
 }

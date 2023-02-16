@@ -1,73 +1,80 @@
-// import 'package:flutter/material.dart';
-// import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
-//
-// class BSheet extends StatelessWidget {
-//   const BSheet({Key? key}) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       backgroundColor: Colors.black,
-//       extendBody: true, // m
-//       bottomSheet: Container(
-//         color: Colors.black,
-//         child: SolidBottomSheet(
-//           headerBar: Column(
-//             mainAxisSize: MainAxisSize.min,
-//             children: [
-//               Stack(
-//                 children: [
-//                   Positioned(
-//                     left: 0,
-//                     right: 0,
-//                     bottom: 0,
-//                     top: 35 / 2, //35 from text top padding widget
-//                     child: Container(
-//                       decoration: const BoxDecoration(
-//                           color: Colors.white,
-//                           borderRadius: BorderRadius.only(
-//                             topLeft: Radius.circular(24),
-//                             topRight: Radius.circular(24),
-//                           )),
-//                     ),
-//                   ),
-//                   Container(
-//                     padding: const EdgeInsets.only(
-//                       top: 35,
-//                     ),
-//                     alignment: Alignment.center,
-//                     child: const Center(
-//                       child: Text(
-//                         "Show More`enter code here`",
-//                         style: TextStyle(color: Colors.red),
-//                       ),
-//                     ),
-//                   ),
-//                   const Align(
-//                     alignment: Alignment.topCenter,
-//                     child: Card(
-//                       child: Padding(
-//                         padding: EdgeInsets.symmetric(horizontal: 10.0),
-//                         child: Icon(Icons.keyboard_double_arrow_up,
-//                             color: Colors.red),
-//                       ),
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//             ],
-//           ),
-//           body: Container(
-//             color: Colors.white,
-//             height: 130,
-//             child: Center(
-//               child: Text(
-//                 "Hello! I'm a bottom sheet :D",
-//               ),
-//             ),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
+import 'package:flutter/material.dart';
+import 'package:insta_job/screens/insta_job_user/SliderScreen/tellus_about_yslf_page.dart';
+import 'package:insta_job/screens/insta_job_user/SliderScreen/work_experience_screen.dart';
+
+class PageViewDemo extends StatefulWidget {
+  const PageViewDemo({Key? key}) : super(key: key);
+
+  @override
+  State<PageViewDemo> createState() => _PageViewDemoState();
+}
+
+class _PageViewDemoState extends State<PageViewDemo> {
+  // declare and initizlize the page controller
+  final PageController _pageController = PageController(initialPage: 0);
+
+  // the index of the current page
+  int _activePage = 0;
+
+  final List<Widget> subPage = [
+    const EducationScreen(),
+    const EducationScreen(isWork: true),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    final List _pages = [
+      const TellUsAboutYSlfPage(),
+      subPage,
+      Container(),
+    ];
+    return Scaffold(
+      body: Stack(
+        children: [
+          PageView.builder(
+            controller: _pageController,
+            onPageChanged: (int page) {
+              setState(() {
+                _activePage = page;
+              });
+            },
+            itemCount: _pages.length,
+            itemBuilder: (BuildContext context, int index) {
+              return _pages[index % _pages.length];
+            },
+          ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: 100,
+            child: Container(
+              color: Colors.black54,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List<Widget>.generate(
+                    _pages.length,
+                    (index) => Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: InkWell(
+                            onTap: () {
+                              _pageController.animateToPage(index,
+                                  duration: const Duration(milliseconds: 300),
+                                  curve: Curves.easeIn);
+                            },
+                            child: CircleAvatar(
+                              radius: 8,
+                              backgroundColor: _activePage == index
+                                  ? Colors.amber
+                                  : Colors.grey,
+                            ),
+                          ),
+                        )),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

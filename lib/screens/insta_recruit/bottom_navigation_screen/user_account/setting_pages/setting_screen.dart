@@ -11,7 +11,9 @@ import '../../../../../widgets/custom_button/custom_btn.dart';
 import 'aboutUs_screen.dart';
 
 class SettingScreen extends StatefulWidget {
-  const SettingScreen({Key? key}) : super(key: key);
+  final bool isUserInterface;
+  const SettingScreen({Key? key, this.isUserInterface = false})
+      : super(key: key);
 
   @override
   State<SettingScreen> createState() => _SettingScreenState();
@@ -53,17 +55,21 @@ class _SettingScreenState extends State<SettingScreen> {
                 title: "Change Account Information",
               ),
               SizedBox(height: 10),
-              SettingTile(
-                onTap: () {},
-                leadingImage: MyImages.visaCardBlue,
-                title: "Saved Cards",
-              ),
+              widget.isUserInterface
+                  ? SizedBox()
+                  : SettingTile(
+                      onTap: () {},
+                      leadingImage: MyImages.visaCardBlue,
+                      title: "Saved Cards",
+                    ),
               SizedBox(height: 10),
-              SettingTile(
-                onTap: () {},
-                leadingImage: MyImages.cancelSub,
-                title: "Cancel Subscription",
-              ),
+              widget.isUserInterface
+                  ? SizedBox()
+                  : SettingTile(
+                      onTap: () {},
+                      leadingImage: MyImages.cancelSub,
+                      title: "Cancel Subscription",
+                    ),
               Spacer(),
               CustomIconButton(
                 image: MyImages.logout,
@@ -71,6 +77,7 @@ class _SettingScreenState extends State<SettingScreen> {
                 backgroundColor: MyColors.red,
                 fontColor: MyColors.white,
               ),
+              SizedBox(height: 10),
             ],
           ),
         ));

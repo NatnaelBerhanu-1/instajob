@@ -3,7 +3,9 @@ import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 
 class CustomDivider extends StatelessWidget {
-  const CustomDivider({Key? key}) : super(key: key);
+  final String? title;
+  final Color? color;
+  const CustomDivider({Key? key, this.title, this.color}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -12,8 +14,8 @@ class CustomDivider extends StatelessWidget {
         Expanded(
           flex: 0,
           child: CommonText(
-            text: "Sign Up with",
-            fontColor: MyColors.grey,
+            text: title ?? "Sign Up with",
+            fontColor: color ?? MyColors.grey,
           ),
         ),
         const SizedBox(width: 10),
