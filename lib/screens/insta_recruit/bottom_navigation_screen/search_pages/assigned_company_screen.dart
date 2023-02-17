@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:insta_job/globals.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_app_bar.dart';
@@ -9,6 +8,7 @@ import 'package:insta_job/widgets/custom_cards/assign_companies_tile.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
 
+import '../../../../utils/app_routes.dart';
 import 'add_new_company.dart';
 
 class AssignCompany extends StatelessWidget {
@@ -47,7 +47,7 @@ class AssignCompany extends StatelessWidget {
                           flex: 0,
                           child: CustomCommonCard(
                             onTap: () {
-                              push(context: context, screen: AddNewCompany());
+                              AppRoutes.push(context, AddNewCompany());
                             },
                             borderRadius: BorderRadius.circular(40),
                             bgColor: MyColors.blue,

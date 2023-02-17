@@ -1,10 +1,10 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:insta_job/globals.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/widgets/denied_candidate_tile.dart';
 
+import '../../../../../utils/app_routes.dart';
 import '../../../../../utils/my_images.dart';
 import '../../../../../widgets/custom_app_bar.dart';
 import '../../../../../widgets/custom_button/custom_img_button.dart';
@@ -30,7 +30,7 @@ class ViewCandidates extends StatelessWidget {
                 ),
                 ImageButton(
                   onTap: () {
-                    push(context: context, screen: SearchTrash());
+                    AppRoutes.push(context, SearchTrash());
                   },
                   image: MyImages.delete,
                 ),

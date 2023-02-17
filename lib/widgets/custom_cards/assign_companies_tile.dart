@@ -1,12 +1,12 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:insta_job/globals.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 
 import '../../screens/insta_recruit/bottom_navigation_screen/search_pages/job_opening/job_opening_page.dart';
+import '../../utils/app_routes.dart';
 import '../custom_button/custom_img_button.dart';
 
 class AssignCompaniesTile extends StatelessWidget {
@@ -31,7 +31,7 @@ class AssignCompaniesTile extends StatelessWidget {
           ]),
       child: ListTile(
         onTap: () {
-          push(context: context, screen: JobOpeningScreen());
+          AppRoutes.push(context, JobOpeningScreen());
         },
         shape: RoundedRectangleBorder(
             side: BorderSide(color: MyColors.grey),

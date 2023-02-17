@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:insta_job/globals.dart';
+import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_cards/insta_job_user_cards/filter_tiles/custom_filter_tile.dart';
 import 'package:insta_job/widgets/custom_cards/insta_job_user_cards/map_tile.dart';
@@ -87,7 +87,7 @@ class _SearchJobsScreenState extends State<SearchJobsScreen> {
                         flex: 0,
                         child: GestureDetector(
                           onTap: () {
-                            push(context: context, screen: FilterScreen());
+                            AppRoutes.push(context, FilterScreen());
                           },
                           child: Container(
                             color: MyColors.transparent,

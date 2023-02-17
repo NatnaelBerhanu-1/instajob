@@ -1,12 +1,12 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:insta_job/globals.dart';
-import 'package:insta_job/screens/insta_recruit/welcome_screen.dart';
+import 'package:insta_job/screens/insta_recruit/user_type_screen.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 
+import '../../utils/app_routes.dart';
 import '../../widgets/custom_cards/custom_common_card.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -25,7 +25,9 @@ class SplashScreen extends StatelessWidget {
             child: Center(
               child: GestureDetector(
                 onVerticalDragStart: (val) {
-                  push(context: context, screen: WelcomeScreen());
+                  // AppRoutes.push(context, UserTypeScreen());
+                  Navigator.push(
+                      context, SlideRightRoute(widget: UserTypeScreen()));
                 },
                 child: Container(
                   color: MyColors.transparent,

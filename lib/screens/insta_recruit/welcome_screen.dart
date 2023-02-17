@@ -1,6 +1,9 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:insta_job/screens/auth_screen/login_screen.dart';
+import 'package:insta_job/screens/auth_screen/register_screen.dart';
+import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_button/custom_all_small_button.dart';
 import 'package:insta_job/widgets/custom_button/custom_btn.dart';
@@ -51,6 +54,9 @@ class WelcomeScreen extends StatelessWidget {
             CustomIconButton(
               image: MyImages.arrowWhite,
               title: "Sign in",
+              onclick: () {
+                AppRoutes.push(context, LoginScreen());
+              },
             ),
             SizedBox(height: 20),
             CustomIconButton(
@@ -60,6 +66,9 @@ class WelcomeScreen extends StatelessWidget {
               fontColor: MyColors.black,
               borderColor: MyColors.blue,
               iconColor: MyColors.blue,
+              onclick: () {
+                AppRoutes.push(context, RegisterScreen());
+              },
             ),
             SizedBox(height: 30),
             CustomDivider(),

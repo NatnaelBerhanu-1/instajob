@@ -37,9 +37,13 @@ class LoginScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             ImageButton(
-                                image: MyImages.backArrow,
-                                height: 30,
-                                width: 30),
+                              image: MyImages.backArrow,
+                              height: 30,
+                              width: 30,
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                            ),
                             SizedBox(width: 50),
                             Column(
                               children: [

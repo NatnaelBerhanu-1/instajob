@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:insta_job/globals.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/job_opening/edit_listing_screen.dart';
+import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_button/custom_btn.dart';
 import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
@@ -114,9 +114,7 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                                         child: CustomButton(
                                       title: "Edit Listing",
                                       onTap: () {
-                                        push(
-                                            context: context,
-                                            screen: EditListing());
+                                        AppRoutes.push(context, EditListing());
                                       },
                                     )),
                                     SizedBox(width: 15),
@@ -124,9 +122,8 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                                         child: CustomButton(
                                       title: "View Candidates",
                                       onTap: () {
-                                        push(
-                                            context: context,
-                                            screen: ViewCandidates());
+                                        AppRoutes.push(
+                                            context, ViewCandidates());
                                       },
                                     )),
                                   ],

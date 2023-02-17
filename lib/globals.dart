@@ -20,16 +20,16 @@ BoxShadow normalBoxShadow = BoxShadow(
   spreadRadius: 2,
   blurRadius: 7,
 );
-Future<T?> push<T>({
-  bool pushUntil = false,
-  required BuildContext context,
-  required Widget screen,
-}) {
-  if (pushUntil) {
-    return Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (_) => screen),
-        (Route<dynamic> route) => false);
-  }
-  return Navigator.push(context, MaterialPageRoute(builder: (_) => screen));
-}
+// Future<T?> push<T>({
+//   bool pushUntil = false,
+//   required BuildContext context,
+//   required Widget screen,
+// }) {
+//   if (pushUntil) {
+//     return Navigator.pushAndRemoveUntil(
+//         context,
+//         MaterialPageRoute(builder: (_) => screen),
+//         (Route<dynamic> route) => false);
+//   }
+//   return Navigator.push(context, MaterialPageRoute(builder: (_) => screen));
+// }
