@@ -1,12 +1,15 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:insta_job/provider/bottom_provider.dart';
+import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/job_opening/edit_listing_screen.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:insta_job/widgets/custom_cards/job_opening_tile.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
+import 'package:provider/provider.dart';
 
 class JobOpeningScreen extends StatelessWidget {
   const JobOpeningScreen({Key? key}) : super(key: key);
@@ -28,18 +31,31 @@ class JobOpeningScreen extends StatelessWidget {
               ),
               leading: ImageButton(
                 image: MyImages.backArrowBorder,
+                onTap: () {
+                  context
+                      .read<BottomProvider>()
+                      .setSelectedScreen(false, screenName: JobOpeningScreen());
+                },
               ),
               actions: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 10.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: MyColors.blue, shape: BoxShape.circle),
-                    child: Padding(
-                      padding: const EdgeInsets.all(9.0),
-                      child: Icon(
-                        Icons.add,
-                        color: MyColors.white,
+                GestureDetector(
+                  onTap: () {
+                    context
+                        .read<BottomProvider>()
+                        .setSelectedScreen(true, screenName: EditListing());
+                    // AppRoutes.push(context, EditListing());
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 10.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: MyColors.blue, shape: BoxShape.circle),
+                      child: Padding(
+                        padding: const EdgeInsets.all(9.0),
+                        child: Icon(
+                          Icons.add,
+                          color: MyColors.white,
+                        ),
                       ),
                     ),
                   ),

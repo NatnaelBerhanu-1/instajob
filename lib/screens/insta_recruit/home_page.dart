@@ -1,15 +1,22 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:insta_job/globals.dart';
+import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/user_account/automate_messages/automate_message_screen.dart';
+import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/user_account/setting_pages/setting_screen.dart';
+import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/user_account/subscribe_pages/job_board_screen.dart';
+import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
-import 'package:insta_job/widgets/custom_bottom_tile.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:insta_job/widgets/user_tile/custom_acc_details.dart';
 
+import 'bottom_navigation_screen/user_account/feedback/feedback_screen.dart';
+
 class HomePage extends StatefulWidget {
-  final bool isUserInterface;
-  const HomePage({Key? key, this.isUserInterface = false}) : super(key: key);
+  const HomePage({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -21,10 +28,9 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: CustomBottomNavigation(),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.only(right: 15.0),
+          padding: const EdgeInsets.only(right: 15.0, top: 15),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -70,7 +76,7 @@ class _HomePageState extends State<HomePage> {
               SizedBox(height: 25),
               Row(
                 children: [
-                  widget.isUserInterface
+                  Global.type == "user"
                       ? Expanded(
                           child: Padding(
                             padding: const EdgeInsets.only(left: 15.0),
@@ -94,6 +100,7 @@ class _HomePageState extends State<HomePage> {
                       onTap: () {
                         selectedIndex = 1;
                         setState(() {});
+                        AppRoutes.push(context, FeedBackScreen());
                       },
                       index: 1,
                       selectedIndex: selectedIndex,
@@ -116,6 +123,7 @@ class _HomePageState extends State<HomePage> {
                             onTap: () {
                               selectedIndex = 2;
                               setState(() {});
+                              AppRoutes.push(context, JobBoardsScreen());
                             },
                             index: 2,
                             selectedIndex: selectedIndex,
@@ -130,6 +138,7 @@ class _HomePageState extends State<HomePage> {
                             onTap: () {
                               selectedIndex = 3;
                               setState(() {});
+                              AppRoutes.push(context, AutomateMsgScreen());
                             },
                             index: 3,
                             selectedIndex: selectedIndex,
@@ -145,6 +154,7 @@ class _HomePageState extends State<HomePage> {
                       onTap: () {
                         selectedIndex = 4;
                         setState(() {});
+                        AppRoutes.push(context, SettingScreen());
                       },
                       index: 4,
                       selectedIndex: selectedIndex,

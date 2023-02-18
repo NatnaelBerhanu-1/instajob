@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
 
 import '../../utils/my_colors.dart';
@@ -32,6 +33,9 @@ class ChangeAccInfoScreen extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(top: 13.0, left: 5),
                         child: ImageButton(
+                          onTap: () {
+                            AppRoutes.pop(context);
+                          },
                           image: MyImages.backArrow,
                           height: 40,
                           width: 40,

@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:insta_job/utils/my_colors.dart';
 
+class Global {
+  static String? type;
+}
+
 BoxShadow boxShadow = BoxShadow(
   color: Colors.grey.withOpacity(0.25),
   offset: const Offset(0, 4),

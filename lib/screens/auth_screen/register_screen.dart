@@ -1,6 +1,11 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:insta_job/screens/auth_screen/login_screen.dart';
+import 'package:insta_job/screens/insta_recruit/became_an_employeer.dart';
+import 'package:insta_job/screens/insta_recruit/membership_screen.dart';
+import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/widgets/custom_button/custom_all_small_button.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
 
@@ -113,6 +118,10 @@ class RegisterScreen extends StatelessWidget {
                             ),
                             children: [
                               TextSpan(
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    AppRoutes.push(context, MemberShipScreen());
+                                  },
                                 text: "Terms & Conditions",
                                 style: TextStyle(
                                   fontWeight: FontWeight.w500,
@@ -179,6 +188,10 @@ class RegisterScreen extends StatelessWidget {
                         fontColor: MyColors.white,
                         borderColor: MyColors.blue,
                         iconColor: MyColors.white,
+                        onclick: () {
+                          AppRoutes.pushAndRemoveUntil(
+                              context, BecameAnEmployer());
+                        },
                       ),
                       SizedBox(height: 20),
                       divider(),
@@ -200,7 +213,9 @@ class RegisterScreen extends StatelessWidget {
                                 }
                                 return MyColors.blue;
                               })),
-                              onPressed: () {},
+                              onPressed: () {
+                                AppRoutes.push(context, LoginScreen());
+                              },
                               child: Text(
                                 'Sign In',
                                 style: TextStyle(

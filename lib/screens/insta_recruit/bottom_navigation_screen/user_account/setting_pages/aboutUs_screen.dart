@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 
 import '../../../../../utils/my_colors.dart';
@@ -29,16 +30,33 @@ class AboutUsScreen extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(top: 40),
                       child: Center(
-                        child: Column(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Image.asset(
-                              MyImages.instaLogo_,
-                              color: MyColors.white,
+                            IconButton(
+                                onPressed: () {
+                                  AppRoutes.pop(context);
+                                },
+                                icon: Icon(
+                                  Icons.arrow_back_ios,
+                                  size: 18,
+                                  color: MyColors.white,
+                                )),
+                            Spacer(),
+                            Column(
+                              children: [
+                                Image.asset(
+                                  MyImages.instaLogo_,
+                                  color: MyColors.white,
+                                ),
+                                CommonText(
+                                  text: "Employee instantly",
+                                  fontColor: MyColors.white,
+                                ),
+                              ],
                             ),
-                            CommonText(
-                              text: "Employee instantly",
-                              fontColor: MyColors.white,
-                            ),
+                            Spacer(),
+                            Spacer(),
                           ],
                         ),
                       ),

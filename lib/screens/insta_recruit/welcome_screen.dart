@@ -67,7 +67,7 @@ class WelcomeScreen extends StatelessWidget {
               borderColor: MyColors.blue,
               iconColor: MyColors.blue,
               onclick: () {
-                AppRoutes.push(context, RegisterScreen());
+                AppRoutes.pushAndRemoveUntil(context, RegisterScreen());
               },
             ),
             SizedBox(height: 30),
@@ -76,9 +76,16 @@ class WelcomeScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                CustomSocialButton(image: MyImages.google),
-                CustomSocialButton(image: MyImages.twitter),
-                CustomSocialButton(image: MyImages.facebook),
+                CustomSocialButton(
+                  image: MyImages.google,
+                ),
+                CustomSocialButton(
+                  image: MyImages.twitter,
+                ),
+                CustomSocialButton(
+                  image: MyImages.facebook,
+                  onTap: () {},
+                ),
               ],
             )
           ],

@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_button/custom_btn.dart';
@@ -26,7 +27,12 @@ class AutomateMsgScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     ImageButton(
-                        image: MyImages.backArrow, height: 30, width: 30),
+                        onTap: () {
+                          AppRoutes.pop(context);
+                        },
+                        image: MyImages.backArrow,
+                        height: 30,
+                        width: 30),
                     SizedBox(width: 50),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

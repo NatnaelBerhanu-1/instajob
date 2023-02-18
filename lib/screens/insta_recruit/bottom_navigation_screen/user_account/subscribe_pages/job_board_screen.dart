@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/user_account/setting_pages/save_card_screen.dart';
+import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_button/custom_btn.dart';
@@ -26,7 +28,12 @@ class JobBoardsScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     ImageButton(
-                        image: MyImages.backArrow, height: 32, width: 32),
+                        onTap: () {
+                          AppRoutes.pop(context);
+                        },
+                        image: MyImages.backArrow,
+                        height: 32,
+                        width: 32),
                     SizedBox(width: 30),
                     Column(
                       // crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,6 +71,10 @@ class JobBoardsScreen extends StatelessWidget {
                     image: MyImages.enterprise,
                     desc: MyColors.white,
                     color: MyColors.white,
+                    onTap: () {
+                      AppRoutes.push(
+                          context, SaveCardScreen(isChoosePayment: true));
+                    },
                   ),
                   SizedBox(height: 15),
                   CustomJobBoardsCard(
@@ -76,6 +87,10 @@ class JobBoardsScreen extends StatelessWidget {
                   SizedBox(height: 30),
                   CustomButton(
                     title: "Confirm",
+                    onTap: () {
+                      AppRoutes.push(
+                          context, SaveCardScreen(isChoosePayment: true));
+                    },
                   ),
                   SizedBox(height: 20),
                   CommonText(

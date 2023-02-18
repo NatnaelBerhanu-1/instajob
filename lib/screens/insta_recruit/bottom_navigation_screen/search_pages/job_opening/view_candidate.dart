@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/job_opening/job_position_screen.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/widgets/denied_candidate_tile.dart';
 
@@ -21,6 +22,9 @@ class ViewCandidates extends StatelessWidget {
           preferredSize: Size(double.infinity, kToolbarHeight),
           child: CustomAppBar(
             leadingImage: MyImages.backArrow,
+            onTap: () {
+              AppRoutes.push(context, JobPositionScreen());
+            },
             centerTitle: false,
             title: "Search",
             actions: Row(

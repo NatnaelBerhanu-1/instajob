@@ -1,18 +1,22 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:insta_job/provider/bottom_provider.dart';
+import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/bottom_navigation_screen.dart';
 import 'package:insta_job/widgets/custom_button/custom_btn.dart';
 import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 import 'package:insta_job/widgets/custom_cards/assign_companies_tile.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:insta_job/widgets/custom_divider.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../../utils/my_colors.dart';
 import '../../../../../utils/my_images.dart';
 
 class EditListing extends StatefulWidget {
-  const EditListing({Key? key}) : super(key: key);
+  final bool isUpdate;
+  const EditListing({Key? key, this.isUpdate = false}) : super(key: key);
 
   @override
   State<EditListing> createState() => _EditListingState();
@@ -32,41 +36,50 @@ class _EditListingState extends State<EditListing> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Edit Listing",
+                  widget.isUpdate ? "Edit Listing" : "Add Job Positions",
                   style: TextStyle(color: MyColors.black),
                 ),
                 SizedBox(height: 5),
                 Text(
-                  "Update job details",
+                  widget.isUpdate
+                      ? "Update job details"
+                      : "Add new details for new opening",
                   style: TextStyle(color: MyColors.grey, fontSize: 14),
                 ),
               ],
             ),
           ),
-          leading: ImageButton(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            image: MyImages.backArrow,
-          ),
+          leading: Consumer<BottomProvider>(builder: (context, value, _) {
+            return ImageButton(
+              onTap: () {
+                print("editl");
+                value.setSelectedScreen(false,
+                    screenName: BottomNavigationScreen());
+                // Navigator.pop(context);
+              },
+              image: MyImages.backArrow,
+            );
+          }),
           actions: [
-            Padding(
-              padding: const EdgeInsets.only(right: 12.0, top: 10),
-              child: Container(
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                    color: MyColors.white,
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: MyColors.red)),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 10.0, right: 10),
-                  child: Text(
-                    "Remove Listing",
-                    style: TextStyle(fontSize: 13, color: MyColors.red),
-                  ),
-                ),
-              ),
-            )
+            widget.isUpdate
+                ? Padding(
+                    padding: const EdgeInsets.only(right: 12.0, top: 10),
+                    child: Container(
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          color: MyColors.white,
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: MyColors.red)),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10.0, right: 10),
+                        child: Text(
+                          "Remove Listing",
+                          style: TextStyle(fontSize: 13, color: MyColors.red),
+                        ),
+                      ),
+                    ),
+                  )
+                : SizedBox()
           ],
         ),
         body: Padding(
@@ -397,7 +410,8 @@ class _EditListingState extends State<EditListing> {
               SizedBox(height: 25),
               CustomIconButton(
                 image: MyImages.arrowWhite,
-                title: "Enable Job Position",
+                title:
+                    widget.isUpdate ? "Edit Job Position" : "Post Job Position",
                 backgroundColor: MyColors.blue,
                 fontColor: MyColors.white,
                 borderColor: MyColors.blue,

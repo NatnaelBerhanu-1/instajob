@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 import 'package:flutter/material.dart';
+import 'package:insta_job/screens/auth_screen/verify_code_screen.dart';
+import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 
@@ -54,13 +56,18 @@ class ForgotPassword extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 15),
-              Center(
-                child: CommonText(
-                  text: "Resend",
-                  fontWeight: FontWeight.w500,
-                  fontColor: MyColors.blue,
-                  decoration: TextDecoration.underline,
-                  fontSize: 16,
+              GestureDetector(
+                onTap: () {
+                  // AppRoutes.push(context, VerifyCodeScreen());
+                },
+                child: Center(
+                  child: CommonText(
+                    text: "Resend",
+                    fontWeight: FontWeight.w500,
+                    fontColor: MyColors.blue,
+                    decoration: TextDecoration.underline,
+                    fontSize: 16,
+                  ),
                 ),
               ),
               SizedBox(height: 70),
@@ -71,6 +78,9 @@ class ForgotPassword extends StatelessWidget {
                 fontColor: MyColors.white,
                 borderColor: MyColors.blue,
                 iconColor: MyColors.white,
+                onclick: () {
+                  AppRoutes.push(context, VerifyCodeScreen());
+                },
               ),
             ],
           ),

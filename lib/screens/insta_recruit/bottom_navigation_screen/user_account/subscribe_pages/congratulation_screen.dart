@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/bottom_navigation_screen.dart';
+import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_button/custom_btn.dart';
@@ -27,9 +29,14 @@ class _CongratulationsScreenState extends State<CongratulationsScreen> {
               padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
               child: Column(
                 children: [
-                  Align(
-                      alignment: Alignment.topLeft,
-                      child: Image.asset(MyImages.cancel)),
+                  GestureDetector(
+                    onTap: () {
+                      AppRoutes.push(context, BottomNavigationScreen());
+                    },
+                    child: Align(
+                        alignment: Alignment.topLeft,
+                        child: Image.asset(MyImages.cancel)),
+                  ),
                   Image.asset(MyImages.completed),
                   SizedBox(height: 15),
                   CommonText(
@@ -58,6 +65,9 @@ class _CongratulationsScreenState extends State<CongratulationsScreen> {
                   Spacer(),
                   CustomButton(
                     title: "Confirm",
+                    onTap: () {
+                      AppRoutes.push(context, BottomNavigationScreen());
+                    },
                   ),
                   SizedBox(height: 20),
                   CommonText(

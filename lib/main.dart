@@ -3,7 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/changeValue_bloc.dart';
+import 'package:insta_job/provider/bottom_provider.dart';
 import 'package:insta_job/screens/insta_recruit/splash_screen.dart';
+import 'package:provider/provider.dart';
 
 import 'utils/my_colors.dart';
 
@@ -16,13 +18,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [BlocProvider(create: (_) => IndexBloc())],
-      child: MaterialApp(
-        theme: ThemeData(
-          scaffoldBackgroundColor: MyColors.white,
-          colorScheme:
-              ColorScheme.fromSwatch().copyWith(secondary: Colors.white),
+      child: MultiProvider(
+        providers: [ChangeNotifierProvider(create: (_) => BottomProvider())],
+        child: MaterialApp(
+          theme: ThemeData(
+            scaffoldBackgroundColor: MyColors.white,
+            colorScheme:
+                ColorScheme.fromSwatch().copyWith(secondary: Colors.white),
+          ),
+          home: SplashScreen(),
         ),
-        home: SplashScreen(),
       ),
     );
   }

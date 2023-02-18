@@ -1,6 +1,9 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:insta_job/screens/auth_screen/forgot_password.dart';
+import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/bottom_navigation_screen.dart';
+import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
 
@@ -100,14 +103,19 @@ class LoginScreen extends StatelessWidget {
                         hint: "password",
                       ),
                       SizedBox(height: 20),
-                      Align(
-                        alignment: Alignment.topRight,
-                        child: Text(
-                          "Forgot Password?",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            color: MyColors.blue,
-                            fontSize: 15,
+                      GestureDetector(
+                        onTap: () {
+                          AppRoutes.push(context, ForgotPassword());
+                        },
+                        child: Align(
+                          alignment: Alignment.topRight,
+                          child: Text(
+                            "Forgot Password?",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              color: MyColors.blue,
+                              fontSize: 15,
+                            ),
                           ),
                         ),
                       ),
@@ -119,6 +127,10 @@ class LoginScreen extends StatelessWidget {
                         fontColor: MyColors.white,
                         borderColor: MyColors.blue,
                         iconColor: MyColors.white,
+                        onclick: () {
+                          AppRoutes.pushAndRemoveUntil(
+                              context, BottomNavigationScreen());
+                        },
                       ),
                       SizedBox(height: 20),
                       CustomIconButton(

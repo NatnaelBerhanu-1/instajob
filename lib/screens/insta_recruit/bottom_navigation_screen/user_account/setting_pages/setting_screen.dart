@@ -1,6 +1,11 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:insta_job/dialog/custom_dialog.dart';
+import 'package:insta_job/globals.dart';
+import 'package:insta_job/screens/auth_screen/change_account_info.dart';
+import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/user_account/setting_pages/save_card_screen.dart';
+import 'package:insta_job/screens/insta_recruit/membership_screen.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_app_bar.dart';
 import 'package:insta_job/widgets/custom_cards/setting_tile.dart';
@@ -11,9 +16,8 @@ import '../../../../../widgets/custom_button/custom_btn.dart';
 import 'aboutUs_screen.dart';
 
 class SettingScreen extends StatefulWidget {
-  final bool isUserInterface;
-  const SettingScreen({Key? key, this.isUserInterface = false})
-      : super(key: key);
+  // final bool isUserInterface;
+  const SettingScreen({Key? key}) : super(key: key);
 
   @override
   State<SettingScreen> createState() => _SettingScreenState();
@@ -44,29 +48,37 @@ class _SettingScreenState extends State<SettingScreen> {
               ),
               SizedBox(height: 10),
               SettingTile(
-                onTap: () {},
+                onTap: () {
+                  AppRoutes.push(context, MemberShipScreen());
+                },
                 leadingImage: MyImages.membership,
                 title: "MemberShip Agreement",
               ),
               SizedBox(height: 10),
               SettingTile(
-                onTap: () {},
+                onTap: () {
+                  AppRoutes.push(context, ChangeAccInfoScreen());
+                },
                 leadingImage: MyImages.user,
                 title: "Change Account Information",
               ),
               SizedBox(height: 10),
-              widget.isUserInterface
+              Global.type == ""
                   ? SizedBox()
                   : SettingTile(
-                      onTap: () {},
+                      onTap: () {
+                        AppRoutes.push(context, SaveCardScreen());
+                      },
                       leadingImage: MyImages.visaCardBlue,
                       title: "Saved Cards",
                     ),
               SizedBox(height: 10),
-              widget.isUserInterface
+              Global.type == ""
                   ? SizedBox()
                   : SettingTile(
-                      onTap: () {},
+                      onTap: () {
+                        buildDialog(context, CustomDialog());
+                      },
                       leadingImage: MyImages.cancelSub,
                       title: "Cancel Subscription",
                     ),

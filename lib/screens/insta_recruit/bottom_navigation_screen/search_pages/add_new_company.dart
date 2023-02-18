@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:insta_job/provider/bottom_provider.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_app_bar.dart';
 import 'package:insta_job/widgets/custom_button/custom_btn.dart';
@@ -8,6 +9,9 @@ import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 import 'package:insta_job/widgets/custom_cards/assign_companies_tile.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
+import 'package:provider/provider.dart';
+
+import '../bottom_navigation_screen.dart';
 
 class AddNewCompany extends StatelessWidget {
   const AddNewCompany({Key? key}) : super(key: key);
@@ -20,6 +24,11 @@ class AddNewCompany extends StatelessWidget {
         child: CustomAppBar(
           leadingImage: MyImages.backArrowBorder,
           title: "",
+          onTap: () {
+            context
+                .read<BottomProvider>()
+                .setSelectedScreen(false, screenName: BottomNavigationScreen());
+          },
         ),
       ),
       body: SingleChildScrollView(

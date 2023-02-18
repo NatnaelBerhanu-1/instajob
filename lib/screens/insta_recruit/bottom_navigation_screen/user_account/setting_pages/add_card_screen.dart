@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/user_account/setting_pages/save_card_screen.dart';
+import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
@@ -87,6 +89,10 @@ class _AddCardScreenState extends State<AddCardScreen> {
                 SizedBox(height: 60),
                 CustomButton(
                   title: "Add Card",
+                  onTap: () {
+                    AppRoutes.push(
+                        context, SaveCardScreen(isChoosePayment: true));
+                  },
                 ),
               ],
             ),

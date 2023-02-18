@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:insta_job/globals.dart';
 import 'package:insta_job/screens/insta_recruit/welcome_screen.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_colors.dart';
@@ -9,9 +10,7 @@ import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:insta_job/widgets/custom_cards/custom_user_type_card.dart';
 
 class UserTypeScreen extends StatefulWidget {
-  final bool isUserInterface;
-  const UserTypeScreen({Key? key, this.isUserInterface = false})
-      : super(key: key);
+  const UserTypeScreen({Key? key}) : super(key: key);
 
   @override
   State<UserTypeScreen> createState() => _UserTypeScreenState();
@@ -54,6 +53,8 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                     onTap: () {
                       selectedIndex = 1;
                       setState(() {});
+                      Global.type = "recruiters";
+                      print("TYPE1-> ${Global.type}");
                       AppRoutes.push(context, WelcomeScreen());
                     },
                     image: MyImages.businessAndTrade,
@@ -66,6 +67,8 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                     onTap: () {
                       selectedIndex = 2;
                       setState(() {});
+                      Global.type = "user";
+                      print("TYPE2-> ${Global.type}");
                       AppRoutes.push(context, WelcomeScreen());
                     },
                     image: MyImages.suitcase,

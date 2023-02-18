@@ -1,9 +1,12 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/user_account/setting_pages/add_card_screen.dart';
+import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/user_account/subscribe_pages/congratulation_screen.dart';
+import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/user_account/subscribe_pages/job_board_screen.dart';
+import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_app_bar.dart';
-import 'package:insta_job/widgets/custom_cards/insta_job_user_cards/filter_tiles/custom_filter_card.dart';
 import 'package:insta_job/widgets/custom_cards/payment_tile.dart';
 
 import '../../../../../utils/my_colors.dart';
@@ -16,7 +19,9 @@ final List<String> list = [
 ];
 
 class SaveCardScreen extends StatefulWidget {
-  const SaveCardScreen({Key? key}) : super(key: key);
+  final bool isChoosePayment;
+  const SaveCardScreen({Key? key, this.isChoosePayment = false})
+      : super(key: key);
 
   @override
   State<SaveCardScreen> createState() => _SaveCardScreenState();
@@ -31,18 +36,25 @@ class _SaveCardScreenState extends State<SaveCardScreen> {
         appBar: PreferredSize(
             preferredSize: Size(double.infinity, kToolbarHeight),
             child: CustomAppBar(
-              title: "Save Cards",
+              title: widget.isChoosePayment
+                  ? "Choose Payment Option"
+                  : "Save Cards",
               leadingImage: MyImages.arrowBlueLeft,
+              onTap: () {
+                AppRoutes.push(context, JobBoardsScreen());
+              },
               height: 17,
               width: 17,
-              actions: IconButton(
-                  visualDensity: VisualDensity.standard,
-                  splashColor: MyColors.transparent,
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.delete,
-                    color: MyColors.red,
-                  )),
+              actions: widget.isChoosePayment
+                  ? SizedBox()
+                  : IconButton(
+                      visualDensity: VisualDensity.standard,
+                      splashColor: MyColors.transparent,
+                      onPressed: () {},
+                      icon: Icon(
+                        Icons.delete,
+                        color: MyColors.red,
+                      )),
             )),
         body: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -90,11 +102,21 @@ class _SaveCardScreenState extends State<SaveCardScreen> {
                   userName: "Paypal",
                 ),
                 SizedBox(height: 40),
-                DottedButton(),
-                SizedBox(height: 20),
-                CustomFilterCard(
-                  children: [buildTitleTile()],
-                )
+                DottedButton(
+                  onTap: () {
+                    AppRoutes.push(context, AddCardScreen());
+                  },
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.29),
+                // Spacer(),
+                widget.isChoosePayment
+                    ? CustomButton(
+                        title: "Check Out",
+                        onTap: () {
+                          AppRoutes.push(context, CongratulationsScreen());
+                        },
+                      )
+                    : SizedBox()
               ],
             ),
           ),

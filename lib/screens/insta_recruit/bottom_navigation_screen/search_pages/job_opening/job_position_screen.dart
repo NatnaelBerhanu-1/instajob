@@ -1,13 +1,17 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:insta_job/provider/bottom_provider.dart';
+import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/bottom_navigation_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/job_opening/edit_listing_screen.dart';
+import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/job_opening/job_opening_page.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_button/custom_btn.dart';
 import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:insta_job/widgets/custom_expantion_tile.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../../utils/my_colors.dart';
 import 'view_candidate.dart';
@@ -32,11 +36,17 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
             child: Image.asset(MyImages.jobUser, fit: BoxFit.cover)),
         Positioned(
           top: 30,
-          child: ImageButton(
-            image: MyImages.backArrow,
-            height: 40,
-            width: 40,
-          ),
+          child: Consumer<BottomProvider>(builder: (context, value, _) {
+            return ImageButton(
+              onTap: () {
+                value.setSelectedScreen(true, screenName: JobOpeningScreen());
+                AppRoutes.push(context, BottomNavigationScreen());
+              },
+              image: MyImages.backArrow,
+              height: 40,
+              width: 40,
+            );
+          }),
         ),
         /* Positioned(
           top: 30,
@@ -108,26 +118,35 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                                 buildResponsibilityTile(),
                                 buildTopSkillsTile(),
                                 SizedBox(height: 15),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                        child: CustomButton(
-                                      title: "Edit Listing",
-                                      onTap: () {
-                                        AppRoutes.push(context, EditListing());
-                                      },
-                                    )),
-                                    SizedBox(width: 15),
-                                    Expanded(
-                                        child: CustomButton(
-                                      title: "View Candidates",
-                                      onTap: () {
-                                        AppRoutes.push(
-                                            context, ViewCandidates());
-                                      },
-                                    )),
-                                  ],
-                                ),
+                                Consumer<BottomProvider>(
+                                    builder: (context, value, _) {
+                                  return Row(
+                                    children: [
+                                      Expanded(
+                                          child: CustomButton(
+                                        title: "Edit Listing",
+                                        onTap: () {
+                                          value.setSelectedScreen(true,
+                                              screenName:
+                                                  EditListing(isUpdate: true));
+                                          AppRoutes.push(context,
+                                              BottomNavigationScreen());
+                                        },
+                                      )),
+                                      SizedBox(width: 15),
+                                      Expanded(
+                                          child: CustomButton(
+                                        title: "View Candidates",
+                                        onTap: () {
+                                          value.setSelectedScreen(true,
+                                              screenName: ViewCandidates());
+                                          AppRoutes.push(context,
+                                              BottomNavigationScreen());
+                                        },
+                                      )),
+                                    ],
+                                  );
+                                }),
                               ],
                             ),
                           )),
