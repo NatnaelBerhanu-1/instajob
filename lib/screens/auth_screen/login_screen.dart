@@ -1,8 +1,11 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:insta_job/globals.dart';
 import 'package:insta_job/screens/auth_screen/forgot_password.dart';
+import 'package:insta_job/screens/auth_screen/register_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/bottom_navigation_screen.dart';
+import 'package:insta_job/screens/insta_recruit/membership_screen.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
@@ -128,8 +131,13 @@ class LoginScreen extends StatelessWidget {
                         borderColor: MyColors.blue,
                         iconColor: MyColors.white,
                         onclick: () {
-                          AppRoutes.pushAndRemoveUntil(
-                              context, BottomNavigationScreen());
+                          if (Global.type == "user") {
+                            AppRoutes.pushAndRemoveUntil(
+                                context, MemberShipScreen());
+                          } else {
+                            AppRoutes.pushAndRemoveUntil(
+                                context, BottomNavigationScreen());
+                          }
                         },
                       ),
                       SizedBox(height: 20),
@@ -140,6 +148,9 @@ class LoginScreen extends StatelessWidget {
                         fontColor: MyColors.black,
                         borderColor: MyColors.blue,
                         iconColor: MyColors.blue,
+                        onclick: () {
+                          AppRoutes.push(context, RegisterScreen());
+                        },
                       ),
                       SizedBox(height: 30),
                       CustomDivider(),

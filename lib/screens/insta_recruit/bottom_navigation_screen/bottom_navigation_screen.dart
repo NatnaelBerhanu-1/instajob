@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:insta_job/globals.dart';
 import 'package:insta_job/provider/bottom_provider.dart';
+import 'package:insta_job/screens/insta_job_user/bottom_nav_screen/search_pages/search_jobs_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/notification_pages/interviews_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/assigned_company_screen.dart';
 import 'package:insta_job/utils/my_colors.dart';
@@ -19,9 +21,9 @@ class BottomNavigationScreen extends StatefulWidget {
 
 class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
   List<Widget> pages = [
-    AssignCompany(),
-    InterviewScreen(),
-    HomePage(),
+    Global.type == "user" ? const SearchJobsScreen() : const AssignCompany(),
+    const InterviewScreen(),
+    const HomePage(),
   ];
 
   @override

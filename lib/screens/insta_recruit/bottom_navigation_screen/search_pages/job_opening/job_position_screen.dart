@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:insta_job/globals.dart';
 import 'package:insta_job/provider/bottom_provider.dart';
+import 'package:insta_job/screens/insta_job_user/confirm_detail_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/bottom_navigation_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/job_opening/edit_listing_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/job_opening/job_opening_page.dart';
@@ -48,14 +50,16 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
             );
           }),
         ),
-        /* Positioned(
+        Positioned(
           top: 30,
           right: 10,
-          child: IconButton(
-            icon: Icon(Icons.share, color: MyColors.white),
-            onPressed: () {},
-          ),
-        ),*/
+          child: Global.type == "user"
+              ? IconButton(
+                  icon: Icon(Icons.share, color: MyColors.white),
+                  onPressed: () {},
+                )
+              : SizedBox(),
+        ),
         Positioned(
             left: 0,
             top: MediaQuery.of(context).size.height * 0.36,
@@ -120,32 +124,41 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                                 SizedBox(height: 15),
                                 Consumer<BottomProvider>(
                                     builder: (context, value, _) {
-                                  return Row(
-                                    children: [
-                                      Expanded(
-                                          child: CustomButton(
-                                        title: "Edit Listing",
-                                        onTap: () {
-                                          value.setSelectedScreen(true,
-                                              screenName:
-                                                  EditListing(isUpdate: true));
-                                          AppRoutes.push(context,
-                                              BottomNavigationScreen());
-                                        },
-                                      )),
-                                      SizedBox(width: 15),
-                                      Expanded(
-                                          child: CustomButton(
-                                        title: "View Candidates",
-                                        onTap: () {
-                                          value.setSelectedScreen(true,
-                                              screenName: ViewCandidates());
-                                          AppRoutes.push(context,
-                                              BottomNavigationScreen());
-                                        },
-                                      )),
-                                    ],
-                                  );
+                                  return Global.type == "user"
+                                      ? CustomButton(
+                                          title: "Apply",
+                                          onTap: () {
+                                            AppRoutes.push(context,
+                                                ConfirmDetailsScreen());
+                                          },
+                                        )
+                                      : Row(
+                                          children: [
+                                            Expanded(
+                                                child: CustomButton(
+                                              title: "Edit Listing",
+                                              onTap: () {
+                                                value.setSelectedScreen(true,
+                                                    screenName: EditListing(
+                                                        isUpdate: true));
+                                                AppRoutes.push(context,
+                                                    BottomNavigationScreen());
+                                              },
+                                            )),
+                                            SizedBox(width: 15),
+                                            Expanded(
+                                                child: CustomButton(
+                                              title: "View Candidates",
+                                              onTap: () {
+                                                value.setSelectedScreen(true,
+                                                    screenName:
+                                                        ViewCandidates());
+                                                AppRoutes.push(context,
+                                                    BottomNavigationScreen());
+                                              },
+                                            )),
+                                          ],
+                                        );
                                 }),
                               ],
                             ),
@@ -155,18 +168,20 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                 ],
               ),
             )),
-        /* Positioned(
+        Positioned(
           top: MediaQuery.of(context).size.height * 0.334,
           right: 20,
-          child: CustomCommonCard(
-            bgColor: MyColors.blue,
-            borderRadius: BorderRadius.circular(10),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Icon(Icons.favorite, color: MyColors.white),
-            ),
-          ),
-        ),*/
+          child: Global.type == "user"
+              ? CustomCommonCard(
+                  bgColor: MyColors.blue,
+                  borderRadius: BorderRadius.circular(10),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Icon(Icons.favorite_border, color: MyColors.white),
+                  ),
+                )
+              : SizedBox(),
+        ),
       ],
     ));
   }

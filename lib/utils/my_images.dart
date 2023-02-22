@@ -24,6 +24,7 @@ class MyImages {
   static String component = "$baseUrl/component.png";
   static String cal = "$baseUrl/date.png";
   static String email = "$baseUrl/email.png";
+  static String mail = "$baseUrl/mail.png";
   static String enterprise = "$baseUrl/enterprise.png";
   static String enterprise1 = "$baseUrl/enterprise1.png";
   static String facebook = "$baseUrl/facebook.png";

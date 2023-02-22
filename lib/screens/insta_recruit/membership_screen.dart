@@ -1,16 +1,24 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:insta_job/screens/insta_job_user/turn_on_notification_page.dart';
 import 'package:insta_job/widgets/custom_button/custom_all_small_button.dart';
 
 import '../../../utils/my_colors.dart';
 import '../../../utils/my_images.dart';
 import '../../../widgets/custom_button/custom_btn.dart';
 import '../../../widgets/custom_cards/custom_common_card.dart';
+import '../../utils/app_routes.dart';
 
-class MemberShipScreen extends StatelessWidget {
+class MemberShipScreen extends StatefulWidget {
   const MemberShipScreen({Key? key}) : super(key: key);
 
+  @override
+  State<MemberShipScreen> createState() => _MemberShipScreenState();
+}
+
+class _MemberShipScreenState extends State<MemberShipScreen> {
+  bool isCheck = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,8 +89,11 @@ class MemberShipScreen extends StatelessWidget {
                         "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nctsi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure "),
                     SizedBox(height: 20),
                     CustomCheckbox(
-                      onchanged: (val) {},
-                      value: true,
+                      onchanged: (val) {
+                        isCheck = val!;
+                        setState(() {});
+                      },
+                      value: isCheck,
                       title: Text(
                         "Click here to agree to all terms and service",
                         style: TextStyle(fontSize: 13),
@@ -92,9 +103,16 @@ class MemberShipScreen extends StatelessWidget {
                     CustomIconButton(
                       image: MyImages.arrowWhite,
                       title: "Continue",
-                      backgroundColor: MyColors.blue,
+                      backgroundColor:
+                          isCheck ? MyColors.blue : MyColors.lightBlue,
                       fontColor: MyColors.white,
                       iconColor: MyColors.white,
+                      onclick: () {
+                        if (isCheck) {
+                          AppRoutes.pushAndRemoveUntil(
+                              context, TurnOnNotification());
+                        }
+                      },
                     ),
                   ],
                 ),

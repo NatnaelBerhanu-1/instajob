@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 import 'package:flutter/material.dart';
+import 'package:insta_job/dialog/applied_successful_dialog.dart';
+import 'package:insta_job/dialog/custom_dialog.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 
@@ -39,12 +41,12 @@ class CoverLetterScreen extends StatelessWidget {
                     // mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Row(),
-                      Text("data"),
-                      Text("data"),
-                      Text("data"),
-                      Text("data"),
-                      Text("data"),
-                      Text("data"),
+                      Text(""),
+                      Text(""),
+                      Text(""),
+                      Text(""),
+                      Text(""),
+                      Text(""),
                     ],
                   ),
                 ),
@@ -61,6 +63,9 @@ class CoverLetterScreen extends StatelessWidget {
                 bgColor: MyColors.white,
                 fontColor: MyColors.blue,
                 borderColor: MyColors.blue,
+                onTap: () {
+                  buildDialog(context, AppliedSuccessDialog());
+                },
               ),
             ],
           ),

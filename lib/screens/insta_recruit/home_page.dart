@@ -2,6 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:insta_job/globals.dart';
+import 'package:insta_job/screens/insta_job_user/SliderScreen/Slider_screen.dart';
+import 'package:insta_job/screens/insta_job_user/bottom_nav_screen/user_account/save_jobs/save_jobs_screen.dart';
+import 'package:insta_job/screens/insta_job_user/career_cluster_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/user_account/automate_messages/automate_message_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/user_account/setting_pages/setting_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/user_account/subscribe_pages/job_board_screen.dart';
@@ -84,6 +87,7 @@ class _HomePageState extends State<HomePage> {
                               onTap: () {
                                 selectedIndex = 1;
                                 setState(() {});
+                                AppRoutes.push(context, SliderScreen());
                               },
                               index: 1,
                               selectedIndex: selectedIndex,
@@ -123,13 +127,21 @@ class _HomePageState extends State<HomePage> {
                             onTap: () {
                               selectedIndex = 2;
                               setState(() {});
-                              AppRoutes.push(context, JobBoardsScreen());
+                              if (Global.type == "user") {
+                                AppRoutes.push(context, CareerClusterScreen());
+                              } else {
+                                AppRoutes.push(context, JobBoardsScreen());
+                              }
                             },
                             index: 2,
                             selectedIndex: selectedIndex,
                             width: double.infinity,
-                            img: MyImages.subscribe,
-                            title: "Subscribe",
+                            img: Global.type == "user"
+                                ? MyImages.mail
+                                : MyImages.subscribe,
+                            title: Global.type == "user"
+                                ? "Career Learning"
+                                : "Subscribe",
                           ),
                         ),
                         SizedBox(width: 15),
@@ -138,13 +150,21 @@ class _HomePageState extends State<HomePage> {
                             onTap: () {
                               selectedIndex = 3;
                               setState(() {});
-                              AppRoutes.push(context, AutomateMsgScreen());
+                              if (Global.type == "user") {
+                                AppRoutes.push(context, SaveJobsScreen());
+                              } else {
+                                AppRoutes.push(context, AutomateMsgScreen());
+                              }
                             },
                             index: 3,
                             selectedIndex: selectedIndex,
                             width: double.infinity,
-                            img: MyImages.automateMsg,
-                            title: "Automate Message",
+                            img: Global.type == "user"
+                                ? MyImages.suitcase
+                                : MyImages.automateMsg,
+                            title: Global.type == "user"
+                                ? "Saved Jobs"
+                                : "Automate Message",
                           ),
                         ),
                       ],

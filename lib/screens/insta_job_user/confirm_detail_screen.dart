@@ -4,8 +4,10 @@ import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:insta_job/widgets/custom_cards/insta_job_user_cards/confirm_details_card.dart';
 
+import '../../utils/app_routes.dart';
 import '../../widgets/custom_app_bar.dart';
 import '../../widgets/custom_button/custom_btn.dart';
+import 'cover_letter_screen.dart';
 
 class ConfirmDetailsScreen extends StatelessWidget {
   const ConfirmDetailsScreen({Key? key}) : super(key: key);
@@ -106,6 +108,9 @@ class ConfirmDetailsScreen extends StatelessWidget {
                 title: "Confirm all details",
                 fontColor: MyColors.white,
                 borderColor: MyColors.blue,
+                onTap: () {
+                  AppRoutes.push(context, CoverLetterScreen());
+                },
               ),
             ],
           ),

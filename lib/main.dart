@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/changeValue_bloc.dart';
 import 'package:insta_job/provider/bottom_provider.dart';
-import 'package:insta_job/screens/insta_recruit/splash_screen.dart';
+import 'package:insta_job/screens/insta_job_user/bottom_nav_screen/user_account/occupation_details_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'utils/my_colors.dart';
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
             colorScheme:
                 ColorScheme.fromSwatch().copyWith(secondary: Colors.white),
           ),
-          home: SplashScreen(),
+          home: OccupationDetailsScreen(),
         ),
       ),
     );

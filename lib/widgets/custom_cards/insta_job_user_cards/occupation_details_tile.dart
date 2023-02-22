@@ -13,35 +13,38 @@ class OccupationDetailTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomCommonCard(
-      borderColor: MyColors.grey.withOpacity(.30),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    CommonText(
-                      text: "$heading",
-                      fontWeight: FontWeight.w500,
-                    ),
-                    Spacer(),
-                    Icon(
-                      Icons.keyboard_arrow_up,
-                      color: MyColors.grey,
-                    )
-                  ],
-                ),
-              ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6.0),
+      child: CustomCommonCard(
+        borderColor: MyColors.grey.withOpacity(.30),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      CommonText(
+                        text: "$heading",
+                        fontWeight: FontWeight.w500,
+                      ),
+                      Spacer(),
+                      Icon(
+                        Icons.keyboard_arrow_up,
+                        color: MyColors.grey,
+                      )
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-          divider(),
-          child
-        ],
+            divider(),
+            child
+          ],
+        ),
       ),
     );
   }

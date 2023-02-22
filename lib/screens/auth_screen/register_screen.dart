@@ -3,7 +3,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:insta_job/screens/auth_screen/login_screen.dart';
-import 'package:insta_job/screens/insta_recruit/became_an_employeer.dart';
+import 'package:insta_job/screens/auth_screen/reg_more_information.dart';
 import 'package:insta_job/screens/insta_recruit/membership_screen.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/widgets/custom_button/custom_all_small_button.dart';
@@ -190,40 +190,45 @@ class RegisterScreen extends StatelessWidget {
                         iconColor: MyColors.white,
                         onclick: () {
                           AppRoutes.pushAndRemoveUntil(
-                              context, BecameAnEmployer());
+                              context, RegMoreInfoScreen());
                         },
                       ),
                       SizedBox(height: 20),
                       divider(),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Already part of InstaJob",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 15,
+                      GestureDetector(
+                        onTap: () {
+                          AppRoutes.push(context, LoginScreen());
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Already part of InstaJob",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 15,
+                              ),
                             ),
-                          ),
-                          TextButton(
-                              style: ButtonStyle(overlayColor:
-                                  MaterialStateProperty.resolveWith((states) {
-                                if (states.contains(MaterialState.pressed)) {
-                                  return MyColors.transparent;
-                                }
-                                return MyColors.blue;
-                              })),
-                              onPressed: () {
-                                AppRoutes.push(context, LoginScreen());
-                              },
-                              child: Text(
-                                'Sign In',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 16,
-                                ),
-                              ))
-                        ],
+                            TextButton(
+                                style: ButtonStyle(overlayColor:
+                                    MaterialStateProperty.resolveWith((states) {
+                                  if (states.contains(MaterialState.pressed)) {
+                                    return MyColors.transparent;
+                                  }
+                                  return MyColors.blue;
+                                })),
+                                onPressed: () {
+                                  AppRoutes.push(context, LoginScreen());
+                                },
+                                child: Text(
+                                  'Sign In',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 16,
+                                  ),
+                                ))
+                          ],
+                        ),
                       )
                     ],
                   ),

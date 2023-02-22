@@ -1,12 +1,15 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_button/custom_btn.dart';
 import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:insta_job/widgets/custom_divider.dart';
+
+import '../insta_recruit/bottom_navigation_screen/bottom_navigation_screen.dart';
 
 class TurnOnNotification extends StatelessWidget {
   const TurnOnNotification({Key? key}) : super(key: key);
@@ -23,9 +26,15 @@ class TurnOnNotification extends StatelessWidget {
             Positioned(
               right: 15,
               top: 45,
-              child: CommonText(
-                text: "Skip For Now",
-                fontColor: MyColors.white,
+              child: GestureDetector(
+                onTap: () {
+                  AppRoutes.pushAndRemoveUntil(
+                      context, BottomNavigationScreen());
+                },
+                child: CommonText(
+                  text: "Skip For Now",
+                  fontColor: MyColors.white,
+                ),
               ),
             ),
             Positioned(
@@ -138,6 +147,10 @@ class TurnOnNotification extends StatelessWidget {
                 CustomIconButton(
                   title: "Turn On",
                   image: MyImages.arrowWhite,
+                  onclick: () {
+                    AppRoutes.pushAndRemoveUntil(
+                        context, BottomNavigationScreen());
+                  },
                 )
               ],
             ),
