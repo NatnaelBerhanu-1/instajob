@@ -2,12 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:insta_job/bloc/changeValue_bloc.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 
+import '../../../../bloc/global_bloc.dart';
 import '../../../../widgets/custom_app_bar.dart';
 import '../../../../widgets/custom_cards/insta_job_user_cards/occupation_details_tile.dart';
 
@@ -38,7 +38,8 @@ class _OccupationDetailsScreenState extends State<OccupationDetailsScreen> {
               title: "Occupation Details",
             )),
         body: SafeArea(
-          child: BlocBuilder<IndexBloc, IndexState>(builder: (context, state) {
+          child:
+              BlocBuilder<IndexBloc, InitialState>(builder: (context, state) {
             return Padding(
               padding:
                   const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12),

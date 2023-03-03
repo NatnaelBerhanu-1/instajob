@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, sort_child_properties_last
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:insta_job/bloc/global_bloc.dart';
 import 'package:insta_job/screens/insta_job_user/SliderScreen/tellus_about_yslf_page.dart';
 import 'package:insta_job/screens/insta_job_user/SliderScreen/work_experience_screen.dart';
 import 'package:insta_job/utils/my_colors.dart';
@@ -18,6 +20,7 @@ class _SliderScreenState extends State<SliderScreen> {
   PageController c = PageController(initialPage: 1);
   @override
   Widget build(BuildContext context) {
+    // var selectedIndex = context.watch<IndexBloc>().sIndex;
     return Scaffold(
         body: Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
@@ -60,7 +63,7 @@ class _SliderScreenState extends State<SliderScreen> {
                     TellUsAboutYSlfPage(
                       onTap: () {
                         sIndex = 1;
-                        setState(() {});
+                        // context.read<IndexBloc>().changeIndex(sIndex);
                         pageController.animateToPage(1,
                             duration: Duration(seconds: 1), curve: Curves.ease);
                       },

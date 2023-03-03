@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:insta_job/bloc/global_bloc.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/user_account/setting_pages/add_card_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/user_account/subscribe_pages/congratulation_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/user_account/subscribe_pages/job_board_screen.dart';
@@ -32,6 +34,7 @@ class _SaveCardScreenState extends State<SaveCardScreen> {
   int sqIndex = 0;
   @override
   Widget build(BuildContext context) {
+    var selectedIndex = context.watch<IndexBloc>().sIndex;
     return Scaffold(
         appBar: PreferredSize(
             preferredSize: Size(double.infinity, kToolbarHeight),
@@ -59,66 +62,69 @@ class _SaveCardScreenState extends State<SaveCardScreen> {
         body: Padding(
           padding: const EdgeInsets.all(20.0),
           child: SingleChildScrollView(
-            child: Column(
-              children: [
-                PaymentTile(
-                  onClick: () {
-                    sIndex = 1;
-                    setState(() {});
-                  },
-                  index: 1,
-                  selectedIndex: sIndex,
-                  image: MyImages.visaCardBlue,
-                  userName: "Visa - 5072",
-                ),
-                PaymentTile(
-                  onClick: () {
-                    sIndex = 2;
-                    setState(() {});
-                  },
-                  index: 2,
-                  selectedIndex: sIndex,
-                  image: MyImages.apple,
-                  userName: "Apple Pay",
-                ),
-                PaymentTile(
-                  onClick: () {
-                    sIndex = 3;
-                    setState(() {});
-                  },
-                  index: 3,
-                  selectedIndex: sIndex,
-                  image: MyImages.google,
-                  userName: "Google Pay",
-                ),
-                PaymentTile(
-                  onClick: () {
-                    sIndex = 4;
-                    setState(() {});
-                  },
-                  index: 4,
-                  selectedIndex: sIndex,
-                  image: MyImages.paypal,
-                  userName: "Paypal",
-                ),
-                SizedBox(height: 40),
-                DottedButton(
-                  onTap: () {
-                    AppRoutes.push(context, AddCardScreen());
-                  },
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.29),
-                // Spacer(),
-                widget.isChoosePayment
-                    ? CustomButton(
-                        title: "Check Out",
-                        onTap: () {
-                          AppRoutes.push(context, CongratulationsScreen());
-                        },
-                      )
-                    : SizedBox()
-              ],
-            ),
+            child:
+                BlocBuilder<IndexBloc, InitialState>(builder: (context, state) {
+              return Column(
+                children: [
+                  PaymentTile(
+                    onClick: () {
+                      sIndex = 1;
+                      context.read<IndexBloc>().changeIndex(sIndex);
+                    },
+                    index: 1,
+                    selectedIndex: selectedIndex,
+                    image: MyImages.visaCardBlue,
+                    userName: "Visa - 5072",
+                  ),
+                  PaymentTile(
+                    onClick: () {
+                      sIndex = 2;
+                      context.read<IndexBloc>().changeIndex(sIndex);
+                    },
+                    index: 2,
+                    selectedIndex: selectedIndex,
+                    image: MyImages.apple,
+                    userName: "Apple Pay",
+                  ),
+                  PaymentTile(
+                    onClick: () {
+                      sIndex = 3;
+                      context.read<IndexBloc>().changeIndex(sIndex);
+                    },
+                    index: 3,
+                    selectedIndex: selectedIndex,
+                    image: MyImages.google,
+                    userName: "Google Pay",
+                  ),
+                  PaymentTile(
+                    onClick: () {
+                      sIndex = 4;
+                      context.read<IndexBloc>().changeIndex(sIndex);
+                    },
+                    index: 4,
+                    selectedIndex: selectedIndex,
+                    image: MyImages.paypal,
+                    userName: "Paypal",
+                  ),
+                  SizedBox(height: 40),
+                  DottedButton(
+                    onTap: () {
+                      AppRoutes.push(context, AddCardScreen());
+                    },
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.29),
+                  // Spacer(),
+                  widget.isChoosePayment
+                      ? CustomButton(
+                          title: "Check Out",
+                          onTap: () {
+                            AppRoutes.push(context, CongratulationsScreen());
+                          },
+                        )
+                      : SizedBox()
+                ],
+              );
+            }),
           ),
         ));
   }

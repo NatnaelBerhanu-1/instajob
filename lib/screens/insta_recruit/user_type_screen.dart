@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:insta_job/bloc/global_bloc.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/screens/insta_recruit/welcome_screen.dart';
 import 'package:insta_job/utils/app_routes.dart';
@@ -17,9 +19,10 @@ class UserTypeScreen extends StatefulWidget {
 }
 
 class _UserTypeScreenState extends State<UserTypeScreen> {
-  int selectedIndex = 0;
+  int index = 0;
   @override
   Widget build(BuildContext context) {
+    var selectedIndex = context.watch<IndexBloc>().sIndex;
     return Scaffold(
         backgroundColor: MyColors.white,
         body: Container(
@@ -46,38 +49,40 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                   width: 250,
                 ),
               ),
-              Row(
-                children: [
-                  Expanded(
-                      child: UserTypeCard(
-                    onTap: () {
-                      selectedIndex = 1;
-                      setState(() {});
-                      Global.type = "recruiters";
-                      print("TYPE1-> ${Global.type}");
-                      AppRoutes.push(context, WelcomeScreen());
-                    },
-                    image: MyImages.businessAndTrade,
-                    title: "Recruiters",
-                    index: 1,
-                    selectedIndex: selectedIndex,
-                  )),
-                  Expanded(
-                      child: UserTypeCard(
-                    onTap: () {
-                      selectedIndex = 2;
-                      setState(() {});
-                      Global.type = "user";
-                      print("TYPE2-> ${Global.type}");
-                      AppRoutes.push(context, WelcomeScreen());
-                    },
-                    image: MyImages.suitcase,
-                    index: 2,
-                    selectedIndex: selectedIndex,
-                    title: "Job search",
-                  )),
-                ],
-              ),
+              BlocBuilder<IndexBloc, InitialState>(builder: (context, state) {
+                return Row(
+                  children: [
+                    Expanded(
+                        child: UserTypeCard(
+                      onTap: () {
+                        index = 1;
+                        context.read<IndexBloc>().changeIndex(index);
+                        Global.type = "recruiters";
+                        print("TYPE1-> ${Global.type}");
+                        AppRoutes.push(context, WelcomeScreen());
+                      },
+                      image: MyImages.businessAndTrade,
+                      title: "Recruiters",
+                      index: 1,
+                      selectedIndex: selectedIndex,
+                    )),
+                    Expanded(
+                        child: UserTypeCard(
+                      onTap: () {
+                        index = 2;
+                        context.read<IndexBloc>().changeIndex(index);
+                        Global.type = "user";
+                        print("TYPE2-> ${Global.type}");
+                        AppRoutes.push(context, WelcomeScreen());
+                      },
+                      image: MyImages.suitcase,
+                      index: 2,
+                      selectedIndex: selectedIndex,
+                      title: "Job search",
+                    )),
+                  ],
+                );
+              }),
               Spacer(),
               Padding(
                 padding: const EdgeInsets.only(left: 29.0, bottom: 20),
