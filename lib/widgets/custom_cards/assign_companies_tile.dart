@@ -1,10 +1,13 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:insta_job/provider/bottom_provider.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
+import 'package:provider/provider.dart';
 
+import '../../screens/insta_recruit/bottom_navigation_screen/search_pages/job_opening/job_opening_page.dart';
 import '../custom_button/custom_img_button.dart';
 
 class AssignCompaniesTile extends StatelessWidget {
@@ -19,7 +22,7 @@ class AssignCompaniesTile extends StatelessWidget {
       decoration: BoxDecoration(
           color: MyColors.white,
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: MyColors.grey),
+          border: Border.all(color: MyColors.grey.withOpacity(.30)),
           boxShadow: [
             BoxShadow(
                 color: Colors.grey.withOpacity(0.10),
@@ -28,12 +31,22 @@ class AssignCompaniesTile extends StatelessWidget {
                 offset: Offset(2, 3))
           ]),
       child: ListTile(
+        onTap: () {
+          context
+              .read<BottomProvider>()
+              .setSelectedScreen(true, screenName: JobOpeningScreen());
+        },
         shape: RoundedRectangleBorder(
             side: BorderSide(color: MyColors.grey),
             borderRadius: BorderRadius.circular(10)),
         contentPadding: EdgeInsets.all(6),
         tileColor: MyColors.white,
-        leading: ImageButton(image: leadingImage),
+        leading: ImageButton(
+          image: leadingImage,
+          onTap: () {
+            Navigator.pop(context);
+          },
+        ),
         title: Text(
           "$title",
           style: TextStyle(
@@ -60,14 +73,14 @@ Widget uploadPhotoCard() {
     borderRadius: BorderRadius.circular(10),
     borderColor: MyColors.lightBlue,
     child: Padding(
-      padding: const EdgeInsets.symmetric(vertical: 30),
+      padding: const EdgeInsets.symmetric(vertical: 45),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           ImageButton(
             image: MyImages.upload,
           ),
-          CustomCommonText(
+          CommonText(
             text: "Upload Photo",
             fontColor: MyColors.blue,
           )

@@ -30,6 +30,7 @@ class CustomCommonCard extends StatelessWidget {
     return GestureDetector(
         onTap: onTap,
         child: Container(
+          alignment: Alignment.center,
           decoration: BoxDecoration(
             borderRadius: borderRadius ?? BorderRadius.circular(10),
             color: bgColor ?? MyColors.white,
@@ -41,33 +42,68 @@ class CustomCommonCard extends StatelessWidget {
   }
 }
 
-class CustomCommonText extends StatelessWidget {
+class CommonText extends StatelessWidget {
   final String? text;
   final double? fontSize;
   final FontWeight? fontWeight;
   final Color? fontColor;
   final TextDecoration? decoration;
   final TextOverflow? overflow;
-
-  const CustomCommonText(
+  final bool? padding;
+  const CommonText(
       {super.key,
       this.text,
       this.fontSize,
       this.fontWeight,
       this.fontColor,
       this.decoration,
-      this.overflow});
+      this.overflow,
+      this.padding});
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      "$text",
-      style: TextStyle(
-        fontSize: fontSize ?? 15,
-        color: fontColor ?? MyColors.black,
-        decoration: decoration ?? TextDecoration.none,
-        fontWeight: fontWeight ?? FontWeight.w400,
-        overflow: overflow,
+    return Padding(
+      padding: padding == true ? const EdgeInsets.all(5.0) : EdgeInsets.zero,
+      child: Text(
+        "$text",
+        style: TextStyle(
+          fontSize: fontSize ?? 15,
+          color: fontColor ?? MyColors.black,
+          decoration: decoration ?? TextDecoration.none,
+          fontWeight: fontWeight ?? FontWeight.w400,
+          overflow: overflow,
+        ),
+      ),
+    );
+  }
+}
+
+class CustomUnderlineTxt extends StatelessWidget {
+  final String? title;
+  final Color? color;
+  final double? size;
+  final FontWeight? fontWeight;
+  final VoidCallback? onTap;
+  const CustomUnderlineTxt(
+      {Key? key,
+      this.title,
+      this.color,
+      this.size,
+      this.onTap,
+      this.fontWeight})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Text(
+        "$title",
+        style: TextStyle(
+            fontSize: size ?? 15,
+            fontWeight: fontWeight ?? FontWeight.w500,
+            color: color ?? MyColors.blue,
+            decoration: TextDecoration.underline),
       ),
     );
   }

@@ -8,7 +8,7 @@ import '../../utils/my_colors.dart';
 
 class CustomCheckbox extends StatelessWidget {
   final Function(bool?)? onchanged;
-  final String? title;
+  final Widget? title;
   final MaterialStateProperty<Color?>? color;
   final bool? value;
   const CustomCheckbox(
@@ -19,22 +19,21 @@ class CustomCheckbox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Checkbox(
-          visualDensity: VisualDensity.comfortable,
-          fillColor: color ?? MaterialStateProperty.all(MyColors.blue),
-          onChanged: onchanged,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-          value: value,
-          // activeColor: MyColors.green,
-          // checkColor: MyColors.white,
-          side: BorderSide(color: MyColors.blue, width: 1.2),
+        Expanded(
+          flex: 0,
+          child: Checkbox(
+            visualDensity: VisualDensity.comfortable,
+            fillColor: color ?? MaterialStateProperty.all(MyColors.blue),
+            onChanged: onchanged,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+            value: value,
+            // activeColor: MyColors.green,
+            // checkColor: MyColors.white,
+            side: BorderSide(color: MyColors.blue, width: 1.2),
+          ),
         ),
-        SizedBox(width: 5),
-        Text(
-          "$title",
-          style: TextStyle(
-              fontSize: 16, color: MyColors.black, fontWeight: FontWeight.w500),
-        ),
+        Expanded(child: title!),
       ],
     );
   }

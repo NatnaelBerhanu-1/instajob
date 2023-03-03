@@ -27,64 +27,69 @@ class PaymentTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onClick,
-      child: Container(
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(7),
-            color: MyColors.white,
-            boxShadow: [
-              BoxShadow(
-                  color: Colors.grey.withOpacity(0.10),
-                  spreadRadius: 5,
-                  blurRadius: 7,
-                  offset: Offset(2, 3))
-            ]),
-        child: Padding(
-          padding:
-              const EdgeInsets.only(right: 20.0, top: 11, left: 15, bottom: 15),
-          child: Row(
-            children: [
-              Column(
+      child: Column(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(7),
+                color: MyColors.white,
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.grey.withOpacity(0.10),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: Offset(2, 3))
+                ]),
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  right: 20.0, top: 11, left: 15, bottom: 15),
+              child: Row(
                 children: [
-                  ImageButton(
-                    image: "$image",
-                    padding: EdgeInsets.zero,
-                    height: 25,
-                    width: 25,
-                  )
-                ],
-              ),
-              SizedBox(width: 20),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "$userName",
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: MyColors.black),
+                  Column(
+                    children: [
+                      ImageButton(
+                        image: "$image",
+                        padding: EdgeInsets.zero,
+                        height: 25,
+                        width: 25,
+                      )
+                    ],
                   ),
+                  SizedBox(width: 20),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "$userName",
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            color: MyColors.black),
+                      ),
+                    ],
+                  ),
+                  Spacer(),
+                  index == selectedIndex
+                      ? ImageButton(
+                          padding: EdgeInsets.all(1),
+                          image: MyImages.verified,
+                          height: 20,
+                          width: 20,
+                        )
+                      : Container(
+                          height: 20,
+                          width: 20,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: MyColors.white,
+                              border: Border.all(color: MyColors.grey)),
+                        )
                 ],
               ),
-              Spacer(),
-              index == selectedIndex
-                  ? ImageButton(
-                      padding: EdgeInsets.all(1),
-                      image: MyImages.verified,
-                      height: 20,
-                      width: 20,
-                    )
-                  : Container(
-                      height: 20,
-                      width: 20,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: MyColors.white,
-                          border: Border.all(color: MyColors.grey)),
-                    )
-            ],
+            ),
           ),
-        ),
+          SizedBox(height: 20),
+        ],
       ),
     );
   }

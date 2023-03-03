@@ -5,7 +5,6 @@ import 'package:insta_job/widgets/custom_button/custom_btn.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 
 import '../../../utils/my_colors.dart';
-import '../../../utils/my_images.dart';
 
 class InterviewTile extends StatelessWidget {
   const InterviewTile({Key? key}) : super(key: key);
@@ -35,9 +34,8 @@ class InterviewTile extends StatelessWidget {
                 Stack(
                   children: [
                     CircleAvatar(
-                      backgroundColor: MyColors.transparent,
+                      // backgroundColor: MyColors.transparent,
                       radius: 22,
-                      backgroundImage: AssetImage(MyImages.google),
                     ),
                     Positioned(
                         bottom: 5,
@@ -58,11 +56,11 @@ class InterviewTile extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CustomCommonText(
+                    CommonText(
                       text: "Teresa Williams",
                       fontWeight: FontWeight.w500,
                     ),
-                    CustomCommonText(
+                    CommonText(
                       text: "Software engineer",
                       fontWeight: FontWeight.w400,
                       fontSize: 13,
@@ -70,7 +68,7 @@ class InterviewTile extends StatelessWidget {
                   ],
                 ),
                 Spacer(),
-                CustomCommonText(
+                CommonText(
                   text: "Today",
                   fontWeight: FontWeight.w400,
                   fontSize: 13,
@@ -83,7 +81,9 @@ class InterviewTile extends StatelessWidget {
                 Expanded(
                     flex: 1,
                     child: CustomButton(
+                      height: MediaQuery.of(context).size.height * 0.052,
                       borderColor: MyColors.red,
+                      bgColor: MyColors.white,
                       borderRadius: BorderRadius.circular(20),
                       title: "Cancel",
                       fontColor: MyColors.red,
@@ -92,6 +92,7 @@ class InterviewTile extends StatelessWidget {
                 Expanded(
                     flex: 2,
                     child: CustomButton(
+                      height: MediaQuery.of(context).size.height * 0.052,
                       bgColor: MyColors.blue,
                       borderRadius: BorderRadius.circular(20),
                       title: "Interview Now",

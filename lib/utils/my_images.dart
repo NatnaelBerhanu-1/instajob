@@ -2,6 +2,10 @@ class MyImages {
   static String baseUrl = "assets/images";
 
   static String instaJobLogo = "$baseUrl/instajob_logo.png";
+  static String bgCurve = "$baseUrl/background_curve.png";
+  static String arrow_white_circle = "$baseUrl/arrow_white_circle.png";
+  static String bg_search_girl = "$baseUrl/bg_search_girl.png";
+  static String arrowBlueLeft = "$baseUrl/arrow_blue_left.png";
   static String logo = "$baseUrl/logo.png";
   static String about = "$baseUrl/about.png";
   static String addCard = "$baseUrl/add_card.png";
@@ -12,14 +16,17 @@ class MyImages {
   static String businessAndTrade = "$baseUrl/business_and_trade.png";
   static String business = "$baseUrl/business.png";
   static String camera = "$baseUrl/camera.png";
+  static String diamond = "$baseUrl/diamond.png";
   static String cancel = "$baseUrl/cancle.png";
   static String cancelSub = "$baseUrl/cancle_sub.png";
   static String completed = "$baseUrl/completed.png";
   static String completedPana = "$baseUrl/Completed_pana.png";
   static String component = "$baseUrl/component.png";
-  static String date = "$baseUrl/date.png";
+  static String cal = "$baseUrl/date.png";
   static String email = "$baseUrl/email.png";
+  static String mail = "$baseUrl/mail.png";
   static String enterprise = "$baseUrl/enterprise.png";
+  static String enterprise1 = "$baseUrl/enterprise1.png";
   static String facebook = "$baseUrl/facebook.png";
   static String google = "$baseUrl/google.png";
   static String houseSearching = "$baseUrl/house_searching.png";
@@ -32,7 +39,7 @@ class MyImages {
   static String microphone = "$baseUrl/microphone.png";
   static String msg = "$baseUrl/msg.png";
   static String nextArrow = "$baseUrl/next_arrow.png";
-  static String noPath = "$baseUrl/NoPath.png";
+  static String delete = "$baseUrl/delete.png";
   static String notification = "$baseUrl/notification.png";
   static String path = "$baseUrl/path.png";
   static String paypal = "$baseUrl/paypal.png";
@@ -51,6 +58,7 @@ class MyImages {
   static String twitter = "$baseUrl/twitter.png";
   static String upload = "$baseUrl/upload.png";
   static String user = "$baseUrl/user.png";
+  static String user_4x = "$baseUrl/user_4x.png";
   static String userFilled = "$baseUrl/user_filled.png";
   static String verified = "$baseUrl/verified.png";
   static String visaCardBlue = "$baseUrl/visa_card_blue.png";
@@ -62,4 +70,13 @@ class MyImages {
   static String instaLogo_ = "$baseUrl/insta_logo_.png";
   static String bg = "$baseUrl/BG.png";
   static String startArrow = "$baseUrl/start arrow.png";
+  static String staffMeeting = "$baseUrl/staff-meeting.png";
+  static String jobUser = "$baseUrl/job_user.png";
+  static String bag = "$baseUrl/bag.png";
+  static String fav = "$baseUrl/fav.png";
+  static String filter = "$baseUrl/filter.png";
+  static String locationBlue = "$baseUrl/location_blue.png";
+  static String notifyBg = "$baseUrl/notifyBg.png";
+  static String resume1 = "$baseUrl/resume1.png";
+  static String resumeImg = "$baseUrl/resume_img.png";
 }

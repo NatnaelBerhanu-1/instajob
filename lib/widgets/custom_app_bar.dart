@@ -1,40 +1,34 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 
 import '../utils/my_colors.dart';
 import '../utils/my_images.dart';
 
 class CustomAppBar extends StatefulWidget {
-  final String? image;
   final String? leadingImage;
-  final IconData? actionIcon;
-  final VoidCallback? actionIconOnTap;
-  final Color? leadingImageClr;
-  final Color? imageClr;
-  final IconData? iconData;
-  final EdgeInsets? padding;
+  final bool? centerTitle;
+  final double? height;
+  final double? width;
+  final double? leadingWidth;
+  final double? toolbarHeight;
   final String? title;
   final Color? color;
-  final Color? iconColor;
-  final bool? skipp;
-  final FontWeight? fontWeight;
+  final Widget? actions;
   final VoidCallback? onTap;
-  const CustomAppBar(
-      {Key? key,
-      this.title,
-      this.color,
-      this.fontWeight,
-      this.leadingImage,
-      this.onTap,
-      this.image,
-      this.leadingImageClr,
-      this.imageClr,
-      this.actionIcon,
-      this.actionIconOnTap,
-      this.skipp,
-      this.iconColor,
-      this.iconData,
-      this.padding})
-      : super(key: key);
+  const CustomAppBar({
+    Key? key,
+    this.title,
+    this.color,
+    this.leadingImage,
+    this.onTap,
+    this.height,
+    this.width,
+    this.actions,
+    this.centerTitle,
+    this.leadingWidth,
+    this.toolbarHeight,
+  }) : super(key: key);
 
   @override
   State<CustomAppBar> createState() => _CustomAppBarState();
@@ -45,36 +39,39 @@ class _CustomAppBarState extends State<CustomAppBar> {
   Widget build(BuildContext context) {
     return AppBar(
       elevation: 0,
-      // centerTitle: true,
-      backgroundColor: Colors.transparent,
+      centerTitle: widget.centerTitle ?? true,
+      backgroundColor: Colors.white,
+      leadingWidth: widget.leadingWidth ?? 56,
+      toolbarHeight: widget.toolbarHeight ?? kToolbarHeight,
       title: Text(
         "${widget.title}",
-        style: TextStyle(color: widget.color ?? MyColors.black),
+        style: TextStyle(
+            color: widget.color ?? MyColors.black,
+            fontWeight: FontWeight.w500,
+            fontSize: 19),
       ),
       leading: GestureDetector(
-          onTap: widget.onTap,
-          child: GestureDetector(
-            child: Container(
-              color: Colors.transparent,
-              alignment: Alignment.center,
-              child: Padding(
-                padding: EdgeInsets.only(left: 0, top: 0, bottom: 0, right: 0),
-                child: Image.asset(
-                  widget.leadingImage ?? MyImages.user,
-                  height: 30,
-                  width: 30,
-                ),
-              ),
-              /*ImageButton(
-                      padding: EdgeInsets.only(
-                          left: 20, top: 18, bottom: 11, right: 17),
-                      image: widget.leadingImage ?? MyImages.arrowBack,
-                      height: 20,
-                      width: 20,
-                      color: widget.leadingImageClr ?? MyColors.black,
-                    ),*/
-            ),
+          onTap: widget.onTap ??
+              () {
+                Navigator.pop(context);
+              },
+          child: Container(
+            color: Colors.transparent,
+            alignment: Alignment.center,
+            child: widget.leadingImage == ""
+                ? SizedBox()
+                : Image.asset(
+                    widget.leadingImage ?? MyImages.backArrow,
+                    height: widget.height ?? 30,
+                    width: widget.width ?? 30,
+                  ),
           )),
+      actions: [
+        Padding(
+          padding: const EdgeInsets.only(right: 5.0),
+          child: widget.actions ?? SizedBox(),
+        )
+      ],
     );
   }
 }
