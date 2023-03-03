@@ -49,7 +49,7 @@ class CustomSearchChip extends StatelessWidget {
                   alignment: Alignment.topLeft),
             ),
             child: Padding(
-              padding: const EdgeInsets.all(.0),
+              padding: const EdgeInsets.all(0),
               child: Column(
                 children: [
                   // Image.asset(

@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:insta_job/bloc/global_bloc.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 
@@ -33,11 +35,12 @@ class CustomDialog extends StatefulWidget {
 }
 
 class _CustomDialogState extends State<CustomDialog> {
-  int? selectedIndex;
+  // int? selectedIndex;
   int? index;
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+    var selectedIndex = context.watch<IndexBloc>().sIndex;
     return Dialog(
       insetPadding: EdgeInsets.all(55),
       elevation: 8,
@@ -67,58 +70,60 @@ class _CustomDialogState extends State<CustomDialog> {
                 fontSize: 14,
               ),
               SizedBox(height: 30),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CustomCommonCard(
-                    onTap: () {
-                      setState(() {
-                        selectedIndex = 1;
-                      });
-                      Navigator.pop(context);
-                    },
-                    bgColor:
-                        selectedIndex == 1 ? MyColors.blue : MyColors.white,
-                    borderColor:
-                        selectedIndex == 1 ? MyColors.white : MyColors.blue,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 12.0, horizontal: 30),
-                      child: CommonText(
-                        text: "No",
-                        fontColor: selectedIndex == 1
-                            ? MyColors.white
-                            : MyColors.black,
-                        fontSize: 16,
+              BlocBuilder<IndexBloc, InitialState>(builder: (context, state) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CustomCommonCard(
+                      onTap: () {
+                        index = 1;
+                        print('INDEX1 ------  $selectedIndex');
+                        context.read<IndexBloc>().changeIndex(index);
+                        Navigator.pop(context);
+                      },
+                      bgColor:
+                          selectedIndex == 1 ? MyColors.blue : MyColors.white,
+                      borderColor:
+                          selectedIndex == 1 ? MyColors.white : MyColors.blue,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 12.0, horizontal: 30),
+                        child: CommonText(
+                          text: "No",
+                          fontColor: selectedIndex == 1
+                              ? MyColors.white
+                              : MyColors.black,
+                          fontSize: 16,
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(width: 40),
-                  CustomCommonCard(
-                    onTap: () {
-                      setState(() {
-                        selectedIndex = 2;
-                      });
-                      Navigator.pop(context);
-                    },
-                    bgColor:
-                        selectedIndex == 2 ? MyColors.blue : MyColors.white,
-                    borderColor:
-                        selectedIndex == 2 ? MyColors.white : MyColors.blue,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 12.0, horizontal: 30),
-                      child: CommonText(
-                        text: "Yes",
-                        fontColor: selectedIndex == 2
-                            ? MyColors.white
-                            : MyColors.black,
-                        fontSize: 16,
+                    SizedBox(width: 40),
+                    CustomCommonCard(
+                      onTap: () {
+                        index = 2;
+                        print('INDEX2 ------  $selectedIndex');
+                        context.read<IndexBloc>().changeIndex(index);
+                        Navigator.pop(context);
+                      },
+                      bgColor:
+                          selectedIndex == 2 ? MyColors.blue : MyColors.white,
+                      borderColor:
+                          selectedIndex == 2 ? MyColors.white : MyColors.blue,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 12.0, horizontal: 30),
+                        child: CommonText(
+                          text: "Yes",
+                          fontColor: selectedIndex == 2
+                              ? MyColors.white
+                              : MyColors.black,
+                          fontSize: 16,
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
+                  ],
+                );
+              }),
             ],
           ),
         ),
