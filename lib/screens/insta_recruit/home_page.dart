@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:insta_job/bloc/global_bloc.dart';
+import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/screens/insta_job_user/SliderScreen/Slider_screen.dart';
 import 'package:insta_job/screens/insta_job_user/bottom_nav_screen/user_account/save_jobs/save_jobs_screen.dart';
@@ -16,6 +16,7 @@ import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:insta_job/widgets/user_tile/custom_acc_details.dart';
 
+import '../../bloc/global_cubit/global_state.dart';
 import 'bottom_navigation_screen/user_account/feedback/feedback_screen.dart';
 
 class HomePage extends StatefulWidget {
@@ -32,13 +33,13 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    var selectedIndex = context.watch<IndexBloc>().sIndex;
+    var selectedIndex = context.watch<GlobalCubit>().sIndex;
     return Scaffold(
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.only(right: 15.0, top: 15),
           child:
-              BlocBuilder<IndexBloc, InitialState>(builder: (context, state) {
+              BlocBuilder<GlobalCubit, InitialState>(builder: (context, state) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -91,7 +92,9 @@ class _HomePageState extends State<HomePage> {
                               child: CustomAccDetails(
                                 onTap: () {
                                   index = 0;
-                                  context.read<IndexBloc>().changeIndex(index);
+                                  context
+                                      .read<GlobalCubit>()
+                                      .changeIndex(index);
                                   AppRoutes.push(context, SliderScreen());
                                 },
                                 index: 0,
@@ -108,7 +111,7 @@ class _HomePageState extends State<HomePage> {
                       child: CustomAccDetails(
                         onTap: () {
                           index = 1;
-                          context.read<IndexBloc>().changeIndex(index);
+                          context.read<GlobalCubit>().changeIndex(index);
                           AppRoutes.push(context, FeedBackScreen());
                         },
                         index: 1,
@@ -131,7 +134,7 @@ class _HomePageState extends State<HomePage> {
                             child: CustomAccDetails(
                               onTap: () {
                                 index = 2;
-                                context.read<IndexBloc>().changeIndex(index);
+                                context.read<GlobalCubit>().changeIndex(index);
                                 if (Global.type == "user") {
                                   AppRoutes.push(
                                       context, CareerClusterScreen());
@@ -155,7 +158,7 @@ class _HomePageState extends State<HomePage> {
                             child: CustomAccDetails(
                               onTap: () {
                                 index = 3;
-                                context.read<IndexBloc>().changeIndex(index);
+                                context.read<GlobalCubit>().changeIndex(index);
                                 if (Global.type == "user") {
                                   AppRoutes.push(context, SaveJobsScreen());
                                 } else {
@@ -179,7 +182,7 @@ class _HomePageState extends State<HomePage> {
                       CustomAccDetails(
                         onTap: () {
                           index = 4;
-                          context.read<IndexBloc>().changeIndex(index);
+                          context.read<GlobalCubit>().changeIndex(index);
                           AppRoutes.push(context, SettingScreen());
                         },
                         index: 4,

@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:insta_job/bloc/global_bloc.dart';
+import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/user_account/setting_pages/add_card_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/user_account/subscribe_pages/congratulation_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/user_account/subscribe_pages/job_board_screen.dart';
@@ -11,6 +11,7 @@ import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_app_bar.dart';
 import 'package:insta_job/widgets/custom_cards/payment_tile.dart';
 
+import '../../../../../bloc/global_cubit/global_state.dart';
 import '../../../../../utils/my_colors.dart';
 import '../../../../../widgets/custom_button/custom_btn.dart';
 
@@ -34,7 +35,7 @@ class _SaveCardScreenState extends State<SaveCardScreen> {
   int sqIndex = 0;
   @override
   Widget build(BuildContext context) {
-    var selectedIndex = context.watch<IndexBloc>().sIndex;
+    var selectedIndex = context.watch<GlobalCubit>().sIndex;
     return Scaffold(
         appBar: PreferredSize(
             preferredSize: Size(double.infinity, kToolbarHeight),
@@ -62,14 +63,14 @@ class _SaveCardScreenState extends State<SaveCardScreen> {
         body: Padding(
           padding: const EdgeInsets.all(20.0),
           child: SingleChildScrollView(
-            child:
-                BlocBuilder<IndexBloc, InitialState>(builder: (context, state) {
+            child: BlocBuilder<GlobalCubit, InitialState>(
+                builder: (context, state) {
               return Column(
                 children: [
                   PaymentTile(
                     onClick: () {
                       sIndex = 1;
-                      context.read<IndexBloc>().changeIndex(sIndex);
+                      context.read<GlobalCubit>().changeIndex(sIndex);
                     },
                     index: 1,
                     selectedIndex: selectedIndex,
@@ -79,7 +80,7 @@ class _SaveCardScreenState extends State<SaveCardScreen> {
                   PaymentTile(
                     onClick: () {
                       sIndex = 2;
-                      context.read<IndexBloc>().changeIndex(sIndex);
+                      context.read<GlobalCubit>().changeIndex(sIndex);
                     },
                     index: 2,
                     selectedIndex: selectedIndex,
@@ -89,7 +90,7 @@ class _SaveCardScreenState extends State<SaveCardScreen> {
                   PaymentTile(
                     onClick: () {
                       sIndex = 3;
-                      context.read<IndexBloc>().changeIndex(sIndex);
+                      context.read<GlobalCubit>().changeIndex(sIndex);
                     },
                     index: 3,
                     selectedIndex: selectedIndex,
@@ -99,7 +100,7 @@ class _SaveCardScreenState extends State<SaveCardScreen> {
                   PaymentTile(
                     onClick: () {
                       sIndex = 4;
-                      context.read<IndexBloc>().changeIndex(sIndex);
+                      context.read<GlobalCubit>().changeIndex(sIndex);
                     },
                     index: 4,
                     selectedIndex: selectedIndex,

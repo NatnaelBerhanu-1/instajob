@@ -1,8 +1,6 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, sort_child_properties_last
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:insta_job/bloc/global_bloc.dart';
 import 'package:insta_job/screens/insta_job_user/SliderScreen/tellus_about_yslf_page.dart';
 import 'package:insta_job/screens/insta_job_user/SliderScreen/work_experience_screen.dart';
 import 'package:insta_job/utils/my_colors.dart';

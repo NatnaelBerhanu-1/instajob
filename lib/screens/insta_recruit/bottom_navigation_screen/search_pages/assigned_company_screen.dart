@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:insta_job/provider/bottom_provider.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/add_new_company.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
@@ -10,6 +9,8 @@ import 'package:insta_job/widgets/custom_cards/assign_companies_tile.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
 import 'package:provider/provider.dart';
+
+import '../../../../bloc/global_cubit/global_cubit.dart';
 
 class AssignCompany extends StatelessWidget {
   const AssignCompany({Key? key}) : super(key: key);
@@ -47,7 +48,7 @@ class AssignCompany extends StatelessWidget {
                           flex: 0,
                           child: CustomCommonCard(
                             onTap: () {
-                              context.read<BottomProvider>().setSelectedScreen(
+                              context.read<GlobalCubit>().setSelectedScreen(
                                   true,
                                   screenName: AddNewCompany());
                               // AppRoutes.push(context, AddNewCompany());

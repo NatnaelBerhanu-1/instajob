@@ -2,7 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:insta_job/bloc/global_bloc.dart';
+import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
+import 'package:insta_job/bloc/global_cubit/global_state.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_cards/insta_job_user_cards/filter_tiles/custom_filter_tile.dart';
@@ -29,8 +30,8 @@ class _SearchJobsScreenState extends State<SearchJobsScreen> {
   // int searchIndex = 1;
   @override
   Widget build(BuildContext context) {
-    var selectedFilterIndex = context.watch<IndexBloc>().fIndex;
-    var selectedSearchIndex = context.watch<IndexBloc>().sIndex;
+    var selectedFilterIndex = context.watch<GlobalCubit>().fIndex;
+    var selectedSearchIndex = context.watch<GlobalCubit>().sIndex;
     return Scaffold(
         appBar: PreferredSize(
             preferredSize: Size(double.infinity, kToolbarHeight),
@@ -48,8 +49,8 @@ class _SearchJobsScreenState extends State<SearchJobsScreen> {
           padding: const EdgeInsets.all(12.0),
           child: Container(
             color: MyColors.white,
-            child:
-                BlocBuilder<IndexBloc, InitialState>(builder: (context, state) {
+            child: BlocBuilder<GlobalCubit, InitialState>(
+                builder: (context, state) {
               return Column(
                 children: [
                   Row(
@@ -79,7 +80,7 @@ class _SearchJobsScreenState extends State<SearchJobsScreen> {
                                             onClick: () {
                                               // filterIndex = index;
                                               context
-                                                  .read<IndexBloc>()
+                                                  .read<GlobalCubit>()
                                                   .changeFilterIndex(index);
                                             },
                                             selectedIndex: selectedFilterIndex,
@@ -120,21 +121,20 @@ class _SearchJobsScreenState extends State<SearchJobsScreen> {
                           Row(
                             children: [
                               Expanded(
-                                  flex: 0,
                                   child: CustomSearchChip(
-                                    onTap: () {
-                                      context.read<IndexBloc>().changeIndex(1);
-                                    },
-                                    image: MyImages.suitcase,
-                                    index: 1,
-                                    selectedIndex: selectedSearchIndex,
-                                    title: "Search Jobs",
-                                  )),
-                              SizedBox(width: 15),
+                                onTap: () {
+                                  context.read<GlobalCubit>().changeIndex(1);
+                                },
+                                image: MyImages.suitcase,
+                                index: 1,
+                                selectedIndex: selectedSearchIndex,
+                                title: "Search Jobs",
+                              )),
+                              SizedBox(width: 10),
                               Expanded(
                                   child: CustomSearchChip(
                                 onTap: () {
-                                  context.read<IndexBloc>().changeIndex(2);
+                                  context.read<GlobalCubit>().changeIndex(2);
                                 },
                                 index: 2,
                                 selectedIndex: selectedSearchIndex,

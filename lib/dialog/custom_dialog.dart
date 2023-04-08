@@ -2,10 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:insta_job/bloc/global_bloc.dart';
+import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 
+import '../bloc/global_cubit/global_state.dart';
 import '../utils/my_colors.dart';
 import '../widgets/custom_cards/custom_common_card.dart';
 
@@ -40,7 +41,7 @@ class _CustomDialogState extends State<CustomDialog> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    var selectedIndex = context.watch<IndexBloc>().sIndex;
+    var selectedIndex = context.watch<GlobalCubit>().sIndex;
     return Dialog(
       insetPadding: EdgeInsets.all(55),
       elevation: 8,
@@ -70,7 +71,7 @@ class _CustomDialogState extends State<CustomDialog> {
                 fontSize: 14,
               ),
               SizedBox(height: 30),
-              BlocBuilder<IndexBloc, InitialState>(builder: (context, state) {
+              BlocBuilder<GlobalCubit, InitialState>(builder: (context, state) {
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -78,7 +79,7 @@ class _CustomDialogState extends State<CustomDialog> {
                       onTap: () {
                         index = 1;
                         print('INDEX1 ------  $selectedIndex');
-                        context.read<IndexBloc>().changeIndex(index);
+                        context.read<GlobalCubit>().changeIndex(index);
                         Navigator.pop(context);
                       },
                       bgColor:
@@ -102,7 +103,7 @@ class _CustomDialogState extends State<CustomDialog> {
                       onTap: () {
                         index = 2;
                         print('INDEX2 ------  $selectedIndex');
-                        context.read<IndexBloc>().changeIndex(index);
+                        context.read<GlobalCubit>().changeIndex(index);
                         Navigator.pop(context);
                       },
                       bgColor:

@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/globals.dart';
-import 'package:insta_job/provider/bottom_provider.dart';
 import 'package:insta_job/screens/insta_job_user/confirm_detail_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/bottom_navigation_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/job_opening/edit_listing_screen.dart';
@@ -13,8 +13,9 @@ import 'package:insta_job/widgets/custom_button/custom_btn.dart';
 import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:insta_job/widgets/custom_expantion_tile.dart';
-import 'package:provider/provider.dart';
 
+import '../../../../../bloc/global_cubit/global_cubit.dart';
+import '../../../../../bloc/global_cubit/global_state.dart';
 import '../../../../../utils/my_colors.dart';
 import 'view_candidate.dart';
 
@@ -38,10 +39,13 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
             child: Image.asset(MyImages.jobUser, fit: BoxFit.cover)),
         Positioned(
           top: 30,
-          child: Consumer<BottomProvider>(builder: (context, value, _) {
+          child:
+              BlocBuilder<GlobalCubit, InitialState>(builder: (context, value) {
             return ImageButton(
               onTap: () {
-                value.setSelectedScreen(true, screenName: JobOpeningScreen());
+                context
+                    .read<GlobalCubit>()
+                    .setSelectedScreen(true, screenName: JobOpeningScreen());
                 AppRoutes.push(context, BottomNavigationScreen());
               },
               image: MyImages.backArrow,
@@ -122,8 +126,8 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                                 buildResponsibilityTile(),
                                 buildTopSkillsTile(),
                                 SizedBox(height: 15),
-                                Consumer<BottomProvider>(
-                                    builder: (context, value, _) {
+                                BlocBuilder<GlobalCubit, InitialState>(
+                                    builder: (context, value) {
                                   return Global.type == "user"
                                       ? CustomButton(
                                           title: "Apply",
@@ -138,9 +142,11 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                                                 child: CustomButton(
                                               title: "Edit Listing",
                                               onTap: () {
-                                                value.setSelectedScreen(true,
-                                                    screenName: EditListing(
-                                                        isUpdate: true));
+                                                context
+                                                    .read<GlobalCubit>()
+                                                    .setSelectedScreen(true,
+                                                        screenName: EditListing(
+                                                            isUpdate: true));
                                                 AppRoutes.push(context,
                                                     BottomNavigationScreen());
                                               },
@@ -150,9 +156,11 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                                                 child: CustomButton(
                                               title: "View Candidates",
                                               onTap: () {
-                                                value.setSelectedScreen(true,
-                                                    screenName:
-                                                        ViewCandidates());
+                                                context
+                                                    .read<GlobalCubit>()
+                                                    .setSelectedScreen(true,
+                                                        screenName:
+                                                            ViewCandidates());
                                                 AppRoutes.push(context,
                                                     BottomNavigationScreen());
                                               },

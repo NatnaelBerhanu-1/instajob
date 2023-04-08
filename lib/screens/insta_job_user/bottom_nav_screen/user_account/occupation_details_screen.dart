@@ -7,7 +7,8 @@ import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 
-import '../../../../bloc/global_bloc.dart';
+import '../../../../bloc/global_cubit/global_cubit.dart';
+import '../../../../bloc/global_cubit/global_state.dart';
 import '../../../../widgets/custom_app_bar.dart';
 import '../../../../widgets/custom_cards/insta_job_user_cards/occupation_details_tile.dart';
 
@@ -30,7 +31,7 @@ class _OccupationDetailsScreenState extends State<OccupationDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var selectedIndex = context.watch<IndexBloc>().sIndex;
+    var selectedIndex = context.watch<GlobalCubit>().sIndex;
     return Scaffold(
         appBar: PreferredSize(
             preferredSize: Size(double.infinity, kToolbarHeight),
@@ -39,7 +40,7 @@ class _OccupationDetailsScreenState extends State<OccupationDetailsScreen> {
             )),
         body: SafeArea(
           child:
-              BlocBuilder<IndexBloc, InitialState>(builder: (context, state) {
+              BlocBuilder<GlobalCubit, InitialState>(builder: (context, state) {
             return Padding(
               padding:
                   const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12),
@@ -87,7 +88,7 @@ class _OccupationDetailsScreenState extends State<OccupationDetailsScreen> {
                               (index) => GestureDetector(
                                     onTap: () {
                                       context
-                                          .read<IndexBloc>()
+                                          .read<GlobalCubit>()
                                           .changeIndex(index);
                                       // leaveSheet(context);
                                     },
@@ -104,7 +105,7 @@ class _OccupationDetailsScreenState extends State<OccupationDetailsScreen> {
                                           list[index],
                                           style: TextStyle(
                                             color: context
-                                                        .watch<IndexBloc>()
+                                                        .watch<GlobalCubit>()
                                                         .sIndex ==
                                                     index
                                                 ? MyColors.white

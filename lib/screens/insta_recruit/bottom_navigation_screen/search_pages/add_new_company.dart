@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:insta_job/provider/bottom_provider.dart';
+import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_app_bar.dart';
 import 'package:insta_job/widgets/custom_button/custom_btn.dart';
@@ -26,7 +26,7 @@ class AddNewCompany extends StatelessWidget {
           title: "",
           onTap: () {
             context
-                .read<BottomProvider>()
+                .read<GlobalCubit>()
                 .setSelectedScreen(false, screenName: BottomNavigationScreen());
           },
         ),

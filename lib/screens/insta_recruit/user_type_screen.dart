@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:insta_job/bloc/global_bloc.dart';
+import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/screens/insta_recruit/welcome_screen.dart';
 import 'package:insta_job/utils/app_routes.dart';
@@ -10,6 +10,8 @@ import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:insta_job/widgets/custom_cards/custom_user_type_card.dart';
+
+import '../../bloc/global_cubit/global_state.dart';
 
 class UserTypeScreen extends StatefulWidget {
   const UserTypeScreen({Key? key}) : super(key: key);
@@ -22,7 +24,7 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
   int index = 0;
   @override
   Widget build(BuildContext context) {
-    var selectedIndex = context.watch<IndexBloc>().sIndex;
+    var selectedIndex = context.watch<GlobalCubit>().sIndex;
     return Scaffold(
         backgroundColor: MyColors.white,
         body: Container(
@@ -49,14 +51,14 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                   width: 250,
                 ),
               ),
-              BlocBuilder<IndexBloc, InitialState>(builder: (context, state) {
+              BlocBuilder<GlobalCubit, InitialState>(builder: (context, state) {
                 return Row(
                   children: [
                     Expanded(
                         child: UserTypeCard(
                       onTap: () {
                         index = 1;
-                        context.read<IndexBloc>().changeIndex(index);
+                        context.read<GlobalCubit>().changeIndex(index);
                         Global.type = "recruiters";
                         print("TYPE1-> ${Global.type}");
                         AppRoutes.push(context, WelcomeScreen());
@@ -70,7 +72,7 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                         child: UserTypeCard(
                       onTap: () {
                         index = 2;
-                        context.read<IndexBloc>().changeIndex(index);
+                        context.read<GlobalCubit>().changeIndex(index);
                         Global.type = "user";
                         print("TYPE2-> ${Global.type}");
                         AppRoutes.push(context, WelcomeScreen());

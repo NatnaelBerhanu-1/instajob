@@ -1,12 +1,13 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:insta_job/provider/bottom_provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/bottom_navigation_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/applicants_page.dart';
 import 'package:insta_job/utils/app_routes.dart';
-import 'package:provider/provider.dart';
 
+import '../bloc/global_cubit/global_cubit.dart';
+import '../bloc/global_cubit/global_state.dart';
 import '../utils/my_colors.dart';
 import '../utils/my_images.dart';
 import 'custom_button/custom_img_button.dart';
@@ -17,10 +18,12 @@ class DeniedCandidateTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<BottomProvider>(builder: (context, value, _) {
+    return BlocBuilder<GlobalCubit, InitialState>(builder: (context, state) {
       return GestureDetector(
         onTap: () {
-          value.setSelectedScreen(true, screenName: Applicants());
+          context
+              .read<GlobalCubit>()
+              .setSelectedScreen(true, screenName: Applicants());
           AppRoutes.push(context, BottomNavigationScreen());
         },
         child: Container(

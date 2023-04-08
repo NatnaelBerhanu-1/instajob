@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:insta_job/provider/bottom_provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/bottom_navigation_screen.dart';
 import 'package:insta_job/widgets/custom_button/custom_btn.dart';
 import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
@@ -9,8 +9,9 @@ import 'package:insta_job/widgets/custom_cards/assign_companies_tile.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:insta_job/widgets/custom_divider.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
-import 'package:provider/provider.dart';
 
+import '../../../../../bloc/global_cubit/global_cubit.dart';
+import '../../../../../bloc/global_cubit/global_state.dart';
 import '../../../../../utils/my_colors.dart';
 import '../../../../../utils/my_images.dart';
 
@@ -49,11 +50,12 @@ class _EditListingState extends State<EditListing> {
               ],
             ),
           ),
-          leading: Consumer<BottomProvider>(builder: (context, value, _) {
+          leading:
+              BlocBuilder<GlobalCubit, InitialState>(builder: (context, value) {
             return ImageButton(
               onTap: () {
                 print("editl");
-                value.setSelectedScreen(false,
+                context.read<GlobalCubit>().setSelectedScreen(false,
                     screenName: BottomNavigationScreen());
                 // Navigator.pop(context);
               },
