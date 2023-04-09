@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:insta_job/utils/my_colors.dart';
 
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+
 class Global {
   static String? type;
 }
@@ -24,16 +26,39 @@ BoxShadow normalBoxShadow = BoxShadow(
   spreadRadius: 2,
   blurRadius: 7,
 );
-// Future<T?> push<T>({
-//   bool pushUntil = false,
-//   required BuildContext context,
-//   required Widget screen,
-// }) {
-//   if (pushUntil) {
-//     return Navigator.pushAndRemoveUntil(
-//         context,
-//         MaterialPageRoute(builder: (_) => screen),
-//         (Route<dynamic> route) => false);
-//   }
-//   return Navigator.push(context, MaterialPageRoute(builder: (_) => screen));
-// }
+
+showToast(message, {color, textColor, bool isError = false}) {
+  EasyLoading.instance
+    ..indicatorType = EasyLoadingIndicatorType.ring
+    ..textColor = textColor ?? MyColors.white
+    ..backgroundColor = isError ? MyColors.red : color;
+  EasyLoading.showToast(message);
+}
+
+dynamic loading(
+    {@required bool? value, String? title, bool closeOverlays = false}) {
+  if (value!) {
+    EasyLoading.instance
+      ..indicatorType = EasyLoadingIndicatorType.ring
+      ..backgroundColor = MyColors.black
+      ..maskColor = MyColors.grey.withOpacity(.2)
+
+      /// custom style
+      ..loadingStyle = EasyLoadingStyle.custom
+      ..indicatorColor = MyColors.blue
+      ..textColor = MyColors.white
+
+      ///
+      ..userInteractions = false
+      ..animationStyle = EasyLoadingAnimationStyle.offset;
+    EasyLoading.show(
+      maskType: EasyLoadingMaskType.black,
+      status: "Loading..",
+      dismissOnTap: true,
+    );
+  } else {
+    EasyLoading.dismiss();
+  }
+}
+
+final navigationKey = GlobalKey<NavigatorState>();
