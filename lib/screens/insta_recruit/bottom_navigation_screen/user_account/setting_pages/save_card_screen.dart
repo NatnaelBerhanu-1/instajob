@@ -56,7 +56,7 @@ class _SaveCardScreenState extends State<SaveCardScreen> {
                       onPressed: () {},
                       icon: Icon(
                         Icons.delete,
-                        color: MyColors.red,
+                        color: MyColors.lightRed,
                       )),
             )),
         body: Padding(

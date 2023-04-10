@@ -21,7 +21,7 @@ class MessageTile extends StatelessWidget {
             onPressed: (val) {},
             icon: Icons.delete_outline,
             label: "",
-            backgroundColor: MyColors.red,
+            backgroundColor: MyColors.lightRed,
           )
         ]),
         direction: Axis.horizontal,

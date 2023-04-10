@@ -82,11 +82,11 @@ class InterviewTile extends StatelessWidget {
                     flex: 1,
                     child: CustomButton(
                       height: MediaQuery.of(context).size.height * 0.052,
-                      borderColor: MyColors.red,
+                      borderColor: MyColors.lightRed,
                       bgColor: MyColors.white,
                       borderRadius: BorderRadius.circular(20),
                       title: "Cancel",
-                      fontColor: MyColors.red,
+                      fontColor: MyColors.lightRed,
                     )),
                 SizedBox(width: 10),
                 Expanded(

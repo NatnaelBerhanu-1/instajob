@@ -29,9 +29,9 @@ BoxShadow normalBoxShadow = BoxShadow(
 
 showToast(message, {color, textColor, bool isError = false}) {
   EasyLoading.instance
-    ..indicatorType = EasyLoadingIndicatorType.ring
+    ..toastPosition = EasyLoadingToastPosition.top
     ..textColor = textColor ?? MyColors.white
-    ..backgroundColor = isError ? MyColors.red : color;
+    ..backgroundColor = isError ? MyColors.lightRed : color;
   EasyLoading.showToast(message);
 }
 
