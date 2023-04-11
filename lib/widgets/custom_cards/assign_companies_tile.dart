@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:insta_job/bottom_sheet/bottom_sheet.dart';
+import 'package:insta_job/model/company_model.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
@@ -11,10 +13,9 @@ import '../../screens/insta_recruit/bottom_navigation_screen/search_pages/job_op
 import '../custom_button/custom_img_button.dart';
 
 class AssignCompaniesTile extends StatelessWidget {
-  final String? title;
-  final String? leadingImage;
-  const AssignCompaniesTile({Key? key, this.title, this.leadingImage})
-      : super(key: key);
+  final CompanyModel? companyModel;
+
+  const AssignCompaniesTile({super.key, this.companyModel});
 
   @override
   Widget build(BuildContext context) {
@@ -42,13 +43,11 @@ class AssignCompaniesTile extends StatelessWidget {
         contentPadding: EdgeInsets.all(6),
         tileColor: MyColors.white,
         leading: ImageButton(
-          image: leadingImage,
-          onTap: () {
-            Navigator.pop(context);
-          },
+          // image: "${EndPoint.imageBaseUrl}${companyModel?.uploadPhoto}",
+          image: MyImages.businessAndTrade,
         ),
         title: Text(
-          "$title",
+          "${companyModel?.companyName}",
           style: TextStyle(
             fontSize: 16,
             color: MyColors.black,
@@ -67,8 +66,11 @@ class AssignCompaniesTile extends StatelessWidget {
   }
 }
 
-Widget uploadPhotoCard() {
+Widget uploadPhotoCard(BuildContext context) {
   return CustomCommonCard(
+    onTap: () {
+      choosePhoto(context);
+    },
     bgColor: MyColors.blue.withOpacity(.10),
     borderRadius: BorderRadius.circular(10),
     borderColor: MyColors.lightBlue,

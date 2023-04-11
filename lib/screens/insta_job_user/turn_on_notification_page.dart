@@ -28,8 +28,7 @@ class TurnOnNotification extends StatelessWidget {
               top: 45,
               child: GestureDetector(
                 onTap: () {
-                  AppRoutes.pushAndRemoveUntil(
-                      context, BottomNavigationScreen());
+                  AppRoutes.pushAndRemoveUntil(context, BottomNavScreen());
                 },
                 child: CommonText(
                   text: "Skip For Now",
@@ -148,8 +147,7 @@ class TurnOnNotification extends StatelessWidget {
                   title: "Turn On",
                   image: MyImages.arrowWhite,
                   onclick: () {
-                    AppRoutes.pushAndRemoveUntil(
-                        context, BottomNavigationScreen());
+                    AppRoutes.pushAndRemoveUntil(context, BottomNavScreen());
                   },
                 )
               ],

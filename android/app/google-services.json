@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "616151795227",
+    "project_id": "instajob-1ec28",
+    "storage_bucket": "instajob-1ec28.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:616151795227:android:9c541b0f954c8216505abe",
+        "android_client_info": {
+          "package_name": "com.saurabhinfosys.insta_job"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "616151795227-r013u58l8kbgfd3ok8p0db8ro674sqi4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.saurabhinfosys.insta_job",
+            "certificate_hash": "68bbf4825429b7c98a62cf97298e34f08f809ea5"
+          }
+        },
+        {
+          "client_id": "616151795227-c2im9frj1hcp5jgf0a2ja09fc8ms0r9a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3FTs5iUlT7MljdebAK5RfZfLXHc9i2uo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "616151795227-a1djldpcj582gdvjkqlufl89235blm9s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

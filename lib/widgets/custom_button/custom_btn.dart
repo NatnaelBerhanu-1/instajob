@@ -71,7 +71,7 @@ class CustomIconButton extends StatelessWidget {
   final Color? fontColor;
   final Color? borderColor;
   final Color? iconColor;
-
+  final bool loading;
   const CustomIconButton(
       {Key? key,
       this.title,
@@ -84,7 +84,8 @@ class CustomIconButton extends StatelessWidget {
       this.fontSize,
       this.fontColor,
       this.borderColor,
-      this.iconColor})
+      this.iconColor,
+      this.loading = false})
       : super(key: key);
 
   @override
@@ -100,16 +101,19 @@ class CustomIconButton extends StatelessWidget {
               border: Border.all(color: borderColor ?? Colors.transparent)),
           child: ListTile(
             leading: SizedBox(),
-            title: Text(
-              "$title",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: fontSize ?? 16,
-                color: fontColor ?? MyColors.white,
-                overflow: TextOverflow.clip,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
+            title: loading
+                ? Center(
+                    child: CircularProgressIndicator(color: MyColors.white))
+                : Text(
+                    "$title",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: fontSize ?? 16,
+                      color: fontColor ?? MyColors.white,
+                      overflow: TextOverflow.clip,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
             trailing: ImageButton(
               padding: EdgeInsets.only(right: 10),
               image: image,

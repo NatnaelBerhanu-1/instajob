@@ -1,13 +1,15 @@
 class EndPoint {
   static String baseUrl =
       "https://shaybani-web.ondemandservicesappinflutter.online/api/";
+  static String imageBaseUrl =
+      "https://shaybani-web.ondemandservicesappinflutter.online";
 
   /// auth
 
   static String loginUser = "login";
   static String registerUser = "register";
-  static String loginEmp = "registration";
-  static String registerEmp = "signin";
+  static String registerEmp = "registration";
+  static String loginEmp = "signin";
 
   /// base64
 

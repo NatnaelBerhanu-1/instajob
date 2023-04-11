@@ -55,8 +55,9 @@ class _EditListingState extends State<EditListing> {
             return ImageButton(
               onTap: () {
                 print("editl");
-                context.read<GlobalCubit>().setSelectedScreen(false,
-                    screenName: BottomNavigationScreen());
+                context
+                    .read<GlobalCubit>()
+                    .setSelectedScreen(false, screenName: BottomNavScreen());
                 // Navigator.pop(context);
               },
               image: MyImages.backArrow,
@@ -321,7 +322,7 @@ class _EditListingState extends State<EditListing> {
                 ),
               ),
               SizedBox(height: 30),
-              uploadPhotoCard(),
+              uploadPhotoCard(context),
               SizedBox(height: 20),
               CommonText(
                 text: "Application Received",

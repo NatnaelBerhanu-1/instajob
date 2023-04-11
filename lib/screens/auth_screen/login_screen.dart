@@ -2,13 +2,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:insta_job/bloc/auth_bloc/auth_cubit.dart';
+import 'package:insta_job/bloc/auth_bloc/auth_state.dart';
 import 'package:insta_job/bloc/validation/validation_bloc.dart';
 import 'package:insta_job/bloc/validation/validation_state.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/screens/auth_screen/forgot_password.dart';
 import 'package:insta_job/screens/auth_screen/register_screen.dart';
-import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/bottom_navigation_screen.dart';
-import 'package:insta_job/screens/insta_recruit/membership_screen.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
@@ -29,6 +29,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final formKey = GlobalKey<FormState>();
+  TextEditingController email = TextEditingController();
+  TextEditingController password = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -109,10 +111,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           SizedBox(height: 30),
                           IconTextField(
+                            controller: email,
                             prefixIcon: ImageButton(image: MyImages.email),
-                            suffixIcon: validationBloc.valid
-                                ? ImageButton(image: MyImages.verified)
-                                : Icon(Icons.close, color: MyColors.lightRed),
+                            // suffixIcon: validationBloc.valid
+                            //     ? ImageButton(image: MyImages.verified)
+                            //     : Icon(Icons.close, color: MyColors.lightRed),
                             validator: (val) =>
                                 validationBloc.emailValidation(val!),
                             onChanged: (val) {
@@ -122,9 +125,21 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           SizedBox(height: 15),
                           IconTextField(
+                            controller: password,
                             prefixIcon: ImageButton(image: MyImages.lock),
-                            suffixIcon: ImageButton(image: MyImages.visible),
+                            suffixIcon: GestureDetector(
+                              onTap: () {
+                                validationBloc.visiblePass();
+                              },
+                              child: Icon(
+                                validationBloc.pass
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                              ),
+                            ),
+                            obscureText: validationBloc.pass,
                             hint: "password",
+                            maxLine: 1,
                             validator: (val) =>
                                 validationBloc.passwordValidation(val!),
                           ),
@@ -158,6 +173,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               showToast(state.require);
                             }
                           }, builder: (context, state) {
+                            var authCubit = context.read<AuthCubit>();
                             return CustomIconButton(
                               image: MyImages.arrowWhite,
                               title: "Sign In Now",
@@ -167,29 +183,48 @@ class _LoginScreenState extends State<LoginScreen> {
                               iconColor: MyColors.white,
                               onclick: () {
                                 if (formKey.currentState!.validate()) {
-                                } else {}
+                                  if (Global.type == "user") {
+                                    authCubit.login(
+                                        email: email.text,
+                                        password: password.text,
+                                        isUser: true);
+                                  } else {
+                                    authCubit.login(
+                                        email: email.text,
+                                        password: password.text);
+                                  }
+                                }
                                 // if (Global.type == "user") {
                                 //   AppRoutes.pushAndRemoveUntil(
                                 //       context, MemberShipScreen());
                                 // } else {
                                 //   AppRoutes.pushAndRemoveUntil(
-                                //       context, BottomNavigationScreen());
+                                //       context, BottomNavScreen());
                                 // }
                               },
                             );
                           }),
                           SizedBox(height: 20),
-                          CustomIconButton(
-                            image: MyImages.arrowWhite,
-                            title: "Register Now",
-                            backgroundColor: MyColors.white,
-                            fontColor: MyColors.black,
-                            borderColor: MyColors.blue,
-                            iconColor: MyColors.blue,
-                            onclick: () {
-                              AppRoutes.push(context, RegisterScreen());
-                            },
-                          ),
+                          BlocConsumer<AuthCubit, AuthInitialState>(
+                              listener: (context, state) {
+                            if (state is ErrorState) {
+                              showToast(state.error);
+                            }
+                          }, builder: (context, state) {
+                            var authCubit = context.read<AuthCubit>();
+                            return CustomIconButton(
+                              image: MyImages.arrowWhite,
+                              title: "Register Now",
+                              backgroundColor: MyColors.white,
+                              loading: state is AuthLoadingState ? true : false,
+                              fontColor: MyColors.black,
+                              borderColor: MyColors.blue,
+                              iconColor: MyColors.blue,
+                              onclick: () {
+                                AppRoutes.push(context, RegisterScreen());
+                              },
+                            );
+                          }),
                           SizedBox(height: 30),
                           CustomDivider(),
                           SizedBox(height: 30),

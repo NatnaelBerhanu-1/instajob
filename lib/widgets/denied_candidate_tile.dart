@@ -24,7 +24,7 @@ class DeniedCandidateTile extends StatelessWidget {
           context
               .read<GlobalCubit>()
               .setSelectedScreen(true, screenName: Applicants());
-          AppRoutes.push(context, BottomNavigationScreen());
+          AppRoutes.push(context, BottomNavScreen());
         },
         child: Container(
             decoration: BoxDecoration(

@@ -49,9 +49,9 @@ class CustomSocialButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomCommonCard(
       onTap: onTap,
-      borderColor: Colors.black12,
+      borderColor: MyColors.lightBlue.withOpacity(.13),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(5.0),
         child: ImageButton(
           image: image,
           height: 30,

@@ -80,7 +80,7 @@ class BecameAnEmployer extends StatelessWidget {
                     hint: "www.organize.com",
                   ),
                   SizedBox(height: 40),
-                  uploadPhotoCard(),
+                  uploadPhotoCard(context),
                   SizedBox(height: 40),
                   CustomIconButton(
                     image: MyImages.arrowWhite,

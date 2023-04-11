@@ -154,10 +154,10 @@ class _SearchJobsScreenState extends State<SearchJobsScreen> {
                                     child: selectedSearchIndex == 1
                                         ? SearchJobTile()
                                         : AssignCompaniesTile(
-                                            leadingImage:
-                                                MyImages.businessAndTrade,
-                                            title: "Ford",
-                                          ),
+                                            // leadingImage:
+                                            //     MyImages.businessAndTrade,
+                                            // title: "Ford",
+                                            ),
                                   );
                                 }),
                           ),

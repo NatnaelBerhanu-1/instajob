@@ -4,8 +4,27 @@ import 'package:insta_job/bloc/validation/validation_state.dart';
 class ValidationCubit extends Cubit<InitialValidation> {
   ValidationCubit() : super(InitialValidation());
   bool valid = false;
+  bool pass = false;
+  bool cPass = false;
+  bool checkBox = false;
+
+  visiblePass() {
+    pass = !pass;
+    emit(VisiblePassState(pass));
+  }
+
+  visibleCPass() {
+    cPass = !cPass;
+    emit(VisiblePassState(cPass));
+  }
+
+  checkBoxValue() {
+    checkBox = !checkBox;
+    emit(VisiblePassState(checkBox));
+  }
+
   String? emailValidation(String s) {
-    RegExp pattern = RegExp(r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$');
+    RegExp pattern = RegExp(r'^.+@[a-zA-Z]+\.[a-zA-Z]+(\.?[a-zA-Z]+)$');
     if (s.isEmpty) {
       valid = false;
       emit(RequiredValidation("Email cannot be empty"));
@@ -20,9 +39,9 @@ class ValidationCubit extends Cubit<InitialValidation> {
     return null;
   }
 
-  String? requiredValidation(String s) {
+  String? requiredValidation(String s, value) {
     if (s.isEmpty || s == "") {
-      emit(RequiredValidation("Required *"));
+      emit(RequiredValidation("$value is Required"));
     }
     emit(ValidState("valid"));
     return null;
@@ -33,6 +52,16 @@ class ValidationCubit extends Cubit<InitialValidation> {
       emit(RequiredValidation("Password cannot be empty"));
     } else if (s.length < 6) {
       emit(ValidState("Password must not be less then 6 digits"));
+    }
+    emit(ValidState("valid"));
+    return null;
+  }
+
+  String? confirmPassValidation(String s, String passValue) {
+    if (s.isEmpty || s == "") {
+      emit(RequiredValidation("Confirm Password cannot be empty"));
+    } else if (s != passValue) {
+      emit(ConfirmPasswordState("Password doesn't match"));
     }
     emit(ValidState("valid"));
     return null;

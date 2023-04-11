@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:insta_job/network/api_response.dart';
 import 'package:insta_job/network/dio/dio_client.dart';
 import 'package:insta_job/network/end_points.dart';
@@ -8,7 +9,52 @@ class AuthRepository {
 
   AuthRepository({required this.dioClient});
 
-  Future<ApiResponse> registerEmp({
+  /// EMPLOYEE REGISTRATION
+  Future<ApiResponse> empRegister({
+    String? name,
+    String? email,
+    String? password,
+    bool isUser = false,
+  }) async {
+    try {
+      var map = {
+        "name": name,
+        "email": email,
+        "password": password,
+        "type": "jobsearch",
+        "fcm_token": "1234",
+        "firebase_id": FirebaseAuth.instance.currentUser?.uid,
+      };
+      Response response = await dioClient.post(
+          data: map,
+          uri: isUser ? EndPoint.registerUser : EndPoint.registerEmp);
+      return ApiResponse.withSuccess(response);
+    } on DioError catch (e) {
+      return ApiResponse.withError(e);
+    }
+  }
+
+  /// EMPLOYEE LOGIN
+  Future<ApiResponse> empLogin({
+    String? email,
+    String? password,
+    bool isUser = false,
+  }) async {
+    try {
+      var map = {
+        "email": email,
+        "password": password,
+      };
+      Response response = await dioClient.post(
+          data: map, uri: isUser ? EndPoint.loginUser : EndPoint.loginEmp);
+      return ApiResponse.withSuccess(response);
+    } on DioError catch (e) {
+      return ApiResponse.withError(e);
+    }
+  }
+
+/*  /// USER REGISTRATION
+  Future<ApiResponse> userRegister({
     String? name,
     String? email,
     String? password,
@@ -20,17 +66,17 @@ class AuthRepository {
         "password": password,
         "type": "jobsearch",
         "fcm_token": "1234",
-        "firebase_id": "1234"
       };
       Response response =
-          await dioClient.post(data: map, uri: EndPoint.registerEmp);
+          await dioClient.post(data: map, uri: EndPoint.registerUser);
       return ApiResponse.withSuccess(response);
     } on DioError catch (e) {
       return ApiResponse.withError(e);
     }
   }
 
-  Future<ApiResponse> loginEmp({
+  /// USER LOGIN
+  Future<ApiResponse> userLogin({
     String? email,
     String? password,
   }) async {
@@ -40,10 +86,10 @@ class AuthRepository {
         "password": password,
       };
       Response response =
-          await dioClient.post(data: map, uri: EndPoint.loginEmp);
+          await dioClient.post(data: map, uri: EndPoint.loginUser);
       return ApiResponse.withSuccess(response);
     } on DioError catch (e) {
       return ApiResponse.withError(e);
     }
-  }
+  }*/
 }

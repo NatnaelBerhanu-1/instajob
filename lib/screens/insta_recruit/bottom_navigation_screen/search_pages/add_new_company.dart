@@ -1,7 +1,15 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:insta_job/bloc/choose_image_bloc/pick_image_cubit.dart';
+import 'package:insta_job/bloc/choose_image_bloc/pick_image_state.dart';
+import 'package:insta_job/bloc/company_bloc/company_bloc.dart';
+import 'package:insta_job/bloc/company_bloc/company_event.dart';
+import 'package:insta_job/bloc/company_bloc/company_state.dart';
 import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
+import 'package:insta_job/globals.dart';
+import 'package:insta_job/network/end_points.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_app_bar.dart';
 import 'package:insta_job/widgets/custom_button/custom_btn.dart';
@@ -9,13 +17,18 @@ import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 import 'package:insta_job/widgets/custom_cards/assign_companies_tile.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
-import 'package:provider/provider.dart';
 
 import '../bottom_navigation_screen.dart';
 
-class AddNewCompany extends StatelessWidget {
+class AddNewCompany extends StatefulWidget {
   const AddNewCompany({Key? key}) : super(key: key);
 
+  @override
+  State<AddNewCompany> createState() => _AddNewCompanyState();
+}
+
+class _AddNewCompanyState extends State<AddNewCompany> {
+  TextEditingController name = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +40,7 @@ class AddNewCompany extends StatelessWidget {
           onTap: () {
             context
                 .read<GlobalCubit>()
-                .setSelectedScreen(false, screenName: BottomNavigationScreen());
+                .setSelectedScreen(false, screenName: BottomNavScreen());
           },
         ),
       ),
@@ -44,14 +57,35 @@ class AddNewCompany extends StatelessWidget {
               ),
               SizedBox(height: 30),
               IconTextField(
+                controller: name,
                 prefixIcon: ImageButton(image: MyImages.userFilled),
-                suffixIcon: ImageButton(image: MyImages.verified),
+                // suffixIcon: ImageButton(image: MyImages.verified),
                 hint: "Company Name",
               ),
               SizedBox(height: 30),
-              uploadPhotoCard(),
+              BlocBuilder<PickImageCubit, InitialImage>(
+                  builder: (context, state) {
+                if (state is PickImageState) {
+                  return Image.network("${EndPoint.imageBaseUrl}${state.url}");
+                }
+                return uploadPhotoCard(context);
+              }),
               SizedBox(height: 30),
-              CustomButton(title: "Submit")
+              BlocConsumer<CompanyBloc, CompanyState>(listener: (c, state) {
+                if (state is ErrorState) {
+                  showToast(state.error);
+                }
+              }, builder: (context, snapshot) {
+                var image = context.read<PickImageCubit>();
+                return CustomButton(
+                  title: "Submit",
+                  onTap: () {
+                    context.read<CompanyBloc>().add(AddCompanyEvent(
+                        companyName: name.text, photo: image.imgUrl));
+                    Navigator.pop(context);
+                  },
+                );
+              })
             ],
           ),
         ),

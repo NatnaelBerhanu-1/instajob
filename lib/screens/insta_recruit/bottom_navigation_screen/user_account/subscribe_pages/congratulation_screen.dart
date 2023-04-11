@@ -31,7 +31,7 @@ class _CongratulationsScreenState extends State<CongratulationsScreen> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      AppRoutes.push(context, BottomNavigationScreen());
+                      AppRoutes.push(context, BottomNavScreen());
                     },
                     child: Align(
                         alignment: Alignment.topLeft,
@@ -66,7 +66,7 @@ class _CongratulationsScreenState extends State<CongratulationsScreen> {
                   CustomButton(
                     title: "Confirm",
                     onTap: () {
-                      AppRoutes.push(context, BottomNavigationScreen());
+                      AppRoutes.push(context, BottomNavScreen());
                     },
                   ),
                   SizedBox(height: 20),

@@ -13,14 +13,14 @@ import 'package:insta_job/utils/my_images.dart';
 import '../../../bloc/global_cubit/global_state.dart';
 import '../home_page.dart';
 
-class BottomNavigationScreen extends StatefulWidget {
-  const BottomNavigationScreen({Key? key}) : super(key: key);
+class BottomNavScreen extends StatefulWidget {
+  const BottomNavScreen({Key? key}) : super(key: key);
 
   @override
-  State<BottomNavigationScreen> createState() => _BottomNavigationScreenState();
+  State<BottomNavScreen> createState() => _BottomNavScreenState();
 }
 
-class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
+class _BottomNavScreenState extends State<BottomNavScreen> {
   List<Widget> pages = [
     Global.type == "user" ? const SearchJobsScreen() : const AssignCompany(),
     const InterviewScreen(),

@@ -9,9 +9,9 @@ class AuthState extends AuthInitialState {
 }
 
 class AuthLoadingState extends AuthInitialState {
-  final bool isLoading;
+  // final bool isLoading;
 
-  AuthLoadingState({required this.isLoading});
+  // AuthLoadingState({required this.isLoading});
 }
 
 class ErrorState extends AuthInitialState {

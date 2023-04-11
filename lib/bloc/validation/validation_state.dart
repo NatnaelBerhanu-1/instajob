@@ -6,6 +6,12 @@ class InvalidEmailState extends InitialValidation {
   InvalidEmailState(this.email);
 }
 
+class VisiblePassState extends InitialValidation {
+  final bool visibleValue;
+
+  VisiblePassState(this.visibleValue);
+}
+
 class ValidState extends InitialValidation {
   final String valid;
 
@@ -24,4 +30,10 @@ class RequiredValidation extends InitialValidation {
   final String require;
 
   RequiredValidation(this.require);
+}
+
+class ConfirmPasswordState extends InitialValidation {
+  final String pass;
+
+  ConfirmPasswordState(this.pass);
 }

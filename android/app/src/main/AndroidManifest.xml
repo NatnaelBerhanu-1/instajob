@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.surabhinfosys.insta_job">
+    package="com.saurabhinfosys.insta_job">
    <application
         android:label="insta_job"
         android:name="${applicationName}"

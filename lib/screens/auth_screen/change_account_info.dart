@@ -148,7 +148,7 @@ class ChangeAccInfoScreen extends StatelessWidget {
                             fontWeight: FontWeight.w400, color: MyColors.grey),
                       ),
                       SizedBox(height: 10),
-                      uploadPhotoCard(),
+                      uploadPhotoCard(context),
                       SizedBox(height: 50),
                       CustomIconButton(
                         image: MyImages.arrowWhite,

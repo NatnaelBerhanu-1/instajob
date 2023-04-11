@@ -46,7 +46,7 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                 context
                     .read<GlobalCubit>()
                     .setSelectedScreen(true, screenName: JobOpeningScreen());
-                AppRoutes.push(context, BottomNavigationScreen());
+                AppRoutes.push(context, BottomNavScreen());
               },
               image: MyImages.backArrow,
               height: 40,
@@ -147,8 +147,8 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                                                     .setSelectedScreen(true,
                                                         screenName: EditListing(
                                                             isUpdate: true));
-                                                AppRoutes.push(context,
-                                                    BottomNavigationScreen());
+                                                AppRoutes.push(
+                                                    context, BottomNavScreen());
                                               },
                                             )),
                                             SizedBox(width: 15),
@@ -161,8 +161,8 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                                                     .setSelectedScreen(true,
                                                         screenName:
                                                             ViewCandidates());
-                                                AppRoutes.push(context,
-                                                    BottomNavigationScreen());
+                                                AppRoutes.push(
+                                                    context, BottomNavScreen());
                                               },
                                             )),
                                           ],

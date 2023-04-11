@@ -2,13 +2,21 @@
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:insta_job/bloc/auth_bloc/auth_cubit.dart';
+import 'package:insta_job/bloc/auth_bloc/auth_state.dart';
+import 'package:insta_job/bloc/auth_bloc/social_auth/social_auth.dart';
+import 'package:insta_job/bloc/company_bloc/company_bloc.dart';
+import 'package:insta_job/bloc/company_bloc/company_event.dart';
+import 'package:insta_job/bloc/validation/validation_state.dart';
+import 'package:insta_job/globals.dart';
 import 'package:insta_job/screens/auth_screen/login_screen.dart';
-import 'package:insta_job/screens/auth_screen/reg_more_information.dart';
 import 'package:insta_job/screens/insta_recruit/membership_screen.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/widgets/custom_button/custom_all_small_button.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
 
+import '../../bloc/validation/validation_bloc.dart';
 import '../../utils/my_colors.dart';
 import '../../utils/my_images.dart';
 import '../../widgets/custom_button/custom_btn.dart';
@@ -16,140 +24,155 @@ import '../../widgets/custom_button/custom_img_button.dart';
 import '../../widgets/custom_cards/custom_common_card.dart';
 import '../../widgets/custom_divider.dart';
 
-class RegisterScreen extends StatelessWidget {
+class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
+
+  @override
+  State<RegisterScreen> createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
+  TextEditingController email = TextEditingController(text: "abc@gmail.com");
+  TextEditingController password = TextEditingController(text: "123456");
+  TextEditingController name = TextEditingController(text: "abc");
+  TextEditingController cPassword = TextEditingController(text: "123456");
+  final formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: MyColors.white,
-      body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              flex: 0,
-              child: Column(
-                children: [
-                  Stack(
-                    children: [
-                      Image.asset(
-                        MyImages.bgCurve,
-                        color: MyColors.grey.withOpacity(.10),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10),
-                        child: Center(
-                          child: Column(
-                            children: [
-                              Image.asset(MyImages.instaLogo_),
-                              CommonText(
-                                text: "Employee instantly",
-                                fontColor: MyColors.grey,
-                              ),
-                            ],
-                          ),
+      body: Form(
+        key: formKey,
+        child: SafeArea(
+          child: Column(
+            children: [
+              Expanded(
+                flex: 0,
+                child: Column(
+                  children: [
+                    Stack(
+                      children: [
+                        Image.asset(
+                          MyImages.bgCurve,
+                          color: MyColors.grey.withOpacity(.10),
                         ),
-                      )
-                    ],
-                  )
-                ],
-              ),
-            ),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(15),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Welcome,",
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 24,
-                        ),
-                      ),
-                      SizedBox(height: 5),
-                      Text(
-                        "Please Enter More Information",
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          color: MyColors.grey,
-                          fontSize: 14,
-                        ),
-                      ),
-                      SizedBox(height: 30),
-                      IconTextField(
-                        prefixIcon: ImageButton(image: MyImages.userFilled),
-                        suffixIcon: ImageButton(image: MyImages.verified),
-                        hint: "alexies@mygmail.com",
-                      ),
-                      SizedBox(height: 15),
-                      IconTextField(
-                        prefixIcon: ImageButton(image: MyImages.email),
-                        suffixIcon: ImageButton(image: MyImages.verified),
-                        hint: "alexies@mygmail.com",
-                      ),
-                      SizedBox(height: 15),
-                      IconTextField(
-                        prefixIcon: ImageButton(image: MyImages.lock),
-                        suffixIcon: ImageButton(image: MyImages.visible),
-                        hint: "password",
-                      ),
-                      SizedBox(height: 15),
-                      IconTextField(
-                        prefixIcon: ImageButton(image: MyImages.lock),
-                        suffixIcon: ImageButton(image: MyImages.visible),
-                        hint: "confirm password",
-                      ),
-                      SizedBox(height: 20),
-                      CustomCheckbox(
-                        onchanged: (val) {},
-                        value: true,
-                        title: Text.rich(
-                          TextSpan(
-                            text: "I accept all the ",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              color: MyColors.grey,
-                              fontSize: 12,
-                            ),
-                            children: [
-                              TextSpan(
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () {
-                                    AppRoutes.push(context, MemberShipScreen());
-                                  },
-                                text: "Terms & Conditions",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  color: MyColors.grey,
-                                  decoration: TextDecoration.underline,
-                                  fontSize: 12,
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: Center(
+                            child: Column(
+                              children: [
+                                Image.asset(MyImages.instaLogo_),
+                                CommonText(
+                                  text: "Employee instantly",
+                                  fontColor: MyColors.grey,
                                 ),
-                              ),
-                              TextSpan(
-                                  text: " related to the app",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    color: MyColors.grey,
-                                    fontSize: 12,
-                                  ))
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                      ),
-                      /*Row(
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: BlocConsumer<ValidationCubit, InitialValidation>(
+                        listener: (context, state) {
+                      if (state is ConfirmPasswordState) {
+                        showToast(state.pass);
+                      }
+                    }, builder: (context, state) {
+                      var validationBloc = context.read<ValidationCubit>();
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Expanded(
-                              flex: 0,
-                              child: CustomCheckbox(
-                                onchanged: (val) {},
-                              )),
-                          Expanded(
-                            child: Text.rich(
+                          Text(
+                            "Welcome,",
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 24,
+                            ),
+                          ),
+                          SizedBox(height: 5),
+                          Text(
+                            "Please Enter More Information",
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              color: MyColors.grey,
+                              fontSize: 14,
+                            ),
+                          ),
+                          SizedBox(height: 30),
+                          IconTextField(
+                            controller: name,
+                            prefixIcon: ImageButton(image: MyImages.userFilled),
+                            validator: (val) =>
+                                validationBloc.requiredValidation(val!, "Name"),
+                            // suffixIcon: ImageButton(image: MyImages.verified),
+                            hint: "Alexies martan",
+                          ),
+                          SizedBox(height: 15),
+                          IconTextField(
+                            controller: email,
+                            prefixIcon: ImageButton(image: MyImages.email),
+                            validator: (val) =>
+                                validationBloc.emailValidation(val!),
+                            // suffixIcon: ImageButton(image: MyImages.verified),
+                            hint: "alexies@mygmail.com",
+                          ),
+                          SizedBox(height: 15),
+                          IconTextField(
+                            controller: password,
+                            prefixIcon: ImageButton(image: MyImages.lock),
+                            suffixIcon: GestureDetector(
+                              onTap: () {
+                                validationBloc.visiblePass();
+                              },
+                              child: Icon(
+                                validationBloc.pass
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                              ),
+                            ),
+                            validator: (val) =>
+                                validationBloc.passwordValidation(val!),
+                            obscureText: validationBloc.pass,
+                            hint: "Password",
+                            maxLine: 1,
+                          ),
+                          SizedBox(height: 15),
+                          IconTextField(
+                            controller: cPassword,
+                            prefixIcon: ImageButton(image: MyImages.lock),
+                            suffixIcon: GestureDetector(
+                              onTap: () {
+                                validationBloc.visibleCPass();
+                              },
+                              child: Icon(
+                                validationBloc.cPass
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                              ),
+                            ),
+                            obscureText: validationBloc.cPass,
+                            hint: "Confirm password",
+                            maxLine: 1,
+                            validator: (val) => validationBloc
+                                .confirmPassValidation(val!, password.text),
+                          ),
+                          SizedBox(height: 20),
+                          CustomCheckbox(
+                            onchanged: (val) {
+                              validationBloc.checkBoxValue();
+                            },
+                            value: validationBloc.checkBox,
+                            title: Text.rich(
                               TextSpan(
                                 text: "I accept all the ",
                                 style: TextStyle(
@@ -159,6 +182,11 @@ class RegisterScreen extends StatelessWidget {
                                 ),
                                 children: [
                                   TextSpan(
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () {
+                                        AppRoutes.push(
+                                            context, MemberShipScreen());
+                                      },
                                     text: "Terms & Conditions",
                                     style: TextStyle(
                                       fontWeight: FontWeight.w500,
@@ -178,64 +206,97 @@ class RegisterScreen extends StatelessWidget {
                               ),
                             ),
                           ),
-                        ],
-                      ),*/
-                      SizedBox(height: 40),
-                      CustomIconButton(
-                        image: MyImages.arrowWhite,
-                        title: "Register",
-                        backgroundColor: MyColors.blue,
-                        fontColor: MyColors.white,
-                        borderColor: MyColors.blue,
-                        iconColor: MyColors.white,
-                        onclick: () {
-                          AppRoutes.pushAndRemoveUntil(
-                              context, RegMoreInfoScreen());
-                        },
-                      ),
-                      SizedBox(height: 20),
-                      divider(),
-                      GestureDetector(
-                        onTap: () {
-                          AppRoutes.push(context, LoginScreen());
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Already part of InstaJob",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 15,
-                              ),
-                            ),
-                            TextButton(
-                                style: ButtonStyle(overlayColor:
-                                    MaterialStateProperty.resolveWith((states) {
-                                  if (states.contains(MaterialState.pressed)) {
-                                    return MyColors.transparent;
+                          SizedBox(height: 40),
+                          BlocConsumer<AuthCubit, AuthInitialState>(
+                              listener: (context, state) {
+                            if (state is ErrorState) {
+                              showToast(state.error);
+                            }
+                          }, builder: (context, snapshot) {
+                            var authCubit = context.read<AuthCubit>();
+                            return CustomIconButton(
+                              image: MyImages.arrowWhite,
+                              title: "Register",
+                              backgroundColor: MyColors.blue,
+                              fontColor: MyColors.white,
+                              borderColor: MyColors.blue,
+                              iconColor: MyColors.white,
+                              loading: state is AuthLoadingState ? true : false,
+                              onclick: () {
+                                if (formKey.currentState!.validate()) {
+                                  if (validationBloc.checkBox) {
+                                    if (Global.type == "user") {
+                                      SocialAuth.emailAndPass(context,
+                                          name: name.text,
+                                          email: email.text,
+                                          password: password.text,
+                                          isUser: true);
+                                    } else {
+                                      SocialAuth.emailAndPass(context,
+                                          name: name.text,
+                                          email: email.text,
+                                          password: password.text);
+                                    }
+                                    context
+                                        .read<CompanyBloc>()
+                                        .add(LoadCompanyListEvent());
+                                  } else {
+                                    showToast(
+                                        "Please accept terms & conditions");
                                   }
-                                  return MyColors.blue;
-                                })),
-                                onPressed: () {
-                                  AppRoutes.push(context, LoginScreen());
-                                },
-                                child: Text(
-                                  'Sign In',
+                                }
+                                // AppRoutes.pushAndRemoveUntil(
+                                //     context, RegMoreInfoScreen());
+                              },
+                            );
+                          }),
+                          SizedBox(height: 20),
+                          divider(),
+                          GestureDetector(
+                            onTap: () {
+                              AppRoutes.push(context, LoginScreen());
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Already part of InstaJob",
                                   style: TextStyle(
                                     fontWeight: FontWeight.w400,
-                                    fontSize: 16,
+                                    fontSize: 15,
                                   ),
-                                ))
-                          ],
-                        ),
-                      )
-                    ],
+                                ),
+                                TextButton(
+                                    style: ButtonStyle(overlayColor:
+                                        MaterialStateProperty.resolveWith(
+                                            (states) {
+                                      if (states
+                                          .contains(MaterialState.pressed)) {
+                                        return MyColors.transparent;
+                                      }
+                                      return MyColors.blue;
+                                    })),
+                                    onPressed: () {
+                                      AppRoutes.push(context, LoginScreen());
+                                    },
+                                    child: Text(
+                                      'Sign In',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 16,
+                                      ),
+                                    ))
+                              ],
+                            ),
+                          )
+                        ],
+                      );
+                    }),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

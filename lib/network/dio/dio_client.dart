@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:insta_job/globals.dart';
 import 'package:insta_job/network/end_points.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -20,6 +21,7 @@ class DioClient {
   }
   Future<Response> post(
       {required Map<String, dynamic> data, required String uri}) async {
+    print("ENCODE DATA --->  $data");
     try {
       Response response = await dio!.post(
         uri,
@@ -27,7 +29,8 @@ class DioClient {
       );
       return response;
     } on DioError catch (e) {
-      print(e.response);
+      showToast(e.message);
+      print(e.message);
       throw const FormatException("Unable to load");
     } catch (e) {
       rethrow;
@@ -40,7 +43,7 @@ class DioClient {
       Response response = await dio!.get(uri);
       return response;
     } on DioError catch (e) {
-      print(e.response);
+      showToast(e.message);
       throw const FormatException("Unable to load");
     } catch (e) {
       rethrow;
