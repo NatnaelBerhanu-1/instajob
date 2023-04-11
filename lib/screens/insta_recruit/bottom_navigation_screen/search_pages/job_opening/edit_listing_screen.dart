@@ -71,12 +71,13 @@ class _EditListingState extends State<EditListing> {
                       decoration: BoxDecoration(
                           color: MyColors.white,
                           borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: MyColors.red)),
+                          border: Border.all(color: MyColors.lightRed)),
                       child: Padding(
                         padding: const EdgeInsets.only(left: 10.0, right: 10),
                         child: Text(
                           "Remove Listing",
-                          style: TextStyle(fontSize: 13, color: MyColors.red),
+                          style:
+                              TextStyle(fontSize: 13, color: MyColors.lightRed),
                         ),
                       ),
                     ),

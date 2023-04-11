@@ -1,0 +1,49 @@
+import 'package:dio/dio.dart';
+import 'package:insta_job/network/end_points.dart';
+import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+class DioClient {
+  final SharedPreferences? sharedPreferences;
+  final String? baseUrl;
+
+  Dio? dio;
+
+  DioClient({this.sharedPreferences, this.baseUrl, required Dio dioC}) {
+    dio = dioC;
+    dio!
+      ..options.baseUrl = EndPoint.baseUrl
+      ..options.headers = {
+        "content-type": "application/json",
+      };
+    dio?.interceptors.add(PrettyDioLogger());
+  }
+  Future<Response> post(
+      {required Map<String, dynamic> data, required String uri}) async {
+    try {
+      Response response = await dio!.post(
+        uri,
+        data: data,
+      );
+      return response;
+    } on DioError catch (e) {
+      print(e.response);
+      throw const FormatException("Unable to load");
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Response> get(
+      {required Map<String, dynamic> data, required String uri}) async {
+    try {
+      Response response = await dio!.get(uri);
+      return response;
+    } on DioError catch (e) {
+      print(e.response);
+      throw const FormatException("Unable to load");
+    } catch (e) {
+      rethrow;
+    }
+  }
+}

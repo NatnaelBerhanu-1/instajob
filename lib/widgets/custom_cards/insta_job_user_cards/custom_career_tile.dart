@@ -148,7 +148,9 @@ class AppliedTile extends StatelessWidget {
                   ),
                 ),
                 Spacer(),
-                isFav ? Icon(Icons.favorite, color: MyColors.red) : SizedBox(),
+                isFav
+                    ? Icon(Icons.favorite, color: MyColors.lightRed)
+                    : SizedBox(),
               ],
             ),
             SizedBox(height: 10),

@@ -82,7 +82,7 @@ class SkillsScreen extends StatelessWidget {
             SkillsTile(
               title: "Photoshop",
               icon: Icons.remove,
-              color: MyColors.red,
+              color: MyColors.lightRed,
             ),
             SizedBox(height: 15),
             CustomDivider(

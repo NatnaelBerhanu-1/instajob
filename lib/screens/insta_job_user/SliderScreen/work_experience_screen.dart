@@ -73,10 +73,10 @@ class EducationScreen extends StatelessWidget {
               ),
               TextButton.icon(
                   onPressed: () {},
-                  icon: Icon(Icons.delete, color: MyColors.red),
+                  icon: Icon(Icons.delete, color: MyColors.lightRed),
                   label: CommonText(
                     text: "Delete",
-                    fontColor: MyColors.red,
+                    fontColor: MyColors.lightRed,
                   )),
             ],
           ),

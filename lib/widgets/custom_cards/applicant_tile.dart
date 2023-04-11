@@ -56,7 +56,7 @@ class ApplicantTiles extends StatelessWidget {
                 Expanded(
                     child: CustomButton(
                   height: MediaQuery.of(context).size.height * 0.055,
-                  bgColor: MyColors.red,
+                  bgColor: MyColors.lightRed,
                   title: "Deny",
                 )),
               ],
