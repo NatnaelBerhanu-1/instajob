@@ -1,15 +1,11 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'dart:ffi';
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/auth_bloc/auth_cubit.dart';
 import 'package:insta_job/bloc/auth_bloc/auth_state.dart';
 import 'package:insta_job/bloc/auth_bloc/social_auth/social_auth.dart';
-import 'package:insta_job/bloc/company_bloc/company_bloc.dart';
-import 'package:insta_job/bloc/company_bloc/company_event.dart';
 import 'package:insta_job/bloc/validation/validation_state.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/screens/auth_screen/login_screen.dart';
@@ -18,6 +14,8 @@ import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/widgets/custom_button/custom_all_small_button.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
 
+import '../../bloc/company_bloc/company_bloc.dart';
+import '../../bloc/company_bloc/company_event.dart';
 import '../../bloc/validation/validation_bloc.dart';
 import '../../utils/my_colors.dart';
 import '../../utils/my_images.dart';
@@ -34,10 +32,10 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  TextEditingController email = TextEditingController(text: "abc@gmail.com");
-  TextEditingController password = TextEditingController(text: "123456");
-  TextEditingController name = TextEditingController(text: "abc");
-  TextEditingController cPassword = TextEditingController(text: "123456");
+  TextEditingController email = TextEditingController();
+  TextEditingController password = TextEditingController();
+  TextEditingController name = TextEditingController();
+  TextEditingController cPassword = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
   @override
@@ -86,6 +84,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         listener: (context, state) {
                       if (state is ConfirmPasswordState) {
                         showToast(state.pass);
+                      }
+                      if (state is InvalidEmailState) {
+                        showToast(state.email);
+                      }
+                      if (state is InvalidPasswordState) {
+                        showToast(state.pass);
+                      }
+                      if (state is RequiredValidation) {
+                        showToast(state.require);
                       }
                     }, builder: (context, state) {
                       var validationBloc = context.read<ValidationCubit>();
@@ -239,10 +246,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                           email: email.text,
                                           password: password.text);
                                     }
-                                    print('tdfctdfdyhdkmddddddddddddddddd');
-                                    // kaik   ---context
-                                    //     .read<CompanyBloc>()
-                                    //     .add(LoadCompanyListEvent());
+                                    context
+                                        .read<CompanyBloc>()
+                                        .add(LoadCompanyListEvent());
                                   } else {
                                     print('dfuygggggf');
                                     showToast(

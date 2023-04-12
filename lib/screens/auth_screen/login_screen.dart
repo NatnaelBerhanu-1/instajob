@@ -198,6 +198,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   context
                                       .read<CompanyBloc>()
                                       .add(LoadCompanyListEvent());
+                                } else {
+                                  print("1111111111");
                                 }
 
                                 // if (Global.type == "user") {

@@ -11,7 +11,7 @@ class CompanyRepository {
 
   getCompanies() async {
     try {
-      var map = {"employe_id": "2"};
+      var map = {"employe_id": Global.userModel?.id.toString()};
       var response =
           await dioClient.post(data: map, uri: EndPoint.getCompanies);
       return ApiResponse.withSuccess(response);

@@ -28,11 +28,11 @@ class ValidationCubit extends Cubit<InitialValidation> {
     if (s.isEmpty) {
       valid = false;
       emit(RequiredValidation("Email cannot be empty"));
-      return s;
+      return "";
     } else if (!pattern.hasMatch(s)) {
       valid = false;
       emit(InvalidEmailState("Enter valid email"));
-      return s;
+      return "";
     } else {
       valid = true;
       emit(ValidState("valid"));
@@ -45,6 +45,7 @@ class ValidationCubit extends Cubit<InitialValidation> {
   String? requiredValidation(String s, value) {
     if (s.isEmpty || s == "") {
       emit(RequiredValidation("$value is Required"));
+      return "";
     }
     emit(ValidState("valid"));
     return null;
@@ -53,8 +54,10 @@ class ValidationCubit extends Cubit<InitialValidation> {
   String? passwordValidation(String s) {
     if (s.isEmpty || s == "") {
       emit(RequiredValidation("Password cannot be empty"));
+      return "";
     } else if (s.length < 6) {
       emit(ValidState("Password must not be less then 6 digits"));
+      return "";
     }
     emit(ValidState("valid"));
     return null;
@@ -63,8 +66,10 @@ class ValidationCubit extends Cubit<InitialValidation> {
   String? confirmPassValidation(String s, String passValue) {
     if (s.isEmpty || s == "") {
       emit(RequiredValidation("Confirm Password cannot be empty"));
+      return "";
     } else if (s != passValue) {
       emit(ConfirmPasswordState("Password doesn't match"));
+      return "";
     }
     emit(ValidState("valid"));
     return null;
