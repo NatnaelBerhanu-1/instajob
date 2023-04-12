@@ -130,7 +130,7 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
                   borderColor: MyColors.blue,
                   iconColor: MyColors.white,
                   onclick: () {
-                    AppRoutes.pushAndRemoveUntil(context, LoginPage());
+                    AppRoutes.pushAndRemoveUntil(context, LoginScreen());
                   },
                 ),
                 // Spacer(),

@@ -55,7 +55,7 @@ class WelcomeScreen extends StatelessWidget {
               image: MyImages.arrowWhite,
               title: "Sign in",
               onclick: () {
-                AppRoutes.push(context, LoginPage());
+                AppRoutes.push(context, LoginScreen());
               },
             ),
             SizedBox(height: 20),

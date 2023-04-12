@@ -94,8 +94,8 @@ class Test extends StatelessWidget {
           children: [
             TextFormField(
               controller: TextEditingController(),
-              validator: (val) =>
-                  AppValidation.requiredValidation(val.toString(), ""),
+              // validator: (val) =>
+              //     AppValidation.requiredValidation(val.toString(), ""),
             ),
             ElevatedButton(
                 onPressed: () {
