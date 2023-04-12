@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/company_bloc/company_bloc.dart';
+import 'package:insta_job/bloc/company_bloc/company_event.dart';
 import 'package:insta_job/bloc/company_bloc/company_state.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/add_new_company.dart';
@@ -22,6 +23,8 @@ class AssignCompany extends StatefulWidget {
 }
 
 class _AssignCompanyState extends State<AssignCompany> {
+  final TextEditingController search = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,9 +49,28 @@ class _AssignCompanyState extends State<AssignCompany> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Expanded(
-                        child: CustomTextField(
-                          hint: "Search Companies",
-                        ),
+                        child: BlocBuilder<CompanyBloc, CompanyState>(
+                            builder: (context, state) {
+                          return Stack(
+                            children: [
+                              // Expanded(
+                              //   child: ListView.builder(
+                              //       itemCount: 2,
+                              //       itemBuilder: (context, index) {
+                              //         return Container();
+                              //       }),
+                              // ),
+                              CustomTextField(
+                                controller: search,
+                                hint: "Search Companies",
+                                onChanged: (searchList) {
+                                  context.read<CompanyBloc>().add(
+                                      CompanySearchEvent(search: search.text));
+                                },
+                              ),
+                            ],
+                          );
+                        }),
                       ),
                       SizedBox(width: 22),
                       Expanded(

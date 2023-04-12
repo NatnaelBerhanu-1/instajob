@@ -29,7 +29,9 @@ class GlobalCubit extends Cubit<InitialState> {
 
   setSelectedScreen(value, {Widget? screenName}) {
     print(screenName);
+    print('scrrreree');
     selectScreen = value;
+    print("fuhf");
     screenNameVal = screenName;
     emit(SetScreenBottomNavState(value, screenName ?? Container()));
   }

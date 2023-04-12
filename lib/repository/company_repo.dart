@@ -11,7 +11,7 @@ class CompanyRepository {
 
   getCompanies() async {
     try {
-      var map = {"employe_id": Global.userModel?.id.toString()};
+      var map = {"employe_id": "2"};
       var response =
           await dioClient.post(data: map, uri: EndPoint.getCompanies);
       return ApiResponse.withSuccess(response);
@@ -28,6 +28,21 @@ class CompanyRepository {
         "upload_photo": photo
       };
       var response = await dioClient.post(data: map, uri: EndPoint.addCompany);
+      return ApiResponse.withSuccess(response);
+    } on DioError catch (e) {
+      return ApiResponse.withError(e.response);
+    }
+  }
+
+  searchCompany({String? search}) async {
+    try {
+      var map = {
+        "search": search,
+        "type": "type",
+        "employe_id": "empId",
+      };
+      var response =
+          await dioClient.post(data: map, uri: EndPoint.searchCompany);
       return ApiResponse.withSuccess(response);
     } on DioError catch (e) {
       return ApiResponse.withError(e.response);

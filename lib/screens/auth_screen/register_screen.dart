@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:ffi';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -237,10 +239,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                           email: email.text,
                                           password: password.text);
                                     }
-                                    context
-                                        .read<CompanyBloc>()
-                                        .add(LoadCompanyListEvent());
+                                    print('tdfctdfdyhdkmddddddddddddddddd');
+                                    // kaik   ---context
+                                    //     .read<CompanyBloc>()
+                                    //     .add(LoadCompanyListEvent());
                                   } else {
+                                    print('dfuygggggf');
                                     showToast(
                                         "Please accept terms & conditions");
                                   }

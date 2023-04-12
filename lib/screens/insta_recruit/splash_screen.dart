@@ -31,10 +31,12 @@ class _SplashScreenState extends State<SplashScreen> {
   checkUser() async {
     final currentUser = FirebaseAuth.instance.currentUser;
     var pref = await SharedPreferences.getInstance();
-    var user = await jsonDecode(pref.getString("user")!);
+
     if (currentUser != null) {
+      var user = await jsonDecode(pref.getString("user").toString());
       UserModel userModel = UserModel.fromJson(user);
       Global.userModel = userModel;
+      print('USERMODEL ---------------        $user');
       context.read<CompanyBloc>().add(LoadCompanyListEvent());
       Timer(Duration(seconds: 1),
           () => AppRoutes.pushAndRemoveUntil(context, BottomNavScreen()));

@@ -15,3 +15,11 @@ class AddCompanyEvent extends CompanyEvent {
   @override
   List<Object?> get props => [companyName, photo];
 }
+
+class CompanySearchEvent extends CompanyEvent {
+  final String search;
+
+  CompanySearchEvent({required this.search});
+  @override
+  List<Object?> get props => [];
+}

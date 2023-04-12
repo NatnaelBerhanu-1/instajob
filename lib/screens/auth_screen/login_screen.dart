@@ -13,6 +13,8 @@ import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
 
+import '../../bloc/company_bloc/company_bloc.dart';
+import '../../bloc/company_bloc/company_event.dart';
 import '../../utils/my_colors.dart';
 import '../../utils/my_images.dart';
 import '../../widgets/custom_button/custom_all_small_button.dart';
@@ -193,7 +195,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                         email: email.text,
                                         password: password.text);
                                   }
+                                  context
+                                      .read<CompanyBloc>()
+                                      .add(LoadCompanyListEvent());
                                 }
+
                                 // if (Global.type == "user") {
                                 //   AppRoutes.pushAndRemoveUntil(
                                 //       context, MemberShipScreen());

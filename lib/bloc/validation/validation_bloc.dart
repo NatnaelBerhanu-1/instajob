@@ -28,12 +28,15 @@ class ValidationCubit extends Cubit<InitialValidation> {
     if (s.isEmpty) {
       valid = false;
       emit(RequiredValidation("Email cannot be empty"));
+      return s;
     } else if (!pattern.hasMatch(s)) {
       valid = false;
       emit(InvalidEmailState("Enter valid email"));
+      return s;
     } else {
       valid = true;
       emit(ValidState("valid"));
+      // return s;
     }
 
     return null;

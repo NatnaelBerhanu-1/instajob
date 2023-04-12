@@ -9,7 +9,8 @@ class IndexState extends InitialState {
 }
 
 class FilterState extends InitialState {
-  final int isFilterSelected;
+  final int
+      isFilterSelected; //;l;k;kdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdf
 
   FilterState(this.isFilterSelected);
 }
