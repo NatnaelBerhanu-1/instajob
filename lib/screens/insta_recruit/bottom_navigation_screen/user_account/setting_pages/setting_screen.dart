@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:insta_job/bloc/auth_bloc/auth_cubit.dart';
 import 'package:insta_job/dialog/custom_dialog.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/screens/auth_screen/change_account_info.dart';
@@ -88,6 +90,9 @@ class _SettingScreenState extends State<SettingScreen> {
                 title: "Log Out",
                 backgroundColor: MyColors.lightRed,
                 fontColor: MyColors.white,
+                onclick: () {
+                  context.read<AuthCubit>().logOut();
+                },
               ),
               SizedBox(height: 10),
             ],

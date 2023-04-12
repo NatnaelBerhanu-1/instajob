@@ -10,6 +10,7 @@ import 'package:insta_job/globals.dart';
 import 'package:insta_job/model/user_model.dart';
 import 'package:insta_job/network/api_response.dart';
 import 'package:insta_job/repository/auth_repository.dart';
+import 'package:insta_job/screens/auth_screen/login_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/bottom_navigation_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,11 +19,6 @@ class AuthCubit extends Cubit<AuthInitialState> {
   final AuthRepository authRepository;
   AuthCubit({required this.sharedPreferences, required this.authRepository})
       : super(AuthInitialState());
-  // late UserModel userModel;
-  // storeData(UserModel u) {
-  //   userModel = u;
-  //   emit(AuthState(userModel: userModel));
-  // }
 
   registerEmp({
     String? name,
@@ -30,19 +26,19 @@ class AuthCubit extends Cubit<AuthInitialState> {
     String? password,
     bool isUser = false,
   }) async {
+    print("3333333333333333333333333333333333333333");
+    emit(AuthLoadingState());
     ApiResponse response = await authRepository.empRegister(
         name: name, email: email, password: password, isUser: isUser);
     if (response.response.statusCode == 500) {
       emit(ErrorState("Something went wrong"));
     }
     if (response.response.statusCode == 200) {
-      emit(AuthLoadingState());
       // loading(value: true);
       await sharedPreferences.setString(
           "user", jsonEncode(response.response.data['data']));
       var userModel = UserModel.fromJson(response.response.data['data']);
       Global.userModel = userModel;
-
       emit(AuthState(userModel: userModel));
       navigationKey.currentState?.pushAndRemoveUntil(
           MaterialPageRoute(builder: (_) => const BottomNavScreen()),
@@ -57,13 +53,13 @@ class AuthCubit extends Cubit<AuthInitialState> {
     String? password,
     bool isUser = false,
   }) async {
+    emit(AuthLoadingState());
     ApiResponse response = await authRepository.empLogin(
         email: email, password: password, isUser: isUser);
     if (response.response.statusCode == 500) {
       emit(ErrorState("Something went wrong"));
     }
     if (response.response.statusCode == 200) {
-      emit(AuthLoadingState());
       await sharedPreferences.setString(
           "user", jsonEncode(response.response.data['data']));
       var userModel = UserModel.fromJson(response.response.data['data']);
@@ -150,5 +146,14 @@ class AuthCubit extends Cubit<AuthInitialState> {
 
       emit(ErrorState(e.toString()));
     }
+  }
+
+  ///logout
+  logOut() async {
+    await sharedPreferences.remove("user");
+    await FirebaseAuth.instance.signOut();
+    navigationKey.currentState?.pushAndRemoveUntil(
+        MaterialPageRoute(builder: (_) => const LoginScreen()),
+        (route) => false);
   }
 }

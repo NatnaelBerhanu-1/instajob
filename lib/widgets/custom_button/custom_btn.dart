@@ -91,7 +91,7 @@ class CustomIconButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onclick,
+      onTap: loading ? null : onclick,
       child: Container(
           height: height ?? MediaQuery.of(context).size.height * 0.075,
           width: width ?? MediaQuery.of(context).size.width,
@@ -103,7 +103,11 @@ class CustomIconButton extends StatelessWidget {
             leading: SizedBox(),
             title: loading
                 ? Center(
-                    child: CircularProgressIndicator(color: MyColors.white))
+                    heightFactor: 0,
+                    widthFactor: 0,
+                    child: CircularProgressIndicator(
+                        color: MyColors.white, strokeWidth: 2),
+                  )
                 : Text(
                     "$title",
                     textAlign: TextAlign.center,

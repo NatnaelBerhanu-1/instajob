@@ -5,17 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/auth_bloc/auth_cubit.dart';
 import 'package:insta_job/bloc/auth_bloc/auth_state.dart';
-import 'package:insta_job/bloc/auth_bloc/social_auth/social_auth.dart';
 import 'package:insta_job/bloc/validation/validation_state.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/screens/auth_screen/login_screen.dart';
+import 'package:insta_job/screens/auth_screen/reg_more_information.dart';
 import 'package:insta_job/screens/insta_recruit/membership_screen.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/widgets/custom_button/custom_all_small_button.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
 
-import '../../bloc/company_bloc/company_bloc.dart';
-import '../../bloc/company_bloc/company_event.dart';
 import '../../bloc/validation/validation_bloc.dart';
 import '../../utils/my_colors.dart';
 import '../../utils/my_images.dart';
@@ -222,7 +220,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               showToast(state.error);
                             }
                           }, builder: (context, snapshot) {
-                            var authCubit = context.read<AuthCubit>();
                             return CustomIconButton(
                               image: MyImages.arrowWhite,
                               title: "Register",
@@ -232,30 +229,30 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               iconColor: MyColors.white,
                               loading: state is AuthLoadingState ? true : false,
                               onclick: () {
-                                if (formKey.currentState!.validate()) {
-                                  if (validationBloc.checkBox) {
-                                    if (Global.type == "user") {
-                                      SocialAuth.emailAndPass(context,
-                                          name: name.text,
-                                          email: email.text,
-                                          password: password.text,
-                                          isUser: true);
-                                    } else {
-                                      SocialAuth.emailAndPass(context,
-                                          name: name.text,
-                                          email: email.text,
-                                          password: password.text);
-                                    }
-                                    // context
-                                    //     .read<CompanyBloc>()
-                                    //     .add(LoadCompanyListEvent());
-                                  } else {
-                                    showToast(
-                                        "Please accept terms & conditions");
-                                  }
-                                }
-                                // AppRoutes.pushAndRemoveUntil(
-                                //     context, RegMoreInfoScreen());
+                                // if (formKey.currentState!.validate()) {
+                                //   if (validationBloc.checkBox) {
+                                //     if (Global.type == "user") {
+                                //       SocialAuth.emailAndPass(context,
+                                //           name: name.text,
+                                //           email: email.text,
+                                //           password: password.text,
+                                //           isUser: true);
+                                //     } else {
+                                //       SocialAuth.emailAndPass(context,
+                                //           name: name.text,
+                                //           email: email.text,
+                                //           password: password.text);
+                                //     }
+                                //     // context
+                                //     //     .read<CompanyBloc>()
+                                //     //     .add(LoadCompanyListEvent());
+                                //   } else {
+                                //     showToast(
+                                //         "Please accept terms & conditions");
+                                //   }
+                                // }
+                                AppRoutes.pushAndRemoveUntil(
+                                    context, RegMoreInfoScreen());
                               },
                             );
                           }),
