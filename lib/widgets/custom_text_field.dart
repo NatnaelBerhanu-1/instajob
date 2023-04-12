@@ -71,6 +71,8 @@ class IconTextField extends StatelessWidget {
       keyboardType: keyboardType ?? TextInputType.text,
       decoration: InputDecoration(
         counterText: "",
+        errorText: "",
+        errorStyle: TextStyle(height: 0),
         contentPadding: EdgeInsets.only(left: 15, top: 25, bottom: 10),
         fillColor: fillColor ?? Colors.white,
         filled: true,
@@ -97,9 +99,15 @@ class IconTextField extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(12)),
           borderSide: BorderSide(color: color ?? MyColors.blue, width: 1.5),
         ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(12)),
+          borderSide: BorderSide(
+              color: color ?? MyColors.grey.withOpacity(.40), width: 1.5),
+        ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(12)),
-          borderSide: BorderSide(color: color ?? MyColors.grey, width: 1.5),
+          borderSide: BorderSide(
+              color: color ?? MyColors.grey.withOpacity(.40), width: 1.5),
         ),
       ),
     );

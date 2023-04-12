@@ -6,9 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/auth_bloc/auth_cubit.dart';
 import 'package:insta_job/bloc/auth_bloc/auth_state.dart';
 import 'package:insta_job/bloc/auth_bloc/social_auth/social_auth.dart';
-import 'package:insta_job/bloc/company_bloc/company_bloc.dart';
-import 'package:insta_job/bloc/company_bloc/company_event.dart';
-import 'package:insta_job/bloc/validation/validation_state.dart';
+import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
+import 'package:insta_job/bloc/global_cubit/global_state.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/screens/auth_screen/login_screen.dart';
 import 'package:insta_job/screens/insta_recruit/membership_screen.dart';
@@ -32,10 +31,10 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  TextEditingController email = TextEditingController(text: "abc@gmail.com");
-  TextEditingController password = TextEditingController(text: "123456");
-  TextEditingController name = TextEditingController(text: "abc");
-  TextEditingController cPassword = TextEditingController(text: "123456");
+  TextEditingController email = TextEditingController();
+  TextEditingController password = TextEditingController();
+  TextEditingController name = TextEditingController();
+  TextEditingController cPassword = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
   @override
@@ -80,13 +79,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 child: SingleChildScrollView(
                   child: Padding(
                     padding: const EdgeInsets.all(15),
-                    child: BlocConsumer<ValidationCubit, InitialValidation>(
-                        listener: (context, state) {
-                      if (state is ConfirmPasswordState) {
-                        showToast(state.pass);
-                      }
-                    }, builder: (context, state) {
-                      var validationBloc = context.read<ValidationCubit>();
+                    child: BlocBuilder<GlobalCubit, InitialState>(
+                        builder: (context, state) {
+                      var validationBloc = context.read<GlobalCubit>();
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -113,7 +108,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             controller: name,
                             prefixIcon: ImageButton(image: MyImages.userFilled),
                             validator: (val) =>
-                                validationBloc.requiredValidation(val!, "Name"),
+                                AppValidation.requiredValidation(val!, "Name"),
+                            // validationBloc.requiredValidation(val!, "Name"),
                             // suffixIcon: ImageButton(image: MyImages.verified),
                             hint: "Alexies martan",
                           ),
@@ -122,7 +118,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             controller: email,
                             prefixIcon: ImageButton(image: MyImages.email),
                             validator: (val) =>
-                                validationBloc.emailValidation(val!),
+                                AppValidation.emailValidation(val!),
                             // suffixIcon: ImageButton(image: MyImages.verified),
                             hint: "alexies@mygmail.com",
                           ),
@@ -141,7 +137,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               ),
                             ),
                             validator: (val) =>
-                                validationBloc.passwordValidation(val!),
+                                AppValidation.passwordValidation(val!),
                             obscureText: validationBloc.pass,
                             hint: "Password",
                             maxLine: 1,
@@ -163,8 +159,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             obscureText: validationBloc.cPass,
                             hint: "Confirm password",
                             maxLine: 1,
-                            validator: (val) => validationBloc
-                                .confirmPassValidation(val!, password.text),
+                            validator: (val) =>
+                                AppValidation.confirmPassValidation(
+                                    val!, password.text),
                           ),
                           SizedBox(height: 20),
                           CustomCheckbox(
@@ -237,13 +234,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                           email: email.text,
                                           password: password.text);
                                     }
-                                    context
-                                        .read<CompanyBloc>()
-                                        .add(LoadCompanyListEvent());
+                                    // context
+                                    //     .read<CompanyBloc>()
+                                    //     .add(LoadCompanyListEvent());
                                   } else {
                                     showToast(
                                         "Please accept terms & conditions");
                                   }
+                                } else {
+                                  print('@@@@@@@@@@@@@@@@@@@@@');
                                 }
                                 // AppRoutes.pushAndRemoveUntil(
                                 //     context, RegMoreInfoScreen());
@@ -254,7 +253,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           divider(),
                           GestureDetector(
                             onTap: () {
-                              AppRoutes.push(context, LoginScreen());
+                              AppRoutes.push(context, LoginPage());
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -277,7 +276,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       return MyColors.blue;
                                     })),
                                     onPressed: () {
-                                      AppRoutes.push(context, LoginScreen());
+                                      // AppRoutes.push(context, LoginScreen());
                                     },
                                     child: Text(
                                       'Sign In',

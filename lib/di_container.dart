@@ -32,7 +32,7 @@ Future<void> init() async {
   ///   bloc
   sl.registerLazySingleton(
       () => AuthCubit(authRepository: sl(), sharedPreferences: sl()));
-  sl.registerLazySingleton(() => ValidationCubit());
+  sl.registerLazySingleton(() => AppValidation());
   sl.registerLazySingleton(() => CompanyBloc(sl()));
   sl.registerLazySingleton(() => PickImageCubit(sl()));
 

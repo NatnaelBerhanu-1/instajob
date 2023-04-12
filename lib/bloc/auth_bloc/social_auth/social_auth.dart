@@ -18,7 +18,7 @@ class SocialAuth {
       context.read<AuthCubit>().registerEmp(
           email: email, password: password, name: name, isUser: isUser);
     }).catchError((e) {
-      showToast(e.message);
+      // showToast(e.message);
       print("7777777777777777777777777 ${e.message}");
     });
   }
