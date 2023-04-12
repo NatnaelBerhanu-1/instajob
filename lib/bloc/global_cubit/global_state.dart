@@ -15,6 +15,12 @@ class FilterState extends InitialState {
   FilterState(this.isFilterSelected);
 }
 
+class VisiblePassState extends InitialState {
+  final bool visibleValue;
+
+  VisiblePassState(this.visibleValue);
+}
+
 class BottomNavIndexState extends InitialState {
   final int index;
 

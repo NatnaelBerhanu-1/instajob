@@ -63,7 +63,6 @@ class AuthCubit extends Cubit<AuthInitialState> {
     }
     if (response.response.statusCode == 200) {
       emit(AuthLoadingState());
-      // loading(value: true);
       var userModel = UserModel.fromJson(response.response.data['data']);
       Global.userModel = userModel;
       await sharedPreferences.setString(
@@ -78,12 +77,18 @@ class AuthCubit extends Cubit<AuthInitialState> {
   }
 
   /// google auth
-  googleAuth() async {
+  googleAuth({
+    String? email,
+    String? password,
+    bool isUser = false,
+  }) async {
     loading(value: true);
     GoogleSignIn googleSignIn = GoogleSignIn();
     final googleUser = await googleSignIn.signIn();
+    ApiResponse response = await authRepository.empLogin(
+        email: email, password: password, isUser: isUser);
     try {
-      loading(value: false);
+      emit(AuthLoadingState());
       final googleAuth = await googleUser?.authentication;
       final credential = GoogleAuthProvider.credential(
         idToken: googleAuth?.idToken,
@@ -92,15 +97,13 @@ class AuthCubit extends Cubit<AuthInitialState> {
 
       await FirebaseAuth.instance
           .signInWithCredential(credential)
-          .then((value) {
+          .then((value) async {
         if (value.user != null) {
-          // FirebaseService.insertUsers(
-          //   userId: value.user!.uid,
-          //   name: value.user?.displayName,
-          //   email: value.user?.email,
-          //   password: value.user?.uid,
-          // );
-          // emit(AuthInitialState(user: value.user!));
+          var userModel = UserModel.fromJson(response.response.data['data']);
+          Global.userModel = userModel;
+          await sharedPreferences.setString(
+              "user", jsonEncode(response.response.data['data']));
+          emit(AuthState(userModel: userModel));
           navigationKey.currentState?.pushAndRemoveUntil(
               MaterialPageRoute(builder: (_) => const BottomNavScreen()),
               (route) => false);
@@ -130,7 +133,6 @@ class AuthCubit extends Cubit<AuthInitialState> {
             .then((value) {
           print('THENN ');
           if (value.user != null) {
-            // emit(AuthState(user: value.user!));
             navigationKey.currentState?.pushAndRemoveUntil(
                 MaterialPageRoute(builder: (_) => const BottomNavScreen()),
                 (route) => false);

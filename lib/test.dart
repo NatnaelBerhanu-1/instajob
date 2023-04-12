@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:insta_job/bloc/validation/validation_bloc.dart';
+import 'package:insta_job/globals.dart';
 import 'package:insta_job/screens/insta_job_user/SliderScreen/tellus_about_yslf_page.dart';
 import 'package:insta_job/screens/insta_job_user/SliderScreen/work_experience_screen.dart';
 
@@ -74,6 +76,37 @@ class _PageViewDemoState extends State<PageViewDemo> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class Test extends StatelessWidget {
+  Test({Key? key}) : super(key: key);
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Form(
+        key: formKey,
+        child: Column(
+          children: [
+            TextFormField(
+              controller: TextEditingController(),
+              validator: (val) =>
+                  AppValidation.requiredValidation(val.toString(), ""),
+            ),
+            ElevatedButton(
+                onPressed: () {
+                  if (formKey.currentState!.validate()) {
+                  } else {
+                    showToast("message");
+                  }
+                },
+                child: Text("child"))
+          ],
+        ),
       ),
     );
   }
