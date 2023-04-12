@@ -38,10 +38,11 @@ class AuthCubit extends Cubit<AuthInitialState> {
     if (response.response.statusCode == 200) {
       emit(AuthLoadingState());
       // loading(value: true);
-      var userModel = UserModel.fromJson(response.response.data['data']);
-      Global.userModel = userModel;
       await sharedPreferences.setString(
           "user", jsonEncode(response.response.data['data']));
+      var userModel = UserModel.fromJson(response.response.data['data']);
+      Global.userModel = userModel;
+
       emit(AuthState(userModel: userModel));
       navigationKey.currentState?.pushAndRemoveUntil(
           MaterialPageRoute(builder: (_) => const BottomNavScreen()),
@@ -63,10 +64,13 @@ class AuthCubit extends Cubit<AuthInitialState> {
     }
     if (response.response.statusCode == 200) {
       emit(AuthLoadingState());
-      var userModel = UserModel.fromJson(response.response.data['data']);
-      Global.userModel = userModel;
       await sharedPreferences.setString(
           "user", jsonEncode(response.response.data['data']));
+      var userModel = UserModel.fromJson(response.response.data['data']);
+      Global.userModel = userModel;
+      print(
+          'USEERRR *****************************          ${Global.userModel?.id}');
+
       emit(AuthState(userModel: userModel));
       navigationKey.currentState?.pushAndRemoveUntil(
           MaterialPageRoute(builder: (_) => const BottomNavScreen()),

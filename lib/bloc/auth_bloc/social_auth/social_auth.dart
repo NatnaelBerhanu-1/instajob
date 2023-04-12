@@ -4,6 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/auth_bloc/auth_cubit.dart';
 import 'package:insta_job/globals.dart';
 
+import '../../company_bloc/company_bloc.dart';
+import '../../company_bloc/company_event.dart';
+
 class SocialAuth {
   /// email
   static FirebaseAuth auth = FirebaseAuth.instance;
@@ -17,6 +20,7 @@ class SocialAuth {
         .then((value) {
       context.read<AuthCubit>().registerEmp(
           email: email, password: password, name: name, isUser: isUser);
+      context.read<CompanyBloc>().add(LoadCompanyListEvent());
     }).catchError((e) {
       // showToast(e.message);
       print("7777777777777777777777777 ${e.message}");
@@ -31,6 +35,7 @@ class SocialAuth {
       context
           .read<AuthCubit>()
           .login(email: email, password: password, isUser: isUser);
+      context.read<CompanyBloc>().add(LoadCompanyListEvent());
     }).catchError((e) {
       showToast(e.message);
     });

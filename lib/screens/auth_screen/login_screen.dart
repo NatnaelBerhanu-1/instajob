@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/auth_bloc/auth_cubit.dart';
 import 'package:insta_job/bloc/auth_bloc/auth_state.dart';
+import 'package:insta_job/bloc/auth_bloc/social_auth/social_auth.dart';
 import 'package:insta_job/bloc/validation/validation_bloc.dart';
 import 'package:insta_job/bloc/validation/validation_state.dart';
 import 'package:insta_job/globals.dart';
@@ -175,7 +176,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               showToast(state.require);
                             }
                           }, builder: (context, state) {
-                            var authCubit = context.read<AuthCubit>();
+                            // var authCubit = context.read<AuthCubit>();
                             return CustomIconButton(
                               image: MyImages.arrowWhite,
                               title: "Sign In Now",
@@ -186,18 +187,15 @@ class _LoginScreenState extends State<LoginScreen> {
                               onclick: () {
                                 if (formKey.currentState!.validate()) {
                                   if (Global.type == "user") {
-                                    authCubit.login(
+                                    SocialAuth.loginWithEmail(context,
                                         email: email.text,
                                         password: password.text,
                                         isUser: true);
                                   } else {
-                                    authCubit.login(
+                                    SocialAuth.loginWithEmail(context,
                                         email: email.text,
                                         password: password.text);
                                   }
-                                  context
-                                      .read<CompanyBloc>()
-                                      .add(LoadCompanyListEvent());
                                 } else {
                                   print("1111111111");
                                 }

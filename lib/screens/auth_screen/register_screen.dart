@@ -246,11 +246,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                           email: email.text,
                                           password: password.text);
                                     }
-                                    context
-                                        .read<CompanyBloc>()
-                                        .add(LoadCompanyListEvent());
+                                    // context
+                                    //     .read<CompanyBloc>()
+                                    //     .add(LoadCompanyListEvent());
                                   } else {
-                                    print('dfuygggggf');
                                     showToast(
                                         "Please accept terms & conditions");
                                   }
