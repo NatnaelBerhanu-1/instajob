@@ -7,20 +7,19 @@ import 'package:insta_job/bloc/validation/validation_state.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/screens/auth_screen/forgot_password.dart';
 import 'package:insta_job/screens/auth_screen/register_screen.dart';
-import 'package:insta_job/screens/insta_recruit/membership_screen.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
 
 import '../../bloc/auth_bloc/auth_cubit.dart';
 import '../../bloc/auth_bloc/auth_state.dart';
+import '../../bloc/auth_bloc/social_auth/social_auth.dart';
 import '../../utils/my_colors.dart';
 import '../../utils/my_images.dart';
 import '../../widgets/custom_button/custom_all_small_button.dart';
 import '../../widgets/custom_button/custom_btn.dart';
 import '../../widgets/custom_cards/custom_common_card.dart';
 import '../../widgets/custom_divider.dart';
-import '../insta_recruit/bottom_navigation_screen/bottom_navigation_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -192,26 +191,26 @@ class _LoginScreenState extends State<LoginScreen> {
                                 borderColor: MyColors.blue,
                                 iconColor: MyColors.white,
                                 onclick: () {
-                                  // if (formKey.currentState!.validate()) {
-                                  //   if (Global.type == "user") {
-                                  //     SocialAuth.loginWithEmail(context,
-                                  //         email: email.text,
-                                  //         password: password.text,
-                                  //         isUser: true);
-                                  //   } else {
-                                  //     SocialAuth.loginWithEmail(context,
-                                  //         email: email.text,
-                                  //         password: password.text);
-                                  //   }
-                                  // }
-
-                                  if (Global.type == "user") {
-                                    AppRoutes.pushAndRemoveUntil(
-                                        context, MemberShipScreen());
-                                  } else {
-                                    AppRoutes.pushAndRemoveUntil(
-                                        context, BottomNavScreen());
+                                  if (formKey.currentState!.validate()) {
+                                    if (Global.type == "user") {
+                                      SocialAuth.loginWithEmail(context,
+                                          email: email.text,
+                                          password: password.text,
+                                          isUser: true);
+                                    } else {
+                                      SocialAuth.loginWithEmail(context,
+                                          email: email.text,
+                                          password: password.text);
+                                    }
                                   }
+
+                                  // if (Global.type == "user") {
+                                  //   AppRoutes.pushAndRemoveUntil(
+                                  //       context, MemberShipScreen());
+                                  // } else {
+                                  //   AppRoutes.pushAndRemoveUntil(
+                                  //       context, BottomNavScreen());
+                                  // }
                                 },
                               );
                             });

@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:insta_job/utils/my_images.dart';
+import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 
 import '../../utils/my_colors.dart';
 
@@ -78,33 +80,33 @@ class CommonText extends StatelessWidget {
   }
 }
 
-class CustomUnderlineTxt extends StatelessWidget {
-  final String? title;
-  final Color? color;
-  final double? size;
-  final FontWeight? fontWeight;
-  final VoidCallback? onTap;
-  const CustomUnderlineTxt(
-      {Key? key,
-      this.title,
-      this.color,
-      this.size,
-      this.onTap,
-      this.fontWeight})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Text(
-        "$title",
-        style: TextStyle(
-            fontSize: size ?? 15,
-            fontWeight: fontWeight ?? FontWeight.w500,
-            color: color ?? MyColors.blue,
-            decoration: TextDecoration.underline),
+jobTypeTile(
+    {String? title,
+    String? index,
+    String? selectedIndex,
+    VoidCallback? onTap}) {
+  return GestureDetector(
+    onTap: onTap,
+    child: Container(
+      padding: EdgeInsets.all(4),
+      color: MyColors.transparent,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          CommonText(
+            padding: true,
+            text: "$title",
+            fontSize: 12,
+            fontColor: index == selectedIndex ? MyColors.blue : MyColors.grey,
+          ),
+          index == selectedIndex
+              ? ImageButton(
+                  image: MyImages.verified,
+                  padding: EdgeInsets.zero,
+                )
+              : SizedBox()
+        ],
       ),
-    );
-  }
+    ),
+  );
 }

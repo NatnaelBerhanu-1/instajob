@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/company_bloc/company_bloc.dart';
 import 'package:insta_job/bloc/company_bloc/company_event.dart';
 import 'package:insta_job/bloc/company_bloc/company_state.dart';
-import 'package:insta_job/globals.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/add_new_company.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/widgets/custom_app_bar.dart';
@@ -110,7 +109,8 @@ class _AssignCompanyState extends State<AssignCompany> {
                 return Center(child: CircularProgressIndicator());
               }
               if (state is ErrorState) {
-                showToast(state.error);
+                // showToast(state.error);
+                return Center(child: Text(state.error));
               }
               if (state is CompanyLoaded) {
                 return ListView.builder(
@@ -126,7 +126,7 @@ class _AssignCompanyState extends State<AssignCompany> {
                       );
                     });
               }
-              return Text("data");
+              return Container();
             }))
           ],
         ));

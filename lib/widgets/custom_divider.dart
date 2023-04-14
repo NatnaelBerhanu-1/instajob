@@ -19,7 +19,7 @@ class CustomDivider extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 10),
-        Expanded(child: Divider(color: MyColors.black)),
+        Expanded(child: Divider(color: MyColors.grey)),
       ],
     );
   }

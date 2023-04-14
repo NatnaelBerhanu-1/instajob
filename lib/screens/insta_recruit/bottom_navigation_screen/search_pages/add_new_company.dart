@@ -82,7 +82,8 @@ class _AddNewCompanyState extends State<AddNewCompany> {
                   onTap: () {
                     context.read<CompanyBloc>().add(AddCompanyEvent(
                         companyName: name.text, photo: image.imgUrl));
-                    Navigator.pop(context);
+                    context.read<GlobalCubit>().setSelectedScreen(false,
+                        screenName: BottomNavScreen());
                   },
                 );
               })

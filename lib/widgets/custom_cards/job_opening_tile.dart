@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:insta_job/model/job_position_model.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/job_opening/job_position_screen.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_images.dart';
@@ -11,19 +12,21 @@ import '../custom_button/custom_img_button.dart';
 
 class JobOpeningTile extends StatelessWidget {
   final bool? isFav;
-  const JobOpeningTile({Key? key, this.isFav}) : super(key: key);
+  final JobPosModel jobPosModel;
+  const JobOpeningTile({Key? key, this.isFav, required this.jobPosModel})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        AppRoutes.push(context, JobPositionScreen());
+        AppRoutes.push(context, JobPositionScreen(jobPosModel: jobPosModel));
       },
       child: Container(
           decoration: BoxDecoration(
               color: MyColors.white,
               borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: MyColors.grey.withOpacity(.30)),
+              border: Border.all(color: MyColors.grey.withOpacity(.15)),
               boxShadow: [
                 BoxShadow(
                     color: Colors.grey.withOpacity(0.10),

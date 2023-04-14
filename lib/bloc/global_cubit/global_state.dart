@@ -9,8 +9,7 @@ class IndexState extends InitialState {
 }
 
 class FilterState extends InitialState {
-  final int
-      isFilterSelected; //;l;k;kdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdf
+  final int isFilterSelected;
 
   FilterState(this.isFilterSelected);
 }
@@ -32,4 +31,16 @@ class SetScreenBottomNavState extends InitialState {
   final Widget screen;
 
   SetScreenBottomNavState(this.value, this.screen);
+}
+
+class JobTypeState extends InitialState {
+  final String val;
+
+  JobTypeState(this.val);
+}
+
+class ExperienceLevelState extends InitialState {
+  final String val;
+
+  ExperienceLevelState(this.val);
 }

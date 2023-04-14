@@ -3,9 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/globals.dart';
+import 'package:insta_job/model/job_position_model.dart';
 import 'package:insta_job/screens/insta_job_user/confirm_detail_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/bottom_navigation_screen.dart';
-import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/job_opening/edit_listing_screen.dart';
+import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/job_opening/add_job_position_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/job_opening/job_opening_page.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_images.dart';
@@ -20,7 +21,9 @@ import '../../../../../utils/my_colors.dart';
 import 'view_candidate.dart';
 
 class JobPositionScreen extends StatefulWidget {
-  const JobPositionScreen({Key? key}) : super(key: key);
+  final JobPosModel? jobPosModel;
+
+  const JobPositionScreen({Key? key, this.jobPosModel}) : super(key: key);
 
   @override
   State<JobPositionScreen> createState() => _JobPositionScreenState();
@@ -116,15 +119,14 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                                 ),
                                 SizedBox(height: 15),
                                 CommonText(
-                                  text:
-                                      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tempor volutpat felis pretium volutpat. Proin et luctus lectus, lobortis molestie felis. Suspendisse lobortis, diam eu aliquam molestie, erat massa viverra dolor, quis pellentesque erat velit ac felis. Aenean tincidunt",
+                                  text: "${widget.jobPosModel?.jobdetails}",
                                   fontSize: 13,
                                   fontColor: MyColors.grey,
                                 ),
                                 SizedBox(height: 15),
-                                buildRequirementTile(),
-                                buildResponsibilityTile(),
-                                buildTopSkillsTile(),
+                                buildRequirementTile(widget.jobPosModel!),
+                                buildResponsibilityTile(widget.jobPosModel!),
+                                buildTopSkillsTile(widget.jobPosModel!),
                                 SizedBox(height: 15),
                                 BlocBuilder<GlobalCubit, InitialState>(
                                     builder: (context, value) {
@@ -145,8 +147,10 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                                                 context
                                                     .read<GlobalCubit>()
                                                     .setSelectedScreen(true,
-                                                        screenName: EditListing(
-                                                            isUpdate: true));
+                                                        screenName:
+                                                            AddJobPositionScreen(
+                                                                isUpdate:
+                                                                    true));
                                                 AppRoutes.push(
                                                     context, BottomNavScreen());
                                               },

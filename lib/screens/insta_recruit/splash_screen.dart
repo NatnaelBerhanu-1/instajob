@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/company_bloc/company_bloc.dart';
 import 'package:insta_job/bloc/company_bloc/company_event.dart';
+import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
+import 'package:insta_job/bloc/job_position/job_pos_event.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/bottom_navigation_screen.dart';
 import 'package:insta_job/screens/insta_recruit/user_type_screen.dart';
@@ -38,6 +40,7 @@ class _SplashScreenState extends State<SplashScreen> {
       Global.userModel = userModel;
       print('USERMODEL ---------------        $user');
       context.read<CompanyBloc>().add(LoadCompanyListEvent());
+      context.read<JobPositionBloc>().add(LoadJobPosListEvent());
       Timer(Duration(seconds: 1),
           () => AppRoutes.pushAndRemoveUntil(context, BottomNavScreen()));
     } else {
@@ -58,7 +61,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(15.0),
+        padding: const EdgeInsets.only(top: 40.0, bottom: 15),
         child: SafeArea(
           child: Container(
             decoration: BoxDecoration(
@@ -72,39 +75,39 @@ class _SplashScreenState extends State<SplashScreen> {
                   // Navigator.push(
                   //     context, SlideRightRoute(widget: UserTypeScreen()));
                 },
-                child: Container(
-                  color: MyColors.transparent,
-                  child: Column(
-                    children: [
-                      CommonText(
-                        text: "Welcome",
-                        fontWeight: FontWeight.bold,
-                        fontSize: 25,
-                      ),
-                      Image.asset(
-                        MyImages.logo,
-                        height: 200,
-                        width: 200,
-                      ),
-                      Image.asset(MyImages.instaJobLogo),
-                      Spacer(),
-                      ImageButton(
-                        image: MyImages.startArrow,
-                        padding: EdgeInsets.zero,
-                        height: 50,
-                        width: 50,
-                      ),
-                      SizedBox(height: 10),
-                      CommonText(
-                        text: "Get Started",
-                        fontWeight: FontWeight.bold,
-                        fontSize: 19,
-                        fontColor: MyColors.blue,
-                        decoration: TextDecoration.underline,
-                      ),
-                      SizedBox(height: 10),
-                    ],
-                  ),
+                child: Column(
+                  children: [
+                    CommonText(
+                      text: "Welcome",
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25,
+                    ),
+                    SizedBox(height: 20),
+                    // Spacer(),
+                    Image.asset(
+                      MyImages.logo,
+                      height: MediaQuery.of(context).size.height * 0.3,
+                      width: MediaQuery.of(context).size.width,
+                    ),
+                    Image.asset(MyImages.instaJobLogo),
+                    Spacer(),
+                    Spacer(),
+                    ImageButton(
+                      image: MyImages.startArrow,
+                      padding: EdgeInsets.zero,
+                      height: 50,
+                      width: 50,
+                    ),
+                    SizedBox(height: 10),
+                    CommonText(
+                      text: "Get Started",
+                      fontWeight: FontWeight.bold,
+                      fontSize: 19,
+                      fontColor: MyColors.blue,
+                      decoration: TextDecoration.underline,
+                    ),
+                    SizedBox(height: 10),
+                  ],
                 ),
               ),
             ),

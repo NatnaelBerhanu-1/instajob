@@ -51,4 +51,18 @@ class GlobalCubit extends Cubit<InitialState> {
     screenNameVal = screenName;
     emit(SetScreenBottomNavState(value, screenName ?? Container()));
   }
+
+  /// job Type
+  String jobTypeValue = "";
+  jobType(String val) {
+    jobTypeValue = val;
+    emit(JobTypeState(jobTypeValue));
+  }
+
+  /// Experience level
+  String experienceLevelVal = "";
+  experienceLevel(String val) {
+    experienceLevelVal = val;
+    emit(JobTypeState(experienceLevelVal));
+  }
 }

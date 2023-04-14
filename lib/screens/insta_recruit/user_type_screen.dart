@@ -43,12 +43,12 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                   fontSize: 25,
                 ),
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 10),
               Center(
                 child: Image.asset(
                   MyImages.logo,
-                  height: 250,
-                  width: 250,
+                  height: MediaQuery.of(context).size.height * 0.35,
+                  width: MediaQuery.of(context).size.width,
                 ),
               ),
               BlocBuilder<GlobalCubit, InitialState>(builder: (context, state) {

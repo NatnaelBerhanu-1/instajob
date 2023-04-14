@@ -1,14 +1,16 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/job_opening/edit_listing_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
+import 'package:insta_job/bloc/job_position/job_pos_state.dart';
+import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/job_opening/add_job_position_screen.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:insta_job/widgets/custom_cards/job_opening_tile.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
-import 'package:provider/provider.dart';
 
 import '../../../../../bloc/global_cubit/global_cubit.dart';
 
@@ -41,9 +43,8 @@ class JobOpeningScreen extends StatelessWidget {
               actions: [
                 GestureDetector(
                   onTap: () {
-                    context
-                        .read<GlobalCubit>()
-                        .setSelectedScreen(true, screenName: EditListing());
+                    context.read<GlobalCubit>().setSelectedScreen(true,
+                        screenName: AddJobPositionScreen());
                     // AppRoutes.push(context, EditListing());
                   },
                   child: Padding(
@@ -106,15 +107,28 @@ class JobOpeningScreen extends StatelessWidget {
                 ),
               ),
               Expanded(
-                child: ListView.builder(
-                    itemCount: 10,
-                    itemBuilder: (c, i) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 10, horizontal: 0),
-                        child: JobOpeningTile(),
-                      );
-                    }),
+                child: BlocBuilder<JobPositionBloc, JobPosState>(
+                    builder: (context, state) {
+                  if (state is JobPosLoading) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                  if (state is ErrorState) {
+                    return Center(child: Text(state.error));
+                  }
+                  if (state is JobPosLoaded) {
+                    return ListView.builder(
+                        itemCount: state.jobPosList.length,
+                        itemBuilder: (c, i) {
+                          var data = state.jobPosList[i];
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 0),
+                            child: JobOpeningTile(jobPosModel: data),
+                          );
+                        });
+                  }
+                  return SizedBox();
+                }),
               )
             ],
           ),

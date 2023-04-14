@@ -28,10 +28,6 @@ class DioClient {
         data: data,
       );
       return response;
-    } on DioError catch (e) {
-      // showToast(e.message);
-      print(e.message);
-      throw const FormatException("Unable to load");
     } catch (e) {
       rethrow;
     }
