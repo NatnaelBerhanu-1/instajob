@@ -86,7 +86,7 @@ class IconTextField extends StatelessWidget {
         isDense: true,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(12)),
-          borderSide: BorderSide(color: MyColors.grey, width: 1),
+          borderSide: BorderSide(color: color ?? MyColors.grey, width: 1),
         ),
         // prefixText: "+973",
         prefixIcon: prefixIcon ?? SizedBox(),
@@ -97,9 +97,18 @@ class IconTextField extends StatelessWidget {
           fontWeight: FontWeight.w400,
           fontSize: 15,
         ),
-        enabledBorder: border,
-        focusedBorder: border,
-        focusedErrorBorder: border,
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(borderRadius ?? 12)),
+          borderSide: BorderSide(color: color ?? MyColors.blue, width: 1),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(borderRadius ?? 12)),
+          borderSide: BorderSide(color: color ?? MyColors.blue, width: 1),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(borderRadius ?? 12)),
+          borderSide: BorderSide(color: color ?? MyColors.blue, width: 1),
+        ),
         errorBorder: border,
       ),
     );

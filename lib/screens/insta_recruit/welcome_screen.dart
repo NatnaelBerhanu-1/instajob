@@ -61,6 +61,7 @@ class WelcomeScreen extends StatelessWidget {
                       child: CommonText(
                         text: "Employee instantly",
                         fontColor: MyColors.grey,
+                        fontSize: 14,
                       ),
                     ),
                     SizedBox(height: 50),

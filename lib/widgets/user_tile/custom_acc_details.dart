@@ -45,8 +45,7 @@ class CustomAccDetails extends StatelessWidget {
             children: [
               ImageButton(
                 image: img,
-                color:
-                    index == selectedIndex ? MyColors.white : MyColors.userIcon,
+                color: index == selectedIndex ? MyColors.white : MyColors.blue,
               ),
               CommonText(
                 text: title,

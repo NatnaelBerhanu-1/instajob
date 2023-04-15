@@ -60,8 +60,9 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // backgroundColor: MyColors.blue,
       body: Padding(
-        padding: const EdgeInsets.only(top: 40.0, bottom: 15),
+        padding: const EdgeInsets.only(top: 0.0, bottom: 15),
         child: SafeArea(
           child: Container(
             decoration: BoxDecoration(
@@ -77,20 +78,28 @@ class _SplashScreenState extends State<SplashScreen> {
                 },
                 child: Column(
                   children: [
+                    SizedBox(height: 30),
                     CommonText(
                       text: "Welcome",
                       fontWeight: FontWeight.bold,
                       fontSize: 25,
                     ),
-                    SizedBox(height: 20),
+                    // SizedBox(height: 20),
                     // Spacer(),
-                    Image.asset(
-                      MyImages.logo,
-                      height: MediaQuery.of(context).size.height * 0.3,
-                      width: MediaQuery.of(context).size.width,
+                    Padding(
+                      padding: const EdgeInsets.all(2.0),
+                      child: Image.asset(
+                        MyImages.logo,
+                        height: MediaQuery.of(context).size.height * 0.4,
+                        width: MediaQuery.of(context).size.width,
+                        fit: BoxFit.contain,
+                      ),
                     ),
-                    Image.asset(MyImages.instaJobLogo),
-                    Spacer(),
+                    Image.asset(
+                      MyImages.instaJobLogo,
+                      fit: BoxFit.cover,
+                    ),
+                    // Spacer(),
                     Spacer(),
                     ImageButton(
                       image: MyImages.startArrow,

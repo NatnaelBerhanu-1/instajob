@@ -95,7 +95,7 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
                     ),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: MyColors.blue),
+                      border: Border.all(color: MyColors.lightGrey),
                     ),
                   ),
                   submittedPinTheme: submittedPinTheme,
