@@ -10,4 +10,11 @@ class MyColors {
   static Color red = Colors.red.shade700;
   static Color lightBlue = Colors.blue.withOpacity(.40);
   static Color transparent = const Color(0x00000000);
+  static Color borderClr = const Color(0xffD3D3D326);
+  static Color greyTxt = const Color(0xff707070);
+
+  ///userPage clr
+  static Color user = const Color(0xffECF6FF);
+  static Color userFont = const Color(0xff8B8B8B);
+  static Color userIcon = const Color(0xff0F89FD);
 }

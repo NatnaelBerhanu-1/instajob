@@ -51,7 +51,7 @@ class CustomSocialButton extends StatelessWidget {
       onTap: onTap,
       borderRadius: BorderRadius.circular(15),
       bgColor: MyColors.white,
-      borderColor: Colors.blue.shade50.withOpacity(.70),
+      borderColor: MyColors.borderClr,
       child: Padding(
         padding: const EdgeInsets.all(5.0),
         child: ImageButton(

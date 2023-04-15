@@ -51,10 +51,12 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           Image.asset(
                             MyImages.user_4x,
-                            color: MyColors.blue.withOpacity(.20),
-                            height: 100,
-                            width: 100,
+                            fit: BoxFit.cover,
+                            color: MyColors.user,
+                            // height: 100,
+                            width: 90,
                           ),
+                          SizedBox(height: 19),
                           CommonText(
                             text: "John Smith",
                             fontSize: 25,
@@ -66,7 +68,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     Expanded(
                       child: Container(
-                        height: 120,
+                        height: 150,
                         color: MyColors.grey,
                       ),
                     )
@@ -79,7 +81,7 @@ class _HomePageState extends State<HomePage> {
                     text: "Account Details",
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
-                    fontColor: MyColors.grey,
+                    fontColor: MyColors.userFont,
                   ),
                 ),
                 SizedBox(height: 25),

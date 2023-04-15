@@ -45,12 +45,13 @@ class CustomAccDetails extends StatelessWidget {
             children: [
               ImageButton(
                 image: img,
-                color: index == selectedIndex ? MyColors.white : MyColors.blue,
+                color:
+                    index == selectedIndex ? MyColors.white : MyColors.userIcon,
               ),
               CommonText(
                 text: title,
                 fontColor:
-                    index == selectedIndex ? MyColors.white : MyColors.black,
+                    index == selectedIndex ? MyColors.white : MyColors.userFont,
                 fontSize: 13,
                 fontWeight: FontWeight.normal,
               ),

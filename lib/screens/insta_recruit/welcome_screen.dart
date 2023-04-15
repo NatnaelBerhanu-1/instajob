@@ -35,7 +35,7 @@ class WelcomeScreen extends StatelessWidget {
             Center(
               child: CommonText(
                 text: "Employee instantly",
-                fontColor: MyColors.grey,
+                fontColor: MyColors.greyTxt,
               ),
             ),
             SizedBox(height: 50),
@@ -49,7 +49,7 @@ class WelcomeScreen extends StatelessWidget {
               text:
                   "Login in to your existing account or register to make new\naccount.",
               fontWeight: FontWeight.w400,
-              fontColor: MyColors.grey,
+              fontColor: MyColors.greyTxt,
               fontSize: 13,
             ),
             SizedBox(height: 30),
