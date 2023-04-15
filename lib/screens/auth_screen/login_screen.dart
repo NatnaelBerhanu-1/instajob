@@ -7,6 +7,7 @@ import 'package:insta_job/bloc/validation/validation_state.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/screens/auth_screen/forgot_password.dart';
 import 'package:insta_job/screens/auth_screen/register_screen.dart';
+import 'package:insta_job/screens/insta_recruit/welcome_screen.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
@@ -61,7 +62,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 height: 30,
                                 width: 30,
                                 onTap: () {
-                                  Navigator.pop(context);
+                                  AppRoutes.pushAndRemoveUntil(
+                                      context, WelcomeScreen());
                                 },
                               ),
                               SizedBox(width: 50),

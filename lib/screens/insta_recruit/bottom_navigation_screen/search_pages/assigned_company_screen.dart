@@ -3,13 +3,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/company_bloc/company_bloc.dart';
-import 'package:insta_job/bloc/company_bloc/company_event.dart';
 import 'package:insta_job/bloc/company_bloc/company_state.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/add_new_company.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/search_company.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_colors.dart';
+import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_app_bar.dart';
+import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 import 'package:insta_job/widgets/custom_cards/assign_companies_tile.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
@@ -52,10 +53,14 @@ class _AssignCompanyState extends State<AssignCompany> {
                             builder: (context, state) {
                           return Column(
                             children: [
-                              CustomTextField(
+                              IconTextField(
                                 readOnly: true,
                                 hint: "Search Companies",
                                 color: MyColors.grey.withOpacity(.40),
+                                borderRadius: 25,
+                                prefixIcon: ImageButton(
+                                  image: MyImages.searchGrey,
+                                ),
                                 onPressed: () {
                                   AppRoutes.push(context, SearchCompany());
                                 },
@@ -64,7 +69,7 @@ class _AssignCompanyState extends State<AssignCompany> {
                           );
                         }),
                       ),
-                      SizedBox(width: 22),
+                      SizedBox(width: 15),
                       Expanded(
                           flex: 0,
                           child: CustomCommonCard(

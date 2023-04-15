@@ -18,79 +18,108 @@ class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: MyColors.white,
+      // backgroundColor: MyColors.lightBlue,
       body: Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(
-              child: Image.asset(
-                MyImages.logo,
-                height: 200,
-                width: 200,
+        padding: const EdgeInsets.only(bottom: 10, top: 0),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                height: 340,
+                // color: MyColors.blue,
+                child: Stack(
+                  children: [
+                    Image.asset(
+                      MyImages.bgCurve,
+                      color: MyColors.grey.withOpacity(.10),
+                      height: MediaQuery.of(context).size.height * 0.30,
+                      width: MediaQuery.of(context).size.width,
+                      fit: BoxFit.fitHeight,
+                    ),
+                    Positioned(
+                      top: 80,
+                      child: Image.asset(
+                        MyImages.welcomeLogo,
+                        height: MediaQuery.of(context).size.height * 0.35,
+                        width: MediaQuery.of(context).size.width,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            Center(child: Image.asset(MyImages.instaLogo_)),
-            Center(
-              child: CommonText(
-                text: "Employee instantly",
-                fontColor: MyColors.greyTxt,
-              ),
-            ),
-            SizedBox(height: 50),
-            CommonText(
-              text: "Welcome",
-              fontWeight: FontWeight.bold,
-              fontSize: 22,
-            ),
-            SizedBox(height: 5),
-            CommonText(
-              text:
-                  "Login in to your existing account or register to make new\naccount.",
-              fontWeight: FontWeight.w400,
-              fontColor: MyColors.greyTxt,
-              fontSize: 13,
-            ),
-            SizedBox(height: 30),
-            CustomIconButton(
-              image: MyImages.arrowWhite,
-              title: "Sign in",
-              onclick: () {
-                AppRoutes.push(context, LoginScreen());
-              },
-            ),
-            SizedBox(height: 20),
-            CustomIconButton(
-              image: MyImages.arrowWhite,
-              title: "Register Now",
-              backgroundColor: MyColors.white,
-              fontColor: MyColors.black,
-              borderColor: MyColors.blue,
-              iconColor: MyColors.blue,
-              onclick: () {
-                AppRoutes.pushAndRemoveUntil(context, RegisterScreen());
-              },
-            ),
-            SizedBox(height: 30),
-            CustomDivider(),
-            SizedBox(height: 30),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                CustomSocialButton(
-                  image: MyImages.google,
+              // SizedBox(height: 20),
+              Center(child: Image.asset(MyImages.instaLogo_)),
+              Padding(
+                padding:
+                    const EdgeInsets.only(right: 15.0, left: 15, bottom: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Center(
+                      child: CommonText(
+                        text: "Employee instantly",
+                        fontColor: MyColors.grey,
+                      ),
+                    ),
+                    SizedBox(height: 50),
+                    CommonText(
+                      text: "Welcome",
+                      fontWeight: FontWeight.bold,
+                      fontSize: 22,
+                    ),
+                    SizedBox(height: 5),
+                    CommonText(
+                      text:
+                          "Login in to your existing account or register to make new\naccount.",
+                      fontWeight: FontWeight.w400,
+                      fontColor: MyColors.grey,
+                      fontSize: 13,
+                    ),
+                    SizedBox(height: 30),
+                    CustomIconButton(
+                      image: MyImages.arrowWhite,
+                      title: "Sign in",
+                      onclick: () {
+                        AppRoutes.push(context, LoginScreen());
+                      },
+                    ),
+                    SizedBox(height: 20),
+                    CustomIconButton(
+                      image: MyImages.arrowWhite,
+                      title: "Register Now",
+                      backgroundColor: MyColors.white,
+                      fontColor: MyColors.black,
+                      borderColor: MyColors.blue,
+                      iconColor: MyColors.blue,
+                      onclick: () {
+                        AppRoutes.pushAndRemoveUntil(context, RegisterScreen());
+                      },
+                    ),
+                    SizedBox(height: 30),
+                    CustomDivider(),
+                    SizedBox(height: 30),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        CustomSocialButton(
+                          image: MyImages.google,
+                        ),
+                        CustomSocialButton(
+                          image: MyImages.twitter,
+                        ),
+                        CustomSocialButton(
+                          image: MyImages.facebook,
+                          onTap: () {},
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-                CustomSocialButton(
-                  image: MyImages.twitter,
-                ),
-                CustomSocialButton(
-                  image: MyImages.facebook,
-                  onTap: () {},
-                ),
-              ],
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );
