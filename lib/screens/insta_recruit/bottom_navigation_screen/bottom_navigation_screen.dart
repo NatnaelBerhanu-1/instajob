@@ -3,13 +3,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/globals.dart';
-import 'package:insta_job/provider/bottom_provider.dart';
 import 'package:insta_job/screens/insta_job_user/bottom_nav_screen/search_pages/search_jobs_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/notification_pages/interviews_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/assigned_company_screen.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
 
+import '../../../bloc/bottom_bloc/bottom_bloc.dart';
 import '../home_page.dart';
 
 class BottomNavScreen extends StatefulWidget {

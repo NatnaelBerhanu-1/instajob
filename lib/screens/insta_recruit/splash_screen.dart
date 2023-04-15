@@ -6,6 +6,7 @@ import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:insta_job/bloc/bottom_bloc/bottom_bloc.dart';
 import 'package:insta_job/bloc/company_bloc/company_bloc.dart';
 import 'package:insta_job/bloc/company_bloc/company_event.dart';
 import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
@@ -30,37 +31,17 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  checkUser() async {
-    final currentUser = FirebaseAuth.instance.currentUser;
-    var pref = await SharedPreferences.getInstance();
-
-    if (currentUser != null) {
-      var user = await jsonDecode(pref.getString("user").toString());
-      UserModel userModel = UserModel.fromJson(user);
-      Global.userModel = userModel;
-      print('USERMODEL ---------------        $user');
-      context.read<CompanyBloc>().add(LoadCompanyListEvent());
-      context.read<JobPositionBloc>().add(LoadJobPosListEvent());
-      Timer(Duration(seconds: 1),
-          () => AppRoutes.pushAndRemoveUntil(context, BottomNavScreen()));
-    } else {
-      Timer(
-          Duration(seconds: 1),
-          () => Navigator.push(
-              context, SlideRightRoute(widget: UserTypeScreen())));
-    }
-  }
-
   @override
   void initState() {
-    checkUser();
+    context.read<BottomBloc>().add(UserEvent());
+    context.read<CompanyBloc>().add(LoadCompanyListEvent());
+    context.read<JobPositionBloc>().add(LoadJobPosListEvent());
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: MyColors.blue,
       body: Padding(
         padding: const EdgeInsets.only(top: 0.0, bottom: 15),
         child: SafeArea(
@@ -72,9 +53,10 @@ class _SplashScreenState extends State<SplashScreen> {
               child: GestureDetector(
                 onVerticalDragStart: (val) {
                   // AppRoutes.push(context, UserTypeScreen());
-                  checkUser();
+                  // checkUser();
                   // Navigator.push(
                   //     context, SlideRightRoute(widget: UserTypeScreen()));
+                  context.read<BottomBloc>().add(UserEvent());
                 },
                 child: Column(
                   children: [
@@ -84,8 +66,6 @@ class _SplashScreenState extends State<SplashScreen> {
                       fontWeight: FontWeight.bold,
                       fontSize: 25,
                     ),
-                    // SizedBox(height: 20),
-                    // Spacer(),
                     Padding(
                       padding: const EdgeInsets.all(2.0),
                       child: Image.asset(
@@ -99,7 +79,6 @@ class _SplashScreenState extends State<SplashScreen> {
                       MyImages.instaJobLogo,
                       fit: BoxFit.cover,
                     ),
-                    // Spacer(),
                     Spacer(),
                     ImageButton(
                       image: MyImages.startArrow,

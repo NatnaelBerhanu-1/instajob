@@ -15,7 +15,7 @@ import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:insta_job/widgets/custom_expantion_tile.dart';
 
-import '../../../../../provider/bottom_provider.dart';
+import '../../../../../bloc/bottom_bloc/bottom_bloc.dart';
 import '../../../../../utils/my_colors.dart';
 import 'view_candidate.dart';
 

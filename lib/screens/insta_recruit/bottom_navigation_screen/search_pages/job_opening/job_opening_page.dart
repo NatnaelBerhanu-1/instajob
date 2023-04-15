@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
 import 'package:insta_job/bloc/job_position/job_pos_state.dart';
-import 'package:insta_job/provider/bottom_provider.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/job_opening/add_job_position_screen.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
@@ -12,6 +11,8 @@ import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:insta_job/widgets/custom_cards/job_opening_tile.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
+
+import '../../../../../bloc/bottom_bloc/bottom_bloc.dart';
 
 class JobOpeningScreen extends StatelessWidget {
   const JobOpeningScreen({Key? key}) : super(key: key);

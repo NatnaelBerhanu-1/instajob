@@ -9,7 +9,6 @@ import 'package:insta_job/bloc/company_bloc/company_event.dart';
 import 'package:insta_job/bloc/company_bloc/company_state.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/network/end_points.dart';
-import 'package:insta_job/provider/bottom_provider.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_app_bar.dart';
 import 'package:insta_job/widgets/custom_button/custom_btn.dart';
@@ -18,6 +17,7 @@ import 'package:insta_job/widgets/custom_cards/assign_companies_tile.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
 
+import '../../../../bloc/bottom_bloc/bottom_bloc.dart';
 import '../bottom_navigation_screen.dart';
 
 class AddNewCompany extends StatefulWidget {

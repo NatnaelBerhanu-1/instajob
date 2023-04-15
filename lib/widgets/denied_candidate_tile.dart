@@ -2,11 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:insta_job/provider/bottom_provider.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/bottom_navigation_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/applicants_page.dart';
 import 'package:insta_job/utils/app_routes.dart';
 
+import '../bloc/bottom_bloc/bottom_bloc.dart';
 import '../utils/my_colors.dart';
 import '../utils/my_images.dart';
 import 'custom_button/custom_img_button.dart';

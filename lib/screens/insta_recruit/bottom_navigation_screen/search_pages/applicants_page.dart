@@ -10,7 +10,7 @@ import 'package:insta_job/widgets/custom_cards/applicant_tile.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../provider/bottom_provider.dart';
+import '../../../../bloc/bottom_bloc/bottom_bloc.dart';
 
 class Applicants extends StatelessWidget {
   const Applicants({Key? key}) : super(key: key);

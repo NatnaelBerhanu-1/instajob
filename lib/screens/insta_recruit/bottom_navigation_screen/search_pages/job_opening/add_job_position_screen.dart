@@ -12,9 +12,9 @@ import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:insta_job/widgets/custom_divider.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
 
+import '../../../../../bloc/bottom_bloc/bottom_bloc.dart';
 import '../../../../../bloc/global_cubit/global_cubit.dart';
 import '../../../../../bloc/global_cubit/global_state.dart';
-import '../../../../../provider/bottom_provider.dart';
 import '../../../../../utils/my_colors.dart';
 import '../../../../../utils/my_images.dart';
 

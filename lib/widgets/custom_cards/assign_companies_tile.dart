@@ -8,7 +8,7 @@ import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:provider/provider.dart';
 
-import '../../provider/bottom_provider.dart';
+import '../../bloc/bottom_bloc/bottom_bloc.dart';
 import '../../screens/insta_recruit/bottom_navigation_screen/search_pages/job_opening/job_opening_page.dart';
 import '../custom_button/custom_img_button.dart';
 

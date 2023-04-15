@@ -8,12 +8,13 @@ import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
 import 'package:insta_job/bloc/validation/validation_bloc.dart';
 import 'package:insta_job/network/dio/dio_client.dart';
 import 'package:insta_job/network/end_points.dart';
-import 'package:insta_job/provider/bottom_provider.dart';
 import 'package:insta_job/repository/auth_repository.dart';
 import 'package:insta_job/repository/company_repo.dart';
 import 'package:insta_job/repository/job_position_repo.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'bloc/bottom_bloc/bottom_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -37,7 +38,7 @@ Future<void> init() async {
   sl.registerLazySingleton(
       () => AuthCubit(authRepository: sl(), sharedPreferences: sl()));
   sl.registerLazySingleton(() => CompanyBloc(sl()));
-  sl.registerLazySingleton(() => BottomBloc());
+  sl.registerLazySingleton(() => BottomBloc()..add(UserEvent()));
   sl.registerLazySingleton(() => JobPositionBloc(sl()));
 
   /// other
