@@ -11,7 +11,7 @@ class CompanyRepository {
 
   getCompanies() async {
     try {
-      var map = {"employe_id": Global.userModel?.id.toString()};
+      var map = {"employe_id": "2"};
       var response =
           await dioClient.post(data: map, uri: EndPoint.getCompanies);
       return ApiResponse.withSuccess(response);
@@ -38,8 +38,7 @@ class CompanyRepository {
     try {
       var map = {
         "search": search,
-        "type": "type",
-        "employe_id": "empId",
+        "employe_id": Global.userModel?.type == "user" ? "" : "2",
       };
       var response =
           await dioClient.post(data: map, uri: EndPoint.searchCompany);

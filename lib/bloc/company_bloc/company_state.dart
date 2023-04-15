@@ -31,12 +31,12 @@ class CompanyLoaded extends CompanyState {
 }
 
 class SearchCompanyLoaded extends CompanyState {
-  final List<CompanyModel> searchCompany;
+  final List<CompanyModel> searchCompanyList;
 
-  const SearchCompanyLoaded(this.searchCompany);
+  const SearchCompanyLoaded(this.searchCompanyList);
 
   @override
-  List<Object?> get props => [searchCompany];
+  List<Object?> get props => [searchCompanyList];
 }
 
 class ErrorState extends CompanyState {

@@ -7,6 +7,8 @@ import 'package:insta_job/bloc/company_bloc/company_event.dart';
 import 'package:insta_job/bloc/company_bloc/company_state.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/add_new_company.dart';
+import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/search_company.dart';
+import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/widgets/custom_app_bar.dart';
 import 'package:insta_job/widgets/custom_cards/assign_companies_tile.dart';
@@ -23,8 +25,6 @@ class AssignCompany extends StatefulWidget {
 }
 
 class _AssignCompanyState extends State<AssignCompany> {
-  final TextEditingController search = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,21 +51,14 @@ class _AssignCompanyState extends State<AssignCompany> {
                       Expanded(
                         child: BlocBuilder<CompanyBloc, CompanyState>(
                             builder: (context, state) {
-                          return Stack(
+                          return Column(
                             children: [
-                              // Expanded(
-                              //   child: ListView.builder(
-                              //       itemCount: 2,
-                              //       itemBuilder: (context, index) {
-                              //         return Container();
-                              //       }),
-                              // ),
                               CustomTextField(
-                                controller: search,
+                                readOnly: true,
                                 hint: "Search Companies",
-                                onChanged: (searchList) {
-                                  context.read<CompanyBloc>().add(
-                                      CompanySearchEvent(search: search.text));
+                                color: MyColors.grey.withOpacity(.40),
+                                onPressed: () {
+                                  AppRoutes.push(context, SearchCompany());
                                 },
                               ),
                             ],

@@ -39,12 +39,12 @@ class CompanyBloc extends Bloc<CompanyEvent, CompanyState> {
     });
 
     on<CompanySearchEvent>((event, emit) async {
-      await companyRepository.searchCompany(search: event.search);
-      await searchCompany(emit);
+      var list = await _getSearchCompany(emit, search: event.search);
+      emit(SearchCompanyLoaded(list));
     });
   }
 
-  searchCompany(Emitter emit, {String? search, String? type}) async {
+  _getSearchCompany(Emitter emit, {String? search}) async {
     ApiResponse response = await companyRepository.searchCompany(
       search: search,
     );

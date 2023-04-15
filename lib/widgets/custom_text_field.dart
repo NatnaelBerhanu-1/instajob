@@ -176,6 +176,7 @@ class CustomTextField extends StatelessWidget {
             color: MyColors.black,
           ),
           onChanged: onChanged,
+          onTap: onPressed,
           maxLines: maxLine,
           validator: validator,
           readOnly: readOnly ?? false,
