@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/job_opening/view_candidate.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
@@ -10,6 +9,8 @@ import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 import 'package:insta_job/widgets/custom_cards/applicant_tile.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:provider/provider.dart';
+
+import '../../../../provider/bottom_provider.dart';
 
 class Applicants extends StatelessWidget {
   const Applicants({Key? key}) : super(key: key);
@@ -21,9 +22,12 @@ class Applicants extends StatelessWidget {
         preferredSize: Size(double.infinity, kToolbarHeight),
         child: CustomAppBar(
           onTap: () {
+            // context
+            //     .read<BottomCubit>()
+            //     .setSelectedScreen(true, screenName: ViewCandidates());
             context
-                .read<GlobalCubit>()
-                .setSelectedScreen(true, screenName: ViewCandidates());
+                .read<BottomBloc>()
+                .add(SetScreenEvent(true, screenName: ViewCandidates()));
           },
           centerTitle: false,
           leadingImage: MyImages.backArrowBorder,

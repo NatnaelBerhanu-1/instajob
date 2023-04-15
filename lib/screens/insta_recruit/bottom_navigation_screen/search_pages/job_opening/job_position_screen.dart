@@ -15,8 +15,7 @@ import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:insta_job/widgets/custom_expantion_tile.dart';
 
-import '../../../../../bloc/global_cubit/global_cubit.dart';
-import '../../../../../bloc/global_cubit/global_state.dart';
+import '../../../../../provider/bottom_provider.dart';
 import '../../../../../utils/my_colors.dart';
 import 'view_candidate.dart';
 
@@ -42,13 +41,14 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
             child: Image.asset(MyImages.jobUser, fit: BoxFit.cover)),
         Positioned(
           top: 30,
-          child:
-              BlocBuilder<GlobalCubit, InitialState>(builder: (context, value) {
+          child: BlocBuilder<BottomBloc, BottomInitialState>(
+              builder: (context, value) {
             return ImageButton(
               onTap: () {
                 context
-                    .read<GlobalCubit>()
-                    .setSelectedScreen(true, screenName: JobOpeningScreen());
+                    .read<BottomBloc>()
+                    .add(SetScreenEvent(true, screenName: JobOpeningScreen()));
+
                 AppRoutes.push(context, BottomNavScreen());
               },
               image: MyImages.backArrow,
@@ -128,7 +128,7 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                                 buildResponsibilityTile(widget.jobPosModel!),
                                 buildTopSkillsTile(widget.jobPosModel!),
                                 SizedBox(height: 15),
-                                BlocBuilder<GlobalCubit, InitialState>(
+                                BlocBuilder<BottomBloc, BottomInitialState>(
                                     builder: (context, value) {
                                   return Global.type == "user"
                                       ? CustomButton(
@@ -144,13 +144,13 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                                                 child: CustomButton(
                                               title: "Edit Listing",
                                               onTap: () {
-                                                context
-                                                    .read<GlobalCubit>()
-                                                    .setSelectedScreen(true,
+                                                context.read<BottomBloc>().add(
+                                                    SetScreenEvent(true,
                                                         screenName:
                                                             AddJobPositionScreen(
                                                                 isUpdate:
-                                                                    true));
+                                                                    true)));
+
                                                 AppRoutes.push(
                                                     context, BottomNavScreen());
                                               },
@@ -160,11 +160,11 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                                                 child: CustomButton(
                                               title: "View Candidates",
                                               onTap: () {
-                                                context
-                                                    .read<GlobalCubit>()
-                                                    .setSelectedScreen(true,
+                                                context.read<BottomBloc>().add(
+                                                    SetScreenEvent(true,
                                                         screenName:
-                                                            ViewCandidates());
+                                                            ViewCandidates()));
+
                                                 AppRoutes.push(
                                                     context, BottomNavScreen());
                                               },

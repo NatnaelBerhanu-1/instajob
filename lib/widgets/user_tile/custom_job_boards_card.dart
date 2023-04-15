@@ -60,7 +60,7 @@ class CustomJobBoardsCard extends StatelessWidget {
                       SizedBox(height: 10),
                       CustomCommonCard(
                         borderRadius: BorderRadius.circular(5),
-                        bgColor: MyColors.white.withOpacity(.30),
+                        bgColor: MyColors.white.withOpacity(.20),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: CommonText(

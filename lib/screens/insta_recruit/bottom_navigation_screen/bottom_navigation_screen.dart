@@ -2,15 +2,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
 import 'package:insta_job/globals.dart';
+import 'package:insta_job/provider/bottom_provider.dart';
 import 'package:insta_job/screens/insta_job_user/bottom_nav_screen/search_pages/search_jobs_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/notification_pages/interviews_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/assigned_company_screen.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
 
-import '../../../bloc/global_cubit/global_state.dart';
 import '../home_page.dart';
 
 class BottomNavScreen extends StatefulWidget {
@@ -29,8 +28,8 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var bottomBloc = context.read<GlobalCubit>();
-    return BlocBuilder<GlobalCubit, InitialState>(
+    var bottomBloc = context.read<BottomBloc>();
+    return BlocBuilder<BottomBloc, BottomInitialState>(
       builder: (BuildContext context, state) {
         return Scaffold(
           bottomNavigationBar: Container(
@@ -43,8 +42,8 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
               children: [
                 buildColumn(
                   onTap: () {
-                    bottomBloc.setSelectedScreen(false);
-                    bottomBloc.getIndex(0);
+                    bottomBloc.add(SetScreenEvent(false));
+                    bottomBloc.add(GetIndexEvent(0));
                   },
                   index: 0,
                   selectedIndex: bottomBloc.currentIndex,
@@ -52,8 +51,10 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
                 ),
                 buildColumn(
                   onTap: () {
-                    bottomBloc.setSelectedScreen(false);
-                    bottomBloc.getIndex(1);
+                    bottomBloc.add(SetScreenEvent(false));
+                    bottomBloc.add(GetIndexEvent(1));
+                    // bottomBloc.setSelectedScreen(false);
+                    // bottomBloc.getIndex(1);
                   },
                   index: 1,
                   selectedIndex: bottomBloc.currentIndex,
@@ -61,8 +62,10 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
                 ),
                 buildColumn(
                   onTap: () {
-                    bottomBloc.setSelectedScreen(false);
-                    bottomBloc.getIndex(2);
+                    bottomBloc.add(SetScreenEvent(false));
+                    bottomBloc.add(GetIndexEvent(2));
+                    // bottomBloc.setSelectedScreen(false);
+                    // bottomBloc.getIndex(2);
                   },
                   index: 2,
                   selectedIndex: bottomBloc.currentIndex,

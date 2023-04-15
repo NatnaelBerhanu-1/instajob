@@ -14,6 +14,7 @@ import 'package:insta_job/widgets/custom_text_field.dart';
 
 import '../../../../../bloc/global_cubit/global_cubit.dart';
 import '../../../../../bloc/global_cubit/global_state.dart';
+import '../../../../../provider/bottom_provider.dart';
 import '../../../../../utils/my_colors.dart';
 import '../../../../../utils/my_images.dart';
 
@@ -64,13 +65,13 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
               ],
             ),
           ),
-          leading:
-              BlocBuilder<GlobalCubit, InitialState>(builder: (context, value) {
+          leading: BlocBuilder<BottomBloc, BottomInitialState>(
+              builder: (context, value) {
             return ImageButton(
               onTap: () {
                 context
-                    .read<GlobalCubit>()
-                    .setSelectedScreen(false, screenName: BottomNavScreen());
+                    .read<BottomBloc>()
+                    .add(SetScreenEvent(false, screenName: BottomNavScreen()));
                 // Navigator.pop(context);
               },
               image: MyImages.backArrow,
