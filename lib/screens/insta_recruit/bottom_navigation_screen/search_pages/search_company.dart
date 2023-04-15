@@ -8,6 +8,7 @@ import '../../../../bloc/company_bloc/company_event.dart';
 import '../../../../utils/my_colors.dart';
 import '../../../../utils/my_images.dart';
 import '../../../../widgets/custom_app_bar.dart';
+import '../../../../widgets/custom_button/custom_img_button.dart';
 import '../../../../widgets/custom_text_field.dart';
 
 class SearchCompany extends StatefulWidget {
@@ -40,9 +41,14 @@ class _SearchCompanyState extends State<SearchCompany> {
               BlocBuilder<CompanyBloc, CompanyState>(builder: (context, state) {
             return Column(
               children: [
-                CustomTextField(
+                IconTextField(
                   controller: search,
                   hint: "Search Companies",
+                  color: MyColors.grey.withOpacity(.40),
+                  borderRadius: 25,
+                  prefixIcon: ImageButton(
+                    image: MyImages.searchGrey,
+                  ),
                   onChanged: (searchList) {
                     context.read<CompanyBloc>().add(
                           CompanySearchEvent(search: search.text),

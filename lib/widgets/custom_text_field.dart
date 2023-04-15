@@ -17,6 +17,7 @@ class IconTextField extends StatelessWidget {
   final Color? hintColor;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
+  final double? borderRadius;
   final int? maxLine;
   final int? maxLength;
   final TextEditingController? controller;
@@ -49,12 +50,18 @@ class IconTextField extends StatelessWidget {
     this.readOnly,
     this.lblColor,
     this.maxLength,
-    List? inputFormatters,
+    this.borderRadius,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    OutlineInputBorder border = OutlineInputBorder(
+      borderRadius: BorderRadius.all(Radius.circular(borderRadius ?? 12)),
+      borderSide:
+          BorderSide(color: color ?? MyColors.grey.withOpacity(.40), width: 1),
+    );
     return TextFormField(
+      onTap: onPressed,
       style: TextStyle(
         color: MyColors.black,
       ),
@@ -79,7 +86,7 @@ class IconTextField extends StatelessWidget {
         isDense: true,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(12)),
-          borderSide: BorderSide(color: MyColors.grey, width: 1.5),
+          borderSide: BorderSide(color: MyColors.grey, width: 1),
         ),
         // prefixText: "+973",
         prefixIcon: prefixIcon ?? SizedBox(),
@@ -90,25 +97,10 @@ class IconTextField extends StatelessWidget {
           fontWeight: FontWeight.w400,
           fontSize: 15,
         ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(12)),
-          borderSide: BorderSide(
-              color: color ?? MyColors.grey.withOpacity(.40), width: 1.5),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(12)),
-          borderSide: BorderSide(color: color ?? MyColors.blue, width: 1.5),
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(12)),
-          borderSide: BorderSide(
-              color: color ?? MyColors.grey.withOpacity(.40), width: 1.5),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(12)),
-          borderSide: BorderSide(
-              color: color ?? MyColors.grey.withOpacity(.40), width: 1.5),
-        ),
+        enabledBorder: border,
+        focusedBorder: border,
+        focusedErrorBorder: border,
+        errorBorder: border,
       ),
     );
   }
@@ -122,6 +114,7 @@ class CustomTextField extends StatelessWidget {
   final Color? lblColor;
   final Color? hintColor;
   final Widget? suffixIcon;
+  final double? borderRadius;
   final int? maxLine;
   final int? maxLength;
   final TextEditingController? controller;
@@ -154,10 +147,16 @@ class CustomTextField extends StatelessWidget {
     this.maxLength,
     List? inputFormatters,
     this.suffixIcon,
+    this.borderRadius,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    OutlineInputBorder border = OutlineInputBorder(
+      borderRadius: BorderRadius.all(Radius.circular(borderRadius ?? 12)),
+      borderSide:
+          BorderSide(color: color ?? MyColors.grey.withOpacity(.40), width: 1),
+    );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -194,10 +193,7 @@ class CustomTextField extends StatelessWidget {
             fillColor: fillColor ?? Colors.white,
             filled: true,
             isDense: true,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(12)),
-              borderSide: BorderSide(color: MyColors.grey, width: 1.5),
-            ),
+            border: border,
             // prefixText: "+973",
 
             hintText: "$hint",
@@ -206,19 +202,9 @@ class CustomTextField extends StatelessWidget {
               fontWeight: FontWeight.w400,
               fontSize: 15,
             ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(12)),
-              borderSide: BorderSide(
-                  color: color ?? MyColors.grey.withOpacity(.40), width: 1.5),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(12)),
-              borderSide: BorderSide(color: color ?? MyColors.blue, width: 1.5),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(12)),
-              borderSide: BorderSide(color: color ?? MyColors.grey, width: 1.5),
-            ),
+            enabledBorder: border,
+            focusedBorder: border,
+            errorBorder: border,
           ),
         ),
       ],
@@ -232,7 +218,7 @@ class CustomPhonePickerTextField extends StatelessWidget {
   CustomPhonePickerTextField({Key? key, this.controller, this.label})
       : super(key: key);
   InputBorder border = OutlineInputBorder(
-      borderSide: BorderSide(color: MyColors.grey.withOpacity(.50), width: 1.5),
+      borderSide: BorderSide(color: MyColors.grey.withOpacity(.50), width: 1),
       borderRadius: BorderRadius.circular(10));
   @override
   Widget build(BuildContext context) {

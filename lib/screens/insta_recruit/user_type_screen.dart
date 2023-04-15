@@ -49,6 +49,7 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                   MyImages.logo,
                   height: MediaQuery.of(context).size.height * 0.35,
                   width: MediaQuery.of(context).size.width,
+                  fit: BoxFit.fitHeight,
                 ),
               ),
               BlocBuilder<GlobalCubit, InitialState>(builder: (context, state) {

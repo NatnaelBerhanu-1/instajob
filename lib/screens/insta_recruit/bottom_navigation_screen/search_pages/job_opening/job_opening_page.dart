@@ -22,47 +22,57 @@ class JobOpeningScreen extends StatelessWidget {
     return Scaffold(
         appBar: PreferredSize(
             preferredSize: Size(double.infinity, 90),
-            child: AppBar(
-              elevation: 0,
-              backgroundColor: MyColors.white,
-              toolbarHeight: 70,
-              title: IconTextField(
-                prefixIcon: ImageButton(
-                  image: MyImages.searchGrey,
-                ),
-                hint: "search",
-              ),
-              leading: ImageButton(
-                image: MyImages.backArrowBorder,
-                onTap: () {
-                  context
-                      .read<GlobalCubit>()
-                      .setSelectedScreen(false, screenName: JobOpeningScreen());
-                },
-              ),
-              actions: [
-                GestureDetector(
-                  onTap: () {
-                    context.read<GlobalCubit>().setSelectedScreen(true,
-                        screenName: AddJobPositionScreen());
-                    // AppRoutes.push(context, EditListing());
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 10.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: MyColors.blue, shape: BoxShape.circle),
-                      child: Padding(
-                        padding: const EdgeInsets.all(9.0),
-                        child: Icon(
-                          Icons.add,
-                          color: MyColors.white,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 42.0, bottom: 10),
+              child: Row(
+                // elevation: 0,
+                // leadingWidth: 50,
+                // backgroundColor: MyColors.white,
+                // toolbarHeight: 70,
+                // title:
+
+                children: [
+                  ImageButton(
+                    image: MyImages.backArrowBorder,
+                    width: 30,
+                    height: 30,
+                    onTap: () {
+                      context.read<GlobalCubit>().setSelectedScreen(false,
+                          screenName: JobOpeningScreen());
+                    },
+                  ),
+                  Expanded(
+                    child: IconTextField(
+                      prefixIcon: ImageButton(
+                        image: MyImages.searchGrey,
+                      ),
+                      borderRadius: 25,
+                      hint: "search",
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      context.read<GlobalCubit>().setSelectedScreen(true,
+                          screenName: AddJobPositionScreen());
+                      // AppRoutes.push(context, EditListing());
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 10.0, left: 10),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: MyColors.blue, shape: BoxShape.circle),
+                        child: Padding(
+                          padding: const EdgeInsets.all(9.0),
+                          child: Icon(
+                            Icons.add,
+                            color: MyColors.white,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             )),
         body: Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
