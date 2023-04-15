@@ -51,7 +51,7 @@ class _SettingScreenState extends State<SettingScreen> {
               SizedBox(height: 10),
               SettingTile(
                 onTap: () {
-                  AppRoutes.push(context, MemberShipScreen());
+                  AppRoutes.push(context, MemberShipScreen(isAgreement: false));
                 },
                 leadingImage: MyImages.membership,
                 title: "MemberShip Agreement",

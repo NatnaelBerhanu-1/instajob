@@ -31,6 +31,7 @@ class _AssignCompanyState extends State<AssignCompany> {
         appBar: PreferredSize(
           preferredSize: Size(double.infinity, kToolbarHeight),
           child: CustomAppBar(
+            onTap: () {},
             leadingImage: "",
             title: "Assign Companies",
           ),

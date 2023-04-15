@@ -11,6 +11,7 @@ class MyColors {
   static Color lightBlue = Colors.blue.withOpacity(.40);
   static Color transparent = const Color(0x00000000);
   static Color lightGrey = const Color(0xffEBEBEB);
+  static Color lightBlack = const Color(0xff262626);
   static Color borderClr = const Color(0xffEBF5FF);
   static Color greyTxt = const Color(0xff707070);
 

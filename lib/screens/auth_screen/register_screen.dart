@@ -192,7 +192,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     recognizer: TapGestureRecognizer()
                                       ..onTap = () {
                                         AppRoutes.push(
-                                            context, MemberShipScreen());
+                                            context,
+                                            MemberShipScreen(
+                                                isAgreement: false));
                                       },
                                     text: "Terms & Conditions",
                                     style: TextStyle(

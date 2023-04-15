@@ -12,6 +12,7 @@ import 'package:insta_job/network/api_response.dart';
 import 'package:insta_job/repository/auth_repository.dart';
 import 'package:insta_job/screens/auth_screen/login_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/bottom_navigation_screen.dart';
+import 'package:insta_job/screens/insta_recruit/membership_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthCubit extends Cubit<AuthInitialState> {
@@ -40,9 +41,17 @@ class AuthCubit extends Cubit<AuthInitialState> {
       var userModel = UserModel.fromJson(response.response.data['data']);
       Global.userModel = userModel;
       emit(AuthState(userModel: userModel));
-      navigationKey.currentState?.pushAndRemoveUntil(
-          MaterialPageRoute(builder: (_) => const BottomNavScreen()),
-          (route) => false);
+      var agree = sharedPreferences.getBool('isAgree');
+      if (agree == true) {
+        navigationKey.currentState?.pushAndRemoveUntil(
+            MaterialPageRoute(builder: (_) => const BottomNavScreen()),
+            (route) => false);
+      } else {
+        navigationKey.currentState?.pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (_) => const MemberShipScreen(isAgreement: true)),
+            (route) => false);
+      }
     } else {
       emit(ErrorState("Something went wrong"));
     }
