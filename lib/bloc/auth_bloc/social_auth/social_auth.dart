@@ -22,7 +22,7 @@ class SocialAuth {
           email: email, password: password, name: name, isUser: isUser);
       context.read<CompanyBloc>().add(LoadCompanyListEvent());
     }).catchError((e) {
-      // showToast(e.message);
+      showToast(e.message);
       print("7777777777777777777777777 ${e.message}");
     });
   }

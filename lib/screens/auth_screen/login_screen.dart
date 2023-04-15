@@ -2,9 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:insta_job/bloc/auth_bloc/auth_cubit.dart';
-import 'package:insta_job/bloc/auth_bloc/auth_state.dart';
-import 'package:insta_job/bloc/auth_bloc/social_auth/social_auth.dart';
 import 'package:insta_job/bloc/validation/validation_bloc.dart';
 import 'package:insta_job/bloc/validation/validation_state.dart';
 import 'package:insta_job/globals.dart';
@@ -14,8 +11,9 @@ import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
 
-import '../../bloc/company_bloc/company_bloc.dart';
-import '../../bloc/company_bloc/company_event.dart';
+import '../../bloc/auth_bloc/auth_cubit.dart';
+import '../../bloc/auth_bloc/auth_state.dart';
+import '../../bloc/auth_bloc/social_auth/social_auth.dart';
 import '../../utils/my_colors.dart';
 import '../../utils/my_images.dart';
 import '../../widgets/custom_button/custom_all_small_button.dart';
@@ -177,60 +175,58 @@ class _LoginScreenState extends State<LoginScreen> {
                             }
                           }, builder: (context, state) {
                             // var authCubit = context.read<AuthCubit>();
-                            return CustomIconButton(
-                              image: MyImages.arrowWhite,
-                              title: "Sign In Now",
-                              backgroundColor: MyColors.blue,
-                              fontColor: MyColors.white,
-                              borderColor: MyColors.blue,
-                              iconColor: MyColors.white,
-                              onclick: () {
-                                if (formKey.currentState!.validate()) {
-                                  if (Global.type == "user") {
-                                    SocialAuth.loginWithEmail(context,
-                                        email: email.text,
-                                        password: password.text,
-                                        isUser: true);
-                                  } else {
-                                    SocialAuth.loginWithEmail(context,
-                                        email: email.text,
-                                        password: password.text);
+                            return BlocConsumer<AuthCubit, AuthInitialState>(
+                                listener: (context, state) {
+                              if (state is ErrorState) {
+                                showToast(state.error);
+                              }
+                            }, builder: (context, state) {
+                              return CustomIconButton(
+                                image: MyImages.arrowWhite,
+                                title: "Sign In Now",
+                                backgroundColor: MyColors.blue,
+                                fontColor: MyColors.white,
+                                loading:
+                                    state is AuthLoadingState ? true : false,
+                                borderColor: MyColors.blue,
+                                iconColor: MyColors.white,
+                                onclick: () {
+                                  if (formKey.currentState!.validate()) {
+                                    if (Global.type == "user") {
+                                      SocialAuth.loginWithEmail(context,
+                                          email: email.text,
+                                          password: password.text,
+                                          isUser: true);
+                                    } else {
+                                      SocialAuth.loginWithEmail(context,
+                                          email: email.text,
+                                          password: password.text);
+                                    }
                                   }
-                                } else {
-                                  print("1111111111");
-                                }
 
-                                // if (Global.type == "user") {
-                                //   AppRoutes.pushAndRemoveUntil(
-                                //       context, MemberShipScreen());
-                                // } else {
-                                //   AppRoutes.pushAndRemoveUntil(
-                                //       context, BottomNavScreen());
-                                // }
-                              },
-                            );
+                                  // if (Global.type == "user") {
+                                  //   AppRoutes.pushAndRemoveUntil(
+                                  //       context, MemberShipScreen());
+                                  // } else {
+                                  //   AppRoutes.pushAndRemoveUntil(
+                                  //       context, BottomNavScreen());
+                                  // }
+                                },
+                              );
+                            });
                           }),
                           SizedBox(height: 20),
-                          BlocConsumer<AuthCubit, AuthInitialState>(
-                              listener: (context, state) {
-                            if (state is ErrorState) {
-                              showToast(state.error);
-                            }
-                          }, builder: (context, state) {
-                            var authCubit = context.read<AuthCubit>();
-                            return CustomIconButton(
-                              image: MyImages.arrowWhite,
-                              title: "Register Now",
-                              backgroundColor: MyColors.white,
-                              loading: state is AuthLoadingState ? true : false,
-                              fontColor: MyColors.black,
-                              borderColor: MyColors.blue,
-                              iconColor: MyColors.blue,
-                              onclick: () {
-                                AppRoutes.push(context, RegisterScreen());
-                              },
-                            );
-                          }),
+                          CustomIconButton(
+                            image: MyImages.arrowWhite,
+                            title: "Register Now",
+                            backgroundColor: MyColors.white,
+                            fontColor: MyColors.black,
+                            borderColor: MyColors.blue,
+                            iconColor: MyColors.blue,
+                            onclick: () {
+                              AppRoutes.push(context, RegisterScreen());
+                            },
+                          ),
                           SizedBox(height: 30),
                           CustomDivider(),
                           SizedBox(height: 30),

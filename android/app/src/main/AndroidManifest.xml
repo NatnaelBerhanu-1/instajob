@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.saurabhinfosys.insta_job">
    <application
-        android:label="insta_job"
+        android:label="instaJob"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

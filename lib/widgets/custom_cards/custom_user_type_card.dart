@@ -69,13 +69,14 @@ class UserTypeCard extends StatelessWidget {
           ),
           Align(
             alignment: Alignment.topCenter,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
+            child: FloatingActionButton(
+              heroTag: "$title",
+              onPressed: () {},
               child: Container(
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: MyColors.white,
-                  boxShadow: [boxShadow],
+                  // boxShadow: [boxShadow],
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(15.0),
@@ -86,7 +87,27 @@ class UserTypeCard extends StatelessWidget {
                 ),
               ),
             ),
-          ),
+          )
+          // Align(
+          //   alignment: Alignment.topCenter,
+          //   child: Padding(
+          //     padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
+          //     child: Container(
+          //       decoration: BoxDecoration(
+          //         shape: BoxShape.circle,
+          //         color: MyColors.white,
+          //         boxShadow: [boxShadow],
+          //       ),
+          //       child: Padding(
+          //         padding: const EdgeInsets.all(15.0),
+          //         child: ImageButton(
+          //           image: image,
+          //           padding: EdgeInsets.zero,
+          //         ),
+          //       ),
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );

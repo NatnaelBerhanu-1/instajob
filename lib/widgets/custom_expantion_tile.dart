@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:insta_job/model/job_position_model.dart';
 
 import '../utils/my_colors.dart';
 import 'custom_cards/custom_common_card.dart';
@@ -19,6 +20,7 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
           decoration: BoxDecoration(
@@ -46,9 +48,12 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
                 style: TextStyle(color: MyColors.black),
               ),
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: widget.children,
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: widget.children,
+                  ),
                 )
               ],
             ),
@@ -60,7 +65,7 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
   }
 }
 
-Widget buildTopSkillsTile() {
+Widget buildTopSkillsTile(JobPosModel jobPosModel) {
   return CustomExpansionTile(
       title: "Top Skills",
       children: Column(
@@ -68,30 +73,31 @@ Widget buildTopSkillsTile() {
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
-              children: List.generate(
-                  100,
-                  (index) => Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: CustomCommonCard(
-                          bgColor: MyColors.lightBlue.withOpacity(.20),
-                          borderRadius: BorderRadius.circular(5),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: CommonText(
-                              text: "Skill Name",
-                              fontColor: MyColors.blue,
-                              fontSize: 13,
-                            ),
-                          ),
-                        ),
-                      )),
+              children: List.generate(jobPosModel.topskills!.length, (index) {
+                print("TOPPPPPPPPPPPPPPPPP ${jobPosModel.topskills?[index]}");
+                return Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: CustomCommonCard(
+                    bgColor: MyColors.lightBlue.withOpacity(.20),
+                    borderRadius: BorderRadius.circular(5),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: CommonText(
+                        text: jobPosModel.topskills?[index],
+                        fontColor: MyColors.blue,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ),
+                );
+              }),
             ),
           )
         ],
       ));
 }
 
-Widget buildResponsibilityTile() {
+Widget buildResponsibilityTile(JobPosModel jobPosModel) {
   return CustomExpansionTile(
       title: "Responsibility",
       children: Column(
@@ -107,59 +113,59 @@ Widget buildResponsibilityTile() {
                   )),
               SizedBox(width: 7),
               CommonText(
-                text: "Lorem ipsum dolor sit amet, consectetur adipiscing ",
+                text: jobPosModel.responsilibites,
                 fontSize: 13,
                 fontColor: MyColors.grey,
               ),
             ],
           ),
           SizedBox(height: 8),
-          Row(
-            children: [
-              Container(
-                  height: 8,
-                  width: 8,
-                  decoration: BoxDecoration(
-                    color: MyColors.blue,
-                    shape: BoxShape.circle,
-                  )),
-              SizedBox(width: 7),
-              CommonText(
-                text: "Lorem ipsum dolor sit amet, consectetur adipiscing ",
-                fontSize: 13,
-                fontColor: MyColors.grey,
-              ),
-            ],
-          ),
-          SizedBox(height: 8),
-          Row(
-            children: [
-              Container(
-                  height: 8,
-                  width: 8,
-                  decoration: BoxDecoration(
-                    color: MyColors.blue,
-                    shape: BoxShape.circle,
-                  )),
-              SizedBox(width: 7),
-              CommonText(
-                text: "Lorem ipsum dolor sit amet, consectetur adipiscing ",
-                fontSize: 13,
-                fontColor: MyColors.grey,
-              ),
-            ],
-          ),
+          // Row(
+          //   children: [
+          //     Container(
+          //         height: 8,
+          //         width: 8,
+          //         decoration: BoxDecoration(
+          //           color: MyColors.blue,
+          //           shape: BoxShape.circle,
+          //         )),
+          //     SizedBox(width: 7),
+          //     CommonText(
+          //       text: "Lorem ipsum dolor sit amet, consectetur adipiscing ",
+          //       fontSize: 13,
+          //       fontColor: MyColors.grey,
+          //     ),
+          //   ],
+          // ),
+          // SizedBox(height: 8),
+          // Row(
+          //   children: [
+          //     Container(
+          //         height: 8,
+          //         width: 8,
+          //         decoration: BoxDecoration(
+          //           color: MyColors.blue,
+          //           shape: BoxShape.circle,
+          //         )),
+          //     SizedBox(width: 7),
+          //     CommonText(
+          //       text: "Lorem ipsum dolor sit amet, consectetur adipiscing ",
+          //       fontSize: 13,
+          //       fontColor: MyColors.grey,
+          //     ),
+          //   ],
+          // ),
         ],
       ));
 }
 
-Widget buildRequirementTile() {
+Widget buildRequirementTile(JobPosModel jobPosModel) {
   return CustomExpansionTile(
       title: "Requirement",
-      children: CommonText(
-        text:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tempor volutpat felis pretium volutpat. Proin et luctus lectus, lobortis molestie felis. Suspendisse lobortis",
-        fontSize: 13,
-        fontColor: MyColors.grey,
-      ));
+      children: Text("${jobPosModel.requirements}",
+          textAlign: TextAlign.left,
+          style: TextStyle(
+            fontSize: 13,
+            color: MyColors.grey,
+          )));
 }
