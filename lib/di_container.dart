@@ -28,16 +28,16 @@ Future<void> init() async {
   sl.registerLazySingleton(() => CompanyRepository(dioClient: sl()));
   sl.registerLazySingleton(() => JobPositionRepository(dioClient: sl()));
 
-  /// provides
-  sl.registerLazySingleton(() => BottomProvider());
+  /// cubit
   sl.registerLazySingleton(() => GlobalCubit());
+  sl.registerLazySingleton(() => ValidationCubit());
+  sl.registerLazySingleton(() => PickImageCubit(sl()));
 
   ///   bloc
   sl.registerLazySingleton(
       () => AuthCubit(authRepository: sl(), sharedPreferences: sl()));
-  sl.registerLazySingleton(() => ValidationCubit());
   sl.registerLazySingleton(() => CompanyBloc(sl()));
-  sl.registerLazySingleton(() => PickImageCubit(sl()));
+  sl.registerLazySingleton(() => BottomBloc());
   sl.registerLazySingleton(() => JobPositionBloc(sl()));
 
   /// other

@@ -8,7 +8,7 @@ import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:provider/provider.dart';
 
-import '../../bloc/global_cubit/global_cubit.dart';
+import '../../provider/bottom_provider.dart';
 import '../../screens/insta_recruit/bottom_navigation_screen/search_pages/job_opening/job_opening_page.dart';
 import '../custom_button/custom_img_button.dart';
 
@@ -34,8 +34,8 @@ class AssignCompaniesTile extends StatelessWidget {
       child: ListTile(
         onTap: () {
           context
-              .read<GlobalCubit>()
-              .setSelectedScreen(true, screenName: JobOpeningScreen());
+              .read<BottomBloc>()
+              .add(SetScreenEvent(true, screenName: JobOpeningScreen()));
         },
         shape: RoundedRectangleBorder(
             side: BorderSide(color: MyColors.grey),

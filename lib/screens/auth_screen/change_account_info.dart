@@ -28,39 +28,44 @@ class ChangeAccInfoScreen extends StatelessWidget {
               flex: 0,
               child: Column(
                 children: [
-                  Stack(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 13.0, left: 5),
-                        child: ImageButton(
-                          onTap: () {
-                            AppRoutes.pop(context);
-                          },
-                          image: MyImages.backArrow,
-                          height: 40,
-                          width: 40,
-                          padding: EdgeInsets.zero,
-                        ),
-                      ),
-                      Image.asset(
-                        MyImages.bgCurve,
-                        color: MyColors.grey.withOpacity(.10),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10),
-                        child: Center(
-                          child: Column(
-                            children: [
-                              Image.asset(MyImages.instaLogo_),
-                              CommonText(
-                                text: "Employee instantly",
-                                fontColor: MyColors.grey,
-                              ),
-                            ],
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Stack(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 13.0, left: 5),
+                          child: ImageButton(
+                            onTap: () {
+                              AppRoutes.pop(context);
+                            },
+                            image: MyImages.backArrow,
+                            height: 40,
+                            width: 40,
+                            padding: EdgeInsets.zero,
                           ),
                         ),
-                      )
-                    ],
+                        Image.asset(
+                          MyImages.bgCurve,
+                          color: MyColors.grey.withOpacity(.10),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: Center(
+                            child: Column(
+                              children: [
+                                Image.asset(MyImages.instaLogo_),
+                                CommonText(
+                                  text: "Employee instantly",
+                                  fontColor: MyColors.grey,
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                   )
                 ],
               ),

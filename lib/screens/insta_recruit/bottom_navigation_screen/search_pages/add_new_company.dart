@@ -7,9 +7,9 @@ import 'package:insta_job/bloc/choose_image_bloc/pick_image_state.dart';
 import 'package:insta_job/bloc/company_bloc/company_bloc.dart';
 import 'package:insta_job/bloc/company_bloc/company_event.dart';
 import 'package:insta_job/bloc/company_bloc/company_state.dart';
-import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/network/end_points.dart';
+import 'package:insta_job/provider/bottom_provider.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_app_bar.dart';
 import 'package:insta_job/widgets/custom_button/custom_btn.dart';
@@ -39,8 +39,8 @@ class _AddNewCompanyState extends State<AddNewCompany> {
           title: "",
           onTap: () {
             context
-                .read<GlobalCubit>()
-                .setSelectedScreen(false, screenName: BottomNavScreen());
+                .read<BottomBloc>()
+                .add(SetScreenEvent(false, screenName: BottomNavScreen()));
           },
         ),
       ),
@@ -82,8 +82,8 @@ class _AddNewCompanyState extends State<AddNewCompany> {
                   onTap: () {
                     context.read<CompanyBloc>().add(AddCompanyEvent(
                         companyName: name.text, photo: image.imgUrl));
-                    context.read<GlobalCubit>().setSelectedScreen(false,
-                        screenName: BottomNavScreen());
+                    context.read<BottomBloc>().add(
+                        SetScreenEvent(false, screenName: BottomNavScreen()));
                   },
                 );
               })

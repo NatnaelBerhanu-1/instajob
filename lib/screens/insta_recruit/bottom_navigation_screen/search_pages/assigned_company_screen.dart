@@ -15,7 +15,7 @@ import 'package:insta_job/widgets/custom_cards/assign_companies_tile.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
 
-import '../../../../bloc/global_cubit/global_cubit.dart';
+import '../../../../provider/bottom_provider.dart';
 
 class AssignCompany extends StatefulWidget {
   const AssignCompany({Key? key}) : super(key: key);
@@ -74,9 +74,12 @@ class _AssignCompanyState extends State<AssignCompany> {
                           flex: 0,
                           child: CustomCommonCard(
                             onTap: () {
-                              context.read<GlobalCubit>().setSelectedScreen(
+                              context.read<BottomBloc>().add(SetScreenEvent(
                                   true,
-                                  screenName: AddNewCompany());
+                                  screenName: AddNewCompany()));
+                              // context.read<BottomCubit>().setSelectedScreen(
+                              //     true,
+                              //     screenName: AddNewCompany());
                               // AppRoutes.push(context, AddNewCompany());
                             },
                             borderRadius: BorderRadius.circular(40),

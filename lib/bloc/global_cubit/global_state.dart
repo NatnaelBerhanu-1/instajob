@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class InitialState {}
 
 class IndexState extends InitialState {
@@ -18,19 +16,6 @@ class VisiblePassState extends InitialState {
   final bool visibleValue;
 
   VisiblePassState(this.visibleValue);
-}
-
-class BottomNavIndexState extends InitialState {
-  final int index;
-
-  BottomNavIndexState(this.index);
-}
-
-class SetScreenBottomNavState extends InitialState {
-  final bool value;
-  final Widget screen;
-
-  SetScreenBottomNavState(this.value, this.screen);
 }
 
 class JobTypeState extends InitialState {
