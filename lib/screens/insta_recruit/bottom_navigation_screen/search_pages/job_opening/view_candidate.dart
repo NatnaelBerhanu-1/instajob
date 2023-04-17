@@ -5,6 +5,7 @@ import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/widgets/denied_candidate_tile.dart';
 
+import '../../../../../model/job_position_model.dart';
 import '../../../../../utils/app_routes.dart';
 import '../../../../../utils/my_images.dart';
 import '../../../../../widgets/custom_app_bar.dart';
@@ -13,7 +14,9 @@ import '../../../../../widgets/custom_cards/notifications_tile/message_tile.dart
 import '../search_trash_screen.dart';
 
 class ViewCandidates extends StatelessWidget {
-  const ViewCandidates({Key? key}) : super(key: key);
+  const ViewCandidates({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +26,7 @@ class ViewCandidates extends StatelessWidget {
           child: CustomAppBar(
             leadingImage: MyImages.backArrow,
             onTap: () {
-              AppRoutes.push(context, JobPositionScreen());
+              AppRoutes.pop(context);
             },
             centerTitle: false,
             title: "Search",

@@ -57,10 +57,11 @@ class _AssignCompanyState extends State<AssignCompany> {
                               IconTextField(
                                 readOnly: true,
                                 hint: "Search Companies",
-                                color: MyColors.grey.withOpacity(.40),
+                                color: MyColors.lightgrey,
                                 borderRadius: 25,
                                 prefixIcon: ImageButton(
                                   image: MyImages.searchGrey,
+                                  color: MyColors.userFont,
                                 ),
                                 onPressed: () {
                                   AppRoutes.push(context, SearchCompany());

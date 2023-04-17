@@ -71,7 +71,7 @@ class InterviewScreen extends StatelessWidget {
               ),
               SizedBox(height: 20),
               SizedBox(
-                height: 300,
+                height: 250,
                 child: ListView.builder(
                   shrinkWrap: true,
                   itemCount: 4,

@@ -12,8 +12,10 @@ class MyColors {
   static Color transparent = const Color(0x00000000);
   static Color lightGrey = const Color(0xffEBEBEB);
   static Color lightBlack = const Color(0xff262626);
+  static Color lightblue = const Color(0xffF5FAFF);
   static Color borderClr = const Color(0xffEBF5FF);
   static Color greyTxt = const Color(0xff707070);
+  static Color lightgrey = const Color(0xffF2F2F2);
 
   ///userPage clr
   static Color user = const Color(0xffECF6FF);

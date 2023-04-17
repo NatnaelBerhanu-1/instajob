@@ -69,7 +69,11 @@ class _HomePageState extends State<HomePage> {
                     Expanded(
                       child: Container(
                         height: 150,
-                        color: MyColors.grey,
+                        color: MyColors.transparent,
+                        child: Image.asset(
+                          MyImages.jobUser,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     )
                   ],

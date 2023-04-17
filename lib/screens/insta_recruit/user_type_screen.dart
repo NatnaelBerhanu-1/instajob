@@ -81,7 +81,7 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                       image: MyImages.suitcase,
                       index: 2,
                       selectedIndex: selectedIndex,
-                      title: "Job search",
+                      title: "Job Search",
                     )),
                   ],
                 );

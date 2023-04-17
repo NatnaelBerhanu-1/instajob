@@ -50,7 +50,7 @@ class AssignCompaniesTile extends StatelessWidget {
           "${companyModel?.companyName}",
           style: TextStyle(
             fontSize: 16,
-            color: MyColors.black,
+            color: MyColors.lightBlack,
             overflow: TextOverflow.clip,
             fontWeight: FontWeight.w400,
           ),

@@ -1,6 +1,11 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:insta_job/bloc/feedback_bloc/feedback_bloc.dart';
+import 'package:insta_job/bloc/feedback_bloc/feedback_event.dart';
+import 'package:insta_job/bloc/feedback_bloc/feedback_state.dart';
+import 'package:insta_job/globals.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
 
@@ -16,6 +21,8 @@ class FeedBackScreen extends StatefulWidget {
 }
 
 class _FeedBackScreenState extends State<FeedBackScreen> {
+  final TextEditingController msg = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,22 +37,39 @@ class _FeedBackScreenState extends State<FeedBackScreen> {
         body: Padding(
           padding: const EdgeInsets.all(20.0),
           child: SingleChildScrollView(
-            child: Column(
-              children: [
-                CustomTextField(
-                  hint: "Message....",
-                  maxLine: 10,
-                ),
-                SizedBox(height: 40),
-                CustomIconButton(
-                  image: MyImages.arrowWhite,
-                  title: "Leave Feedback",
-                  backgroundColor: MyColors.blue,
-                  fontColor: MyColors.white,
-                  iconColor: MyColors.blue,
-                ),
-              ],
-            ),
+            child:
+                BlocConsumer<FeedBackBloc, FeedBackState>(listener: (c, state) {
+              if (state is ErrorState) {
+                showToast(state.error);
+              }
+            }, builder: (context, state) {
+              return Column(
+                children: [
+                  CustomTextField(
+                    controller: msg,
+                    hint: "Message....",
+                    maxLine: 10,
+                  ),
+                  SizedBox(height: 40),
+                  CustomIconButton(
+                    image: MyImages.arrowWhite,
+                    title: "Leave Feedback",
+                    backgroundColor: MyColors.blue,
+                    fontColor: MyColors.white,
+                    iconColor: MyColors.blue,
+                    onclick: () {
+                      if (msg.text.isNotEmpty) {
+                        context.read<FeedBackBloc>().add(
+                              InsertFeedBackEvent(msg.text),
+                            );
+                      }
+                      msg.clear();
+                      print('ADDDDD ****************         ');
+                    },
+                  ),
+                ],
+              );
+            }),
           ),
         ));
   }

@@ -124,7 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             onChanged: (val) {
                               // validationBloc.emailValidation(val!);
                             },
-                            hint: "alexies@mygmail.com",
+                            hint: "alexis@mygmail.com",
                           ),
                           SizedBox(height: 15),
                           IconTextField(

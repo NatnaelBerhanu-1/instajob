@@ -122,7 +122,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             validator: (val) =>
                                 validationBloc.requiredValidation(val!, "Name"),
                             // suffixIcon: ImageButton(image: MyImages.verified),
-                            hint: "Alexies martan",
+                            hint: "Alexies Martan",
                           ),
                           SizedBox(height: 15),
                           IconTextField(
@@ -131,7 +131,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             validator: (val) =>
                                 validationBloc.emailValidation(val!),
                             // suffixIcon: ImageButton(image: MyImages.verified),
-                            hint: "alexies@mygmail.com",
+                            hint: "alexis@mygmail.com",
                           ),
                           SizedBox(height: 15),
                           IconTextField(

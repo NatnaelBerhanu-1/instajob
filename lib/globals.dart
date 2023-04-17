@@ -10,10 +10,10 @@ class Global {
 }
 
 BoxShadow boxShadow = BoxShadow(
-  color: Colors.grey.withOpacity(0.25),
-  offset: const Offset(0, 4),
-  spreadRadius: 2,
-  blurRadius: 4,
+  color: Colors.grey.withOpacity(0.10),
+  offset: const Offset(3, 3),
+  spreadRadius: 5,
+  blurRadius: 7,
 );
 
 BoxShadow blueBoxShadow = BoxShadow(
@@ -23,7 +23,7 @@ BoxShadow blueBoxShadow = BoxShadow(
   blurRadius: 10,
 );
 BoxShadow normalBoxShadow = BoxShadow(
-  color: Colors.grey.withOpacity(0.10),
+  color: Colors.red.withOpacity(0.25),
   offset: const Offset(0, 4),
   spreadRadius: 2,
   blurRadius: 7,

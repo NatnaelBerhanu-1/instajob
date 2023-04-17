@@ -4,8 +4,8 @@ import 'package:insta_job/bloc/validation/validation_state.dart';
 class ValidationCubit extends Cubit<InitialValidation> {
   ValidationCubit() : super(InitialValidation());
   bool valid = false;
-  bool pass = false;
-  bool cPass = false;
+  bool pass = true;
+  bool cPass = true;
   bool checkBox = false;
 
   visiblePass() {

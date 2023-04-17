@@ -35,7 +35,7 @@ class ForgotPassword extends StatelessWidget {
               ),
               SizedBox(height: 5),
               CommonText(
-                text: "Enter your email address to retrieve password",
+                text: "Enter your Email Address to Retrieve Password",
                 fontWeight: FontWeight.w400,
                 fontColor: MyColors.grey,
                 fontSize: 13,
@@ -44,7 +44,7 @@ class ForgotPassword extends StatelessWidget {
               IconTextField(
                 prefixIcon: ImageButton(image: MyImages.email),
                 suffixIcon: ImageButton(image: MyImages.verified),
-                hint: "alexies@mygmail.com",
+                hint: "alexis@mygmail.com",
               ),
               SizedBox(height: 40),
               Center(
@@ -58,7 +58,7 @@ class ForgotPassword extends StatelessWidget {
               SizedBox(height: 15),
               GestureDetector(
                 onTap: () {
-                  // AppRoutes.push(context, VerifyCodeScreen());
+                  AppRoutes.push(context, VerifyCodeScreen());
                 },
                 child: Center(
                   child: CommonText(

@@ -86,7 +86,7 @@ class _SplashScreenState extends State<SplashScreen> {
                       height: 50,
                       width: 50,
                     ),
-                    SizedBox(height: 10),
+                    SizedBox(height: 15),
                     CommonText(
                       text: "Get Started",
                       fontWeight: FontWeight.bold,

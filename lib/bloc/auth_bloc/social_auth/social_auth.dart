@@ -37,7 +37,7 @@ class SocialAuth {
           .login(email: email, password: password, isUser: isUser);
       context.read<CompanyBloc>().add(LoadCompanyListEvent());
     }).catchError((e) {
-      showToast(e.message);
+      showToast("User does not exist, Please Register first");
     });
   }
 }

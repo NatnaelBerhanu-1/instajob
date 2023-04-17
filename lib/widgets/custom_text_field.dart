@@ -57,8 +57,7 @@ class IconTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     OutlineInputBorder border = OutlineInputBorder(
       borderRadius: BorderRadius.all(Radius.circular(borderRadius ?? 12)),
-      borderSide:
-          BorderSide(color: color ?? MyColors.grey.withOpacity(.40), width: 1),
+      borderSide: BorderSide(color: color ?? MyColors.lightgrey, width: 1),
     );
     return TextFormField(
       onTap: onPressed,
@@ -93,7 +92,7 @@ class IconTextField extends StatelessWidget {
         suffixIcon: suffixIcon ?? SizedBox(),
         hintText: "$hint",
         hintStyle: TextStyle(
-          color: hintColor ?? MyColors.grey,
+          color: hintColor ?? MyColors.userFont,
           fontWeight: FontWeight.w400,
           fontSize: 15,
         ),

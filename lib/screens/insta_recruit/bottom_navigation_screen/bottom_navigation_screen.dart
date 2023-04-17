@@ -36,6 +36,7 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
             height: 72,
             decoration: BoxDecoration(
               color: MyColors.white,
+              boxShadow: [boxShadow],
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,

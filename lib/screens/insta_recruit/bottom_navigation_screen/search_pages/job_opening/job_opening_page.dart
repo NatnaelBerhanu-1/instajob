@@ -34,8 +34,9 @@ class JobOpeningScreen extends StatelessWidget {
                 children: [
                   ImageButton(
                     image: MyImages.backArrowBorder,
-                    width: 30,
-                    height: 30,
+                    width: 37,
+                    height: 37,
+                    padding: EdgeInsets.all(9.0),
                     onTap: () {
                       context.read<BottomBloc>().add(SetScreenEvent(false,
                           screenName: JobOpeningScreen()));
@@ -45,9 +46,7 @@ class JobOpeningScreen extends StatelessWidget {
                   ),
                   Expanded(
                     child: IconTextField(
-                      prefixIcon: ImageButton(
-                        image: MyImages.searchGrey,
-                      ),
+                      prefixIcon: ImageButton(image: MyImages.searchGrey),
                       borderRadius: 25,
                       hint: "search",
                     ),
@@ -134,7 +133,7 @@ class JobOpeningScreen extends StatelessWidget {
                           var data = state.jobPosList[i];
                           return Padding(
                             padding: const EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 0),
+                                vertical: 20, horizontal: 0),
                             child: JobOpeningTile(jobPosModel: data),
                           );
                         });
