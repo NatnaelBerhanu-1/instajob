@@ -73,9 +73,6 @@ class AuthCubit extends Cubit<AuthInitialState> {
           "user", jsonEncode(response.response.data['data']));
       var userModel = UserModel.fromJson(response.response.data['data']);
       Global.userModel = userModel;
-      print(
-          'USEERRR *****************************          ${Global.userModel?.id}');
-
       emit(AuthState(userModel: userModel));
       navigationKey.currentState?.pushAndRemoveUntil(
           MaterialPageRoute(builder: (_) => const BottomNavScreen()),

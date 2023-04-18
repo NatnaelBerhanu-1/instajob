@@ -65,7 +65,7 @@ class _SettingScreenState extends State<SettingScreen> {
                 title: "Change Account Information",
               ),
               SizedBox(height: 10),
-              Global.type == "user"
+              Global.userModel?.type == "user"
                   ? SizedBox()
                   : SettingTile(
                       onTap: () {
@@ -75,7 +75,7 @@ class _SettingScreenState extends State<SettingScreen> {
                       title: "Saved Cards",
                     ),
               SizedBox(height: 10),
-              Global.type == "user"
+              Global.userModel?.type == "user"
                   ? SizedBox()
                   : SettingTile(
                       onTap: () {

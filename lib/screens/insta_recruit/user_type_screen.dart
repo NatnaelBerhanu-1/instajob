@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
-import 'package:insta_job/globals.dart';
+import 'package:insta_job/model/user_model.dart';
 import 'package:insta_job/screens/insta_recruit/welcome_screen.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_colors.dart';
@@ -60,8 +60,10 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                       onTap: () {
                         index = 1;
                         context.read<GlobalCubit>().changeIndex(index);
-                        Global.type = "recruiters";
-                        print("TYPE1-> ${Global.type}");
+                        UserModel userModel = UserModel();
+                        userModel.type = "recruiters";
+                        setState(() {});
+                        print("TYPE1-> ${userModel.type}");
                         AppRoutes.push(context, WelcomeScreen());
                       },
                       image: MyImages.businessAndTrade,
@@ -74,8 +76,10 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                       onTap: () {
                         index = 2;
                         context.read<GlobalCubit>().changeIndex(index);
-                        Global.type = "user";
-                        print("TYPE2-> ${Global.type}");
+                        UserModel userModel = UserModel();
+                        userModel.type = "user";
+                        print("TYPE2-> ${userModel.type}");
+                        setState(() {});
                         AppRoutes.push(context, WelcomeScreen());
                       },
                       image: MyImages.suitcase,

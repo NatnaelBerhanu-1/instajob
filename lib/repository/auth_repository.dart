@@ -22,7 +22,7 @@ class AuthRepository {
         "name": name,
         "email": email,
         "password": password,
-        "type": Global.type == "user" ? "user" : "jobsearch",
+        "type": Global.userModel?.type == "user" ? "user" : "jobsearch",
         "fcm_token": "1234",
         "firebase_id": FirebaseAuth.instance.currentUser?.uid,
       };

@@ -194,7 +194,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 iconColor: MyColors.white,
                                 onclick: () {
                                   if (formKey.currentState!.validate()) {
-                                    if (Global.type == "user") {
+                                    if (Global.userModel?.type == "user") {
                                       SocialAuth.loginWithEmail(context,
                                           email: email.text,
                                           password: password.text,

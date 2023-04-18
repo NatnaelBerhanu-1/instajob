@@ -21,7 +21,9 @@ class BottomNavScreen extends StatefulWidget {
 
 class _BottomNavScreenState extends State<BottomNavScreen> {
   List<Widget> pages = [
-    Global.type == "user" ? const SearchJobsScreen() : const AssignCompany(),
+    Global.userModel?.type == "user"
+        ? const SearchJobsScreen()
+        : const AssignCompany(),
     const InterviewScreen(),
     const HomePage(),
   ];
