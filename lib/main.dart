@@ -28,6 +28,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         theme: ThemeData(
           scaffoldBackgroundColor: MyColors.white,
+          fontFamily: "Inter",
           colorScheme:
               ColorScheme.fromSwatch().copyWith(secondary: Colors.white),
         ),
