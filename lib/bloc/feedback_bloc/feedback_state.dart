@@ -15,5 +15,5 @@ class FeedBackLoaded extends FeedBackState {}
 class ErrorState extends FeedBackState {
   final String error;
 
-  ErrorState(this.error);
+  const ErrorState(this.error);
 }
