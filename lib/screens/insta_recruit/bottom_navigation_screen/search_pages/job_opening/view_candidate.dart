@@ -54,10 +54,11 @@ class ViewCandidates extends StatelessWidget {
                     children: [
                       TabBar(
                         labelColor: MyColors.blue,
+                        unselectedLabelColor: MyColors.tabClr,
                         tabs: [
                           Tab(text: "Applied"),
                           Tab(text: "Shortlisted"),
-                          Tab(text: "Message"),
+                          Tab(text: "Messages"),
                         ],
                       ),
                       Expanded(

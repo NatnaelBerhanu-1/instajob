@@ -66,7 +66,7 @@ class _CustomDialogState extends State<CustomDialog> {
               CommonText(text: "Are you sure!"),
               SizedBox(height: 5),
               CommonText(
-                text: "You want to LogOut",
+                text: widget.desc1 ?? "You want to LogOut",
                 fontColor: MyColors.grey,
                 fontSize: 14,
               ),

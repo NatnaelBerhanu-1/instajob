@@ -106,7 +106,7 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                                         padding: EdgeInsets.zero),
                                     SizedBox(width: 5),
                                     CommonText(
-                                      text: "Job Position",
+                                      text: "Job Name",
                                       fontColor: MyColors.blue,
                                       fontSize: 15,
                                     ),

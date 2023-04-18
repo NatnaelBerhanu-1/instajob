@@ -16,6 +16,7 @@ class MyColors {
   static Color borderClr = const Color(0xffEBF5FF);
   static Color greyTxt = const Color(0xff707070);
   static Color lightgrey = const Color(0xffF2F2F2);
+  static Color tabClr = const Color(0xffA0A0A0);
 
   ///userPage clr
   static Color user = const Color(0xffECF6FF);

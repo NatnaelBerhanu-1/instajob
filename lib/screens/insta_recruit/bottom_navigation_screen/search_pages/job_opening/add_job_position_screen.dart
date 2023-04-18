@@ -15,6 +15,7 @@ import 'package:insta_job/widgets/custom_text_field.dart';
 import '../../../../../bloc/bottom_bloc/bottom_bloc.dart';
 import '../../../../../bloc/global_cubit/global_cubit.dart';
 import '../../../../../bloc/global_cubit/global_state.dart';
+import '../../../../../dialog/custom_dialog.dart';
 import '../../../../../utils/my_colors.dart';
 import '../../../../../utils/my_images.dart';
 
@@ -79,20 +80,29 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
           }),
           actions: [
             widget.isUpdate
-                ? Padding(
-                    padding: const EdgeInsets.only(right: 12.0, top: 10),
-                    child: Container(
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                          color: MyColors.white,
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: MyColors.lightRed)),
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 10.0, right: 10),
-                        child: Text(
-                          "Remove Listing",
-                          style:
-                              TextStyle(fontSize: 13, color: MyColors.lightRed),
+                ? GestureDetector(
+                    onTap: () {
+                      buildDialog(
+                          context,
+                          CustomDialog(
+                            desc1: "You want to Remove Listing",
+                          ));
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 12.0, top: 10),
+                      child: Container(
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            color: MyColors.white,
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(color: MyColors.lightRed)),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10.0, right: 10),
+                          child: Text(
+                            "Remove Listing",
+                            style: TextStyle(
+                                fontSize: 13, color: MyColors.lightRed),
+                          ),
                         ),
                       ),
                     ),
@@ -124,7 +134,7 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                 SizedBox(height: 15),
                 CustomTextField(
                   controller: responsibility,
-                  label: "Enter Responsibility",
+                  label: "Enter Responsibilities",
                   lblColor: MyColors.black,
                   hint: "",
                   maxLine: 5,

@@ -99,7 +99,7 @@ Widget buildTopSkillsTile(JobPosModel jobPosModel) {
 
 Widget buildResponsibilityTile(JobPosModel jobPosModel) {
   return CustomExpansionTile(
-      title: "Responsibility",
+      title: "Responsibilities",
       children: Column(
         children: [
           Row(
@@ -161,7 +161,7 @@ Widget buildResponsibilityTile(JobPosModel jobPosModel) {
 
 Widget buildRequirementTile(JobPosModel jobPosModel) {
   return CustomExpansionTile(
-      title: "Requirement",
+      title: "Requirements",
       children: Text("${jobPosModel.requirements}",
           textAlign: TextAlign.left,
           style: TextStyle(

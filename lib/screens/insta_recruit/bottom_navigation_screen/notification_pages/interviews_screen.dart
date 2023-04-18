@@ -62,7 +62,7 @@ class InterviewScreen extends StatelessWidget {
                     ),
                     SizedBox(height: 6),
                     CommonText(
-                      text: "All message",
+                      text: "All messages",
                       fontSize: 13,
                       fontColor: MyColors.grey,
                     ),

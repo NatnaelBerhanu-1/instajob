@@ -84,7 +84,7 @@ class DeniedCandidateTile extends StatelessWidget {
                             child: Padding(
                               padding: const EdgeInsets.all(4.0),
                               child: CommonText(
-                                text: "4 year degree",
+                                text: "4 year Degree",
                                 fontSize: 12,
                                 fontColor: MyColors.blue,
                                 overflow: TextOverflow.clip,
@@ -99,7 +99,7 @@ class DeniedCandidateTile extends StatelessWidget {
                             child: Padding(
                               padding: const EdgeInsets.all(4.0),
                               child: CommonText(
-                                text: "6+ year",
+                                text: "6+ years",
                                 fontSize: 12,
                                 fontColor: Colors.purpleAccent,
                                 overflow: TextOverflow.clip,
@@ -131,7 +131,7 @@ Widget buildDeniedCandidateTile() {
       itemCount: 7,
       itemBuilder: (c, i) {
         return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 23.0, vertical: 10),
           child: DeniedCandidateTile(),
         );
       });
