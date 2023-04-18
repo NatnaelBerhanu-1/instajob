@@ -33,7 +33,7 @@ class _AssignCompanyState extends State<AssignCompany> {
           child: CustomAppBar(
             onTap: () {},
             leadingImage: "",
-            title: "Assign Companies",
+            title: "Assigned Companies",
           ),
         ),
         body: Column(
