@@ -233,7 +233,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               onclick: () {
                                 if (formKey.currentState!.validate()) {
                                   if (validationBloc.checkBox) {
-                                    if (Global.type == "user") {
+                                    if (Global.userModel?.type == "user") {
                                       SocialAuth.emailAndPass(context,
                                           name: name.text,
                                           email: email.text,

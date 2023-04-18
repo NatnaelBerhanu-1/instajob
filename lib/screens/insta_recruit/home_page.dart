@@ -91,7 +91,7 @@ class _HomePageState extends State<HomePage> {
                 SizedBox(height: 25),
                 Row(
                   children: [
-                    Global.type == "user"
+                    Global.userModel?.type == "user"
                         ? Expanded(
                             child: Padding(
                               padding: const EdgeInsets.only(left: 15.0),
@@ -141,7 +141,7 @@ class _HomePageState extends State<HomePage> {
                               onTap: () {
                                 index = 2;
                                 context.read<GlobalCubit>().changeIndex(index);
-                                if (Global.type == "user") {
+                                if (Global.userModel?.type == "user") {
                                   AppRoutes.push(
                                       context, CareerClusterScreen());
                                 } else {
@@ -151,10 +151,10 @@ class _HomePageState extends State<HomePage> {
                               index: 2,
                               selectedIndex: selectedIndex,
                               width: double.infinity,
-                              img: Global.type == "user"
+                              img: Global.userModel?.type == "user"
                                   ? MyImages.mail
                                   : MyImages.subscribe,
-                              title: Global.type == "user"
+                              title: Global.userModel?.type == "user"
                                   ? "Career Learning"
                                   : "Subscribe",
                             ),
@@ -165,7 +165,7 @@ class _HomePageState extends State<HomePage> {
                               onTap: () {
                                 index = 3;
                                 context.read<GlobalCubit>().changeIndex(index);
-                                if (Global.type == "user") {
+                                if (Global.userModel?.type == "user") {
                                   AppRoutes.push(context, SaveJobsScreen());
                                 } else {
                                   AppRoutes.push(context, AutomateMsgScreen());
@@ -174,10 +174,10 @@ class _HomePageState extends State<HomePage> {
                               index: 3,
                               selectedIndex: selectedIndex,
                               width: double.infinity,
-                              img: Global.type == "user"
+                              img: Global.userModel?.type == "user"
                                   ? MyImages.suitcase
                                   : MyImages.automateMsg,
-                              title: Global.type == "user"
+                              title: Global.userModel?.type == "user"
                                   ? "Saved Jobs"
                                   : "Automate Message",
                             ),

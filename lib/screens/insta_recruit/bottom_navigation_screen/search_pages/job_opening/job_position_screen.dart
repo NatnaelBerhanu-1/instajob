@@ -60,7 +60,7 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
         Positioned(
           top: 30,
           right: 10,
-          child: Global.type == "user"
+          child: Global.userModel?.type == "user"
               ? IconButton(
                   icon: Icon(Icons.share, color: MyColors.white),
                   onPressed: () {},
@@ -130,7 +130,7 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                                 SizedBox(height: 15),
                                 BlocBuilder<BottomBloc, BottomInitialState>(
                                     builder: (context, value) {
-                                  return Global.type == "user"
+                                  return Global.userModel?.type == "user"
                                       ? CustomButton(
                                           title: "Apply",
                                           onTap: () {
@@ -183,7 +183,7 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
         Positioned(
           top: MediaQuery.of(context).size.height * 0.334,
           right: 20,
-          child: Global.type == "user"
+          child: Global.userModel?.type == "user"
               ? CustomCommonCard(
                   bgColor: MyColors.blue,
                   borderRadius: BorderRadius.circular(10),

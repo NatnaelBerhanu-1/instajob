@@ -5,7 +5,7 @@ import 'package:insta_job/utils/my_colors.dart';
 import 'model/user_model.dart';
 
 class Global {
-  static String? type;
+  // static String? type;
   static UserModel? userModel;
 }
 
