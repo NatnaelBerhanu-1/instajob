@@ -4,21 +4,23 @@ import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:insta_job/bloc/company_bloc/company_bloc.dart';
+import 'package:insta_job/bloc/company_bloc/company_event.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/model/user_model.dart';
+import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/bottom_navigation_screen.dart';
+import 'package:insta_job/screens/insta_recruit/user_type_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../../screens/insta_recruit/bottom_navigation_screen/bottom_navigation_screen.dart';
-import '../../screens/insta_recruit/user_type_screen.dart';
 
 class BottomBloc extends Bloc<BottomEvent, BottomInitialState> {
   int currentIndex = 0;
   bool selectScreen = false;
+  final CompanyBloc companyBloc;
   var screenNameVal;
 
   /// Implementation of event , bloc
 
-  BottomBloc() : super(BottomInitialState()) {
+  BottomBloc(this.companyBloc) : super(BottomInitialState()) {
     /// bottom navigation Index change
 
     on<GetIndexEvent>((event, emit) {
@@ -44,12 +46,13 @@ class BottomBloc extends Bloc<BottomEvent, BottomInitialState> {
         UserModel userModel = UserModel.fromJson(user);
         Global.userModel = userModel;
         print('USERMODEL ---------------        $user');
+        emit(UserState(userModel));
+        companyBloc.add(LoadCompanyListEvent());
         Timer(
-            Duration(seconds: 1),
+            const Duration(seconds: 1),
             () => navigationKey.currentState?.pushAndRemoveUntil(
                 MaterialPageRoute(builder: (_) => const BottomNavScreen()),
                 (route) => false));
-        emit(UserState(userModel));
       } else {
         Timer(
             const Duration(seconds: 1),

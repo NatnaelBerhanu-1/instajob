@@ -7,6 +7,7 @@ import 'package:insta_job/bloc/validation/validation_state.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/screens/auth_screen/forgot_password.dart';
 import 'package:insta_job/screens/auth_screen/register_screen.dart';
+import 'package:insta_job/screens/insta_recruit/user_type_screen.dart';
 import 'package:insta_job/screens/insta_recruit/welcome_screen.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
@@ -194,7 +195,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 iconColor: MyColors.white,
                                 onclick: () {
                                   if (formKey.currentState!.validate()) {
-                                    if (Global.userModel?.type == "user") {
+                                    if (userType == "user") {
                                       SocialAuth.loginWithEmail(context,
                                           email: email.text,
                                           password: password.text,

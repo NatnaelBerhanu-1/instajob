@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/network/end_points.dart';
@@ -21,7 +23,8 @@ class DioClient {
   }
   Future<Response> post(
       {required Map<String, dynamic> data, required String uri}) async {
-    print("ENCODE DATA --->  $data");
+    print("ENCODE DATA --->  ${jsonEncode(data)}");
+    print("URL --->  $uri");
     try {
       Response response = await dio!.post(
         uri,

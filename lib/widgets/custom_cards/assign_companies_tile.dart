@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
+import 'package:insta_job/bloc/job_position/job_pos_event.dart';
 import 'package:insta_job/bottom_sheet/bottom_sheet.dart';
 import 'package:insta_job/model/company_model.dart';
 import 'package:insta_job/utils/my_colors.dart';
@@ -33,6 +35,7 @@ class AssignCompaniesTile extends StatelessWidget {
           ]),
       child: ListTile(
         onTap: () {
+          context.read<JobPositionBloc>().add(LoadJobPosListEvent());
           context
               .read<BottomBloc>()
               .add(SetScreenEvent(true, screenName: JobOpeningScreen()));
