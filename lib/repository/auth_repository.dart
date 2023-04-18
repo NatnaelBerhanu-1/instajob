@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:insta_job/globals.dart';
 import 'package:insta_job/network/api_response.dart';
 import 'package:insta_job/network/dio/dio_client.dart';
 import 'package:insta_job/network/end_points.dart';
+import 'package:insta_job/screens/insta_recruit/user_type_screen.dart';
 
 class AuthRepository {
   final DioClient dioClient;
@@ -22,7 +22,7 @@ class AuthRepository {
         "name": name,
         "email": email,
         "password": password,
-        "type": Global.userModel?.type == "user" ? "user" : "jobsearch",
+        "type": userType == "user" ? "user" : "jobsearch",
         "fcm_token": "1234",
         "firebase_id": FirebaseAuth.instance.currentUser?.uid,
       };

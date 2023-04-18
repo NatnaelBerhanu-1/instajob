@@ -1,5 +1,4 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
@@ -12,6 +11,8 @@ import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:insta_job/widgets/custom_cards/custom_user_type_card.dart';
 
 import '../../bloc/global_cubit/global_state.dart';
+
+String userType = "";
 
 class UserTypeScreen extends StatefulWidget {
   const UserTypeScreen({Key? key}) : super(key: key);
@@ -62,8 +63,8 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                         context.read<GlobalCubit>().changeIndex(index);
                         UserModel userModel = UserModel();
                         userModel.type = "recruiters";
-                        setState(() {});
-                        print("TYPE1-> ${userModel.type}");
+                        userType = userModel.type!;
+                        print("TYPE2-> $userType");
                         AppRoutes.push(context, WelcomeScreen());
                       },
                       image: MyImages.businessAndTrade,
@@ -78,7 +79,8 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                         context.read<GlobalCubit>().changeIndex(index);
                         UserModel userModel = UserModel();
                         userModel.type = "user";
-                        print("TYPE2-> ${userModel.type}");
+                        userType = userModel.type!;
+                        print("TYPE2-> $userType");
                         setState(() {});
                         AppRoutes.push(context, WelcomeScreen());
                       },

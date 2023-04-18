@@ -32,6 +32,7 @@ class SocialAuth {
     auth
         .signInWithEmailAndPassword(email: email, password: password)
         .then((value) {
+      print("QQQQQQQQQQQQQQQQQQQQQQQQ $isUser");
       context
           .read<AuthCubit>()
           .login(email: email, password: password, isUser: isUser);

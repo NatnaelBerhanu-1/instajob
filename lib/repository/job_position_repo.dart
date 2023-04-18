@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:insta_job/globals.dart';
 import 'package:insta_job/network/api_response.dart';
 import 'package:insta_job/network/dio/dio_client.dart';
 import 'package:insta_job/network/end_points.dart';
@@ -10,7 +11,7 @@ class JobPositionRepository {
 
   getJobPositions() async {
     try {
-      var map = {"id": "24"};
+      var map = {"id": Global.userModel?.id};
       var response =
           await dioClient.post(data: map, uri: EndPoint.getJobPosition);
       return ApiResponse.withSuccess(response);

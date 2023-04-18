@@ -9,6 +9,7 @@ import 'package:insta_job/bloc/validation/validation_state.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/screens/auth_screen/login_screen.dart';
 import 'package:insta_job/screens/insta_recruit/membership_screen.dart';
+import 'package:insta_job/screens/insta_recruit/user_type_screen.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/widgets/custom_button/custom_all_small_button.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
@@ -233,7 +234,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               onclick: () {
                                 if (formKey.currentState!.validate()) {
                                   if (validationBloc.checkBox) {
-                                    if (Global.userModel?.type == "user") {
+                                    if (userType == "user") {
                                       SocialAuth.emailAndPass(context,
                                           name: name.text,
                                           email: email.text,

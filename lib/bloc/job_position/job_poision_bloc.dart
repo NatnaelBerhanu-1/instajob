@@ -24,8 +24,11 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
   JobPositionBloc(this.jobPositionRepository) : super(JobPosInitialState()) {
     on<LoadJobPosListEvent>((event, emit) async {
       emit(JobPosLoading());
-      var jobPosList = await _getJobPositionList(emit);
+      List<JobPosModel> jobPosList = await _getJobPositionList(emit);
       emit(JobPosLoaded(jobPosList));
+      if (jobPosList.isEmpty) {
+        emit(const ErrorState("Data not found"));
+      }
     });
     on<AddJobPositionEvent>((event, emit) async {
       await jobPositionRepository.addJobPosition(
