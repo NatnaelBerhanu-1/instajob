@@ -109,7 +109,7 @@ class Applicants extends StatelessWidget {
                                         ),
                                         SizedBox(height: 5),
                                         CommonText(
-                                          text: "2+ year",
+                                          text: "2+ years",
                                           // fontSize: 18,
                                           fontWeight: FontWeight.w600,
                                         ),
@@ -209,6 +209,7 @@ class Applicants extends StatelessWidget {
                     TabBar(
                       labelColor: MyColors.blue,
                       isScrollable: true,
+                      unselectedLabelColor: MyColors.tabClr,
                       tabs: [
                         Tab(text: "Skills"),
                         Tab(text: "Accomplishments"),

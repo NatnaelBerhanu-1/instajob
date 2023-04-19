@@ -42,6 +42,7 @@ dependencies:
   dio: ^5.1.1
   intl_phone_number_input: ^0.7.2
   image_picker: ^0.8.7+1
+  flutter_time_picker_spinner: ^2.0.0
 
   #auth
   firebase_core: ^2.8.0
