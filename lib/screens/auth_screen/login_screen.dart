@@ -233,14 +233,29 @@ class _LoginScreenState extends State<LoginScreen> {
                           SizedBox(height: 30),
                           CustomDivider(),
                           SizedBox(height: 30),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              CustomSocialButton(image: MyImages.google),
-                              CustomSocialButton(image: MyImages.twitter),
-                              CustomSocialButton(image: MyImages.facebook),
-                            ],
-                          )
+                          BlocConsumer<AuthCubit, AuthInitialState>(
+                              listener: (context, state) {
+                            if (state is ErrorState) {
+                              showToast(state.error);
+                            }
+                          }, builder: (context, state) {
+                            var auth = context.read<AuthCubit>();
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                CustomSocialButton(
+                                  image: MyImages.google,
+                                  onTap: () {
+                                    auth.googleAuth(
+                                        isUser:
+                                            userType == "user" ? true : false);
+                                  },
+                                ),
+                                CustomSocialButton(image: MyImages.twitter),
+                                CustomSocialButton(image: MyImages.facebook),
+                              ],
+                            );
+                          })
                         ],
                       );
                     }),

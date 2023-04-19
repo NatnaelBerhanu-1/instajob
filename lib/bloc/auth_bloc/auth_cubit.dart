@@ -84,32 +84,45 @@ class AuthCubit extends Cubit<AuthInitialState> {
 
   /// google auth
   googleAuth({
-    String? email,
-    String? password,
     bool isUser = false,
   }) async {
     loading(value: true);
     GoogleSignIn googleSignIn = GoogleSignIn();
     final googleUser = await googleSignIn.signIn();
-    ApiResponse response = await authRepository.empLogin(
-        email: email, password: password, isUser: isUser);
+
     try {
-      emit(AuthLoadingState());
+      loading(value: false);
+      print(
+          "####################################################################");
       final googleAuth = await googleUser?.authentication;
       final credential = GoogleAuthProvider.credential(
         idToken: googleAuth?.idToken,
         accessToken: googleAuth?.accessToken,
       );
-
       await FirebaseAuth.instance
           .signInWithCredential(credential)
           .then((value) async {
         if (value.user != null) {
-          var userModel = UserModel.fromJson(response.response.data['data']);
-          Global.userModel = userModel;
-          await sharedPreferences.setString(
-              "user", jsonEncode(response.response.data['data']));
-          emit(AuthState(userModel: userModel));
+          ApiResponse response =
+              await authRepository.checkUser(value.user!.email.toString());
+          if (response.response.statusCode == 200) {
+            login(
+                email: value.user!.email,
+                isUser: isUser,
+                password: value.user!.uid);
+          } else {
+            registerEmp(
+              email: value.user!.email,
+              isUser: isUser,
+              password: value.user!.uid,
+              name: value.user!.displayName,
+            );
+          }
+          // var userModel = UserModel.fromJson(response.response.data['data']);
+          // Global.userModel = userModel;
+          // await sharedPreferences.setString(
+          //     "user", jsonEncode(response.response.data['data']));
+          // emit(AuthState(userModel: userModel));
           navigationKey.currentState?.pushAndRemoveUntil(
               MaterialPageRoute(builder: (_) => const BottomNavScreen()),
               (route) => false);
@@ -118,9 +131,10 @@ class AuthCubit extends Cubit<AuthInitialState> {
       });
     } catch (e) {
       loading(value: false);
+      print(
+          "####################################################################");
       print(e.toString());
       emit(ErrorState(e.toString()));
-      return null;
     }
   }
 
@@ -156,10 +170,18 @@ class AuthCubit extends Cubit<AuthInitialState> {
 
   ///logout
   logOut() async {
-    await sharedPreferences.remove("user");
-    await FirebaseAuth.instance.signOut();
-    navigationKey.currentState?.pushAndRemoveUntil(
-        MaterialPageRoute(builder: (_) => const LoginScreen()),
-        (route) => false);
+    ApiResponse response = await authRepository.logOutUser();
+    if (response.response.statusCode == 500) {
+      emit(ErrorState("Something went wrong"));
+    }
+    if (response.response.statusCode == 200) {
+      await sharedPreferences.remove("user");
+      await FirebaseAuth.instance.signOut();
+      navigationKey.currentState?.pushAndRemoveUntil(
+          MaterialPageRoute(builder: (_) => const LoginScreen()),
+          (route) => false);
+    } else {
+      emit(ErrorState("Somthing went wrong"));
+    }
   }
 }
