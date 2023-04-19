@@ -35,7 +35,7 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
         jobDetails: event.jobDetails,
         requirements: event.requirements,
         responsibility: event.responsibility,
-        topSkills: event.topSkills,
+        topSkills: [event.topSkills],
         salaries: event.salaries,
         areaDistance: event.areaDistance,
         jobsType: event.jobsType,
