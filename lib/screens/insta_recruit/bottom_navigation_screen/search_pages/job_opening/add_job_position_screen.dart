@@ -463,7 +463,30 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                     backgroundColor: MyColors.blue,
                     fontColor: MyColors.white,
                     borderColor: MyColors.blue,
-                    onclick: () {},
+                    onclick: () {
+                      jobPosition.jobPositionRepository.addJobPosition(
+                        applicationReceivedContent:
+                            applicationReceivedContent.text,
+                        applicationReceivedSubject:
+                            applicationReceivedSubject.text,
+                        areaDistance: "",
+                        disqualifiedReviewContent:
+                            disqualifiedReviewContent.text,
+                        disqualifiedReviewSubject:
+                            disqualifiedReviewSubject.text,
+                        experienceLevel: "",
+                        jobDetails: jobDetails.text,
+                        jobsType: "",
+                        requirements: requirements.text,
+                        responsibility: responsibility.text,
+                        salaries: "",
+                        shortlistedReviewContent: shortlistedReviewContent.text,
+                        shortlistedReviewSubject: shortlistedReviewSubject.text,
+                        topSkills: [topSkills.text],
+                        uploadPhoto: "",
+                      );
+                      print('CLICKkk ---------------         ');
+                    },
                   );
                 }),
               ],

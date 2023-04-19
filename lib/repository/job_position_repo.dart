@@ -24,7 +24,7 @@ class JobPositionRepository {
     String? jobDetails,
     String? requirements,
     String? responsibility,
-    String? topSkills,
+    List? topSkills,
     String? salaries,
     String? areaDistance,
     String? jobsType,
