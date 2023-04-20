@@ -93,7 +93,7 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 CommonText(
-                                  text: "Job Position",
+                                  text: "${widget.jobPosModel?.jobdetails}",
                                   fontWeight: FontWeight.bold,
                                   fontSize: 19,
                                 ),
@@ -148,6 +148,8 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                                                     SetScreenEvent(true,
                                                         screenName:
                                                             AddJobPositionScreen(
+                                                                jobPosModel: widget
+                                                                    .jobPosModel,
                                                                 isUpdate:
                                                                     true)));
 

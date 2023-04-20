@@ -73,7 +73,8 @@ class AssignCompaniesTile extends StatelessWidget {
   }
 }
 
-Widget uploadPhotoCard(BuildContext context) {
+Widget uploadPhotoCard(BuildContext context,
+    {bool isUpdate = false, String? url}) {
   return BlocBuilder<PickImageCubit, InitialImage>(builder: (context, state) {
     // if (state is PickImageState) {
     //   return Image.network("${EndPoint.imageBaseUrl}${state.url}");
@@ -87,21 +88,27 @@ Widget uploadPhotoCard(BuildContext context) {
       borderColor: MyColors.lightBlue,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 45),
-        child: state is PickImageState
-            ? Image.network("${EndPoint.imageBaseUrl}${state.url}",
-                fit: BoxFit.cover)
-            : Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ImageButton(
-                    image: MyImages.upload,
+        child: isUpdate
+            ? state is PickImageState
+                ? Image.network("${EndPoint.imageBaseUrl}${state.url}",
+                    fit: BoxFit.cover)
+                : Image.network("${EndPoint.imageBaseUrl}$url",
+                    fit: BoxFit.cover)
+            : state is PickImageState
+                ? Image.network("${EndPoint.imageBaseUrl}${state.url}",
+                    fit: BoxFit.cover)
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ImageButton(
+                        image: MyImages.upload,
+                      ),
+                      CommonText(
+                        text: "Upload Photo",
+                        fontColor: MyColors.blue,
+                      )
+                    ],
                   ),
-                  CommonText(
-                    text: "Upload Photo",
-                    fontColor: MyColors.blue,
-                  )
-                ],
-              ),
       ),
     );
   });

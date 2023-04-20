@@ -51,9 +51,9 @@ class CompanyRepository {
     }
   }
 
-  base64ImgApi(value) async {
+  base64ImgApi(value, extension) async {
     try {
-      var map = {"file": value};
+      var map = {"file": value, "extension": extension};
       var response = await dioClient.post(data: map, uri: EndPoint.base64);
       return ApiResponse.withSuccess(response);
     } on DioError catch (e) {

@@ -16,6 +16,10 @@ class PickImageCubit extends Cubit<InitialImage> {
   final picker = ImagePicker();
   bool isCamera = false;
 
+  String getFileExtension(String fileName) {
+    return fileName.split('.').last;
+  }
+
   getImage() async {
     var image = await picker.pickImage(
       source: isCamera == true ? ImageSource.camera : ImageSource.gallery,
@@ -26,8 +30,11 @@ class PickImageCubit extends Cubit<InitialImage> {
     if (image != null) {
       img = File(image.path);
       var base64 = base64Encode(img!.readAsBytesSync());
+      var type = getFileExtension(image.path);
 
-      ApiResponse response = await companyRepository.base64ImgApi(base64);
+      ApiResponse response =
+          await companyRepository.base64ImgApi(base64, ".$type");
+      print('TYPEE **************      $type');
       if (response.response.statusCode == 200) {
         imgUrl = response.response.data['data'];
       } else {

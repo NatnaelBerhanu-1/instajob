@@ -18,38 +18,61 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
           .toList();
       emit(JobPosLoaded(jobPosList));
       return jobPosList;
+    } else {
+      emit(const ErrorState("Data not found"));
     }
   }
 
   JobPositionBloc(this.jobPositionRepository) : super(JobPosInitialState()) {
     on<LoadJobPosListEvent>((event, emit) async {
       emit(JobPosLoading());
-      List<JobPosModel> jobPosList =
-          await _getJobPositionList(emit, id: event.id);
+      List<JobPosModel> jobPosList = await _getJobPositionList(emit);
       emit(JobPosLoaded(jobPosList));
       if (jobPosList.isEmpty) {
         emit(const ErrorState("Data not found"));
       }
     });
     on<AddJobPositionEvent>((event, emit) async {
-      await jobPositionRepository.addJobPosition(
-        jobDetails: event.jobDetails,
-        requirements: event.requirements,
-        responsibility: event.responsibility,
-        topSkills: [event.topSkills],
-        salaries: event.salaries,
-        areaDistance: event.areaDistance,
-        jobsType: event.jobsType,
-        experienceLevel: event.experienceLevel,
-        uploadPhoto: event.uploadPhoto,
-        applicationReceivedSubject: event.applicationReceivedSubject,
-        applicationReceivedContent: event.applicationReceivedContent,
-        disqualifiedReviewSubject: event.disqualifiedReviewSubject,
-        disqualifiedReviewContent: event.disqualifiedReviewContent,
-        shortlistedReviewSubject: event.shortlistedReviewSubject,
-        shortlistedReviewContent: event.shortlistedReviewContent,
-      );
-      _getJobPositionList(emit);
+      if (event.isUpdate != true) {
+        await jobPositionRepository.addJobPosition(
+          jobDetails: event.jobDetails,
+          requirements: event.requirements,
+          responsibility: event.responsibility,
+          topSkills: event.topSkills,
+          salaries: event.salaries,
+          areaDistance: event.areaDistance,
+          jobsType: event.jobsType,
+          experienceLevel: event.experienceLevel,
+          uploadPhoto: event.uploadPhoto,
+          applicationReceivedSubject: event.applicationReceivedSubject,
+          applicationReceivedContent: event.applicationReceivedContent,
+          disqualifiedReviewSubject: event.disqualifiedReviewSubject,
+          disqualifiedReviewContent: event.disqualifiedReviewContent,
+          shortlistedReviewSubject: event.shortlistedReviewSubject,
+          shortlistedReviewContent: event.shortlistedReviewContent,
+        );
+      } else {
+        await jobPositionRepository.updateJobPosition(
+          id: event.id,
+          isUpdate: true,
+          jobDetails: event.jobDetails,
+          requirements: event.requirements,
+          responsibility: event.responsibility,
+          topSkills: event.topSkills,
+          salaries: event.salaries,
+          areaDistance: event.areaDistance,
+          jobsType: event.jobsType,
+          experienceLevel: event.experienceLevel,
+          uploadPhoto: event.uploadPhoto,
+          applicationReceivedSubject: event.applicationReceivedSubject,
+          applicationReceivedContent: event.applicationReceivedContent,
+          disqualifiedReviewSubject: event.disqualifiedReviewSubject,
+          disqualifiedReviewContent: event.disqualifiedReviewContent,
+          shortlistedReviewSubject: event.shortlistedReviewSubject,
+          shortlistedReviewContent: event.shortlistedReviewContent,
+        );
+      }
+      await _getJobPositionList(emit);
     });
   }
 }
