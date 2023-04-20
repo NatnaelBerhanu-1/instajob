@@ -39,6 +39,7 @@ class AssignCompaniesTile extends StatelessWidget {
           context
               .read<BottomBloc>()
               .add(SetScreenEvent(true, screenName: JobOpeningScreen()));
+          print('JOB OPNINIG SCREEN ***********          ');
         },
         shape: RoundedRectangleBorder(
             side: BorderSide(color: MyColors.grey),

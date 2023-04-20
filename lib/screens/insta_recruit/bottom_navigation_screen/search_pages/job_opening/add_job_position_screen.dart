@@ -464,6 +464,7 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                     fontColor: MyColors.white,
                     borderColor: MyColors.blue,
                     onclick: () {
+                      var value = context.read<GlobalCubit>();
                       jobPosition.jobPositionRepository.addJobPosition(
                         applicationReceivedContent:
                             applicationReceivedContent.text,
@@ -474,9 +475,9 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                             disqualifiedReviewContent.text,
                         disqualifiedReviewSubject:
                             disqualifiedReviewSubject.text,
-                        experienceLevel: "",
+                        experienceLevel: value.experienceLevelVal,
                         jobDetails: jobDetails.text,
-                        jobsType: "",
+                        jobsType: value.jobTypeValue,
                         requirements: requirements.text,
                         responsibility: responsibility.text,
                         salaries: "",

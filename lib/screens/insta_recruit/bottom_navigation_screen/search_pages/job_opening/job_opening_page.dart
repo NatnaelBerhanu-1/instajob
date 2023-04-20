@@ -20,129 +20,131 @@ class JobOpeningScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: PreferredSize(
-            preferredSize: Size(double.infinity, 90),
-            child: Padding(
-              padding: const EdgeInsets.only(top: 42.0, bottom: 10),
-              child: Row(
-                // elevation: 0,
-                // leadingWidth: 50,
-                // backgroundColor: MyColors.white,
-                // toolbarHeight: 70,
-                // title:
+      appBar: PreferredSize(
+          preferredSize: Size(double.infinity, 90),
+          child: Padding(
+            padding: const EdgeInsets.only(top: 42.0, bottom: 10),
+            child: Row(
+              // elevation: 0,
+              // leadingWidth: 50,
+              // backgroundColor: MyColors.white,
+              // toolbarHeight: 70,
+              // title:
 
-                children: [
-                  ImageButton(
-                    image: MyImages.backArrowBorder,
-                    width: 37,
-                    height: 37,
-                    padding: EdgeInsets.all(9.0),
-                    onTap: () {
-                      context.read<BottomBloc>().add(SetScreenEvent(false,
-                          screenName: JobOpeningScreen()));
-                      // context.read<BottomCubit>().setSelectedScreen(false,
-                      //     screenName: JobOpeningScreen());
-                    },
+              children: [
+                ImageButton(
+                  image: MyImages.backArrowBorder,
+                  width: 37,
+                  height: 37,
+                  padding: EdgeInsets.all(9.0),
+                  onTap: () {
+                    context.read<BottomBloc>().add(
+                        SetScreenEvent(false, screenName: JobOpeningScreen()));
+                    // context.read<BottomCubit>().setSelectedScreen(false,
+                    //     screenName: JobOpeningScreen());
+                  },
+                ),
+                Expanded(
+                  child: IconTextField(
+                    prefixIcon: ImageButton(image: MyImages.searchGrey),
+                    borderRadius: 25,
+                    hint: "search",
                   ),
-                  Expanded(
-                    child: IconTextField(
-                      prefixIcon: ImageButton(image: MyImages.searchGrey),
-                      borderRadius: 25,
-                      hint: "search",
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      context.read<BottomBloc>().add(SetScreenEvent(true,
-                          screenName: AddJobPositionScreen()));
-                      // AppRoutes.push(context, EditListing());
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 10.0, left: 10),
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: MyColors.blue, shape: BoxShape.circle),
-                        child: Padding(
-                          padding: const EdgeInsets.all(9.0),
-                          child: Icon(
-                            Icons.add,
-                            color: MyColors.white,
-                          ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    context.read<BottomBloc>().add(SetScreenEvent(true,
+                        screenName: AddJobPositionScreen()));
+                    // AppRoutes.push(context, EditListing());
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 10.0, left: 10),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: MyColors.blue, shape: BoxShape.circle),
+                      child: Padding(
+                        padding: const EdgeInsets.all(9.0),
+                        child: Icon(
+                          Icons.add,
+                          color: MyColors.white,
                         ),
                       ),
                     ),
-                  )
-                ],
-              ),
-            )),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
-          child: Column(
-            children: [
-              Container(
-                height: 180,
-                alignment: Alignment.bottomLeft,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    // color: MyColors.green,
-                    borderRadius: BorderRadius.circular(10),
-                    image: DecorationImage(
-                        image: AssetImage(MyImages.staffMeeting),
-                        fit: BoxFit.cover)),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CommonText(
-                        text: "Company Name",
-                        fontColor: MyColors.white,
-                        fontSize: 20,
-                      ),
-                      SizedBox(height: 10),
-                      CommonText(
-                        text:
-                            "It's a long established fact that reader will directly by the",
-                        fontColor: MyColors.white,
-                        fontSize: 13,
-                      ),
-                      CommonText(
-                        text:
-                            "readable content of page when looking at it's layout",
-                        fontColor: MyColors.white,
-                        fontSize: 13,
-                      ),
-                    ],
                   ),
+                )
+              ],
+            ),
+          )),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
+            child: Container(
+              height: 180,
+              alignment: Alignment.bottomLeft,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                  // color: MyColors.green,
+                  borderRadius: BorderRadius.circular(10),
+                  image: DecorationImage(
+                      image: AssetImage(MyImages.staffMeeting),
+                      fit: BoxFit.cover)),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CommonText(
+                      text: "Company Name",
+                      fontColor: MyColors.white,
+                      fontSize: 20,
+                    ),
+                    SizedBox(height: 10),
+                    CommonText(
+                      text:
+                          "It's a long established fact that reader will directly by the",
+                      fontColor: MyColors.white,
+                      fontSize: 13,
+                    ),
+                    CommonText(
+                      text:
+                          "readable content of page when looking at it's layout",
+                      fontColor: MyColors.white,
+                      fontSize: 13,
+                    ),
+                  ],
                 ),
               ),
-              Expanded(
-                child: BlocBuilder<JobPositionBloc, JobPosState>(
-                    builder: (context, state) {
-                  if (state is JobPosLoading) {
-                    return Center(child: CircularProgressIndicator());
-                  }
-                  if (state is ErrorState) {
-                    return Center(child: Text(state.error));
-                  }
-                  if (state is JobPosLoaded) {
-                    return ListView.builder(
-                        itemCount: state.jobPosList.length,
-                        itemBuilder: (c, i) {
-                          var data = state.jobPosList[i];
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 20, horizontal: 0),
-                            child: JobOpeningTile(jobPosModel: data),
-                          );
-                        });
-                  }
-                  return SizedBox();
-                }),
-              )
-            ],
+            ),
           ),
-        ));
+          SizedBox(height: 10),
+          Expanded(
+            child: BlocBuilder<JobPositionBloc, JobPosState>(
+                builder: (context, state) {
+              if (state is JobPosLoading) {
+                return Center(child: CircularProgressIndicator());
+              }
+              if (state is ErrorState) {
+                return Center(child: Text(state.error));
+              }
+              if (state is JobPosLoaded) {
+                return Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
+                  child: ListView.builder(
+                      itemCount: state.jobPosList.length,
+                      itemBuilder: (c, i) {
+                        var data = state.jobPosList[i];
+                        return JobOpeningTile(jobPosModel: data);
+                      }),
+                );
+              }
+              return SizedBox();
+            }),
+          )
+        ],
+      ),
+    );
   }
 }

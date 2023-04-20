@@ -3,6 +3,9 @@ import 'package:equatable/equatable.dart';
 abstract class JobPosEvent extends Equatable {}
 
 class LoadJobPosListEvent extends JobPosEvent {
+  final String? id;
+
+  LoadJobPosListEvent({this.id});
   @override
   List<Object?> get props => [];
 }

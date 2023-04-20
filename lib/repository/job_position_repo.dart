@@ -9,9 +9,9 @@ class JobPositionRepository {
 
   JobPositionRepository({required this.dioClient});
 
-  getJobPositions() async {
+  getJobPositions({String? id}) async {
     try {
-      var map = {"id": Global.userModel?.id};
+      var map = {"id": id ?? ""};
       var response =
           await dioClient.post(data: map, uri: EndPoint.getJobPosition);
       return ApiResponse.withSuccess(response);

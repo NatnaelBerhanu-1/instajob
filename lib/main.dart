@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
           colorScheme:
               ColorScheme.fromSwatch().copyWith(secondary: Colors.white),
         ),
-        home: TimePickerDropDown(),
+        home: SplashScreen(),
         navigatorKey: navigationKey,
         builder: EasyLoading.init(),
       ),

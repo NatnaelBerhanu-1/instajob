@@ -7,8 +7,8 @@ import 'package:insta_job/repository/job_position_repo.dart';
 
 class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
   final JobPositionRepository jobPositionRepository;
-  _getJobPositionList(Emitter emit) async {
-    ApiResponse response = await jobPositionRepository.getJobPositions();
+  _getJobPositionList(Emitter emit, {String? id}) async {
+    ApiResponse response = await jobPositionRepository.getJobPositions(id: id);
     if (response.response.statusCode == 500) {
       emit(const ErrorState("Something went wrong"));
     }
@@ -24,7 +24,8 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
   JobPositionBloc(this.jobPositionRepository) : super(JobPosInitialState()) {
     on<LoadJobPosListEvent>((event, emit) async {
       emit(JobPosLoading());
-      List<JobPosModel> jobPosList = await _getJobPositionList(emit);
+      List<JobPosModel> jobPosList =
+          await _getJobPositionList(emit, id: event.id);
       emit(JobPosLoaded(jobPosList));
       if (jobPosList.isEmpty) {
         emit(const ErrorState("Data not found"));
