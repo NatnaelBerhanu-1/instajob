@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/auth_bloc/auth_cubit.dart';
+import 'package:insta_job/bloc/auth_bloc/auth_state.dart';
 import 'package:insta_job/dialog/custom_dialog.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/screens/auth_screen/change_account_info.dart';
@@ -85,15 +86,22 @@ class _SettingScreenState extends State<SettingScreen> {
                       title: "Cancel Subscription",
                     ),
               Spacer(),
-              CustomIconButton(
-                image: MyImages.logout,
-                title: "Log Out",
-                backgroundColor: MyColors.lightRed,
-                fontColor: MyColors.white,
-                onclick: () {
-                  context.read<AuthCubit>().logOut();
-                },
-              ),
+              BlocConsumer<AuthCubit, AuthInitialState>(
+                  listener: (context, state) {
+                if (state is ErrorState) {
+                  showToast(state.error);
+                }
+              }, builder: (context, snapshot) {
+                return CustomIconButton(
+                  image: MyImages.logout,
+                  title: "Log Out",
+                  backgroundColor: MyColors.lightRed,
+                  fontColor: MyColors.white,
+                  onclick: () {
+                    context.read<AuthCubit>().logOut();
+                  },
+                );
+              }),
               SizedBox(height: 10),
             ],
           ),

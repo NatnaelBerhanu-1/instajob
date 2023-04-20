@@ -9,6 +9,8 @@ class EndPoint {
   static String registerUser = "register";
   static String registerEmp = "registration";
   static String loginEmp = "signin";
+  static String checkUser = "check_user";
+  static String logout = "logout";
 
   /// base64
   static String base64 = "base64";

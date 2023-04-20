@@ -1,6 +1,9 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:insta_job/bloc/auth_bloc/auth_cubit.dart';
+import 'package:insta_job/globals.dart';
 import 'package:insta_job/screens/auth_screen/login_screen.dart';
 import 'package:insta_job/screens/auth_screen/register_screen.dart';
 import 'package:insta_job/utils/app_routes.dart';
@@ -10,7 +13,9 @@ import 'package:insta_job/widgets/custom_button/custom_btn.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:insta_job/widgets/custom_divider.dart';
 
+import '../../bloc/auth_bloc/auth_state.dart';
 import '../../utils/my_colors.dart';
+import 'user_type_screen.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
@@ -101,21 +106,28 @@ class WelcomeScreen extends StatelessWidget {
                     SizedBox(height: 30),
                     CustomDivider(),
                     SizedBox(height: 30),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        CustomSocialButton(
-                          image: MyImages.google,
-                        ),
-                        CustomSocialButton(
-                          image: MyImages.twitter,
-                        ),
-                        CustomSocialButton(
-                          image: MyImages.facebook,
-                          onTap: () {},
-                        ),
-                      ],
-                    ),
+                    BlocConsumer<AuthCubit, AuthInitialState>(
+                        listener: (context, state) {
+                      if (state is ErrorState) {
+                        showToast(state.error);
+                      }
+                    }, builder: (context, state) {
+                      var auth = context.read<AuthCubit>();
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          CustomSocialButton(
+                            image: MyImages.google,
+                            onTap: () {
+                              auth.googleAuth(
+                                  isUser: userType == "user" ? true : false);
+                            },
+                          ),
+                          CustomSocialButton(image: MyImages.twitter),
+                          CustomSocialButton(image: MyImages.facebook),
+                        ],
+                      );
+                    })
                   ],
                 ),
               )

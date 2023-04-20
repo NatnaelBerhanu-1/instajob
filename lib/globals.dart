@@ -42,13 +42,13 @@ dynamic loading(
   if (value!) {
     EasyLoading.instance
       ..indicatorType = EasyLoadingIndicatorType.ring
-      ..backgroundColor = MyColors.black
+      ..backgroundColor = MyColors.white
       ..maskColor = MyColors.grey.withOpacity(.2)
 
       /// custom style
       ..loadingStyle = EasyLoadingStyle.custom
       ..indicatorColor = MyColors.blue
-      ..textColor = MyColors.white
+      ..textColor = MyColors.black
 
       ///
       ..userInteractions = false
