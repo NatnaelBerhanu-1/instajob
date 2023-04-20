@@ -25,9 +25,7 @@ class JobOpeningTile extends StatelessWidget {
       padding: const EdgeInsets.only(top: 15),
       child: GestureDetector(
         onTap: () {
-          context
-              .read<JobPositionBloc>()
-              .add(LoadJobPosListEvent(id: jobPosModel.id.toString()));
+          context.read<JobPositionBloc>().add(LoadJobPosListEvent());
           print(
               'JOBPOSITION ID ----------------- ********        *************         ${jobPosModel.id}');
           AppRoutes.push(context, JobPositionScreen(jobPosModel: jobPosModel));
@@ -57,7 +55,7 @@ class JobOpeningTile extends StatelessWidget {
                   ),
                   SizedBox(width: 10),
                   CommonText(
-                    text: "Job Opening",
+                    text: "${jobPosModel.jobsType}",
                     fontSize: 14,
                     fontColor: MyColors.black,
                     overflow: TextOverflow.clip,
