@@ -43,7 +43,7 @@ class JobPosModel {
     jobdetails = json['jobdetails'];
     requirements = json['Requirements'];
     responsilibites = json['Responsilibites'];
-    topskills = json['Topskills'].cast<String>();
+    topskills = json['Topskills'];
     salaries = json['salaries'];
     areaDistance = json['Area_Distance'];
     jobsType = json['jobs_Type'];

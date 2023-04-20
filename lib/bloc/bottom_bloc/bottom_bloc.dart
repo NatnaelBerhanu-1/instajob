@@ -41,8 +41,9 @@ class BottomBloc extends Bloc<BottomEvent, BottomInitialState> {
     on<UserEvent>((event, emit) async {
       final currentUser = FirebaseAuth.instance.currentUser;
       var pref = await SharedPreferences.getInstance();
-      if (currentUser != null) {
-        var user = await jsonDecode(pref.getString("user").toString());
+      var user = await jsonDecode(pref.getString("user").toString());
+
+      if (currentUser != null && user != null) {
         UserModel userModel = UserModel.fromJson(user);
         Global.userModel = userModel;
         print('USERMODEL ---------------        $user');
