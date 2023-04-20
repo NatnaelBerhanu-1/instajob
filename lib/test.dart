@@ -272,9 +272,8 @@ class _TimePickerDropDownState extends State<TimePickerDropDown> {
   late List<int> hoursList;
   late List<int> minutesList;
   late List<String> time;
-  late int selectedHour;
-  late int selectedMinute;
-
+  int? selectedHour;
+  int? selectedMinute;
   @override
   void initState() {
     super.initState();
@@ -298,8 +297,8 @@ class _TimePickerDropDownState extends State<TimePickerDropDown> {
                   DateTime.now().year,
                   DateTime.now().month,
                   DateTime.now().day,
-                  selectedHour,
-                  selectedMinute));
+                  selectedHour!,
+                  selectedMinute!));
             });
           },
           items: hoursList.map((int hour) {
@@ -322,8 +321,8 @@ class _TimePickerDropDownState extends State<TimePickerDropDown> {
                     DateTime.now().year,
                     DateTime.now().month,
                     DateTime.now().day,
-                    selectedHour,
-                    selectedMinute));
+                    selectedHour!,
+                    selectedMinute!));
               });
             },
             items: minutesList.map((int minute) {
@@ -335,6 +334,92 @@ class _TimePickerDropDownState extends State<TimePickerDropDown> {
           ),
         ),
       ],
+    );
+  }
+}
+/*
+  RangeValues rangeValue = const RangeValues(10, 30);
+
+ Text(
+            "${rangeValue.start.toStringAsFixed(0)}K - ${rangeValue.end.toStringAsFixed(0)}K"),
+        RangeSlider(
+          values: rangeValue,
+          onChanged: (val) {
+            rangeValue = val;
+            setState(() {});
+            print("value: $val");
+          },
+          max: 100,
+          min: 0,
+        ),*/
+
+class TimePickerDialog extends StatefulWidget {
+  @override
+  _TimePickerDialogState createState() => _TimePickerDialogState();
+}
+
+class _TimePickerDialogState extends State<TimePickerDialog> {
+  TimeOfDay _time = TimeOfDay.now();
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text('Select a time'),
+      content: DropdownButton<TimeOfDay>(
+        onChanged: (newTime) {
+          setState(() {
+            _time = newTime!;
+          });
+        },
+        items: List.generate(24, (hour) {
+          return DropdownMenuItem<TimeOfDay>(
+            value: TimeOfDay(hour: hour, minute: 0),
+            child: Text('$hour:00'),
+          );
+        }),
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: Text('CANCEL'),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        TextButton(
+          child: Text('OK'),
+          onPressed: () {
+            // Do something with the selected time
+            Navigator.of(context).pop(_time);
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class MyApp1 extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: Text('Time Picker Dialog')),
+        body: Center(
+          child: ElevatedButton(
+            child: Text('Select a time'),
+            onPressed: () {
+              showDialog<TimeOfDay>(
+                context: context,
+                builder: (BuildContext context) {
+                  return TimePickerDialog();
+                },
+              ).then((selectedTime) {
+                // Do something with the selected time
+                print('Selected time: $selectedTime');
+              });
+            },
+          ),
+        ),
+      ),
     );
   }
 }
