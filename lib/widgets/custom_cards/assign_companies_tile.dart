@@ -1,14 +1,17 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:insta_job/bloc/choose_image_bloc/pick_image_cubit.dart';
+import 'package:insta_job/bloc/choose_image_bloc/pick_image_state.dart';
 import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
 import 'package:insta_job/bloc/job_position/job_pos_event.dart';
 import 'package:insta_job/bottom_sheet/bottom_sheet.dart';
 import 'package:insta_job/model/company_model.dart';
+import 'package:insta_job/network/end_points.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
-import 'package:provider/provider.dart';
 
 import '../../bloc/bottom_bloc/bottom_bloc.dart';
 import '../../screens/insta_recruit/bottom_navigation_screen/search_pages/job_opening/job_opening_page.dart';
@@ -71,27 +74,35 @@ class AssignCompaniesTile extends StatelessWidget {
 }
 
 Widget uploadPhotoCard(BuildContext context) {
-  return CustomCommonCard(
-    onTap: () {
-      choosePhoto(context);
-    },
-    bgColor: MyColors.blue.withOpacity(.10),
-    borderRadius: BorderRadius.circular(10),
-    borderColor: MyColors.lightBlue,
-    child: Padding(
-      padding: const EdgeInsets.symmetric(vertical: 45),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          ImageButton(
-            image: MyImages.upload,
-          ),
-          CommonText(
-            text: "Upload Photo",
-            fontColor: MyColors.blue,
-          )
-        ],
+  return BlocBuilder<PickImageCubit, InitialImage>(builder: (context, state) {
+    // if (state is PickImageState) {
+    //   return Image.network("${EndPoint.imageBaseUrl}${state.url}");
+    // }
+    return CustomCommonCard(
+      onTap: () {
+        choosePhoto(context);
+      },
+      bgColor: MyColors.blue.withOpacity(.10),
+      borderRadius: BorderRadius.circular(10),
+      borderColor: MyColors.lightBlue,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 45),
+        child: state is PickImageState
+            ? Image.network("${EndPoint.imageBaseUrl}${state.url}",
+                fit: BoxFit.cover)
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ImageButton(
+                    image: MyImages.upload,
+                  ),
+                  CommonText(
+                    text: "Upload Photo",
+                    fontColor: MyColors.blue,
+                  )
+                ],
+              ),
       ),
-    ),
-  );
+    );
+  });
 }

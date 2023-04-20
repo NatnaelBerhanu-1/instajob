@@ -7,6 +7,8 @@ import 'package:insta_job/bloc/choose_image_bloc/pick_image_state.dart';
 import 'package:insta_job/bloc/company_bloc/company_bloc.dart';
 import 'package:insta_job/bloc/company_bloc/company_event.dart';
 import 'package:insta_job/bloc/company_bloc/company_state.dart';
+import 'package:insta_job/bloc/validation/validation_bloc.dart';
+import 'package:insta_job/bloc/validation/validation_state.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/network/end_points.dart';
 import 'package:insta_job/utils/my_images.dart';
@@ -56,12 +58,22 @@ class _AddNewCompanyState extends State<AddNewCompany> {
                 fontWeight: FontWeight.w500,
               ),
               SizedBox(height: 30),
-              IconTextField(
-                controller: name,
-                prefixIcon: ImageButton(image: MyImages.userFilled),
-                // suffixIcon: ImageButton(image: MyImages.verified),
-                hint: "Company Name",
-              ),
+              BlocConsumer<ValidationCubit, InitialValidation>(
+                  listener: (c, state) {
+                if (state is RequiredValidation) {
+                  showToast(state.require);
+                }
+              }, builder: (context, state) {
+                var validate = context.read<ValidationCubit>();
+                return IconTextField(
+                  controller: name,
+                  validator: (val) =>
+                      validate.requiredValidation(val!, "Company name"),
+                  prefixIcon: ImageButton(image: MyImages.userFilled),
+                  // suffixIcon: ImageButton(image: MyImages.verified),
+                  hint: "Company Name",
+                );
+              }),
               SizedBox(height: 30),
               BlocBuilder<PickImageCubit, InitialImage>(
                   builder: (context, state) {

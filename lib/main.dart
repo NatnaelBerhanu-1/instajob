@@ -7,7 +7,6 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:insta_job/bloc/bloc_providers.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/screens/insta_recruit/splash_screen.dart';
-import 'package:insta_job/test.dart';
 
 import 'di_container.dart' as di;
 import 'utils/my_colors.dart';
