@@ -85,6 +85,9 @@ class AboutUsScreen extends StatelessWidget {
                         icon: ImageButton(
                           padding: EdgeInsets.zero,
                           image: MyImages.phone,
+                          // padding: EdgeInsets.all(14),
+                          height: 18,
+                          width: 18,
                         ),
                         label: Text(
                           '+91 9344321876',
@@ -104,6 +107,8 @@ class AboutUsScreen extends StatelessWidget {
                         icon: ImageButton(
                           image: MyImages.phone,
                           padding: EdgeInsets.zero,
+                          height: 18,
+                          width: 18,
                         ),
                         label: Text(
                           'lweeway@protonmail.com',

@@ -11,6 +11,7 @@ import 'package:insta_job/bloc/validation/validation_bloc.dart';
 import 'package:insta_job/bloc/validation/validation_state.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/network/end_points.dart';
+import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_app_bar.dart';
 import 'package:insta_job/widgets/custom_button/custom_btn.dart';
@@ -40,6 +41,9 @@ class _AddNewCompanyState extends State<AddNewCompany> {
         preferredSize: Size(double.infinity, kToolbarHeight),
         child: CustomAppBar(
           leadingImage: MyImages.backArrowBorder,
+          color: MyColors.blue,
+          height: 28,
+          width: 28,
           title: "",
           onTap: () {
             context

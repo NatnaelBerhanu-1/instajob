@@ -34,8 +34,9 @@ class JobOpeningScreen extends StatelessWidget {
               children: [
                 ImageButton(
                   image: MyImages.backArrowBorder,
-                  width: 37,
-                  height: 37,
+                  color: MyColors.blue,
+                  height: 28,
+                  width: 28,
                   padding: EdgeInsets.all(9.0),
                   onTap: () {
                     context.read<BottomBloc>().add(

@@ -12,7 +12,7 @@ class MyImages {
   static String apple = "$baseUrl/apple.png";
   static String automateMsg = "$baseUrl/automate_msg.png";
   static String backArrow = "$baseUrl/back_arrow.png";
-  static String backArrowBorder = "$baseUrl/back_arrow_border.png";
+  static String backArrowBorder = "$baseUrl/back_arr.png";
   static String businessAndTrade = "$baseUrl/business_and_trade.png";
   static String business = "$baseUrl/business.png";
   static String camera = "$baseUrl/camera.png";
@@ -80,4 +80,5 @@ class MyImages {
   static String resume1 = "$baseUrl/resume1.png";
   static String resumeImg = "$baseUrl/resume_img.png";
   static String welcomeLogo = "$baseUrl/welcom_logo.png";
+  static String sCurve = "$baseUrl/s_curve.png";
 }

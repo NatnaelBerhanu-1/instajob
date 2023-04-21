@@ -31,8 +31,9 @@ class AutomateMsgScreen extends StatelessWidget {
                           AppRoutes.pop(context);
                         },
                         image: MyImages.backArrow,
-                        height: 30,
-                        width: 30),
+                        padding: EdgeInsets.zero,
+                        height: 40,
+                        width: 40),
                     SizedBox(width: 50),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

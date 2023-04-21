@@ -29,8 +29,8 @@ class SettingTile extends StatelessWidget {
           leading: ImageButton(
             image: leadingImage,
             // padding: EdgeInsets.all(14),
-            height: 20,
-            width: 20,
+            height: 28,
+            width: 28,
           ),
           title: Text(
             "$title",

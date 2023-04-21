@@ -64,6 +64,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
                     widget.leadingImage ?? MyImages.backArrow,
                     height: widget.height ?? 30,
                     width: widget.width ?? 30,
+                    color: widget.color,
                   ),
           )),
       actions: [

@@ -113,8 +113,8 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: Image.asset(
-                      height: 18,
-                      width: 18,
+                      height: 22,
+                      width: 22,
                       image.toString(),
                       color: index == selectedIndex
                           ? MyColors.blue

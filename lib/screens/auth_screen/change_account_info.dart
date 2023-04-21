@@ -1,6 +1,10 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:insta_job/bloc/validation/validation_bloc.dart';
+import 'package:insta_job/bloc/validation/validation_state.dart';
+import 'package:insta_job/globals.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
 
@@ -14,9 +18,11 @@ import '../../widgets/custom_cards/custom_common_card.dart';
 class ChangeAccInfoScreen extends StatelessWidget {
   final bool isRecruitInterface;
 
-  const ChangeAccInfoScreen({Key? key, this.isRecruitInterface = false})
+  ChangeAccInfoScreen({Key? key, this.isRecruitInterface = false})
       : super(key: key);
-
+  TextEditingController email = TextEditingController();
+  TextEditingController password = TextEditingController();
+  TextEditingController name = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,112 +80,147 @@ class ChangeAccInfoScreen extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.all(15),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Change Account Information",
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 24,
-                        ),
-                      ),
-                      SizedBox(height: 5),
-                      Text(
-                        "Edit Information",
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          color: MyColors.grey,
-                          fontSize: 14,
-                        ),
-                      ),
-                      SizedBox(height: 30),
-                      IconTextField(
-                        prefixIcon: ImageButton(
-                          image: MyImages.userFilled,
-                          padding: EdgeInsets.all(14),
-                          height: 10,
-                          width: 10,
-                        ),
-                        suffixIcon: ImageButton(image: MyImages.verified),
-                        hint: "Company Name",
-                      ),
-                      SizedBox(height: 15),
-                      IconTextField(
-                        prefixIcon: ImageButton(
-                          image: MyImages.email,
-                          padding: EdgeInsets.all(14),
-                          height: 10,
-                          width: 10,
-                        ),
-                        suffixIcon: ImageButton(image: MyImages.verified),
-                        hint: "alexies@mygmail.com",
-                      ),
-                      isRecruitInterface ? SizedBox() : SizedBox(height: 15),
-                      isRecruitInterface
-                          ? SizedBox()
-                          : IconTextField(
-                              // onTap: () {},
-                              label: "Date of Birth",
-                              hint: "03/10/1998",
-                              readOnly: true,
-                              hintColor: MyColors.grey,
-                              prefixIcon: ImageButton(image: MyImages.cal),
-                              suffixIcon: Icon(Icons.arrow_drop_down_sharp,
-                                  color: MyColors.black, size: 25),
+                  child: BlocConsumer<ValidationCubit, InitialValidation>(
+                      listener: (context, state) {
+                    if (state is InvalidEmailState) {
+                      showToast(state.email);
+                    }
+                    if (state is InvalidPasswordState) {
+                      showToast(state.pass);
+                    }
+                    if (state is RequiredValidation) {
+                      showToast(state.require);
+                    }
+                  }, builder: (context, state) {
+                    var validationBloc = context.read<ValidationCubit>();
 
-                              // validator: (val) =>
-                              //     validation.requiredValidation1(val),
-                              // validator: widget.isUpdate == true
-                              //     ? null
-                              //     : (String? val) {
-                              //         if (val!.isEmpty) {
-                              //           isRequired = val.isEmpty;
-                              //           setState(() {});
-                              //         }
-                              //         // value.validation(val!);
-                              //         print('vallll Date-- ${isRequired}');
-                              //         Validation.requiredValidation(val);
-                              //         return null;
-                              //       },
-                            ),
-                      isRecruitInterface ? SizedBox() : SizedBox(height: 15),
-                      isRecruitInterface
-                          ? SizedBox()
-                          : IconTextField(
-                              prefixIcon: ImageButton(
-                                image: MyImages.lock,
-                                padding: EdgeInsets.all(14),
-                                height: 10,
-                                width: 10,
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Change Account Information",
+                          textAlign: TextAlign.start,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 22,
+                          ),
+                        ),
+                        SizedBox(height: 5),
+                        Text(
+                          "Edit Information",
+                          textAlign: TextAlign.start,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            color: MyColors.grey,
+                            fontSize: 14,
+                          ),
+                        ),
+                        SizedBox(height: 30),
+                        IconTextField(
+                          prefixIcon: ImageButton(
+                            image: MyImages.userFilled,
+                            padding: EdgeInsets.all(14),
+                            height: 10,
+                            width: 10,
+                          ),
+                          // suffixIcon: ImageButton(image: MyImages.verified),
+                          hint: "Company Name",
+                        ),
+                        SizedBox(height: 15),
+                        IconTextField(
+                          prefixIcon: ImageButton(
+                            image: MyImages.email,
+                            padding: EdgeInsets.all(14),
+                            height: 10,
+                            width: 10,
+                          ),
+                          // suffixIcon: ImageButton(image: MyImages.verified),
+                          hint: "alexies@mygmail.com",
+                        ),
+                        isRecruitInterface ? SizedBox() : SizedBox(height: 15),
+                        isRecruitInterface
+                            ? SizedBox()
+                            : IconTextField(
+                                // onTap: () {},
+                                label: "Date of Birth",
+                                hint: "03/10/1998",
+                                readOnly: true,
+                                hintColor: MyColors.grey,
+                                prefixIcon: ImageButton(
+                                  image: MyImages.cal,
+                                  padding: EdgeInsets.all(12),
+                                  height: 10,
+                                  width: 10,
+                                ),
+                                suffixIcon: Icon(Icons.arrow_drop_down_sharp,
+                                    color: MyColors.black, size: 25),
+
+                                // validator: (val) =>
+                                //     validation.requiredValidation1(val),
+                                // validator: widget.isUpdate == true
+                                //     ? null
+                                //     : (String? val) {
+                                //         if (val!.isEmpty) {
+                                //           isRequired = val.isEmpty;
+                                //           setState(() {});
+                                //         }
+                                //         // value.validation(val!);
+                                //         print('vallll Date-- ${isRequired}');
+                                //         Validation.requiredValidation(val);
+                                //         return null;
+                                //       },
                               ),
-                              suffixIcon: ImageButton(image: MyImages.visible),
-                              hint: "password",
-                            ),
-                      SizedBox(height: 10),
-                      CustomPhonePickerTextField(),
-                      SizedBox(height: 15),
-                      Text(
-                        "Upload Photo",
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                            fontWeight: FontWeight.w400, color: MyColors.grey),
-                      ),
-                      SizedBox(height: 10),
-                      uploadPhotoCard(context),
-                      SizedBox(height: 50),
-                      CustomIconButton(
-                        image: MyImages.arrowWhite,
-                        title: "Change Information",
-                        backgroundColor: MyColors.blue,
-                        fontColor: MyColors.white,
-                        borderColor: MyColors.blue,
-                        iconColor: MyColors.white,
-                      ),
-                    ],
-                  ),
+                        isRecruitInterface ? SizedBox() : SizedBox(height: 15),
+                        isRecruitInterface
+                            ? SizedBox()
+                            : IconTextField(
+                                controller: password,
+                                prefixIcon: ImageButton(
+                                  image: MyImages.lock,
+                                  padding: EdgeInsets.all(13),
+                                  height: 10,
+                                  width: 10,
+                                ),
+                                suffixIcon: GestureDetector(
+                                  onTap: () {
+                                    validationBloc.visiblePass();
+                                  },
+                                  child: Icon(
+                                    validationBloc.pass
+                                        ? Icons.visibility_off
+                                        : Icons.visibility,
+                                  ),
+                                ),
+                                obscureText: validationBloc.pass,
+                                hint: "password",
+                                maxLine: 1,
+                                validator: (val) =>
+                                    validationBloc.passwordValidation(val!),
+                              ),
+                        SizedBox(height: 10),
+                        CustomPhonePickerTextField(),
+                        SizedBox(height: 15),
+                        Text(
+                          "Upload Photo",
+                          textAlign: TextAlign.start,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              color: MyColors.grey),
+                        ),
+                        SizedBox(height: 10),
+                        uploadPhotoCard(context),
+                        SizedBox(height: 50),
+                        CustomIconButton(
+                          image: MyImages.arrowWhite,
+                          title: "Change Information",
+                          backgroundColor: MyColors.blue,
+                          fontColor: MyColors.white,
+                          borderColor: MyColors.blue,
+                          iconColor: MyColors.white,
+                        ),
+                      ],
+                    );
+                  }),
                 ),
               ),
             ),

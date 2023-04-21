@@ -32,8 +32,9 @@ class JobBoardsScreen extends StatelessWidget {
                           AppRoutes.pop(context);
                         },
                         image: MyImages.backArrow,
-                        height: 32,
-                        width: 32),
+                        padding: EdgeInsets.zero,
+                        height: 40,
+                        width: 40),
                     SizedBox(width: 30),
                     Column(
                       // crossAxisAlignment: CrossAxisAlignment.start,
