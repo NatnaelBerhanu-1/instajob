@@ -87,7 +87,7 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                       ),
                       child: Padding(
                           padding: const EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 15),
+                              vertical: 15, horizontal: 15),
                           child: SingleChildScrollView(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -97,7 +97,7 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                                   fontWeight: FontWeight.bold,
                                   fontSize: 19,
                                 ),
-                                SizedBox(height: 4),
+                                SizedBox(height: 10),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [

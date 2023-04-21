@@ -64,7 +64,7 @@ class WelcomeScreen extends StatelessWidget {
                   children: [
                     Center(
                       child: CommonText(
-                        text: "Employee instantly",
+                        text: "Employ instantly",
                         fontColor: MyColors.grey,
                         fontSize: 14,
                       ),

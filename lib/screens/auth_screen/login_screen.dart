@@ -72,7 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 children: [
                                   Image.asset(MyImages.instaLogo_),
                                   CommonText(
-                                    text: "Employee instantly",
+                                    text: "Employ instantly",
                                     fontColor: MyColors.grey,
                                   ),
                                 ],
