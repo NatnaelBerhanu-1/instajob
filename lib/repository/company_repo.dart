@@ -41,7 +41,8 @@ class CompanyRepository {
     try {
       var map = {
         "search": search,
-        "employe_id": Global.userModel?.type == "user" ? "" : "2",
+        "employe_id":
+            Global.userModel?.type == "user" ? "" : Global.userModel?.id,
       };
       var response =
           await dioClient.post(data: map, uri: EndPoint.searchCompany);

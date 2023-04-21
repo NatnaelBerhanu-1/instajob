@@ -97,13 +97,23 @@ class ChangeAccInfoScreen extends StatelessWidget {
                       ),
                       SizedBox(height: 30),
                       IconTextField(
-                        prefixIcon: ImageButton(image: MyImages.userFilled),
+                        prefixIcon: ImageButton(
+                          image: MyImages.userFilled,
+                          padding: EdgeInsets.all(14),
+                          height: 10,
+                          width: 10,
+                        ),
                         suffixIcon: ImageButton(image: MyImages.verified),
                         hint: "Company Name",
                       ),
                       SizedBox(height: 15),
                       IconTextField(
-                        prefixIcon: ImageButton(image: MyImages.email),
+                        prefixIcon: ImageButton(
+                          image: MyImages.email,
+                          padding: EdgeInsets.all(14),
+                          height: 10,
+                          width: 10,
+                        ),
                         suffixIcon: ImageButton(image: MyImages.verified),
                         hint: "alexies@mygmail.com",
                       ),
@@ -139,7 +149,12 @@ class ChangeAccInfoScreen extends StatelessWidget {
                       isRecruitInterface
                           ? SizedBox()
                           : IconTextField(
-                              prefixIcon: ImageButton(image: MyImages.lock),
+                              prefixIcon: ImageButton(
+                                image: MyImages.lock,
+                                padding: EdgeInsets.all(14),
+                                height: 10,
+                                width: 10,
+                              ),
                               suffixIcon: ImageButton(image: MyImages.visible),
                               hint: "password",
                             ),

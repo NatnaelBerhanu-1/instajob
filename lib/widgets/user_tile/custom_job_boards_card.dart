@@ -44,7 +44,11 @@ class CustomJobBoardsCard extends StatelessWidget {
                       ),
                       child: Padding(
                         padding: const EdgeInsets.all(3.0),
-                        child: Image.asset(MyImages.verified),
+                        child: Image.asset(
+                          MyImages.verified,
+                          height: 20,
+                          width: 20,
+                        ),
                       ))),
               Expanded(
                 child: Padding(

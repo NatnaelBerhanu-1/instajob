@@ -43,6 +43,9 @@ class _AddCardScreenState extends State<AddCardScreen> {
                   child: IconTextField(
                     prefixIcon: ImageButton(
                       image: MyImages.visaCardBlue,
+                      padding: EdgeInsets.all(14),
+                      height: 10,
+                      width: 10,
                     ),
                     hint: "Card Number",
                   ),
@@ -56,7 +59,12 @@ class _AddCardScreenState extends State<AddCardScreen> {
                         shadowColor: MyColors.grey.withOpacity(.14),
                         borderRadius: BorderRadius.circular(12),
                         child: IconTextField(
-                          prefixIcon: ImageButton(image: MyImages.cal),
+                          prefixIcon: ImageButton(
+                            image: MyImages.cal,
+                            padding: EdgeInsets.all(14),
+                            height: 10,
+                            width: 10,
+                          ),
                           hint: "05/21",
                         ),
                       ),
@@ -82,6 +90,9 @@ class _AddCardScreenState extends State<AddCardScreen> {
                   child: IconTextField(
                     prefixIcon: ImageButton(
                       image: MyImages.user,
+                      padding: EdgeInsets.all(14),
+                      height: 10,
+                      width: 10,
                     ),
                     hint: "Card Holder Name",
                   ),

@@ -46,7 +46,12 @@ class JobOpeningScreen extends StatelessWidget {
                 ),
                 Expanded(
                   child: IconTextField(
-                    prefixIcon: ImageButton(image: MyImages.searchGrey),
+                    prefixIcon: ImageButton(
+                      image: MyImages.searchGrey,
+                      padding: EdgeInsets.all(14),
+                      height: 10,
+                      width: 10,
+                    ),
                     borderRadius: 25,
                     hint: "search",
                   ),

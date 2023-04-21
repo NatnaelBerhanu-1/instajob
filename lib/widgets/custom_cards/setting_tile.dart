@@ -24,8 +24,14 @@ class SettingTile extends StatelessWidget {
     return Column(
       children: [
         ListTile(
+          contentPadding: EdgeInsets.zero,
           onTap: onTap,
-          leading: ImageButton(image: leadingImage),
+          leading: ImageButton(
+            image: leadingImage,
+            // padding: EdgeInsets.all(14),
+            height: 20,
+            width: 20,
+          ),
           title: Text(
             "$title",
             style: TextStyle(

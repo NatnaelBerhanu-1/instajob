@@ -49,8 +49,8 @@ class JobOpeningTile extends StatelessWidget {
                 children: [
                   ImageButton(
                     image: MyImages.suitcase,
-                    height: 40,
-                    width: 40,
+                    height: 35,
+                    width: 35,
                     padding: EdgeInsets.zero,
                   ),
                   SizedBox(width: 10),

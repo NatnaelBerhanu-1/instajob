@@ -119,7 +119,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           SizedBox(height: 30),
                           IconTextField(
                             controller: name,
-                            prefixIcon: ImageButton(image: MyImages.userFilled),
+                            prefixIcon: ImageButton(
+                              image: MyImages.userFilled,
+                              padding: EdgeInsets.all(14),
+                              height: 9,
+                              width: 9,
+                            ),
                             validator: (val) =>
                                 validationBloc.requiredValidation(val!, "Name"),
                             // suffixIcon: ImageButton(image: MyImages.verified),
@@ -128,7 +133,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           SizedBox(height: 15),
                           IconTextField(
                             controller: email,
-                            prefixIcon: ImageButton(image: MyImages.email),
+                            prefixIcon: ImageButton(
+                              image: MyImages.email,
+                              padding: EdgeInsets.all(14),
+                              height: 9,
+                              width: 9,
+                            ),
                             validator: (val) =>
                                 validationBloc.emailValidation(val!),
                             // suffixIcon: ImageButton(image: MyImages.verified),
@@ -137,7 +147,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           SizedBox(height: 15),
                           IconTextField(
                             controller: password,
-                            prefixIcon: ImageButton(image: MyImages.lock),
+                            prefixIcon: ImageButton(
+                              image: MyImages.lock,
+                              padding: EdgeInsets.all(14),
+                              height: 9,
+                              width: 9,
+                            ),
                             suffixIcon: GestureDetector(
                               onTap: () {
                                 validationBloc.visiblePass();
@@ -157,7 +172,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           SizedBox(height: 15),
                           IconTextField(
                             controller: cPassword,
-                            prefixIcon: ImageButton(image: MyImages.lock),
+                            prefixIcon: ImageButton(
+                              image: MyImages.lock,
+                              padding: EdgeInsets.all(14),
+                              height: 9,
+                              width: 9,
+                            ),
                             suffixIcon: GestureDetector(
                               onTap: () {
                                 validationBloc.visibleCPass();

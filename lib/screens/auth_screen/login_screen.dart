@@ -116,7 +116,12 @@ class _LoginScreenState extends State<LoginScreen> {
                           SizedBox(height: 30),
                           IconTextField(
                             controller: email,
-                            prefixIcon: ImageButton(image: MyImages.email),
+                            prefixIcon: ImageButton(
+                              image: MyImages.email,
+                              padding: EdgeInsets.all(13),
+                              height: 10,
+                              width: 10,
+                            ),
                             // suffixIcon: validationBloc.valid
                             //     ? ImageButton(image: MyImages.verified)
                             //     : Icon(Icons.close, color: MyColors.lightRed),
@@ -130,7 +135,12 @@ class _LoginScreenState extends State<LoginScreen> {
                           SizedBox(height: 15),
                           IconTextField(
                             controller: password,
-                            prefixIcon: ImageButton(image: MyImages.lock),
+                            prefixIcon: ImageButton(
+                              image: MyImages.lock,
+                              padding: EdgeInsets.all(13),
+                              height: 10,
+                              width: 10,
+                            ),
                             suffixIcon: GestureDetector(
                               onTap: () {
                                 validationBloc.visiblePass();

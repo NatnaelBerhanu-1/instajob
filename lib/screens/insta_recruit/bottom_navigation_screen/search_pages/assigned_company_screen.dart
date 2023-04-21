@@ -62,6 +62,9 @@ class _AssignCompanyState extends State<AssignCompany> {
                                 prefixIcon: ImageButton(
                                   image: MyImages.searchGrey,
                                   color: MyColors.userFont,
+                                  padding: EdgeInsets.all(14),
+                                  height: 10,
+                                  width: 10,
                                 ),
                                 onPressed: () {
                                   AppRoutes.push(context, SearchCompany());

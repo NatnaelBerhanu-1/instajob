@@ -42,6 +42,8 @@ class PickImageCubit extends Cubit<InitialImage> {
       }
       print('URL ---------      ---- $imgUrl');
       emit(PickImageState(imgUrl));
+    } else {
+      emit(ImageErrorState("Please choose image"));
     }
   }
 }

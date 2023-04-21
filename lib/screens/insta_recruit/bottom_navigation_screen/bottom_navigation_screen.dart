@@ -101,7 +101,7 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
                       color: MyColors.blue),
                 )
               : SizedBox(),
-          SizedBox(height: 10),
+          SizedBox(height: 8),
           Row(
             children: [
               Container(
@@ -113,6 +113,8 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: Image.asset(
+                      height: 18,
+                      width: 18,
                       image.toString(),
                       color: index == selectedIndex
                           ? MyColors.blue
