@@ -10,10 +10,11 @@ class CompanyRepository {
   CompanyRepository({required this.dioClient});
 
   getCompanies() async {
-    print(
-        'USERMODEL -------      ----           ---        ${Global.userModel?.id}');
     try {
-      var map = {"employe_id": Global.userModel?.id};
+      var map = {
+        "employe_id":
+            Global.userModel?.type == "user" ? "" : Global.userModel?.id
+      };
 
       var response =
           await dioClient.post(data: map, uri: EndPoint.getCompanies);

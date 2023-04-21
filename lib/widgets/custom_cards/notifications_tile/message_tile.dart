@@ -91,9 +91,11 @@ class MessageTile extends StatelessWidget {
                       ],
                     ),
                     SizedBox(height: 15),
-                    CustomCommonCard(
-                      bgColor: MyColors.green.withOpacity(.50),
-                      borderRadius: BorderRadius.circular(5),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: MyColors.lightGreen,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Row(
@@ -103,7 +105,7 @@ class MessageTile extends StatelessWidget {
                               text: "Senior Developer Position",
                               fontWeight: FontWeight.w400,
                               fontSize: 13,
-                              fontColor: MyColors.white,
+                              fontColor: MyColors.green,
                             ),
                             SizedBox(width: 10),
                             ImageButton(

@@ -33,22 +33,13 @@ class _SaveJobsScreenState extends State<SaveJobsScreen> {
                       flex: 0,
                       child: Padding(
                         padding: const EdgeInsets.only(left: 10.0, right: 10),
-                        child: TabBar(tabs: [
-                          Tab(
-                            // text: "Saved",
-                            child: Text(
-                              "Saved",
-                              style: TextStyle(color: MyColors.blue),
-                            ),
-                          ),
-                          Tab(
-                            // text: "Saved",
-                            child: Text(
-                              "Applied",
-                              style: TextStyle(color: MyColors.blue),
-                            ),
-                          ),
-                        ]),
+                        child: TabBar(
+                            unselectedLabelColor: MyColors.tabClr,
+                            labelColor: MyColors.blue,
+                            tabs: [
+                              Tab(text: "Saved"),
+                              Tab(text: "Applied"),
+                            ]),
                       ),
                     ),
                     Expanded(

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'global_state.dart';
 
 class GlobalCubit extends Cubit<InitialState> {
-  int sIndex = 0;
+  int sIndex = 1;
   int fIndex = 0;
   GlobalCubit() : super(InitialState());
   bool pass = false;

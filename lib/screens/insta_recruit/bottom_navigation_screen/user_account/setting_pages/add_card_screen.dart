@@ -33,80 +33,85 @@ class _AddCardScreenState extends State<AddCardScreen> {
             )),
         body: Padding(
           padding: const EdgeInsets.all(20.0),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Material(
-                  elevation: 7,
-                  shadowColor: MyColors.grey.withOpacity(.14),
-                  borderRadius: BorderRadius.circular(12),
-                  child: IconTextField(
-                    prefixIcon: ImageButton(
-                      image: MyImages.visaCardBlue,
-                      padding: EdgeInsets.all(14),
-                      height: 10,
-                      width: 10,
-                    ),
-                    hint: "Card Number",
+          child: Column(
+            children: [
+              SizedBox(height: 20),
+              Material(
+                elevation: 7,
+                shadowColor: MyColors.grey.withOpacity(.14),
+                borderRadius: BorderRadius.circular(12),
+                child: IconTextField(
+                  prefixIcon: ImageButton(
+                    image: MyImages.visaCardBlue,
+                    padding: EdgeInsets.all(14),
+                    height: 10,
+                    width: 10,
                   ),
+                  hint: "Card Number",
                 ),
-                SizedBox(height: 20),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Material(
-                        elevation: 7,
-                        shadowColor: MyColors.grey.withOpacity(.14),
-                        borderRadius: BorderRadius.circular(12),
-                        child: IconTextField(
-                          prefixIcon: ImageButton(
-                            image: MyImages.cal,
-                            padding: EdgeInsets.all(14),
-                            height: 10,
-                            width: 10,
-                          ),
-                          hint: "05/21",
+              ),
+              SizedBox(height: 20),
+              Row(
+                children: [
+                  Expanded(
+                    child: Material(
+                      elevation: 7,
+                      shadowColor: MyColors.grey.withOpacity(.14),
+                      borderRadius: BorderRadius.circular(12),
+                      child: IconTextField(
+                        prefixIcon: ImageButton(
+                          image: MyImages.cal,
+                          padding: EdgeInsets.all(14),
+                          height: 10,
+                          width: 10,
                         ),
+                        hint: "05/21",
                       ),
                     ),
-                    SizedBox(width: 20),
-                    Expanded(
-                      child: Material(
-                        elevation: 7,
-                        shadowColor: MyColors.grey.withOpacity(.14),
-                        borderRadius: BorderRadius.circular(12),
-                        child: CustomTextField(
-                          hint: "CVV",
-                        ),
+                  ),
+                  SizedBox(width: 20),
+                  Expanded(
+                    child: Material(
+                      elevation: 7,
+                      shadowColor: MyColors.grey.withOpacity(.14),
+                      borderRadius: BorderRadius.circular(12),
+                      child: CustomTextField(
+                        hint: "CVV",
                       ),
                     ),
-                  ],
+                  ),
+                ],
+              ),
+              SizedBox(height: 20),
+              Material(
+                elevation: 7,
+                shadowColor: MyColors.grey.withOpacity(.14),
+                borderRadius: BorderRadius.circular(12),
+                child: IconTextField(
+                  prefixIcon: ImageButton(
+                    image: MyImages.user,
+                    padding: EdgeInsets.all(14),
+                    height: 10,
+                    width: 10,
+                  ),
+                  hint: "Card Holder Name",
                 ),
-                SizedBox(height: 20),
-                Material(
-                  elevation: 7,
-                  shadowColor: MyColors.grey.withOpacity(.14),
-                  borderRadius: BorderRadius.circular(12),
-                  child: IconTextField(
-                    prefixIcon: ImageButton(
-                      image: MyImages.user,
-                      padding: EdgeInsets.all(14),
-                      height: 10,
-                      width: 10,
-                    ),
-                    hint: "Card Holder Name",
+              ),
+              // Spacer(),
+              // SizedBox(height: 60),
+              Expanded(
+                child: Align(
+                  alignment: FractionalOffset.bottomCenter,
+                  child: CustomButton(
+                    title: "Add Card",
+                    onTap: () {
+                      AppRoutes.push(
+                          context, SaveCardScreen(isChoosePayment: true));
+                    },
                   ),
                 ),
-                SizedBox(height: 60),
-                CustomButton(
-                  title: "Add Card",
-                  onTap: () {
-                    AppRoutes.push(
-                        context, SaveCardScreen(isChoosePayment: true));
-                  },
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ));
   }

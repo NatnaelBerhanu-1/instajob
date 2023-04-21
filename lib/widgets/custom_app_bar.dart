@@ -14,6 +14,7 @@ class CustomAppBar extends StatefulWidget {
   final double? toolbarHeight;
   final String? title;
   final Color? color;
+  final Color? imageColor;
   final Widget? actions;
   final VoidCallback? onTap;
   const CustomAppBar({
@@ -28,6 +29,7 @@ class CustomAppBar extends StatefulWidget {
     this.centerTitle,
     this.leadingWidth,
     this.toolbarHeight,
+    this.imageColor,
   }) : super(key: key);
 
   @override
@@ -62,9 +64,9 @@ class _CustomAppBarState extends State<CustomAppBar> {
                 ? SizedBox()
                 : Image.asset(
                     widget.leadingImage ?? MyImages.backArrow,
-                    height: widget.height ?? 30,
-                    width: widget.width ?? 30,
-                    color: widget.color,
+                    height: widget.height ?? 40,
+                    width: widget.width ?? 40,
+                    color: widget.imageColor,
                   ),
           )),
       actions: [

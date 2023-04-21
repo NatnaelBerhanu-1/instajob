@@ -41,7 +41,7 @@ class _AddNewCompanyState extends State<AddNewCompany> {
         preferredSize: Size(double.infinity, kToolbarHeight),
         child: CustomAppBar(
           leadingImage: MyImages.backArrowBorder,
-          color: MyColors.blue,
+          imageColor: MyColors.blue,
           height: 28,
           width: 28,
           title: "",

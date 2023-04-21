@@ -14,7 +14,7 @@ class InterviewTile extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: MyColors.grey.withOpacity(.30), width: 1.2),
+          border: Border.all(color: MyColors.lightgrey, width: 1.2),
           color: MyColors.white,
           boxShadow: [
             BoxShadow(
@@ -81,7 +81,7 @@ class InterviewTile extends StatelessWidget {
                 Expanded(
                     flex: 1,
                     child: CustomButton(
-                      height: MediaQuery.of(context).size.height * 0.052,
+                      height: MediaQuery.of(context).size.height * 0.048,
                       borderColor: MyColors.lightRed,
                       bgColor: MyColors.white,
                       borderRadius: BorderRadius.circular(20),
@@ -92,7 +92,7 @@ class InterviewTile extends StatelessWidget {
                 Expanded(
                     flex: 2,
                     child: CustomButton(
-                      height: MediaQuery.of(context).size.height * 0.052,
+                      height: MediaQuery.of(context).size.height * 0.048,
                       bgColor: MyColors.blue,
                       borderRadius: BorderRadius.circular(20),
                       title: "Interview Now",

@@ -24,7 +24,7 @@ class CareerClusterScreen extends StatelessWidget {
             children: [
               CustomCommonCard(
                 borderRadius: BorderRadius.circular(30),
-                borderColor: MyColors.grey.withOpacity(.50),
+                borderColor: MyColors.lightgrey,
                 child: Padding(
                   padding: const EdgeInsets.all(5.0),
                   child: Row(

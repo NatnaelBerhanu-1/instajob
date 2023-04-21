@@ -23,7 +23,7 @@ BoxShadow blueBoxShadow = BoxShadow(
   blurRadius: 10,
 );
 BoxShadow normalBoxShadow = BoxShadow(
-  color: Colors.red.withOpacity(0.25),
+  color: MyColors.lightgrey,
   offset: const Offset(0, 4),
   spreadRadius: 2,
   blurRadius: 7,

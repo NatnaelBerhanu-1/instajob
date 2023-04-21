@@ -55,7 +55,7 @@ class _SettingScreenState extends State<SettingScreen> {
                   AppRoutes.push(context, MemberShipScreen(isAgreement: false));
                 },
                 leadingImage: MyImages.membership,
-                title: "MemberShip Agreement",
+                title: "Membership Agreement",
               ),
               SizedBox(height: 10),
               SettingTile(
@@ -98,7 +98,16 @@ class _SettingScreenState extends State<SettingScreen> {
                   backgroundColor: MyColors.lightRed,
                   fontColor: MyColors.white,
                   onclick: () {
-                    context.read<AuthCubit>().logOut();
+                    buildDialog(
+                        context,
+                        CustomDialog(
+                          okOnTap: () {
+                            context.read<AuthCubit>().logOut();
+                          },
+                          cancelOnTap: () {
+                            Navigator.pop(context);
+                          },
+                        ));
                   },
                 );
               }),

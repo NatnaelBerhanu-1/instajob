@@ -21,7 +21,7 @@ class SearchJobTile extends StatelessWidget {
           decoration: BoxDecoration(
               color: MyColors.white,
               borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: MyColors.grey.withOpacity(.30)),
+              border: Border.all(color: MyColors.lightgrey),
               boxShadow: [
                 BoxShadow(
                     color: Colors.grey.withOpacity(0.10),
@@ -37,8 +37,13 @@ class SearchJobTile extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Image.asset(MyImages.suitcase),
+                        Image.asset(
+                          MyImages.suitcase,
+                          height: 27,
+                          width: 27,
+                        ),
                         SizedBox(width: 10),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,

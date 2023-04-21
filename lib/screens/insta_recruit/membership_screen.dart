@@ -48,7 +48,7 @@ class _MemberShipScreenState extends State<MemberShipScreen> {
                               color: MyColors.white,
                             ),
                             CommonText(
-                              text: "Employee instantly",
+                              text: "Employ instantly",
                               fontColor: MyColors.white,
                             ),
                           ],

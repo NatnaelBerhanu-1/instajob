@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
+import 'package:insta_job/dialog/custom_dialog.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/user_account/setting_pages/add_card_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/user_account/subscribe_pages/congratulation_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/user_account/subscribe_pages/job_board_screen.dart';
@@ -42,7 +43,7 @@ class _SaveCardScreenState extends State<SaveCardScreen> {
             child: CustomAppBar(
               title: widget.isChoosePayment
                   ? "Choose Payment Option"
-                  : "Save Cards",
+                  : "Saved Cards",
               leadingImage: MyImages.arrowBlueLeft,
               onTap: () {
                 AppRoutes.push(context, JobBoardsScreen());
@@ -54,7 +55,13 @@ class _SaveCardScreenState extends State<SaveCardScreen> {
                   : IconButton(
                       visualDensity: VisualDensity.standard,
                       splashColor: MyColors.transparent,
-                      onPressed: () {},
+                      onPressed: () {
+                        buildDialog(
+                            context,
+                            CustomDialog(
+                              desc1: "You want to delete card",
+                            ));
+                      },
                       icon: Icon(
                         Icons.delete,
                         color: MyColors.lightRed,
