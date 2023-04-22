@@ -32,7 +32,7 @@ class AuthRepository {
           uri: isUser ? EndPoint.registerUser : EndPoint.registerEmp);
       return ApiResponse.withSuccess(response);
     } on DioError catch (e) {
-      return ApiResponse.withError(e);
+      return ApiResponse.withError(e.response);
     }
   }
 
@@ -51,7 +51,8 @@ class AuthRepository {
           data: map, uri: isUser ? EndPoint.loginUser : EndPoint.loginEmp);
       return ApiResponse.withSuccess(response);
     } on DioError catch (e) {
-      return ApiResponse.withError(e);
+      print(" RESPONCE 99999999999999999990 ${e.response}");
+      return ApiResponse.withError(e.response);
     }
   }
 

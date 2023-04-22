@@ -17,6 +17,8 @@ class CustomButton extends StatelessWidget {
   final double? fontSize;
   final double? width;
   final VoidCallback? onTap;
+  final bool loading;
+
   final BorderRadius? borderRadius;
   const CustomButton(
       {Key? key,
@@ -29,13 +31,14 @@ class CustomButton extends StatelessWidget {
       this.fontSize,
       this.bgColor,
       this.fontColor,
-      this.borderColor})
+      this.borderColor,
+      this.loading = false})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: loading ? null : onTap,
       child: Container(
         height: height ?? MediaQuery.of(context).size.height * 0.075,
         width: width ?? MediaQuery.of(context).size.width,
@@ -45,14 +48,21 @@ class CustomButton extends StatelessWidget {
             border: Border.all(
                 color: borderColor ?? MyColors.transparent, width: 1.2)),
         child: Center(
-          child: Text(
-            "$title",
-            style: TextStyle(
-              fontSize: fontSize ?? 16,
-              fontWeight: fontWeight ?? FontWeight.w500,
-              color: fontColor ?? MyColors.white,
-            ),
-          ),
+          child: loading
+              ? Center(
+                  heightFactor: 0,
+                  widthFactor: 0,
+                  child: CircularProgressIndicator(
+                      color: MyColors.white, strokeWidth: 2),
+                )
+              : Text(
+                  "$title",
+                  style: TextStyle(
+                    fontSize: fontSize ?? 16,
+                    fontWeight: fontWeight ?? FontWeight.w500,
+                    color: fontColor ?? MyColors.white,
+                  ),
+                ),
         ),
       ),
     );

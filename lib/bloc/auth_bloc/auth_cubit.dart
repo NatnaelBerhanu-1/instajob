@@ -77,8 +77,9 @@ class AuthCubit extends Cubit<AuthInitialState> {
       navigationKey.currentState?.pushAndRemoveUntil(
           MaterialPageRoute(builder: (_) => const BottomNavScreen()),
           (route) => false);
-    } else {
-      emit(ErrorState("Something went wrong"));
+    }
+    if (response.response.statusCode == 400) {
+      emit(ErrorState("${response.response.data['message']}"));
     }
   }
 
