@@ -11,6 +11,7 @@ import 'package:insta_job/bloc/validation/validation_bloc.dart';
 import 'package:insta_job/bloc/validation/validation_state.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/model/job_position_model.dart';
+import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/bottom_navigation_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/job_opening/job_opening_page.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/widgets/custom_button/custom_btn.dart';
@@ -601,6 +602,7 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                                 if (formKey.currentState!.validate()) {
                                   // if (validate.checkBox) {
                                   var value = context.read<GlobalCubit>();
+                                  var bottomNav = context.read<BottomBloc>();
                                   var uploadPhoto =
                                       context.read<PickImageCubit>();
                                   jobPosition.add(AddJobPositionEvent(
@@ -631,7 +633,9 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                                     uploadPhoto: uploadPhoto.imgUrl,
                                   ));
                                   jobPosition.add(LoadJobPosListEvent());
-                                  AppRoutes.push(context, JobOpeningScreen());
+                                  bottomNav.add(SetScreenEvent(true,
+                                      screenName: JobOpeningScreen()));
+                                  AppRoutes.push(context, BottomNavScreen());
                                 }
                               },
                             );

@@ -6,6 +6,7 @@ import 'package:insta_job/bloc/bottom_bloc/bottom_bloc.dart';
 import 'package:insta_job/bloc/company_bloc/company_state.dart';
 import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
 import 'package:insta_job/bloc/job_position/job_pos_event.dart';
+import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/bottom_navigation_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/job_opening/job_opening_page.dart';
 import 'package:insta_job/utils/app_routes.dart';
 
@@ -89,6 +90,7 @@ class _SearchCompanyState extends State<SearchCompany> {
                                 context.read<BottomBloc>().add(SetScreenEvent(
                                     true,
                                     screenName: JobOpeningScreen()));
+                                AppRoutes.push(context, BottomNavScreen());
                                 // search.clear();
                               },
                               child: Container(

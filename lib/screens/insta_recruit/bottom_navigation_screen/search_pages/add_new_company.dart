@@ -33,6 +33,12 @@ class AddNewCompany extends StatefulWidget {
 class _AddNewCompanyState extends State<AddNewCompany> {
   TextEditingController name = TextEditingController();
   final formKey = GlobalKey<FormState>();
+  @override
+  // void dispose() {
+  //   var image = context.read<PickImageCubit>();
+  //   image.clearImgUrl();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
