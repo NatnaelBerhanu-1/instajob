@@ -45,7 +45,8 @@ class _SaveCardScreenState extends State<SaveCardScreen> {
                   : "Save Cards",
               leadingImage: MyImages.arrowBlueLeft,
               onTap: () {
-                AppRoutes.push(context, JobBoardsScreen());
+                // AppRoutes.push(context, JobBoardsScreen());
+                AppRoutes.pop(context);
               },
               height: 17,
               width: 17,
