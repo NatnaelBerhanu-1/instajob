@@ -92,8 +92,7 @@ class AuthCubit extends Cubit<AuthInitialState> {
 
     try {
       loading(value: false);
-      print(
-          "####################################################################");
+
       final googleAuth = await googleUser?.authentication;
       final credential = GoogleAuthProvider.credential(
         idToken: googleAuth?.idToken,

@@ -48,7 +48,7 @@ class TurnOnNotification extends StatelessWidget {
               top: MediaQuery.of(context).size.height * 0.166,
               left: MediaQuery.of(context).size.width / 2.8,
               child: CommonText(
-                text: "Employee instantly",
+                text: "Employ instantly",
                 // fontSize: 13,
                 fontColor: MyColors.white,
               ),

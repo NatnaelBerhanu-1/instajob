@@ -76,12 +76,13 @@ class _CustomDialogState extends State<CustomDialog> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     CustomCommonCard(
-                      onTap: () {
-                        index = 1;
-                        print('INDEX1 ------  $selectedIndex');
-                        context.read<GlobalCubit>().changeIndex(index);
-                        Navigator.pop(context);
-                      },
+                      onTap: widget.cancelOnTap ??
+                          () {
+                            index = 1;
+                            print('INDEX1 ------  $selectedIndex');
+                            context.read<GlobalCubit>().changeIndex(index);
+                            Navigator.pop(context);
+                          },
                       bgColor:
                           selectedIndex == 1 ? MyColors.blue : MyColors.white,
                       borderColor:
@@ -100,12 +101,13 @@ class _CustomDialogState extends State<CustomDialog> {
                     ),
                     SizedBox(width: 40),
                     CustomCommonCard(
-                      onTap: () {
-                        index = 2;
-                        print('INDEX2 ------  $selectedIndex');
-                        context.read<GlobalCubit>().changeIndex(index);
-                        Navigator.pop(context);
-                      },
+                      onTap: widget.okOnTap ??
+                          () {
+                            index = 2;
+                            print('INDEX2 ------  $selectedIndex');
+                            context.read<GlobalCubit>().changeIndex(index);
+                            Navigator.pop(context);
+                          },
                       bgColor:
                           selectedIndex == 2 ? MyColors.blue : MyColors.white,
                       borderColor:
