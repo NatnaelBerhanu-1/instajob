@@ -59,7 +59,7 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                     Expanded(
                         child: UserTypeCard(
                       onTap: () {
-                        index = 1;
+                        index = 2;
                         context.read<GlobalCubit>().changeIndex(index);
                         UserModel userModel = UserModel();
                         userModel.type = "recruiters";
@@ -69,13 +69,13 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                       },
                       image: MyImages.businessAndTrade,
                       title: "Recruiters",
-                      index: 1,
+                      index: 2,
                       selectedIndex: selectedIndex,
                     )),
                     Expanded(
                         child: UserTypeCard(
                       onTap: () {
-                        index = 2;
+                        index = 3;
                         context.read<GlobalCubit>().changeIndex(index);
                         UserModel userModel = UserModel();
                         userModel.type = "user";
@@ -85,7 +85,7 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                         AppRoutes.push(context, WelcomeScreen());
                       },
                       image: MyImages.suitcase,
-                      index: 2,
+                      index: 3,
                       selectedIndex: selectedIndex,
                       title: "Job Search",
                     )),
@@ -100,7 +100,7 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                     Image.asset(MyImages.instaLogo_),
                     SizedBox(height: 5),
                     CommonText(
-                      text: "Employee instantly",
+                      text: "Employ instantly",
                       // fontWeight: FontWeight.bold,
                       fontColor: MyColors.grey,
                       fontSize: 13,

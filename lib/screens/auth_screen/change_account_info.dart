@@ -63,7 +63,7 @@ class ChangeAccInfoScreen extends StatelessWidget {
                               children: [
                                 Image.asset(MyImages.instaLogo_),
                                 CommonText(
-                                  text: "Employee instantly",
+                                  text: "Employ instantly",
                                   fontColor: MyColors.grey,
                                 ),
                               ],

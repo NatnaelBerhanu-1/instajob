@@ -24,8 +24,6 @@ class InvalidPasswordState extends InitialValidation {
   InvalidPasswordState(this.pass);
 }
 
-class NameValidation extends InitialValidation {}
-
 class RequiredValidation extends InitialValidation {
   final String require;
 

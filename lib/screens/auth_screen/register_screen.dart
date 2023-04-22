@@ -63,7 +63,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               children: [
                                 Image.asset(MyImages.instaLogo_),
                                 CommonText(
-                                  text: "Employee instantly",
+                                  text: "Employ instantly",
                                   fontColor: MyColors.grey,
                                 ),
                               ],
@@ -81,13 +81,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     padding: const EdgeInsets.all(15),
                     child: BlocConsumer<ValidationCubit, InitialValidation>(
                         listener: (context, state) {
-                      if (state is ConfirmPasswordState) {
-                        showToast(state.pass);
-                      }
                       if (state is InvalidEmailState) {
                         showToast(state.email);
                       }
                       if (state is InvalidPasswordState) {
+                        showToast(state.pass);
+                      }
+                      if (state is ConfirmPasswordState) {
                         showToast(state.pass);
                       }
                       if (state is RequiredValidation) {
