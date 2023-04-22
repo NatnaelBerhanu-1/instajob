@@ -49,7 +49,7 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
   TextEditingController shortlistedReviewSubject = TextEditingController();
   TextEditingController shortlistedReviewContent = TextEditingController();
   final formKey = GlobalKey<FormState>();
-  List skills = ['java'];
+  List<String> skills = ['java'];
 
   updateData() {
     var model = widget.jobPosModel!;
@@ -65,7 +65,7 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
       disqualifiedReviewContent.text = model.disqualifiedReviewContent!;
       shortlistedReviewSubject.text = model.shortlistedReviewSubject!;
       shortlistedReviewContent.text = model.shortlistedReviewContent!;
-      skills = model.topskills!;
+      // skills = model.topskills!;
       value.jobTypeValue = model.jobsType!;
       value.experienceLevelVal = model.experienceLevel!;
       uploadPhoto.imgUrl = model.uploadPhoto!;
@@ -113,6 +113,8 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                                       screenName: JobOpeningScreen()));
                                   // Navigator.pop(context);
                                 },
+                                height: 28,
+                                width: 28,
                                 image: MyImages.backArrow,
                               );
                             }),
@@ -139,6 +141,7 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                                 ],
                               ),
                             ),
+                            SizedBox(width: 52),
                             widget.isUpdate
                                 ? GestureDetector(
                                     onTap: () {
@@ -179,7 +182,7 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
-                        vertical: 30.0, horizontal: 15),
+                        vertical: 0.0, horizontal: 15),
                     child: BlocConsumer<ValidationCubit, InitialValidation>(
                         listener: (context, state) {
                       if (state is RequiredValidation) {
@@ -624,7 +627,7 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                                         shortlistedReviewContent.text,
                                     shortlistedReviewSubject:
                                         shortlistedReviewSubject.text,
-                                    topSkills: [skills.toString()],
+                                    topSkills: skills,
                                     uploadPhoto: uploadPhoto.imgUrl,
                                   ));
                                   jobPosition.add(LoadJobPosListEvent());

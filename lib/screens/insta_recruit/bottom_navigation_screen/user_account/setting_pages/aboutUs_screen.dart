@@ -50,7 +50,7 @@ class AboutUsScreen extends StatelessWidget {
                                   color: MyColors.white,
                                 ),
                                 CommonText(
-                                  text: "Employee instantly",
+                                  text: "Employ instantly",
                                   fontColor: MyColors.white,
                                 ),
                               ],
@@ -86,8 +86,8 @@ class AboutUsScreen extends StatelessWidget {
                           padding: EdgeInsets.zero,
                           image: MyImages.phone,
                           // padding: EdgeInsets.all(14),
-                          height: 18,
-                          width: 18,
+                          height: 16,
+                          width: 16,
                         ),
                         label: Text(
                           '+91 9344321876',
@@ -105,7 +105,7 @@ class AboutUsScreen extends StatelessWidget {
                         })),
                         onPressed: () {},
                         icon: ImageButton(
-                          image: MyImages.phone,
+                          image: MyImages.email,
                           padding: EdgeInsets.zero,
                           height: 18,
                           width: 18,

@@ -49,7 +49,7 @@ class SettingTile extends StatelessWidget {
           ),
         ),
         Divider(
-          color: MyColors.grey,
+          color: MyColors.dividerClr,
         ),
       ],
     );

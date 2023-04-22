@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:insta_job/bloc/company_bloc/company_bloc.dart';
+import 'package:insta_job/bloc/company_bloc/company_state.dart';
 import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
 import 'package:insta_job/bloc/global_cubit/global_state.dart';
 import 'package:insta_job/utils/app_routes.dart';
@@ -46,7 +48,7 @@ class _SearchJobsScreenState extends State<SearchJobsScreen> {
               ),
             )),
         body: Padding(
-          padding: const EdgeInsets.all(12.0),
+          padding: const EdgeInsets.only(top: 12.0, left: 10, right: 10),
           child: Container(
             color: MyColors.white,
             child: BlocBuilder<GlobalCubit, InitialState>(
@@ -144,22 +146,38 @@ class _SearchJobsScreenState extends State<SearchJobsScreen> {
                           ),
                           SizedBox(height: 20),
                           Expanded(
-                            child: ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: 7,
-                                itemBuilder: (c, i) {
-                                  return Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 7, horizontal: 5),
-                                    child: selectedSearchIndex == 1
-                                        ? SearchJobTile()
-                                        : AssignCompaniesTile(
-                                            // leadingImage:
-                                            //     MyImages.businessAndTrade,
-                                            // title: "Ford",
-                                            ),
-                                  );
-                                }),
+                            child: BlocBuilder<CompanyBloc, CompanyState>(
+                                builder: (context, state) {
+                              if (state is CompanyLoaded) {
+                                return ListView.builder(
+                                    shrinkWrap: true,
+                                    itemCount: state.companyList.length,
+                                    itemBuilder: (c, i) {
+                                      var data = state.companyList[i];
+                                      return Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 7, horizontal: 5),
+                                        child: selectedSearchIndex == 1
+                                            ? SearchJobTile()
+                                            : AssignCompaniesTile(
+                                                companyModel: data,
+
+                                                // leadingImage:
+                                                //     MyImages.businessAndTrade,
+                                                // title: "Ford",
+                                              ),
+                                      );
+                                    });
+                              }
+                              if (state is CompanyLoading) {
+                                return Center(
+                                    child: CircularProgressIndicator());
+                              }
+                              if (state is ErrorState) {
+                                return Center(child: Text(state.error));
+                              }
+                              return SizedBox();
+                            }),
                           ),
                         ],
                       ),

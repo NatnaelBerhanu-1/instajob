@@ -62,15 +62,22 @@ class CustomJobBoardsCard extends StatelessWidget {
                         fontWeight: FontWeight.w800,
                       ),
                       SizedBox(height: 10),
-                      CustomCommonCard(
-                        borderRadius: BorderRadius.circular(5),
-                        bgColor: MyColors.white.withOpacity(.20),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: MyColors.white.withOpacity(.20),
+                        ),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: CommonText(
-                            fontSize: 14,
-                            text: "Contact Us",
-                            fontColor: color ?? MyColors.black,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              CommonText(
+                                fontSize: 14,
+                                text: "Contact Us",
+                                fontColor: color ?? MyColors.black,
+                              ),
+                            ],
                           ),
                         ),
                       ),

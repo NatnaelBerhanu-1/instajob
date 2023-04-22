@@ -13,17 +13,16 @@ class InterviewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: PreferredSize(
-            preferredSize: Size(double.infinity, kToolbarHeight),
-            child: AppBar(
-              elevation: 0,
-              backgroundColor: MyColors.white,
-              title: CommonText(
-                text: "Interviews",
-                fontWeight: FontWeight.w600,
-                fontSize: 20,
-              ),
-            )),
+        appBar: AppBar(
+          elevation: 0,
+          leadingWidth: 0,
+          backgroundColor: MyColors.white,
+          title: CommonText(
+            text: "Interviews",
+            fontWeight: FontWeight.w600,
+            fontSize: 20,
+          ),
+        ),
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

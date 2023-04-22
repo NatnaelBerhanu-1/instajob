@@ -26,7 +26,7 @@ class CustomCareerTile extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 7),
         child: Container(
           decoration: BoxDecoration(
-              border: Border.all(color: MyColors.grey.withOpacity(.30)),
+              border: Border.all(color: MyColors.lightgrey),
               color: MyColors.white,
               boxShadow: [normalBoxShadow],
               borderRadius: BorderRadius.circular(10)),
@@ -125,7 +125,7 @@ class AppliedTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          border: Border.all(color: MyColors.grey.withOpacity(.30)),
+          border: Border.all(color: MyColors.lightgrey),
           color: MyColors.white,
           boxShadow: [normalBoxShadow],
           borderRadius: BorderRadius.circular(10)),
