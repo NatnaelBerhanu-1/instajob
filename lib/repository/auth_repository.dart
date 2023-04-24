@@ -59,7 +59,11 @@ class AuthRepository {
   /// CHECK USER
   Future<ApiResponse> checkUser(String email) async {
     try {
-      var map = {"email": email};
+      var map = {
+        "email": email,
+        "type": userType == "user" ? "user" : "jobsearch"
+      };
+      print('TYPE **********************            $userType');
       Response response =
           await dioClient.post(data: map, uri: EndPoint.checkUser);
       return ApiResponse.withSuccess(response);
