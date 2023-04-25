@@ -257,6 +257,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }*/
 
+/*
 import 'package:flutter/material.dart';
 
 class TimePickerDropDown extends StatefulWidget {
@@ -337,6 +338,7 @@ class _TimePickerDropDownState extends State<TimePickerDropDown> {
     );
   }
 }
+*/
 /*
   RangeValues rangeValue = const RangeValues(10, 30);
 
@@ -351,7 +353,8 @@ class _TimePickerDropDownState extends State<TimePickerDropDown> {
           },
           max: 100,
           min: 0,
-        ),*/
+        ),*/ /*
+
 
 class TimePickerDialog extends StatefulWidget {
   @override
@@ -419,6 +422,22 @@ class MyApp1 extends StatelessWidget {
             },
           ),
         ),
+      ),
+    );
+  }
+}
+*/
+
+import 'package:flutter/material.dart';
+
+class Test extends StatelessWidget {
+  const Test({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: Container(),
       ),
     );
   }

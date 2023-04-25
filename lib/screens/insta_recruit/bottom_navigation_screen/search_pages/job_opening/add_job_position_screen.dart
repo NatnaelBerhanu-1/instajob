@@ -50,7 +50,6 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
   TextEditingController shortlistedReviewSubject = TextEditingController();
   TextEditingController shortlistedReviewContent = TextEditingController();
   final formKey = GlobalKey<FormState>();
-  List<String> skills = ['java'];
 
   updateData() {
     var model = widget.jobPosModel!;
@@ -223,73 +222,174 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                                 val!, "Responsibilities"),
                           ),
                           SizedBox(height: 15),
-                          CustomTextField(
-                            controller: topSkills,
-                            label: "Enter Top Skills",
-                            lblColor: MyColors.black,
-                            hint: "",
-                            maxLine: 5,
-                            validator: (val) =>
-                                validate.requiredValidation(val!, "Skills"),
-                          ),
+                          BlocBuilder<GlobalCubit, InitialState>(
+                              builder: (context, state) {
+                            var skillList = context.read<GlobalCubit>();
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Enter Top Skills",
+                                  style: TextStyle(
+                                      color: MyColors.black,
+                                      fontSize: 13.5,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                                SizedBox(height: 10),
+                                GridView.builder(
+                                    gridDelegate:
+                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 3,
+                                      childAspectRatio: 2 / 1,
+                                      crossAxisSpacing: 1,
+                                    ),
+                                    primary: false,
+                                    shrinkWrap: true,
+                                    itemCount: skillList.skills.length,
+                                    itemBuilder: (context, index) {
+                                      return Padding(
+                                        padding: const EdgeInsets.all(4.0),
+                                        child: CustomCommonCard(
+                                          bgColor: MyColors.lightBlue
+                                              .withOpacity(.20),
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(0),
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                CommonText(
+                                                  text: skillList.skills[index],
+                                                  fontColor: MyColors.blue,
+                                                  fontSize: 13,
+                                                ),
+                                                IconButton(
+                                                  onPressed: () {},
+                                                  icon: Icon(
+                                                    Icons.close,
+                                                    color: MyColors.red,
+                                                    size: 15,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    }),
+                                Expanded(
+                                  flex: 0,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Expanded(
+                                        child: CustomTextField(
+                                          controller: topSkills,
+                                          hint: "",
+                                          validator: (val) =>
+                                              validate.requiredValidation(
+                                                  val!, "Skills"),
+                                        ),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          if (topSkills.text.isNotEmpty) {
+                                            skillList.topSkills(topSkills.text);
+                                            // topSkills.clear();
+                                          } else {
+                                            showToast('Please fill the text');
+                                          }
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              right: 10.0, left: 10, top: 25),
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                color: MyColors.blue,
+                                                shape: BoxShape.circle),
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(9.0),
+                                              child: Icon(
+                                                Icons.add,
+                                                color: MyColors.white,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            );
+                          }),
                           SizedBox(height: 15),
                           CommonText(
                             text: "Salaries",
                             fontSize: 14,
                           ),
                           SizedBox(height: 10),
-                          CustomCommonCard(
-                            borderColor: MyColors.grey.withOpacity(.30),
-                            borderRadius: BorderRadius.circular(7),
-                            child: Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      CommonText(
-                                        text: "All Salaries",
-                                        fontSize: 12,
-                                        fontColor: MyColors.blue,
-                                      ),
-                                      ImageButton(
-                                        image: MyImages.verified,
-                                        padding: EdgeInsets.zero,
-                                      )
-                                    ],
-                                  ),
-                                  SizedBox(height: 10),
-                                  divider(
-                                      color: MyColors.grey.withOpacity(.40)),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      CommonText(
-                                        text: "Custom Range",
-                                        fontSize: 14,
-                                        fontColor: MyColors.grey,
-                                      ),
-                                      CommonText(
-                                        text: "50k-1.2m",
-                                        fontSize: 14,
-                                        fontColor: MyColors.grey,
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 10),
-                                  RangeSlider(
-                                    values: RangeValues(10.0, 30.0),
-                                    onChanged: (val) {},
-                                    max: 80,
-                                    min: 10,
-                                  ),
-                                ],
+                          BlocBuilder<GlobalCubit, InitialState>(
+                              builder: (context, state) {
+                            var values = context.read<GlobalCubit>();
+                            return CustomCommonCard(
+                              borderColor: MyColors.grey.withOpacity(.30),
+                              borderRadius: BorderRadius.circular(7),
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        CommonText(
+                                          text: "All Salaries",
+                                          fontSize: 12,
+                                          fontColor: MyColors.blue,
+                                        ),
+                                        ImageButton(
+                                          image: MyImages.verified,
+                                          padding: EdgeInsets.zero,
+                                        )
+                                      ],
+                                    ),
+                                    SizedBox(height: 10),
+                                    divider(
+                                        color: MyColors.grey.withOpacity(.40)),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        CommonText(
+                                          text: "Custom Range",
+                                          fontSize: 14,
+                                          fontColor: MyColors.grey,
+                                        ),
+                                        CommonText(
+                                          text:
+                                              "${values.range.start.toStringAsFixed(0)}k - ${values.range.end.toStringAsFixed(0)}k",
+                                          fontSize: 14,
+                                          fontColor: MyColors.grey,
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 10),
+                                    RangeSlider(
+                                      values: values.range,
+                                      onChanged: (val) {
+                                        values.rangeValues(val);
+                                      },
+                                      max: 100,
+                                      min: 0,
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ),
+                            );
+                          }),
                           SizedBox(height: 15),
                           CommonText(
                             text: "Area Distance",
@@ -629,7 +729,7 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                                         shortlistedReviewContent.text,
                                     shortlistedReviewSubject:
                                         shortlistedReviewSubject.text,
-                                    topSkills: skills,
+                                    topSkills: value.skills,
                                     uploadPhoto: uploadPhoto.imgUrl,
                                   ));
                                   jobPosition.add(LoadJobPosListEvent());
@@ -649,3 +749,27 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
             )));
   }
 }
+
+/*
+Row(
+                                  children: List.generate(
+                                      skillList.skills.length, (index) {
+                                    return Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: CustomCommonCard(
+                                        bgColor:
+                                            MyColors.lightBlue.withOpacity(.20),
+                                        borderRadius: BorderRadius.circular(5),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: CommonText(
+                                            text: skillList.skills[index],
+                                            fontColor: MyColors.blue,
+                                            fontSize: 13,
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  }),
+                                ),
+*/

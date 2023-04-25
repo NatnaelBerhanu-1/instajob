@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class InitialState {}
 
 class IndexState extends InitialState {
@@ -28,4 +30,16 @@ class ExperienceLevelState extends InitialState {
   final String val;
 
   ExperienceLevelState(this.val);
+}
+
+class RangeState extends InitialState {
+  final RangeValues val;
+
+  RangeState(this.val);
+}
+
+class AddTopSkillsState extends InitialState {
+  final String skills;
+
+  AddTopSkillsState(this.skills);
 }
