@@ -1,17 +1,30 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 import 'package:flutter/material.dart';
+import 'package:insta_job/globals.dart';
 import 'package:insta_job/utils/my_colors.dart';
-import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:insta_job/widgets/custom_cards/insta_job_user_cards/confirm_details_card.dart';
+import 'package:insta_job/widgets/custom_text_field.dart';
 
 import '../../utils/app_routes.dart';
 import '../../widgets/custom_app_bar.dart';
 import '../../widgets/custom_button/custom_btn.dart';
 import 'cover_letter_screen.dart';
 
-class ConfirmDetailsScreen extends StatelessWidget {
+class ConfirmDetailsScreen extends StatefulWidget {
   const ConfirmDetailsScreen({Key? key}) : super(key: key);
 
+  @override
+  State<ConfirmDetailsScreen> createState() => _ConfirmDetailsScreenState();
+}
+
+class _ConfirmDetailsScreenState extends State<ConfirmDetailsScreen> {
+  TextEditingController name =
+      TextEditingController(text: Global.userModel?.name);
+  TextEditingController phoneNumber = TextEditingController(text: "9876542980");
+  TextEditingController previousWork = TextEditingController(
+      text: "work with software company for 2 years, Freelancing on fiverr");
+  TextEditingController passion = TextEditingController();
+  TextEditingController skills = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,74 +48,45 @@ class ConfirmDetailsScreen extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 30),
-              ConfirmDetailTile(
-                  heading: "Your Name",
-                  child: CommonText(
-                    text: "Karean Ritchard",
-                  )),
+              CustomTextField(
+                controller: name, lblColor: MyColors.black,
+                label: "Your Name",
+
+                suffixIcon: buildSuffix(),
+                // hint: "${Global.userModel?.name}",
+              ),
               SizedBox(height: 20),
-              ConfirmDetailTile(
-                  heading: "Phone Number",
-                  child: CommonText(
-                    text: "8123-3219-120314",
-                  )),
+              CustomTextField(
+                controller: phoneNumber, lblColor: MyColors.black,
+                label: "Phone Number",
+                suffixIcon: buildSuffix(),
+                // hint: "9729864329",
+              ),
               SizedBox(height: 20),
-              ConfirmDetailTile(
-                  heading: "Your top 5 skills",
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CommonText(
-                        text: "Photoshop",
-                        fontSize: 14,
-                      ),
-                      CommonText(
-                        text: "Adobe XD",
-                        fontSize: 14,
-                      ),
-                      CommonText(
-                        text: "Uxui Designing",
-                        fontSize: 14,
-                      ),
-                      CommonText(
-                        text: "Logo Designing",
-                        fontSize: 14,
-                      ),
-                      CommonText(
-                        text: "Flayer Design",
-                        fontSize: 14,
-                      ),
-                    ],
-                  )),
+              CustomTextField(
+                controller: skills,
+                label: "Your top 5 skills",
+                lblColor: MyColors.black,
+                suffixIcon: buildSuffix(),
+                hint: "",
+              ),
               SizedBox(height: 20),
-              ConfirmDetailTile(
-                  heading: "Previous Work",
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: CommonText(
-                          text:
-                              'work with software company for 2 years, Freelancing on fiverr',
-                          fontSize: 14.2,
-                        ),
-                      )
-                    ],
-                  )),
+              CustomTextField(
+                label: "Previous Work",
+                lblColor: MyColors.black,
+                controller: previousWork,
+                suffixIcon: buildSuffix(),
+                // heading: "Previous Work",
+                hint: "",
+                maxLine: 2,
+              ),
               SizedBox(height: 20),
-              ConfirmDetailTile(
-                  heading: "Your Passion",
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: CommonText(
-                          text: '......',
-                          fontSize: 14.2,
-                        ),
-                      )
-                    ],
-                  )),
+              CustomTextField(
+                controller: passion,
+                label: "Your Passion",
+                hint: "",
+                suffixIcon: buildSuffix(),
+              ),
               SizedBox(height: 30),
               CustomButton(
                 title: "Confirm all details",

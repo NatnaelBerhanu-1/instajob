@@ -112,6 +112,8 @@
 //   }
 // }
 
+// ignore_for_file: prefer_const_constructors
+
 /*import 'package:flutter/material.dart';
 import 'package:flutter_time_picker_spinner/flutter_time_picker_spinner.dart';
 import 'package:insta_job/utils/my_colors.dart';
@@ -257,8 +259,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }*/
 
-/*
 import 'package:flutter/material.dart';
+import 'package:insta_job/utils/my_colors.dart';
 
 class TimePickerDropDown extends StatefulWidget {
   final Function(DateTime)? onTimeSelected;
@@ -338,7 +340,6 @@ class _TimePickerDropDownState extends State<TimePickerDropDown> {
     );
   }
 }
-*/
 /*
   RangeValues rangeValue = const RangeValues(10, 30);
 
@@ -353,8 +354,7 @@ class _TimePickerDropDownState extends State<TimePickerDropDown> {
           },
           max: 100,
           min: 0,
-        ),*/ /*
-
+        ),*/
 
 class TimePickerDialog extends StatefulWidget {
   @override
@@ -426,19 +426,65 @@ class MyApp1 extends StatelessWidget {
     );
   }
 }
-*/
 
-import 'package:flutter/material.dart';
-
-class Test extends StatelessWidget {
+class Test extends StatefulWidget {
   const Test({Key? key}) : super(key: key);
 
+  @override
+  State<Test> createState() => _TestState();
+}
+
+class _TestState extends State<Test> {
+  TextEditingController controller = TextEditingController();
+  List list = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Container(),
-      ),
+          child: Column(
+        children: [
+          ListView.builder(
+              shrinkWrap: true,
+              itemCount: list.length,
+              itemBuilder: (c, i) {
+                return Padding(
+                  padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: MyColors.lightgrey),
+                    child: Row(
+                      children: [
+                        Text(list[i]),
+                        Spacer(),
+                        // IconButton(
+                        //     onPressed: () {},
+                        //     icon: Icon(Icons.edit_sharp, size: 20)),
+                        IconButton(
+                            onPressed: () {
+                              list.removeAt(i);
+                              setState(() {});
+                            },
+                            icon: Icon(Icons.cancel_outlined,
+                                color: MyColors.lightRed)),
+                      ],
+                    ),
+                  ),
+                );
+              }),
+          TextFormField(
+            controller: controller,
+          ),
+          ElevatedButton(
+              onPressed: () {
+                list.add(controller.text);
+                controller.clear();
+                setState(() {});
+              },
+              child: Text("Add")),
+        ],
+      )),
     );
   }
 }

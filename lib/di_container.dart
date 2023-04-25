@@ -13,6 +13,7 @@ import 'package:insta_job/repository/auth_repository.dart';
 import 'package:insta_job/repository/company_repo.dart';
 import 'package:insta_job/repository/feed_back.dart';
 import 'package:insta_job/repository/job_position_repo.dart';
+import 'package:insta_job/repository/resume_repo.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -31,6 +32,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => CompanyRepository(dioClient: sl()));
   sl.registerLazySingleton(() => JobPositionRepository(dioClient: sl()));
   sl.registerLazySingleton(() => FeedBackRepository(dioClient: sl()));
+  sl.registerLazySingleton(() => ResumeRepository(dioClient: sl()));
 
   /// cubit
   sl.registerLazySingleton(() => GlobalCubit());
