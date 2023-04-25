@@ -181,7 +181,7 @@ class AuthCubit extends Cubit<AuthInitialState> {
           MaterialPageRoute(builder: (_) => const LoginScreen()),
           (route) => false);
     } else {
-      emit(ErrorState("Somthing went wrong"));
+      emit(ErrorState("Something went wrong"));
     }
   }
 }
