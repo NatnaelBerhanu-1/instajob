@@ -10,3 +10,11 @@ class AddResumeEvent extends ResumeEvent {
   @override
   List<Object?> get props => [];
 }
+
+class LoadResumeEvent extends ResumeEvent {
+  final String id;
+
+  LoadResumeEvent(this.id);
+  @override
+  List<Object?> get props => [];
+}

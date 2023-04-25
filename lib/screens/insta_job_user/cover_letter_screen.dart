@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:insta_job/dialog/applied_successful_dialog.dart';
 import 'package:insta_job/dialog/custom_dialog.dart';
+import 'package:insta_job/model/resume_model.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 
@@ -9,7 +10,9 @@ import '../../widgets/custom_app_bar.dart';
 import '../../widgets/custom_button/custom_btn.dart';
 
 class CoverLetterScreen extends StatelessWidget {
-  const CoverLetterScreen({Key? key}) : super(key: key);
+  final ResumeModel resumeModel;
+  const CoverLetterScreen({Key? key, required this.resumeModel})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -40,13 +43,13 @@ class CoverLetterScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     // mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Row(),
+                      Text("Dear Hiring Manager"),
                       Text(""),
                       Text(""),
-                      Text(""),
-                      Text(""),
-                      Text(""),
-                      Text(""),
+                      Text("${resumeModel.previousWork}\n"),
+                      Text("Thank you for your consideration\n"),
+                      Text("Sincerely\n"),
+                      Text("${resumeModel.yourName}"),
                     ],
                   ),
                 ),
