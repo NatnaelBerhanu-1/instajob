@@ -10,6 +10,8 @@ import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
 
 import '../../../bloc/bottom_bloc/bottom_bloc.dart';
+import '../../../bloc/company_bloc/company_bloc.dart';
+import '../../../bloc/company_bloc/company_event.dart';
 import '../home_page.dart';
 
 class BottomNavScreen extends StatefulWidget {
@@ -27,6 +29,12 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
     const InterviewScreen(),
     const HomePage(),
   ];
+
+  @override
+  void initState() {
+    context.read<CompanyBloc>().add(LoadCompanyListEvent());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

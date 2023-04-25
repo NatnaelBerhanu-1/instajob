@@ -6,6 +6,7 @@ import 'package:insta_job/bloc/feedback_bloc/feedback_bloc.dart';
 import 'package:insta_job/bloc/feedback_bloc/feedback_event.dart';
 import 'package:insta_job/bloc/feedback_bloc/feedback_state.dart';
 import 'package:insta_job/globals.dart';
+import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
 
@@ -56,12 +57,14 @@ class _FeedBackScreenState extends State<FeedBackScreen> {
                     title: "Leave Feedback",
                     backgroundColor: MyColors.blue,
                     fontColor: MyColors.white,
+                    loading: state is FeedBackLoading ? true : false,
                     iconColor: MyColors.blue,
                     onclick: () {
                       if (msg.text.isNotEmpty) {
                         context.read<FeedBackBloc>().add(
                               InsertFeedBackEvent(msg.text),
                             );
+                        AppRoutes.pop(context);
                       }
                       msg.clear();
                       print('ADDDDD ****************         ');

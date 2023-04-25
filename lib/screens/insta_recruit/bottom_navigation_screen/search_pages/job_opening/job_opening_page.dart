@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:insta_job/bloc/company_bloc/company_bloc.dart';
+import 'package:insta_job/bloc/company_bloc/company_event.dart';
 import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
 import 'package:insta_job/bloc/job_position/job_pos_state.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/job_opening/add_job_position_screen.dart';
@@ -39,6 +41,7 @@ class JobOpeningScreen extends StatelessWidget {
                   width: 28,
                   padding: EdgeInsets.all(9.0),
                   onTap: () {
+                    context.read<CompanyBloc>().add(LoadCompanyListEvent());
                     context.read<BottomBloc>().add(
                         SetScreenEvent(false, screenName: JobOpeningScreen()));
                     // context.read<BottomCubit>().setSelectedScreen(false,

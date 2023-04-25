@@ -7,7 +7,9 @@ class FeedBackBloc extends Bloc<FeedBackEvent, FeedBackState> {
   final FeedBackRepository feedBackRepository;
   FeedBackBloc(this.feedBackRepository) : super(FeedBackInitialState()) {
     on<InsertFeedBackEvent>((event, emit) async {
+      emit(FeedBackLoading());
       await feedBackRepository.insertFeedBack(feedBack: event.feedBack);
+      emit(FeedBackLoaded());
     });
   }
 }
