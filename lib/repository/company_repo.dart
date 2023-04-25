@@ -15,7 +15,7 @@ class CompanyRepository {
         "employe_id":
             Global.userModel?.type == "user" ? "" : Global.userModel?.id
       };
-
+      print("TYPE *********** !!!!!!!!!!!!  ${Global.userModel?.type}");
       var response =
           await dioClient.post(data: map, uri: EndPoint.getCompanies);
       return ApiResponse.withSuccess(response);

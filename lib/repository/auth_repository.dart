@@ -23,7 +23,7 @@ class AuthRepository {
         "name": name,
         "email": email,
         "password": password,
-        "type": userType == "user" ? "user" : "jobsearch",
+        "type": userType == "user" ? "user" : "recruiters",
         "fcm_token": "1234",
         "firebase_id": FirebaseAuth.instance.currentUser?.uid,
       };
@@ -61,7 +61,6 @@ class AuthRepository {
     try {
       var map = {
         "email": email,
-        "type": userType == "user" ? "user" : "jobsearch"
       };
       print('TYPE **********************            $userType');
       Response response =
@@ -75,7 +74,7 @@ class AuthRepository {
   /// LOGOUT
   Future<ApiResponse> logOutUser() async {
     try {
-      var map = {"id": Global.userModel?.id};
+      var map = {"user_id": Global.userModel?.id};
       Response response = await dioClient.post(data: map, uri: EndPoint.logout);
       return ApiResponse.withSuccess(response);
     } on DioError catch (e) {

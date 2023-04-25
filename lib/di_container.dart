@@ -39,9 +39,9 @@ Future<void> init() async {
 
   ///   bloc
   sl.registerLazySingleton(
-      () => AuthCubit(authRepository: sl(), sharedPreferences: sl()));
+      () => AuthCubit(sl(), authRepository: sl(), sharedPreferences: sl()));
   sl.registerLazySingleton(() => CompanyBloc(sl()));
-  sl.registerLazySingleton(() => BottomBloc(sl()));
+  sl.registerLazySingleton(() => BottomBloc(sl())..add(UserEvent()));
   sl.registerLazySingleton(() => JobPositionBloc(sl()));
   sl.registerLazySingleton(() => FeedBackBloc(sl()));
 
