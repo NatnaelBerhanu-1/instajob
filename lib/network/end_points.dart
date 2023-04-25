@@ -28,4 +28,9 @@ class EndPoint {
 
   /// feedBack
   static String feedbackInsert = "feedback_insert";
+
+  ///resume
+  static String addResume = "resume";
+  static String getResume = "list_of_resume";
+  static String editResume = "edit_resume";
 }
