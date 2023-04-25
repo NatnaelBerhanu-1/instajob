@@ -44,7 +44,7 @@ class CustomSearchChip extends StatelessWidget {
             decoration: BoxDecoration(
               image: DecorationImage(
                   image: AssetImage(image ?? MyImages.businessAndTrade),
-                  fit: BoxFit.contain,
+                  // fit: BoxFit.contain,
                   opacity: index == selectedIndex ? 0.5 : 10,
                   alignment: Alignment.topLeft),
             ),

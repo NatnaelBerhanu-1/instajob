@@ -17,6 +17,7 @@ import '../../../../widgets/custom_button/custom_img_button.dart';
 import '../../../../widgets/custom_cards/assign_companies_tile.dart';
 import '../../../../widgets/custom_cards/insta_job_user_cards/search_job_tile.dart';
 import '../../../../widgets/custom_chip.dart';
+import '../../../insta_recruit/bottom_navigation_screen/search_pages/search_company.dart';
 import '../../../insta_recruit/bottom_navigation_screen/user_account/setting_pages/save_card_screen.dart';
 import 'filter_screen.dart';
 
@@ -42,9 +43,14 @@ class _SearchJobsScreenState extends State<SearchJobsScreen> {
               centerTitle: false,
               leadingImage: "",
               leadingWidth: 5,
+              onTap: () {},
               actions: ImageButton(
                 image: MyImages.searchBlue,
                 padding: EdgeInsets.only(left: 10, right: 20),
+                onTap: () {
+                  AppRoutes.push(context, SearchCompany());
+                  print('dgv');
+                },
               ),
             )),
         body: Padding(

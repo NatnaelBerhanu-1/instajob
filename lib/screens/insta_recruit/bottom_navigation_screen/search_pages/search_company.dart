@@ -19,7 +19,7 @@ import '../../../../widgets/custom_button/custom_img_button.dart';
 import '../../../../widgets/custom_text_field.dart';
 
 class SearchCompany extends StatefulWidget {
-  SearchCompany({Key? key}) : super(key: key);
+  const SearchCompany({Key? key}) : super(key: key);
 
   @override
   State<SearchCompany> createState() => _SearchCompanyState();
