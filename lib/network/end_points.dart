@@ -4,17 +4,18 @@ class EndPoint {
   static String imageBaseUrl =
       "https://shaybani-web.ondemandservicesappinflutter.online";
 
-  /// auth
-  static String loginUser = "login";
-  static String registerUser = "register";
-  static String registerEmp = "registration";
-  static String loginEmp = "signin";
+  /// EMPLOYEE INTERFACE
+
+  /// Common api's
   static String checkUser = "check_user";
-  static String checkEmployee = "check_employe";
   static String logout = "logout";
 
   /// base64
   static String base64 = "base64";
+
+  /// auth
+  static String registerEmp = "registration";
+  static String loginEmp = "signin";
 
   ///companies
   static String addCompany = "insertcompany";
@@ -29,8 +30,17 @@ class EndPoint {
   /// feedBack
   static String feedbackInsert = "feedback_insert";
 
+  /// USER INTERFACE
+
+  /// auth
+  static String loginUser = "login";
+  static String registerUser = "register";
+
   ///resume
   static String addResume = "resume";
   static String getResume = "list_of_resume";
   static String editResume = "edit_resume";
+
+  ///search
+  static String searchJob = "search_job";
 }
