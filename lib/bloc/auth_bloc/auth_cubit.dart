@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:insta_job/bloc/auth_bloc/auth_state.dart';
+import 'package:insta_job/bloc/company_bloc/company_event.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/model/user_model.dart';
 import 'package:insta_job/network/api_response.dart';
@@ -15,10 +16,15 @@ import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/bottom_
 import 'package:insta_job/screens/insta_recruit/membership_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../company_bloc/company_bloc.dart';
+
 class AuthCubit extends Cubit<AuthInitialState> {
   final SharedPreferences sharedPreferences;
   final AuthRepository authRepository;
-  AuthCubit({required this.sharedPreferences, required this.authRepository})
+  final CompanyBloc companyBloc;
+
+  AuthCubit(this.companyBloc,
+      {required this.sharedPreferences, required this.authRepository})
       : super(AuthInitialState());
 
   registerEmp({
@@ -41,6 +47,8 @@ class AuthCubit extends Cubit<AuthInitialState> {
       var userModel = UserModel.fromJson(response.response.data['data']);
       Global.userModel = userModel;
       emit(AuthState(userModel: userModel));
+      companyBloc.add(LoadCompanyListEvent());
+
       var agree = sharedPreferences.getBool('isAgree');
       if (agree == true) {
         navigationKey.currentState?.pushAndRemoveUntil(
@@ -73,7 +81,10 @@ class AuthCubit extends Cubit<AuthInitialState> {
           "user", jsonEncode(response.response.data['data']));
       var userModel = UserModel.fromJson(response.response.data['data']);
       Global.userModel = userModel;
+      print('user ----------        ${userModel.id}  ');
       emit(AuthState(userModel: userModel));
+      companyBloc.add(LoadCompanyListEvent());
+
       navigationKey.currentState?.pushAndRemoveUntil(
           MaterialPageRoute(builder: (_) => const BottomNavScreen()),
           (route) => false);
