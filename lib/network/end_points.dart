@@ -10,6 +10,7 @@ class EndPoint {
   static String registerEmp = "registration";
   static String loginEmp = "signin";
   static String checkUser = "check_user";
+  static String checkEmployee = "check_employe";
   static String logout = "logout";
 
   /// base64

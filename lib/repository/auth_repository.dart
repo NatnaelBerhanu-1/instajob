@@ -32,7 +32,7 @@ class AuthRepository {
           uri: isUser ? EndPoint.registerUser : EndPoint.registerEmp);
       return ApiResponse.withSuccess(response);
     } on DioError catch (e) {
-      return ApiResponse.withError(e);
+      return ApiResponse.withError(e.response);
     }
   }
 
@@ -51,14 +51,19 @@ class AuthRepository {
           data: map, uri: isUser ? EndPoint.loginUser : EndPoint.loginEmp);
       return ApiResponse.withSuccess(response);
     } on DioError catch (e) {
-      return ApiResponse.withError(e);
+      print(" RESPONCE 99999999999999999990 ${e.response}");
+      return ApiResponse.withError(e.response);
     }
   }
 
   /// CHECK USER
   Future<ApiResponse> checkUser(String email) async {
     try {
-      var map = {"email": email};
+      var map = {
+        "email": email,
+        "type": userType == "user" ? "user" : "jobsearch"
+      };
+      print('TYPE **********************            $userType');
       Response response =
           await dioClient.post(data: map, uri: EndPoint.checkUser);
       return ApiResponse.withSuccess(response);

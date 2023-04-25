@@ -39,7 +39,7 @@ class CustomSearchChip extends StatelessWidget {
               )
             ]),
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(6.0),
           child: Container(
             decoration: BoxDecoration(
               image: DecorationImage(
@@ -48,36 +48,33 @@ class CustomSearchChip extends StatelessWidget {
                   opacity: index == selectedIndex ? 0.5 : 10,
                   alignment: Alignment.topLeft),
             ),
-            child: Padding(
-              padding: const EdgeInsets.all(0),
-              child: Column(
-                children: [
-                  // Image.asset(
-                  //   MyImages.suitcase,
-                  //   // height: 30,
-                  //   // width: 30,
-                  //   // color: MyColors.lightBlue,
-                  // ),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      ImageButton(
-                        image: MyImages.searchGrey,
-                        color: index == selectedIndex
-                            ? MyColors.white
-                            : MyColors.blue,
-                      ),
-                      CommonText(
-                        text: title,
-                        fontSize: 13,
-                        fontColor: index == selectedIndex
-                            ? MyColors.white
-                            : MyColors.black,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+            child: Column(
+              children: [
+                // Image.asset(
+                //   MyImages.suitcase,
+                //   // height: 30,
+                //   // width: 30,
+                //   // color: MyColors.lightBlue,
+                // ),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ImageButton(
+                      image: MyImages.searchGrey,
+                      color: index == selectedIndex
+                          ? MyColors.white
+                          : MyColors.blue,
+                    ),
+                    CommonText(
+                      text: title,
+                      fontSize: 13,
+                      fontColor: index == selectedIndex
+                          ? MyColors.white
+                          : MyColors.black,
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
         ),
