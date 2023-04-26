@@ -58,9 +58,15 @@ class GlobalCubit extends Cubit<InitialState> {
     emit(RangeState(range));
   }
 
+  /// SKILLS
   List<String> skills = [];
   topSkills(skillVal) {
     skills.add(skillVal);
     emit(AddTopSkillsState(skillVal));
+  }
+
+  /// CALENDER
+  chooseDate() {
+    // selectDate(c);
   }
 }

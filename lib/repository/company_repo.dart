@@ -53,6 +53,18 @@ class CompanyRepository {
     }
   }
 
+  searchJobs({String? search}) async {
+    try {
+      var map = {
+        "search_jobs": search ?? "",
+      };
+      var response = await dioClient.post(data: map, uri: EndPoint.searchJob);
+      return ApiResponse.withSuccess(response);
+    } on DioError catch (e) {
+      return ApiResponse.withError(e.response);
+    }
+  }
+
   base64ImgApi(value, extension) async {
     try {
       var map = {"file": value, "extension": extension};

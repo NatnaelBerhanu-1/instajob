@@ -50,6 +50,17 @@ class ValidationCubit extends Cubit<InitialValidation> {
     // emit(ValidState("valid"));
     return null;
   }
+/*
+  String? phoneValidation(String s) {
+    if (s.isEmpty || s == "") {
+      emit(RequiredValidation("Phone number is required"));
+      return "";
+    } else if (s.length < 10) {
+      emit(InvalidPhoneState("Invalid Phone"));
+      return "";
+    }
+    return null;
+  }*/
 
   String? passwordValidation(String s) {
     if (s.isEmpty || s == "") {

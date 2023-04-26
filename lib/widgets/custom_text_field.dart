@@ -223,7 +223,9 @@ class CustomTextField extends StatelessWidget {
 class CustomPhonePickerTextField extends StatelessWidget {
   final String? label;
   final TextEditingController? controller;
-  CustomPhonePickerTextField({Key? key, this.controller, this.label})
+  final String? Function(String?)? validator;
+  CustomPhonePickerTextField(
+      {Key? key, this.controller, this.label, this.validator})
       : super(key: key);
   InputBorder border = OutlineInputBorder(
       borderSide: BorderSide(color: MyColors.grey.withOpacity(.50), width: 1),
@@ -245,25 +247,16 @@ class CustomPhonePickerTextField extends StatelessWidget {
         SizedBox(height: 9),
         InternationalPhoneNumberInput(
           onInputChanged: (PhoneNumber number) async {
-            print(number);
-            // setState(() {
-            //   isoCode = number.isoCode!;
-            //   dialCode = number.dialCode!;
-            //   print("CONRTY COSDDFDDDF   $dialCode");
-            // });
+            // print(number);
           },
           onInputValidated: (val) {
             if (val == true) {
               FocusManager.instance.primaryFocus?.unfocus();
             }
-            // setState(() {
-            //   isValid = val;
-            // });
             print("VAL  ::: $val");
-            // print("ISVALID ::: $isValid");
           },
           errorMessage: "",
-
+          validator: validator,
           autoValidateMode: AutovalidateMode.always,
           selectorConfig: const SelectorConfig(
               selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
@@ -279,6 +272,11 @@ class CustomPhonePickerTextField extends StatelessWidget {
           initialValue: PhoneNumber(isoCode: "IN"),
           textFieldController: controller,
           inputDecoration: InputDecoration(
+            // prefixIcon:
+            // ImageButton(
+            //   image: MyImages.phone,
+            //   padding: EdgeInsets.zero,
+            // ),
             isDense: true,
             fillColor: MyColors.white,
             filled: true,

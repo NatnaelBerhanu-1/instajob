@@ -6,9 +6,12 @@ import 'package:insta_job/bloc/bottom_bloc/bottom_bloc.dart';
 import 'package:insta_job/bloc/company_bloc/company_state.dart';
 import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
 import 'package:insta_job/bloc/job_position/job_pos_event.dart';
+import 'package:insta_job/globals.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/bottom_navigation_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/job_opening/job_opening_page.dart';
+import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/job_opening/job_position_screen.dart';
 import 'package:insta_job/utils/app_routes.dart';
+import 'package:insta_job/widgets/custom_divider.dart';
 
 import '../../../../bloc/company_bloc/company_bloc.dart';
 import '../../../../bloc/company_bloc/company_event.dart';
@@ -19,7 +22,8 @@ import '../../../../widgets/custom_button/custom_img_button.dart';
 import '../../../../widgets/custom_text_field.dart';
 
 class SearchCompany extends StatefulWidget {
-  const SearchCompany({Key? key}) : super(key: key);
+  final int? index;
+  const SearchCompany({Key? key, this.index}) : super(key: key);
 
   @override
   State<SearchCompany> createState() => _SearchCompanyState();
@@ -35,11 +39,12 @@ class _SearchCompanyState extends State<SearchCompany> {
           preferredSize: Size(double.infinity, kToolbarHeight),
           child: CustomAppBar(
             leadingImage: MyImages.backArrow,
+            centerTitle: false,
             onTap: () {
               context.read<CompanyBloc>().add(LoadCompanyListEvent());
               AppRoutes.pop(context);
             },
-            title: "Search Companies",
+            title: "Search",
           ),
         ),
         body: BlocBuilder<BottomBloc, BottomInitialState>(
@@ -48,71 +53,149 @@ class _SearchCompanyState extends State<SearchCompany> {
             padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15),
             child: BlocBuilder<CompanyBloc, CompanyState>(
                 builder: (context, state) {
+              var data = context.read<CompanyBloc>();
               return Column(
                 children: [
-                  IconTextField(
-                    controller: search,
-                    hint: "Search Companies",
-                    color: MyColors.grey.withOpacity(.40),
-                    borderRadius: 25,
-                    autofocus: true,
-                    prefixIcon: ImageButton(
-                      image: MyImages.searchGrey,
-                      padding: EdgeInsets.all(14),
-                      height: 10,
-                      width: 10,
+                  Expanded(
+                    flex: 0,
+                    child: IconTextField(
+                      controller: search,
+                      hint: "Search..",
+                      color: MyColors.grey.withOpacity(.40),
+                      borderRadius: 25,
+                      autofocus: true,
+                      prefixIcon: ImageButton(
+                        image: MyImages.searchGrey,
+                        padding: EdgeInsets.all(14),
+                        height: 10,
+                        width: 10,
+                      ),
+                      onChanged: (searchList) {
+                        if (Global.userModel?.type == "user") {
+                          widget.index == 1
+                              ? data.add(JobSearchEvent(search: search.text))
+                              : data
+                                  .add(CompanySearchEvent(search: search.text));
+                        } else {
+                          data.add(CompanySearchEvent(search: search.text));
+                        }
+
+                        // context.read<CompanyBloc>().add(LoadCompanyListEvent());
+                      },
+                      onPressed: () {},
                     ),
-                    onChanged: (searchList) {
-                      context.read<CompanyBloc>().add(
-                            CompanySearchEvent(search: search.text),
-                          );
-                      // context.read<CompanyBloc>().add(LoadCompanyListEvent());
-                    },
-                    onPressed: () {},
                   ),
                   SizedBox(height: 20),
-                  if (state is SearchCompanyLoaded) ...[
-                    if (state.searchCompanyList.isEmpty || search.text.isEmpty)
-                      SizedBox(height: 20)
-                    else
-                      ListView.builder(
-                          shrinkWrap: true,
-                          physics: BouncingScrollPhysics(),
-                          itemCount: state.searchCompanyList.length,
-                          itemBuilder: (c, i) {
-                            var a = state.searchCompanyList[i];
-                            return GestureDetector(
-                              onTap: () {
-                                print("$state clikkkkkkkkkkkkkkkkkkk");
-                                context
-                                    .read<JobPositionBloc>()
-                                    .add(LoadJobPosListEvent());
-                                context.read<BottomBloc>().add(SetScreenEvent(
-                                    true,
-                                    screenName: JobOpeningScreen()));
-                                AppRoutes.push(context, BottomNavScreen());
-                                // search.clear();
-                              },
-                              child: Container(
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          if (state is SearchCompanyLoaded) ...[
+                            if (state.searchCompanyList.isEmpty ||
+                                search.text.isEmpty)
+                              SizedBox(height: 20)
+                            else
+                              Container(
+                                padding: EdgeInsets.only(top: 8, bottom: 8),
                                 decoration: BoxDecoration(
-                                  color: MyColors.lightBlue.withOpacity(.20),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text("${a.companyName}"),
-                                      SizedBox(height: 5)
-                                      // Divider()
-                                    ],
-                                  ),
+                                    color: MyColors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: MyColors.lightgrey,
+                                          blurRadius: 10,
+                                          spreadRadius: 4)
+                                    ]),
+                                child: ListView.separated(
+                                  shrinkWrap: true,
+                                  physics: BouncingScrollPhysics(),
+                                  itemCount: state.searchCompanyList.length,
+                                  itemBuilder: (c, i) {
+                                    var companyData =
+                                        state.searchCompanyList[i];
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 8.0, horizontal: 10),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          context
+                                              .read<JobPositionBloc>()
+                                              .add(LoadJobPosListEvent());
+                                          context.read<BottomBloc>().add(
+                                              SetScreenEvent(true,
+                                                  screenName: JobOpeningScreen(
+                                                      companyModel:
+                                                          companyData)));
+                                          AppRoutes.push(
+                                              context, BottomNavScreen());
+                                          // search.clear();
+                                        },
+                                        child:
+                                            Text("${companyData.companyName}"),
+                                      ),
+                                    );
+                                  },
+                                  separatorBuilder:
+                                      (BuildContext context, int index) {
+                                    return divider();
+                                  },
                                 ),
                               ),
-                            );
-                          }),
-                  ],
+                          ],
+                          if (state is SearchJobLoaded) ...[
+                            if (state.searchJobList.isEmpty ||
+                                search.text.isEmpty)
+                              SizedBox(height: 20)
+                            else
+                              Container(
+                                padding: EdgeInsets.only(top: 8, bottom: 8),
+                                decoration: BoxDecoration(
+                                    color: MyColors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: MyColors.lightgrey,
+                                          blurRadius: 10,
+                                          spreadRadius: 4)
+                                    ]),
+                                child: ListView.separated(
+                                  shrinkWrap: true,
+                                  physics: BouncingScrollPhysics(),
+                                  itemCount: state.searchJobList.length,
+                                  itemBuilder: (c, i) {
+                                    var data = state.searchJobList[i];
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 8.0, horizontal: 10),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          print(
+                                              "$state clikkkkkkkkkkkkkkkkkkk");
+                                          context
+                                              .read<JobPositionBloc>()
+                                              .add(LoadJobPosListEvent());
+                                          AppRoutes.push(
+                                              context,
+                                              JobPositionScreen(
+                                                  jobPosModel: data));
+                                          // search.clear();
+                                        },
+                                        child: Text("${data.jobdetails}"),
+                                      ),
+                                    );
+                                  },
+                                  separatorBuilder:
+                                      (BuildContext context, int index) {
+                                    return divider();
+                                  },
+                                ),
+                              ),
+                          ],
+                          if (state is ErrorState) ...[
+                            Center(child: Text(state.error)),
+                          ]
+                        ],
+                      ),
+                    ),
+                  )
                 ],
               );
             }),

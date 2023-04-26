@@ -9,7 +9,17 @@ abstract class ResumeState extends Equatable {
 
 class ResumeInitial extends ResumeState {}
 
-class NameState extends ResumeState {}
+class CheckReadOnly extends ResumeState {
+  final bool readOnly;
+
+  const CheckReadOnly(this.readOnly);
+}
+
+class CheckConfirm extends ResumeState {
+  final bool val;
+
+  const CheckConfirm(this.val);
+}
 
 class PhoneState extends ResumeState {}
 

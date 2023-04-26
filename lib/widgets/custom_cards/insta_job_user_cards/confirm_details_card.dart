@@ -1,6 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:insta_job/bloc/resume_bloc/resume_bloc.dart';
+import 'package:insta_job/bloc/resume_bloc/resume_state.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 
@@ -102,7 +105,7 @@ import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 //     );
 //   }
 // }
-Padding buildSuffix({
+buildSuffix({
   VoidCallback? confirm,
   VoidCallback? edit,
 }) {
@@ -112,13 +115,16 @@ Padding buildSuffix({
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        GestureDetector(
-          onTap: confirm,
-          child: CommonText(
-            text: "Confirm",
-            fontColor: Colors.orange,
-          ),
-        ),
+        BlocBuilder<ResumeBloc, ResumeState>(builder: (context, state) {
+          var resumeData = context.read<ResumeBloc>();
+          return GestureDetector(
+            onTap: confirm,
+            child: CommonText(
+              text: "Confirm",
+              fontColor: Colors.orange,
+            ),
+          );
+        }),
         SizedBox(width: 10),
         GestureDetector(
           onTap: edit,

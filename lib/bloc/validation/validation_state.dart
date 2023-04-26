@@ -35,3 +35,9 @@ class ConfirmPasswordState extends InitialValidation {
 
   ConfirmPasswordState(this.pass);
 }
+
+class InvalidPhoneState extends InitialValidation {
+  final String phone;
+
+  InvalidPhoneState(this.phone);
+}

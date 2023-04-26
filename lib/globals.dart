@@ -9,6 +9,26 @@ class Global {
   static UserModel? userModel;
 }
 
+Future selectDate(BuildContext context, DateTime date) async {
+// DateFormat('dd-MM-yyyy').format(date);
+  DateTime current = DateTime.now();
+  DateTime? pickedDate = await showDatePicker(
+      context: context,
+      builder: (context, child) {
+        return child!;
+      },
+      firstDate: DateTime(DateTime.now().year - 70),
+      lastDate: DateTime(DateTime.now().year + 30),
+      initialDate: date,
+      currentDate: DateTime.now());
+  if (pickedDate != null) {
+    return pickedDate;
+  } else {
+    print("ERROR");
+    return current;
+  }
+}
+
 BoxShadow boxShadow = BoxShadow(
   color: Colors.grey.withOpacity(0.10),
   offset: const Offset(3, 3),

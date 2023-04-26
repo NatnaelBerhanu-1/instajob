@@ -16,5 +16,21 @@ class LoadResumeEvent extends ResumeEvent {
 
   LoadResumeEvent(this.id);
   @override
+  List<Object?> get props => [id];
+}
+
+class CheckReadOnlyEvent extends ResumeEvent {
+  final bool readOnly;
+
+  CheckReadOnlyEvent(this.readOnly);
+  @override
+  List<Object?> get props => [];
+}
+
+class CheckIsConfirmEvent extends ResumeEvent {
+  final bool isConfirm;
+
+  CheckIsConfirmEvent(this.isConfirm);
+  @override
   List<Object?> get props => [];
 }

@@ -43,9 +43,7 @@ class CoverLetterScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     // mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text("Dear Hiring Manager"),
-                      Text(""),
-                      Text(""),
+                      Text("Dear Hiring Manager\n"),
                       Text("${resumeModel.previousWork}\n"),
                       Text("Thank you for your consideration\n"),
                       Text("Sincerely\n"),

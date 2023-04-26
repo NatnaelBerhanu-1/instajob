@@ -3,9 +3,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/company_bloc/company_bloc.dart';
+import 'package:insta_job/bloc/company_bloc/company_event.dart';
 import 'package:insta_job/bloc/company_bloc/company_state.dart';
 import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
 import 'package:insta_job/bloc/global_cubit/global_state.dart';
+import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
+import 'package:insta_job/bloc/job_position/job_pos_event.dart';
+import 'package:insta_job/bloc/job_position/job_pos_state.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_cards/insta_job_user_cards/filter_tiles/custom_filter_tile.dart';
@@ -32,6 +36,12 @@ class _SearchJobsScreenState extends State<SearchJobsScreen> {
   // int filterIndex = 0;
   // int searchIndex = 1;
   @override
+  void initState() {
+    context.read<JobPositionBloc>().add(LoadJobPosListEvent());
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var selectedFilterIndex = context.watch<GlobalCubit>().fIndex;
     var selectedSearchIndex = context.watch<GlobalCubit>().sIndex;
@@ -39,7 +49,8 @@ class _SearchJobsScreenState extends State<SearchJobsScreen> {
         appBar: PreferredSize(
             preferredSize: Size(double.infinity, kToolbarHeight),
             child: CustomAppBar(
-              title: "Search Jobs",
+              title:
+                  selectedSearchIndex == 1 ? "Search Jobs" : "Search Companies",
               centerTitle: false,
               leadingImage: "",
               leadingWidth: 5,
@@ -48,8 +59,8 @@ class _SearchJobsScreenState extends State<SearchJobsScreen> {
                 image: MyImages.searchBlue,
                 padding: EdgeInsets.only(left: 10, right: 20),
                 onTap: () {
-                  AppRoutes.push(context, SearchCompany());
-                  print('dgv');
+                  AppRoutes.push(
+                      context, SearchCompany(index: selectedSearchIndex));
                 },
               ),
             )),
@@ -132,6 +143,9 @@ class _SearchJobsScreenState extends State<SearchJobsScreen> {
                                   child: CustomSearchChip(
                                 onTap: () {
                                   context.read<GlobalCubit>().changeIndex(1);
+                                  context
+                                      .read<JobPositionBloc>()
+                                      .add(LoadJobPosListEvent());
                                 },
                                 image: MyImages.suitcase,
                                 index: 1,
@@ -143,6 +157,9 @@ class _SearchJobsScreenState extends State<SearchJobsScreen> {
                                   child: CustomSearchChip(
                                 onTap: () {
                                   context.read<GlobalCubit>().changeIndex(2);
+                                  context
+                                      .read<CompanyBloc>()
+                                      .add(LoadCompanyListEvent());
                                 },
                                 index: 2,
                                 selectedIndex: selectedSearchIndex,
@@ -152,39 +169,64 @@ class _SearchJobsScreenState extends State<SearchJobsScreen> {
                           ),
                           SizedBox(height: 20),
                           Expanded(
-                            child: BlocBuilder<CompanyBloc, CompanyState>(
-                                builder: (context, state) {
-                              if (state is CompanyLoaded) {
-                                return ListView.builder(
-                                    shrinkWrap: true,
-                                    itemCount: state.companyList.length,
-                                    itemBuilder: (c, i) {
-                                      var data = state.companyList[i];
-                                      return Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 7, horizontal: 5),
-                                        child: selectedSearchIndex == 1
-                                            ? SearchJobTile()
-                                            : AssignCompaniesTile(
-                                                companyModel: data,
-
-                                                // leadingImage:
-                                                //     MyImages.businessAndTrade,
-                                                // title: "Ford",
-                                              ),
-                                      );
-                                    });
-                              }
-                              if (state is CompanyLoading) {
-                                return Center(
-                                    child: CircularProgressIndicator());
-                              }
-                              if (state is ErrorState) {
-                                return Center(child: Text(state.error));
-                              }
-                              return SizedBox();
-                            }),
-                          ),
+                              child: selectedSearchIndex == 1
+                                  ? BlocBuilder<JobPositionBloc, JobPosState>(
+                                      builder: (context, state) {
+                                      if (state is JobPosLoaded) {
+                                        return ListView.builder(
+                                            shrinkWrap: true,
+                                            itemCount: state.jobPosList.length,
+                                            itemBuilder: (c, i) {
+                                              var data = state.jobPosList[i];
+                                              return Padding(
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
+                                                      vertical: 7,
+                                                      horizontal: 5),
+                                                  child: SearchJobTile(
+                                                      jobPosModel: data));
+                                            });
+                                      }
+                                      if (state is JobPosLoading) {
+                                        return Center(
+                                            child: CircularProgressIndicator());
+                                      }
+                                      if (state is JobErrorState) {
+                                        return Center(child: Text(state.error));
+                                      }
+                                      return SizedBox();
+                                    })
+                                  : BlocBuilder<CompanyBloc, CompanyState>(
+                                      builder: (context, state) {
+                                      if (state is CompanyLoaded) {
+                                        return ListView.builder(
+                                            shrinkWrap: true,
+                                            itemCount: state.companyList.length,
+                                            itemBuilder: (c, i) {
+                                              var data = state.companyList[i];
+                                              return Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 7,
+                                                        horizontal: 5),
+                                                child: AssignCompaniesTile(
+                                                  companyModel: data,
+                                                  // leadingImage:
+                                                  //     MyImages.businessAndTrade,
+                                                  // title: "Ford",
+                                                ),
+                                              );
+                                            });
+                                      }
+                                      if (state is CompanyLoading) {
+                                        return Center(
+                                            child: CircularProgressIndicator());
+                                      }
+                                      if (state is ErrorState) {
+                                        return Center(child: Text(state.error));
+                                      }
+                                      return SizedBox();
+                                    })),
                         ],
                       ),
                     )

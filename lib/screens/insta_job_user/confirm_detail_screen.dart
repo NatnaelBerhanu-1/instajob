@@ -25,7 +25,7 @@ class ConfirmDetailsScreen extends StatefulWidget {
 class _ConfirmDetailsScreenState extends State<ConfirmDetailsScreen> {
   TextEditingController name =
       TextEditingController(text: Global.userModel?.name);
-  TextEditingController phoneNumber = TextEditingController(text: "9876542980");
+  TextEditingController phoneNumber = TextEditingController(text: "98765429");
   TextEditingController previousWork = TextEditingController(
       text: "work with software company for 2 years, Freelancing on fiverr");
   TextEditingController passion = TextEditingController();
@@ -64,7 +64,9 @@ class _ConfirmDetailsScreenState extends State<ConfirmDetailsScreen> {
                 CustomTextField(
                   controller: name, lblColor: MyColors.black,
                   label: "Your Name",
-                  suffixIcon: buildSuffix(),
+                  // suffixIcon: buildSuffix(edit: () {
+                  //   resumeData.add(CheckReadOnlyEvent(false));
+                  // }),
                   hint: "",
                   onChanged: (val) {
                     nameVal = val;
@@ -128,7 +130,8 @@ class _ConfirmDetailsScreenState extends State<ConfirmDetailsScreen> {
                   borderColor: MyColors.blue,
                   onTap: () {
                     ResumeModel resumeModel = ResumeModel(
-                        phoneNumber: int.parse(phoneNumber.text),
+                        phoneNumber:
+                            int.parse(phone.isEmpty ? phoneNumber.text : phone),
                         yourName: nameVal.isEmpty ? name.text : nameVal,
                         previousWork: pWork.isEmpty ? previousWork.text : pWork,
                         yourPassion:

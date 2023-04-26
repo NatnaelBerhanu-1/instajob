@@ -6,7 +6,11 @@ import 'package:insta_job/bloc/company_bloc/company_bloc.dart';
 import 'package:insta_job/bloc/company_bloc/company_event.dart';
 import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
 import 'package:insta_job/bloc/job_position/job_pos_state.dart';
+import 'package:insta_job/model/company_model.dart';
+import 'package:insta_job/network/end_points.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/job_opening/add_job_position_screen.dart';
+import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/search_company.dart';
+import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
@@ -17,7 +21,8 @@ import 'package:insta_job/widgets/custom_text_field.dart';
 import '../../../../../bloc/bottom_bloc/bottom_bloc.dart';
 
 class JobOpeningScreen extends StatelessWidget {
-  const JobOpeningScreen({Key? key}) : super(key: key);
+  final CompanyModel? companyModel;
+  const JobOpeningScreen({Key? key, this.companyModel}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -56,8 +61,12 @@ class JobOpeningScreen extends StatelessWidget {
                       height: 10,
                       width: 10,
                     ),
+                    readOnly: true,
                     borderRadius: 25,
                     hint: "search",
+                    onPressed: () {
+                      AppRoutes.push(context, SearchCompany());
+                    },
                   ),
                 ),
                 GestureDetector(
@@ -96,7 +105,9 @@ class JobOpeningScreen extends StatelessWidget {
                   // color: MyColors.green,
                   borderRadius: BorderRadius.circular(10),
                   image: DecorationImage(
-                      image: AssetImage(MyImages.staffMeeting),
+                      image: NetworkImage(
+                          "${EndPoint.imageBaseUrl}${companyModel?.uploadPhoto}"),
+                      // image: AssetImage(MyImages.staffMeeting),
                       fit: BoxFit.cover)),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -105,7 +116,7 @@ class JobOpeningScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CommonText(
-                      text: "Company Name",
+                      text: "${companyModel?.companyName}",
                       fontColor: MyColors.white,
                       fontSize: 20,
                     ),
@@ -134,7 +145,7 @@ class JobOpeningScreen extends StatelessWidget {
               if (state is JobPosLoading) {
                 return Center(child: CircularProgressIndicator());
               }
-              if (state is ErrorState) {
+              if (state is JobErrorState) {
                 return Center(child: Text(state.error));
               }
               if (state is JobPosLoaded) {

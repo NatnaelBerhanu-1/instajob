@@ -35,6 +35,8 @@ class ResumeBloc extends Bloc<ResumeEvent, ResumeState> {
         phoneNumber: event.resumeModel.phoneNumber.toString(),
       );
       await getResumeData(response.response.data['data']['id'], emit);
+      print(
+          "QQQQQQQQQQQQQQ -------------  ${response.response.data['data']['id']}");
     });
   }
 /*
@@ -60,3 +62,14 @@ class ResumeBloc extends Bloc<ResumeEvent, ResumeState> {
     pWork = val;
   }*/
 }
+/*
+  bool readOnly = true;
+  bool isConfirm = false;
+on<CheckReadOnlyEvent>((event, emit) {
+      readOnly = event.readOnly;
+      emit(CheckReadOnly(readOnly));
+    });
+    on<CheckIsConfirmEvent>((event, emit) {
+      isConfirm = event.isConfirm;
+      emit(CheckConfirm(isConfirm));
+    });*/

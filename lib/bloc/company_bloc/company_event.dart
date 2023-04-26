@@ -23,3 +23,11 @@ class CompanySearchEvent extends CompanyEvent {
   @override
   List<Object?> get props => [];
 }
+
+class JobSearchEvent extends CompanyEvent {
+  final String search;
+
+  JobSearchEvent({required this.search});
+  @override
+  List<Object?> get props => [];
+}

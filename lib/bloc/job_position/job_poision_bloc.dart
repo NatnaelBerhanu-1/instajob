@@ -10,7 +10,7 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
   _getJobPositionList(Emitter emit, {String? id}) async {
     ApiResponse response = await jobPositionRepository.getJobPositions(id: id);
     if (response.response.statusCode == 500) {
-      emit(const ErrorState("Something went wrong"));
+      emit(const JobErrorState("Something went wrong"));
     }
     if (response.response.statusCode == 200) {
       List<JobPosModel> jobPosList = (response.response.data['data'] as List)
@@ -19,7 +19,7 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
       emit(JobPosLoaded(jobPosList));
       return jobPosList;
     } else {
-      emit(const ErrorState("Data not found"));
+      emit(const JobErrorState("Data not found"));
     }
   }
 
@@ -29,7 +29,7 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
       List<JobPosModel> jobPosList = await _getJobPositionList(emit);
       emit(JobPosLoaded(jobPosList));
       if (jobPosList.isEmpty) {
-        emit(const ErrorState("Data not found"));
+        emit(const JobErrorState("Data not found"));
       }
     });
     on<AddJobPositionEvent>((event, emit) async {
