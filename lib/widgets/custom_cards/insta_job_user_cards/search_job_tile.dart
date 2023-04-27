@@ -51,7 +51,7 @@ class SearchJobTile extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             CommonText(
-                              text: "${jobPosModel.jobdetails}",
+                              text: "${jobPosModel.designation}",
                               fontSize: 14,
                               fontColor: MyColors.black,
                               overflow: TextOverflow.clip,

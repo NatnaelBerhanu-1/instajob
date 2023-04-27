@@ -6,6 +6,8 @@ class PickImageState extends InitialImage {
   PickImageState(this.url);
 }
 
+class LoadingImageState extends InitialImage {}
+
 class ImageErrorState extends InitialImage {
   final String imageError;
 

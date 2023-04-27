@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:insta_job/model/company_model.dart';
 import 'package:insta_job/model/job_position_model.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/job_opening/job_position_screen.dart';
 import 'package:insta_job/utils/app_routes.dart';
@@ -16,7 +17,9 @@ import '../custom_button/custom_img_button.dart';
 class JobOpeningTile extends StatelessWidget {
   final bool? isFav;
   final JobPosModel jobPosModel;
-  const JobOpeningTile({Key? key, this.isFav, required this.jobPosModel})
+  final CompanyModel? companyModel;
+  const JobOpeningTile(
+      {Key? key, this.isFav, required this.jobPosModel, this.companyModel})
       : super(key: key);
 
   @override
@@ -28,7 +31,10 @@ class JobOpeningTile extends StatelessWidget {
           context.read<JobPositionBloc>().add(LoadJobPosListEvent());
           print(
               'JOBPOSITION ID ----------------- ********        *************         ${jobPosModel.id}');
-          AppRoutes.push(context, JobPositionScreen(jobPosModel: jobPosModel));
+          AppRoutes.push(
+              context,
+              JobPositionScreen(
+                  jobPosModel: jobPosModel, companyModel: companyModel));
         },
         child: Container(
             decoration: BoxDecoration(
@@ -55,7 +61,7 @@ class JobOpeningTile extends StatelessWidget {
                   ),
                   SizedBox(width: 10),
                   CommonText(
-                    text: "${jobPosModel.jobsType}",
+                    text: "${jobPosModel.designation}",
                     fontSize: 14,
                     fontColor: MyColors.black,
                     overflow: TextOverflow.clip,

@@ -41,8 +41,8 @@ Future<void> init() async {
   sl.registerLazySingleton(() => PickImageCubit(sl()));
 
   ///   bloc
-  sl.registerLazySingleton(
-      () => AuthCubit(sl(), authRepository: sl(), sharedPreferences: sl()));
+  sl.registerLazySingleton(() =>
+      AuthCubit(sl(), sl(), authRepository: sl(), sharedPreferences: sl()));
   sl.registerLazySingleton(() => CompanyBloc(sl()));
   sl.registerLazySingleton(() => BottomBloc(sl())..add(UserEvent()));
   sl.registerLazySingleton(() => JobPositionBloc(sl()));

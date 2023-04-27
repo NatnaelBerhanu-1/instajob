@@ -153,7 +153,6 @@ class CustomTextField extends StatelessWidget {
     this.readOnly,
     this.lblColor,
     this.maxLength,
-    List? inputFormatters,
     this.suffixIcon,
     this.borderRadius,
   }) : super(key: key);
@@ -162,8 +161,7 @@ class CustomTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     OutlineInputBorder border = OutlineInputBorder(
       borderRadius: BorderRadius.all(Radius.circular(borderRadius ?? 12)),
-      borderSide:
-          BorderSide(color: color ?? MyColors.grey.withOpacity(.40), width: 1),
+      borderSide: BorderSide(color: color ?? MyColors.lightgrey, width: 1),
     );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -202,14 +200,15 @@ class CustomTextField extends StatelessWidget {
             filled: true,
             isDense: true,
             border: border,
+            // errorStyle: TextStyle(height: 0),
             // prefixText: "+973",
-
             hintText: "$hint",
             hintStyle: TextStyle(
               color: hintColor ?? MyColors.grey,
               fontWeight: FontWeight.w400,
               fontSize: 15,
             ),
+            focusedErrorBorder: border,
             enabledBorder: border,
             focusedBorder: border,
             errorBorder: border,

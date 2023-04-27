@@ -66,7 +66,5 @@ class GlobalCubit extends Cubit<InitialState> {
   }
 
   /// CALENDER
-  chooseDate() {
-    // selectDate(c);
-  }
+  chooseDate() {}
 }

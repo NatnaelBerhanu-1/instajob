@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:insta_job/screens/auth_screen/login_screen.dart';
 import 'package:insta_job/screens/auth_screen/set_password.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_colors.dart';
@@ -131,7 +130,7 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
                   borderColor: MyColors.blue,
                   iconColor: MyColors.white,
                   onclick: () {
-                    AppRoutes.pushAndRemoveUntil(context, SetPassword());
+                    AppRoutes.push(context, SetPassword());
                   },
                 ),
                 // Spacer(),

@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:insta_job/globals.dart';
 import 'package:insta_job/network/api_response.dart';
 import 'package:insta_job/network/dio/dio_client.dart';
 import 'package:insta_job/network/end_points.dart';
@@ -21,6 +20,7 @@ class JobPositionRepository {
   }
 
   Future<ApiResponse> addJobPosition({
+    String? designation,
     String? jobDetails,
     String? requirements,
     String? responsibility,
@@ -39,6 +39,7 @@ class JobPositionRepository {
   }) async {
     try {
       Map<String, dynamic> map = {
+        "designation": designation,
         "jobdetails": jobDetails,
         "Requirements": requirements,
         "Responsilibites": responsibility,

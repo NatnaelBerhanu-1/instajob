@@ -44,8 +44,11 @@ class ValidationCubit extends Cubit<InitialValidation> {
 
   String? requiredValidation(String s, value) {
     if (s.isEmpty || s == "") {
+      print(">>>>>>>>>>  $s");
       emit(RequiredValidation("$value is required"));
       return "";
+    } else {
+      print(">>>>>>>>>> 1111 $s");
     }
     // emit(ValidState("valid"));
     return null;

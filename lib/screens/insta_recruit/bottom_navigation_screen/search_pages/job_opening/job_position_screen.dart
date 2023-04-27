@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/globals.dart';
+import 'package:insta_job/model/company_model.dart';
 import 'package:insta_job/model/job_position_model.dart';
 import 'package:insta_job/screens/insta_job_user/bottom_nav_screen/search_pages/search_jobs_screen.dart';
 import 'package:insta_job/screens/insta_job_user/confirm_detail_screen.dart';
@@ -22,8 +23,9 @@ import 'view_candidate.dart';
 
 class JobPositionScreen extends StatefulWidget {
   final JobPosModel? jobPosModel;
-
-  const JobPositionScreen({Key? key, this.jobPosModel}) : super(key: key);
+  final CompanyModel? companyModel;
+  const JobPositionScreen({Key? key, this.jobPosModel, this.companyModel})
+      : super(key: key);
 
   @override
   State<JobPositionScreen> createState() => _JobPositionScreenState();
@@ -52,8 +54,9 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                     context.read<BottomBloc>().add(
                         SetScreenEvent(true, screenName: SearchJobsScreen()));
                   } else {
-                    context.read<BottomBloc>().add(
-                        SetScreenEvent(true, screenName: JobOpeningScreen()));
+                    context.read<BottomBloc>().add(SetScreenEvent(true,
+                        screenName: JobOpeningScreen(
+                            companyModel: widget.companyModel)));
                   }
 
                   AppRoutes.push(context, BottomNavScreen());
@@ -100,7 +103,7 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   CommonText(
-                                    text: "${widget.jobPosModel?.jobdetails}",
+                                    text: "${widget.jobPosModel?.designation}",
                                     fontWeight: FontWeight.bold,
                                     fontSize: 19,
                                   ),

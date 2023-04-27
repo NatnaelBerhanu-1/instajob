@@ -1,9 +1,11 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
 import 'package:insta_job/globals.dart';
+import 'package:insta_job/network/end_points.dart';
 import 'package:insta_job/screens/insta_job_user/SliderScreen/Slider_screen.dart';
 import 'package:insta_job/screens/insta_job_user/bottom_nav_screen/user_account/save_jobs/save_jobs_screen.dart';
 import 'package:insta_job/screens/insta_job_user/career_cluster_screen.dart';
@@ -58,8 +60,9 @@ class _HomePageState extends State<HomePage> {
                           ),
                           SizedBox(height: 19),
                           CommonText(
-                            text: "John Smith",
-                            fontSize: 25,
+                            text:
+                                "${Global.userModel?.name?[0].toUpperCase()}${Global.userModel?.name?.substring(1)}",
+                            fontSize: 21,
                             fontWeight: FontWeight.w500,
                             fontColor: MyColors.blue,
                           )
@@ -67,14 +70,25 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     Expanded(
-                      child: Container(
-                        height: 150,
-                        color: MyColors.transparent,
-                        child: Image.asset(
-                          MyImages.jobUser,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
+                      child: Global.userModel?.uploadPhoto == null
+                          ? SizedBox()
+                          : Container(
+                              height: 150,
+                              color: MyColors.transparent,
+                              child: CachedNetworkImage(
+                                imageUrl:
+                                    "${EndPoint.imageBaseUrl}${Global.userModel?.uploadPhoto}",
+                                fit: BoxFit.cover,
+                                placeholder: (val, _) {
+                                  return Center(
+                                      child: CircularProgressIndicator());
+                                },
+                              )
+                              // Image.network(
+                              //   "${EndPoint.imageBaseUrl}${Global.userModel?.uploadPhoto}",
+                              //   fit: BoxFit.fitHeight,
+                              // ),
+                              ),
                     )
                   ],
                 ),

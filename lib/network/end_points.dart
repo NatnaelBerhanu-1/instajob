@@ -9,6 +9,7 @@ class EndPoint {
   /// Common api's
   static String checkUser = "check_user";
   static String logout = "logout";
+  static String updateUser = "user_update";
 
   /// base64
   static String base64 = "base64";

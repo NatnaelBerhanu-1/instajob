@@ -11,6 +11,7 @@ class LoadJobPosListEvent extends JobPosEvent {
 class AddJobPositionEvent extends JobPosEvent {
   final String? id;
   final bool? isUpdate;
+  final String? designation;
   final String? jobDetails;
   final String? requirements;
   final String? responsibility;
@@ -30,6 +31,7 @@ class AddJobPositionEvent extends JobPosEvent {
   AddJobPositionEvent(
       {this.jobDetails,
       this.requirements,
+      this.designation,
       this.responsibility,
       this.topSkills,
       this.id,

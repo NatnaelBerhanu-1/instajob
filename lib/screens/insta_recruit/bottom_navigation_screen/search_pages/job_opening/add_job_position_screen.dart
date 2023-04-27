@@ -10,6 +10,7 @@ import 'package:insta_job/bloc/job_position/job_pos_state.dart';
 import 'package:insta_job/bloc/validation/validation_bloc.dart';
 import 'package:insta_job/bloc/validation/validation_state.dart';
 import 'package:insta_job/globals.dart';
+import 'package:insta_job/model/company_model.dart';
 import 'package:insta_job/model/job_position_model.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/bottom_navigation_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/job_opening/job_opening_page.dart';
@@ -30,8 +31,9 @@ import '../../../../../utils/my_images.dart';
 class AddJobPositionScreen extends StatefulWidget {
   final bool isUpdate;
   final JobPosModel? jobPosModel;
+  final CompanyModel? companyModel;
   const AddJobPositionScreen(
-      {Key? key, this.isUpdate = false, this.jobPosModel})
+      {Key? key, this.isUpdate = false, this.jobPosModel, this.companyModel})
       : super(key: key);
 
   @override
@@ -40,6 +42,7 @@ class AddJobPositionScreen extends StatefulWidget {
 
 class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
   TextEditingController jobDetails = TextEditingController();
+  TextEditingController designation = TextEditingController();
   TextEditingController requirements = TextEditingController();
   TextEditingController responsibility = TextEditingController();
   TextEditingController topSkills = TextEditingController();
@@ -49,7 +52,7 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
   TextEditingController disqualifiedReviewContent = TextEditingController();
   TextEditingController shortlistedReviewSubject = TextEditingController();
   TextEditingController shortlistedReviewContent = TextEditingController();
-  final formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   updateData() {
     var model = widget.jobPosModel!;
@@ -86,6 +89,7 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
     return Scaffold(
         // appBar: ,
         body: Form(
+            // autovalidateMode: AutovalidateMode.always,
             key: formKey,
             child: Column(
               children: [
@@ -110,7 +114,8 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                                 onTap: () {
                                   context.read<BottomBloc>().add(SetScreenEvent(
                                       true,
-                                      screenName: JobOpeningScreen()));
+                                      screenName: JobOpeningScreen(
+                                          companyModel: widget.companyModel)));
                                   // Navigator.pop(context);
                                 },
                                 height: 28,
@@ -193,6 +198,18 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                       return ListView(
                         children: [
                           CustomTextField(
+                              controller: designation,
+                              label: "Enter designation",
+                              lblColor: MyColors.black,
+                              hint: "Front end developer",
+                              // validator: (val) {
+                              //   validate.requiredValidation(val!, "!!!!!!!");
+                              //   return null;
+                              // },
+                              validator: (val) => validate.requiredValidation(
+                                  val!, 'Designation')),
+                          SizedBox(height: 15),
+                          CustomTextField(
                             controller: jobDetails,
                             label: "Enter Job Details",
                             lblColor: MyColors.black,
@@ -235,75 +252,85 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                                       fontSize: 13.5,
                                       fontWeight: FontWeight.w400),
                                 ),
-                                SizedBox(height: 10),
-                                GridView.builder(
-                                    gridDelegate:
-                                        SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 3,
-                                      childAspectRatio: 2 / 1,
-                                      crossAxisSpacing: 1,
-                                    ),
-                                    primary: false,
-                                    shrinkWrap: true,
-                                    itemCount: skillList.skills.length,
-                                    itemBuilder: (context, index) {
-                                      return Padding(
-                                        padding: const EdgeInsets.all(4.0),
-                                        child: CustomCommonCard(
-                                          bgColor: MyColors.lightBlue
-                                              .withOpacity(.20),
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                CommonText(
-                                                  text: skillList.skills[index],
-                                                  fontColor: MyColors.blue,
-                                                  fontSize: 13,
-                                                ),
-                                                IconButton(
-                                                  onPressed: () {},
-                                                  icon: Icon(
-                                                    Icons.close,
-                                                    color: MyColors.red,
-                                                    size: 15,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
+                                SizedBox(height: 5),
+                                skillList.skills.isEmpty
+                                    ? SizedBox()
+                                    : GridView.builder(
+                                        gridDelegate:
+                                            SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 3,
+                                          childAspectRatio: 4 / 1,
+                                          crossAxisSpacing: 10,
                                         ),
-                                      );
-                                    }),
+                                        // primary: false,
+                                        shrinkWrap: true,
+                                        itemCount: skillList.skills.length,
+                                        itemBuilder: (context, index) {
+                                          return Padding(
+                                            padding: const EdgeInsets.all(.0),
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                color: MyColors.lightBlue
+                                                    .withOpacity(.20),
+                                                borderRadius:
+                                                    BorderRadius.circular(5),
+                                              ),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(5),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    CommonText(
+                                                      text: skillList
+                                                          .skills[index],
+                                                      fontColor: MyColors.blue,
+                                                      fontSize: 13,
+                                                    ),
+                                                    GestureDetector(
+                                                      onTap: () {},
+                                                      child: Icon(
+                                                        Icons.close,
+                                                        color: MyColors.red,
+                                                        size: 15,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        }),
                                 Expanded(
                                   flex: 0,
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Expanded(
                                         child: CustomTextField(
                                           controller: topSkills,
                                           hint: "",
-                                          validator: (val) =>
-                                              validate.requiredValidation(
-                                                  val!, "Skills"),
+                                          // validator: (val) =>
+                                          //     validate.requiredValidation(
+                                          //         val!, "Skills"),
                                         ),
                                       ),
                                       GestureDetector(
                                         onTap: () {
                                           if (topSkills.text.isNotEmpty) {
                                             skillList.topSkills(topSkills.text);
-                                            // topSkills.clear();
+                                            topSkills.clear();
                                           } else {
                                             showToast('Please fill the text');
                                           }
                                         },
                                         child: Padding(
                                           padding: const EdgeInsets.only(
-                                              right: 10.0, left: 10, top: 25),
+                                              right: 10.0, left: 10, top: 15),
                                           child: Container(
                                             decoration: BoxDecoration(
                                                 color: MyColors.blue,
@@ -687,11 +714,24 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                             fontColor: MyColors.grey,
                           ),
                           SizedBox(height: 25),
-                          BlocBuilder<JobPositionBloc, JobPosState>(
-                              builder: (context, state) {
+                          BlocConsumer<JobPositionBloc, JobPosState>(
+                              listener: (context, state) {
+                            var bottomNav = context.read<BottomBloc>();
+
+                            if (state is JobErrorState) {
+                              showToast(state.error);
+                            }
+                            if (state is JobPosLoaded) {
+                              bottomNav.add(SetScreenEvent(true,
+                                  screenName: JobOpeningScreen(
+                                      companyModel: widget.companyModel)));
+                              AppRoutes.push(context, BottomNavScreen());
+                            }
+                          }, builder: (context, state) {
                             var jobPosition = context.read<JobPositionBloc>();
                             return CustomIconButton(
                               image: MyImages.arrowWhite,
+                              loading: state is JobPosLoading ? true : false,
                               title: widget.isUpdate
                                   ? "Edit Job Position"
                                   : "Post Job Position",
@@ -700,9 +740,7 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                               borderColor: MyColors.blue,
                               onclick: () async {
                                 if (formKey.currentState!.validate()) {
-                                  // if (validate.checkBox) {
                                   var value = context.read<GlobalCubit>();
-                                  var bottomNav = context.read<BottomBloc>();
                                   var uploadPhoto =
                                       context.read<PickImageCubit>();
                                   jobPosition.add(AddJobPositionEvent(
@@ -710,6 +748,7 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                                     id: widget.isUpdate
                                         ? widget.jobPosModel?.id.toString()
                                         : "",
+                                    designation: designation.text,
                                     applicationReceivedContent:
                                         applicationReceivedContent.text,
                                     applicationReceivedSubject:
@@ -732,10 +771,9 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                                     topSkills: value.skills,
                                     uploadPhoto: uploadPhoto.imgUrl,
                                   ));
-                                  jobPosition.add(LoadJobPosListEvent());
-                                  bottomNav.add(SetScreenEvent(true,
-                                      screenName: JobOpeningScreen()));
-                                  AppRoutes.push(context, BottomNavScreen());
+                                  // jobPosition.add(LoadJobPosListEvent());
+                                } else {
+                                  print('@@@@  ||||||||||||||  @@@@');
                                 }
                               },
                             );

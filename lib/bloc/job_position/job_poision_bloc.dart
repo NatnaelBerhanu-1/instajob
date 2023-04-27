@@ -34,8 +34,10 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
     });
     on<AddJobPositionEvent>((event, emit) async {
       if (event.isUpdate != true) {
-        await jobPositionRepository.addJobPosition(
+        emit(JobPosLoading());
+        ApiResponse response = await jobPositionRepository.addJobPosition(
           jobDetails: event.jobDetails,
+          designation: event.designation,
           requirements: event.requirements,
           responsibility: event.responsibility,
           topSkills: event.topSkills,
@@ -51,8 +53,16 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
           shortlistedReviewSubject: event.shortlistedReviewSubject,
           shortlistedReviewContent: event.shortlistedReviewContent,
         );
+        if (response.response.statusCode == 500) {
+          emit(const JobErrorState("Something went wrong"));
+        }
+        if (response.response.statusCode == 200) {
+          await _getJobPositionList(emit);
+        } else if (response.response.statusCode == 400) {
+          emit(const JobErrorState("Please fill all details"));
+        }
       } else {
-        await jobPositionRepository.updateJobPosition(
+        ApiResponse response = await jobPositionRepository.updateJobPosition(
           id: event.id,
           isUpdate: true,
           jobDetails: event.jobDetails,
@@ -72,7 +82,6 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
           shortlistedReviewContent: event.shortlistedReviewContent,
         );
       }
-      await _getJobPositionList(emit);
     });
   }
 }

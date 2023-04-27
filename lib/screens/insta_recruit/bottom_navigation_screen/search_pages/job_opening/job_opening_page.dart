@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/company_bloc/company_bloc.dart';
@@ -47,8 +48,9 @@ class JobOpeningScreen extends StatelessWidget {
                   padding: EdgeInsets.all(9.0),
                   onTap: () {
                     context.read<CompanyBloc>().add(LoadCompanyListEvent());
-                    context.read<BottomBloc>().add(
-                        SetScreenEvent(false, screenName: JobOpeningScreen()));
+                    context.read<BottomBloc>().add(SetScreenEvent(false,
+                        screenName:
+                            JobOpeningScreen(companyModel: companyModel)));
                     // context.read<BottomCubit>().setSelectedScreen(false,
                     //     screenName: JobOpeningScreen());
                   },
@@ -72,7 +74,9 @@ class JobOpeningScreen extends StatelessWidget {
                 GestureDetector(
                   onTap: () {
                     context.read<BottomBloc>().add(SetScreenEvent(true,
-                        screenName: AddJobPositionScreen()));
+                        screenName: AddJobPositionScreen(
+                          companyModel: companyModel,
+                        )));
                     // AppRoutes.push(context, EditListing());
                   },
                   child: Padding(
@@ -105,7 +109,7 @@ class JobOpeningScreen extends StatelessWidget {
                   // color: MyColors.green,
                   borderRadius: BorderRadius.circular(10),
                   image: DecorationImage(
-                      image: NetworkImage(
+                      image: CachedNetworkImageProvider(
                           "${EndPoint.imageBaseUrl}${companyModel?.uploadPhoto}"),
                       // image: AssetImage(MyImages.staffMeeting),
                       fit: BoxFit.cover)),
@@ -156,7 +160,8 @@ class JobOpeningScreen extends StatelessWidget {
                       itemCount: state.jobPosList.length,
                       itemBuilder: (c, i) {
                         var data = state.jobPosList[i];
-                        return JobOpeningTile(jobPosModel: data);
+                        return JobOpeningTile(
+                            jobPosModel: data, companyModel: companyModel);
                       }),
                 );
               }

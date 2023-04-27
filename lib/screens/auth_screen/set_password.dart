@@ -64,7 +64,12 @@ class _SetPasswordState extends State<SetPassword> {
                   SizedBox(height: 80),
                   IconTextField(
                     controller: password,
-                    prefixIcon: ImageButton(image: MyImages.lock),
+                    prefixIcon: ImageButton(
+                      image: MyImages.lock,
+                      padding: EdgeInsets.all(13),
+                      height: 10,
+                      width: 10,
+                    ),
                     suffixIcon: GestureDetector(
                       onTap: () {
                         validationBloc.visiblePass();
@@ -83,7 +88,12 @@ class _SetPasswordState extends State<SetPassword> {
                   SizedBox(height: 30),
                   IconTextField(
                     controller: cPassword,
-                    prefixIcon: ImageButton(image: MyImages.lock),
+                    prefixIcon: ImageButton(
+                      image: MyImages.lock,
+                      padding: EdgeInsets.all(13),
+                      height: 10,
+                      width: 10,
+                    ),
                     suffixIcon: GestureDetector(
                       onTap: () {
                         validationBloc.visibleCPass();

@@ -42,8 +42,18 @@ class ForgotPassword extends StatelessWidget {
               ),
               SizedBox(height: 50),
               IconTextField(
-                prefixIcon: ImageButton(image: MyImages.email),
-                suffixIcon: ImageButton(image: MyImages.verified),
+                prefixIcon: ImageButton(
+                  image: MyImages.email,
+                  padding: EdgeInsets.all(13),
+                  height: 10,
+                  width: 10,
+                ),
+                // suffixIcon: ImageButton(
+                //   image: MyImages.verified,
+                //   padding: EdgeInsets.all(13),
+                //   height: 10,
+                //   width: 10,
+                // ),
                 hint: "alexis@mygmail.com",
               ),
               SizedBox(height: 40),

@@ -2,7 +2,10 @@ class UserModel {
   int? id;
   String? name;
   String? email;
+  String? date;
+  String? phoneNumber;
   String? type;
+  String? uploadPhoto;
   String? fcmToken;
   String? firebaseId;
   String? updatedAt;
@@ -12,8 +15,11 @@ class UserModel {
       {this.id,
       this.name,
       this.email,
+      this.date,
       this.type,
+      this.uploadPhoto,
       this.fcmToken,
+      this.phoneNumber,
       this.firebaseId,
       this.updatedAt,
       this.createdAt});
@@ -22,7 +28,10 @@ class UserModel {
     id = json['id'];
     name = json['name'];
     email = json['email'];
+    date = json['date'];
+    phoneNumber = json['phone_number'];
     type = json['type'];
+    uploadPhoto = json['upload_photo'];
     fcmToken = json['fcm_token'];
     firebaseId = json['firebase_id'];
     updatedAt = json['updated_at'];
@@ -34,7 +43,10 @@ class UserModel {
     data['id'] = id;
     data['name'] = name;
     data['email'] = email;
+    data['date'] = date;
+    data['phone_number'] = phoneNumber;
     data['type'] = type;
+    data['upload_photo'] = uploadPhoto;
     data['fcm_token'] = fcmToken;
     data['firebase_id'] = firebaseId;
     data['updated_at'] = updatedAt;

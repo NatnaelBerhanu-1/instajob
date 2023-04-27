@@ -74,7 +74,7 @@ Widget buildTopSkillsTile(JobPosModel jobPosModel) {
             scrollDirection: Axis.horizontal,
             child: Row(
               children: List.generate(jobPosModel.topskills!.length, (index) {
-                print("TOPPPPPPPPPPPPPPPPP ${jobPosModel.topskills?[index]}");
+                // print("TOPPPPPPPPPPPPPPPPP ${jobPosModel.topskills?[index]}");
                 return Padding(
                   padding: const EdgeInsets.all(4.0),
                   child: CustomCommonCard(

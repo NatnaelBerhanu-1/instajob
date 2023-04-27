@@ -71,6 +71,31 @@ class AuthRepository {
     }
   }
 
+  /// UPDATE USER
+  Future<ApiResponse> updateData({
+    String? name,
+    String? phoneNumber,
+    String? profilePhoto,
+    String? dOB,
+  }) async {
+    try {
+      var map = {
+        "id": Global.userModel?.id,
+        "name": name,
+        "email": Global.userModel?.email,
+        "date": dOB,
+        "phone_number": phoneNumber,
+        "password": "123456",
+        "upload_photo": profilePhoto
+      };
+      Response response =
+          await dioClient.post(data: map, uri: EndPoint.updateUser);
+      return ApiResponse.withSuccess(response);
+    } on DioError catch (e) {
+      return ApiResponse.withError(e.response);
+    }
+  }
+
   /// LOGOUT
   Future<ApiResponse> logOutUser() async {
     try {

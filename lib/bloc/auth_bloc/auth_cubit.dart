@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:insta_job/bloc/auth_bloc/auth_state.dart';
+import 'package:insta_job/bloc/bottom_bloc/bottom_bloc.dart';
 import 'package:insta_job/bloc/company_bloc/company_event.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/model/user_model.dart';
@@ -22,8 +23,9 @@ class AuthCubit extends Cubit<AuthInitialState> {
   final SharedPreferences sharedPreferences;
   final AuthRepository authRepository;
   final CompanyBloc companyBloc;
+  final BottomBloc user;
 
-  AuthCubit(this.companyBloc,
+  AuthCubit(this.companyBloc, this.user,
       {required this.sharedPreferences, required this.authRepository})
       : super(AuthInitialState());
 
@@ -88,6 +90,38 @@ class AuthCubit extends Cubit<AuthInitialState> {
       navigationKey.currentState?.pushAndRemoveUntil(
           MaterialPageRoute(builder: (_) => const BottomNavScreen()),
           (route) => false);
+    }
+    if (response.response.statusCode == 400) {
+      emit(ErrorState("${response.response.data['message']}"));
+    }
+  }
+
+  /// UPDATE USER
+  updateData({
+    String? name,
+    String? phoneNumber,
+    String? profilePhoto,
+    String? dOB,
+  }) async {
+    emit(AuthLoadingState());
+    ApiResponse response = await authRepository.updateData(
+      phoneNumber: phoneNumber,
+      name: name,
+      dOB: dOB,
+      profilePhoto: profilePhoto,
+    );
+    if (response.response.statusCode == 500) {
+      emit(ErrorState("Something went wrong"));
+    }
+    if (response.response.statusCode == 200) {
+      await sharedPreferences.setString(
+          "user", jsonEncode(response.response.data['data']));
+      var userModel = UserModel.fromJson(response.response.data['data']);
+      Global.userModel = userModel;
+      emit(AuthState(userModel: userModel));
+      navigationKey.currentState?.pop();
+      navigationKey.currentState?.pop();
+      user.add(UserEvent());
     }
     if (response.response.statusCode == 400) {
       emit(ErrorState("${response.response.data['message']}"));

@@ -54,14 +54,19 @@ class MapTile extends StatelessWidget {
           Positioned(
             right: 10,
             top: MediaQuery.of(context).size.height * 0.157,
-            child: CustomCommonCard(
-              bgColor: MyColors.blue,
-              borderRadius: BorderRadius.circular(10),
-              child: ImageButton(
-                image: MyImages.fav,
-                color: MyColors.white,
-                padding: EdgeInsets.all(7),
+            child: Container(
+              decoration: BoxDecoration(
+                color: MyColors.blue,
+                borderRadius: BorderRadius.circular(10),
               ),
+              child: IconButton(
+                  // padding: EdgeInsets.zero,
+                  visualDensity: VisualDensity.comfortable,
+                  onPressed: () {},
+                  icon: Icon(
+                    Icons.favorite_border,
+                    color: MyColors.white,
+                  )),
             ),
           ),
           Positioned(

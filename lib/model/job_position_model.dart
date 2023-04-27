@@ -1,6 +1,7 @@
 class JobPosModel {
   int? id;
   String? jobdetails;
+  String? designation;
   String? requirements;
   String? responsilibites;
   List? topskills;
@@ -21,6 +22,7 @@ class JobPosModel {
   JobPosModel(
       {this.id,
       this.jobdetails,
+      this.designation,
       this.requirements,
       this.responsilibites,
       this.topskills,
@@ -41,6 +43,7 @@ class JobPosModel {
   JobPosModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     jobdetails = json['jobdetails'];
+    designation = json['designation'];
     requirements = json['Requirements'];
     responsilibites = json['Responsilibites'];
     topskills = json['Topskills'];
@@ -63,6 +66,7 @@ class JobPosModel {
     final Map<String, dynamic> data = Map<String, dynamic>();
     data['id'] = id;
     data['jobdetails'] = jobdetails;
+    data['designation'] = designation;
     data['Requirements'] = requirements;
     data['Responsilibites'] = responsilibites;
     data['Topskills'] = topskills;

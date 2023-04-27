@@ -7,6 +7,7 @@ import 'package:insta_job/bloc/choose_image_bloc/pick_image_state.dart';
 import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
 import 'package:insta_job/bloc/job_position/job_pos_event.dart';
 import 'package:insta_job/bottom_sheet/bottom_sheet.dart';
+import 'package:insta_job/globals.dart';
 import 'package:insta_job/model/company_model.dart';
 import 'package:insta_job/network/end_points.dart';
 import 'package:insta_job/utils/my_colors.dart';
@@ -74,7 +75,11 @@ class AssignCompaniesTile extends StatelessWidget {
 
 Widget uploadPhotoCard(BuildContext context,
     {bool isUpdate = false, String? url}) {
-  return BlocBuilder<PickImageCubit, InitialImage>(builder: (context, state) {
+  return BlocConsumer<PickImageCubit, InitialImage>(listener: (c, state) {
+    if (state is ImageErrorState) {
+      showToast(state.imageError);
+    }
+  }, builder: (context, state) {
     // if (state is PickImageState) {
     //   return Image.network("${EndPoint.imageBaseUrl}${state.url}");
     // }
@@ -96,18 +101,20 @@ Widget uploadPhotoCard(BuildContext context,
             : state is PickImageState
                 ? Image.network("${EndPoint.imageBaseUrl}${state.url}",
                     fit: BoxFit.cover)
-                : Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ImageButton(
-                        image: MyImages.upload,
+                : state is LoadingImageState
+                    ? Center(child: CircularProgressIndicator())
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ImageButton(
+                            image: MyImages.upload,
+                          ),
+                          CommonText(
+                            text: "Upload Photo",
+                            fontColor: MyColors.blue,
+                          )
+                        ],
                       ),
-                      CommonText(
-                        text: "Upload Photo",
-                        fontColor: MyColors.blue,
-                      )
-                    ],
-                  ),
       ),
     );
   });

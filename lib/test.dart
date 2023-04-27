@@ -260,7 +260,13 @@ class _MyHomePageState extends State<MyHomePage> {
 }*/
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:insta_job/bloc/validation/validation_bloc.dart';
+import 'package:insta_job/bloc/validation/validation_state.dart';
 import 'package:insta_job/utils/my_colors.dart';
+
+import 'globals.dart';
+import 'widgets/custom_text_field.dart';
 
 class TimePickerDropDown extends StatefulWidget {
   final Function(DateTime)? onTimeSelected;
@@ -437,53 +443,45 @@ class Test extends StatefulWidget {
 class _TestState extends State<Test> {
   TextEditingController controller = TextEditingController();
   List list = [];
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-          child: Column(
-        children: [
-          ListView.builder(
-              shrinkWrap: true,
-              itemCount: list.length,
-              itemBuilder: (c, i) {
-                return Padding(
-                  padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                  child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: MyColors.lightgrey),
-                    child: Row(
-                      children: [
-                        Text(list[i]),
-                        Spacer(),
-                        // IconButton(
-                        //     onPressed: () {},
-                        //     icon: Icon(Icons.edit_sharp, size: 20)),
-                        IconButton(
-                            onPressed: () {
-                              list.removeAt(i);
-                              setState(() {});
-                            },
-                            icon: Icon(Icons.cancel_outlined,
-                                color: MyColors.lightRed)),
-                      ],
-                    ),
-                  ),
-                );
-              }),
-          TextFormField(
-            controller: controller,
-          ),
-          ElevatedButton(
-              onPressed: () {
-                list.add(controller.text);
-                controller.clear();
-                setState(() {});
-              },
-              child: Text("Add")),
-        ],
+          child: Form(
+        key: formKey,
+        child: BlocConsumer<ValidationCubit, InitialValidation>(
+            listener: (context, state) {
+          if (state is RequiredValidation) {
+            showToast(state.require);
+          }
+        }, builder: (context, state) {
+          var validation = context.read<ValidationCubit>();
+          return Column(
+            children: [
+              CustomTextField(
+                  controller: controller,
+                  label: "Enter Responsibilities",
+                  lblColor: MyColors.black,
+                  hint: "",
+                  maxLine: 5,
+                  validator: (val) {
+                    validation.requiredValidation(val!, 'Designation');
+                    return "null";
+                  }),
+              ElevatedButton(
+                  onPressed: () {
+                    if (formKey.currentState!.validate()) {
+                      print('2222222222');
+                    } else {
+                      print('11111111');
+                    }
+                  },
+                  child: Text("Add")),
+            ],
+          );
+        }),
       )),
     );
   }
