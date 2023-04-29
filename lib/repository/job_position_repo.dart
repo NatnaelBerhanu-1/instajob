@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:insta_job/globals.dart';
 import 'package:insta_job/network/api_response.dart';
 import 'package:insta_job/network/dio/dio_client.dart';
 import 'package:insta_job/network/end_points.dart';
@@ -10,7 +11,7 @@ class JobPositionRepository {
 
   getJobPositions({String? id}) async {
     try {
-      var map = {"id": id ?? ""};
+      var map = {"company_id": id ?? ""};
       var response =
           await dioClient.post(data: map, uri: EndPoint.getJobPosition);
       return ApiResponse.withSuccess(response);
@@ -19,7 +20,19 @@ class JobPositionRepository {
     }
   }
 
+  Future<ApiResponse> saveJob({String? jobId}) async {
+    try {
+      Response response = await dioClient.post(
+          data: {"job_id": jobId, "user_id": Global.userModel?.id},
+          uri: EndPoint.saveJob);
+      return ApiResponse.withSuccess(response);
+    } on DioError catch (e) {
+      return ApiResponse.withError(e.response);
+    }
+  }
+
   Future<ApiResponse> addJobPosition({
+    String? companyId,
     String? designation,
     String? jobDetails,
     String? requirements,
@@ -39,6 +52,7 @@ class JobPositionRepository {
   }) async {
     try {
       Map<String, dynamic> map = {
+        "company_id": companyId,
         "designation": designation,
         "jobdetails": jobDetails,
         "Requirements": requirements,
@@ -66,6 +80,7 @@ class JobPositionRepository {
 
   Future<ApiResponse> updateJobPosition({
     String? jobDetails,
+    String? designation,
     String? id,
     bool? isUpdate,
     String? requirements,
@@ -86,6 +101,7 @@ class JobPositionRepository {
     try {
       Map<String, dynamic> map = {
         "id": id,
+        "designation": designation,
         "jobdetails": jobDetails,
         "Requirements": requirements,
         "Responsilibites": responsibility,

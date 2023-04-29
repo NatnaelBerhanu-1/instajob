@@ -96,6 +96,7 @@ class IconTextField extends StatelessWidget {
           fontWeight: FontWeight.w400,
           fontSize: 15,
         ),
+
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(borderRadius ?? 12)),
           borderSide: BorderSide(color: color ?? MyColors.blue, width: 1),
@@ -223,11 +224,16 @@ class CustomPhonePickerTextField extends StatelessWidget {
   final String? label;
   final TextEditingController? controller;
   final String? Function(String?)? validator;
+  final ValueChanged<bool>? onInputValidated;
   CustomPhonePickerTextField(
-      {Key? key, this.controller, this.label, this.validator})
+      {Key? key,
+      this.controller,
+      this.label,
+      this.validator,
+      this.onInputValidated})
       : super(key: key);
   InputBorder border = OutlineInputBorder(
-      borderSide: BorderSide(color: MyColors.grey.withOpacity(.50), width: 1),
+      borderSide: BorderSide(color: MyColors.lightgrey, width: 1),
       borderRadius: BorderRadius.circular(10));
   @override
   Widget build(BuildContext context) {
@@ -248,15 +254,10 @@ class CustomPhonePickerTextField extends StatelessWidget {
           onInputChanged: (PhoneNumber number) async {
             // print(number);
           },
-          onInputValidated: (val) {
-            if (val == true) {
-              FocusManager.instance.primaryFocus?.unfocus();
-            }
-            print("VAL  ::: $val");
-          },
+          onInputValidated: onInputValidated,
           errorMessage: "",
           validator: validator,
-          autoValidateMode: AutovalidateMode.always,
+          // autoValidateMode: AutovalidateMode.always,
           selectorConfig: const SelectorConfig(
               selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
               leadingPadding: 10,
@@ -285,6 +286,7 @@ class CustomPhonePickerTextField extends StatelessWidget {
             border: border,
             enabledBorder: border,
             errorBorder: border,
+            disabledBorder: border,
             focusedErrorBorder: border,
             focusedBorder: border,
           ),

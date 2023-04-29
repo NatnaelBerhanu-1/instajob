@@ -104,18 +104,23 @@ Widget buildResponsibilityTile(JobPosModel jobPosModel) {
         children: [
           Row(
             children: [
-              Container(
-                  height: 8,
-                  width: 8,
-                  decoration: BoxDecoration(
-                    color: MyColors.blue,
-                    shape: BoxShape.circle,
-                  )),
+              Expanded(
+                flex: 0,
+                child: Container(
+                    height: 8,
+                    width: 8,
+                    decoration: BoxDecoration(
+                      color: MyColors.blue,
+                      shape: BoxShape.circle,
+                    )),
+              ),
               SizedBox(width: 7),
-              CommonText(
-                text: jobPosModel.responsilibites,
-                fontSize: 13,
-                fontColor: MyColors.grey,
+              Expanded(
+                child: CommonText(
+                  text: jobPosModel.responsilibites,
+                  fontSize: 13,
+                  fontColor: MyColors.grey,
+                ),
               ),
             ],
           ),

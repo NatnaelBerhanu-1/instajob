@@ -3,11 +3,20 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:insta_job/utils/my_colors.dart';
 
 import 'model/user_model.dart';
+import 'utils/my_images.dart';
+import 'widgets/custom_button/custom_img_button.dart';
 
 class Global {
   // static String? type;
   static UserModel? userModel;
 }
+
+Widget verifyImage = ImageButton(
+  image: MyImages.verified,
+  padding: const EdgeInsets.all(14),
+  height: 10,
+  width: 10,
+);
 
 Future selectDate(BuildContext context, DateTime date) async {
 // DateFormat('dd-MM-yyyy').format(date);

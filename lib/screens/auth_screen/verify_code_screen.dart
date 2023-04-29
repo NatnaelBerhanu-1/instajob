@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:insta_job/screens/auth_screen/set_password.dart';
-import 'package:insta_job/utils/app_routes.dart';
+import 'package:insta_job/bloc/auth_bloc/social_auth/social_auth.dart';
+import 'package:insta_job/screens/insta_recruit/user_type_screen.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:pinput/pinput.dart';
 
@@ -130,7 +130,12 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
                   borderColor: MyColors.blue,
                   iconColor: MyColors.white,
                   onclick: () {
-                    AppRoutes.push(context, SetPassword());
+                    if (userType == "user") {
+                      SocialAuth.emailAndPass(context, isUser: true);
+                    } else {
+                      SocialAuth.emailAndPass(context);
+                    }
+                    // AppRoutes.push(context, SetPassword());
                   },
                 ),
                 // Spacer(),

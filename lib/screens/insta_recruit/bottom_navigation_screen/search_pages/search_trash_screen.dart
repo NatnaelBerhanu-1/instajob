@@ -49,7 +49,7 @@ class SearchTrash extends StatelessWidget {
                           itemBuilder: (c, i) {
                             return Padding(
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 5),
+                                  horizontal: 15, vertical: 5),
                               child: MessageTile(),
                             );
                           },

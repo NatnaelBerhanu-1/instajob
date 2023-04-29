@@ -1,7 +1,7 @@
 class InitialValidation {}
 
 class InvalidEmailState extends InitialValidation {
-  final String email;
+  final bool email;
 
   InvalidEmailState(this.email);
 }
@@ -28,6 +28,12 @@ class RequiredValidation extends InitialValidation {
   final String require;
 
   RequiredValidation(this.require);
+}
+
+class PasswordReqValidation extends InitialValidation {
+  final String require;
+
+  PasswordReqValidation(this.require);
 }
 
 class ConfirmPasswordState extends InitialValidation {

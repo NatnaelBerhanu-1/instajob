@@ -8,15 +8,20 @@ class SocialAuth {
   /// email
   static FirebaseAuth auth = FirebaseAuth.instance;
   static emailAndPass(BuildContext context,
-      {required String email,
-      required String password,
-      required String name,
+      {
+      //   required String email,
+      // required String password,
+      // required String name,
+      // String? date,
+      // String? profilePic,
+      // String? phoneNumber,
       bool isUser = false}) {
+    var data = context.read<AuthCubit>();
     auth
-        .createUserWithEmailAndPassword(email: email, password: password)
+        .createUserWithEmailAndPassword(
+            email: data.email, password: data.password)
         .then((value) {
-      context.read<AuthCubit>().registerEmp(
-          email: email, password: password, name: name, isUser: isUser);
+      context.read<AuthCubit>().registerEmp(isUser: isUser);
       // context.read<CompanyBloc>().add(LoadCompanyListEvent());
     }).catchError((e) {
       showToast(e.message);
@@ -36,10 +41,12 @@ class SocialAuth {
       // context.read<CompanyBloc>().add(LoadCompanyListEvent());
     }).catchError((e) {
       print("!!!!!! ${e.code}");
-      if (e.code == "wrong-password") {
-        showToast("Invalid email and password");
-      } else {
-        showToast("User does not exist, Please Register first");
+      switch (e.code) {
+        case "user-not-found":
+          showToast("User does not exist, Please Register first");
+          break;
+        case "wrong-password":
+          showToast("Invalid email and password");
       }
     });
   }

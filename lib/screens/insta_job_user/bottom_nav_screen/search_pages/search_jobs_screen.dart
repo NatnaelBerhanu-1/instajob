@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:insta_job/bloc/company_bloc/company_bloc.dart';
 import 'package:insta_job/bloc/company_bloc/company_event.dart';
 import 'package:insta_job/bloc/company_bloc/company_state.dart';
@@ -14,6 +15,7 @@ import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_cards/insta_job_user_cards/filter_tiles/custom_filter_tile.dart';
 import 'package:insta_job/widgets/custom_cards/insta_job_user_cards/map_tile.dart';
+import 'package:insta_job/widgets/custom_text_field.dart';
 
 import '../../../../utils/my_colors.dart';
 import '../../../../widgets/custom_app_bar.dart';
@@ -46,33 +48,72 @@ class _SearchJobsScreenState extends State<SearchJobsScreen> {
     var selectedFilterIndex = context.watch<GlobalCubit>().fIndex;
     var selectedSearchIndex = context.watch<GlobalCubit>().sIndex;
     return Scaffold(
+        backgroundColor: MyColors.white,
         appBar: PreferredSize(
-            preferredSize: Size(double.infinity, kToolbarHeight),
-            child: CustomAppBar(
-              title:
-                  selectedSearchIndex == 1 ? "Search Jobs" : "Search Companies",
-              centerTitle: false,
-              leadingImage: "",
-              leadingWidth: 5,
-              onTap: () {},
-              actions: ImageButton(
-                image: MyImages.searchBlue,
-                padding: EdgeInsets.only(left: 10, right: 20),
-                onTap: () {
-                  AppRoutes.push(
-                      context, SearchCompany(index: selectedSearchIndex));
-                },
-              ),
-            )),
-        body: Padding(
-          padding: const EdgeInsets.only(top: 12.0, left: 10, right: 10),
-          child: Container(
-            color: MyColors.white,
-            child: BlocBuilder<GlobalCubit, InitialState>(
-                builder: (context, state) {
-              return Column(
-                children: [
-                  Row(
+          preferredSize: Size(double.infinity, 70),
+          child: selectedFilterIndex == 1 || selectedFilterIndex == 2
+              ? SafeArea(
+                  child: Row(
+                  children: [
+                    Expanded(
+                      flex: 0,
+                      child: GestureDetector(
+                        onTap: () {
+                          context.read<GlobalCubit>().changeFilterIndex(0);
+                        },
+                        child: Image.asset(
+                          MyImages.backArrow,
+                          height: 40,
+                          width: 40,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                        child: Padding(
+                      padding: const EdgeInsets.only(right: 10.0),
+                      child: CustomTextField(
+                        hint: "Search",
+                        suffixIcon: ImageButton(
+                            image: MyImages.searchBlue,
+                            height: 20,
+                            width: 20,
+                            padding: EdgeInsets.all(10)),
+                        borderRadius: 30,
+                      ),
+                    )),
+                  ],
+                ))
+              : PreferredSize(
+                  preferredSize: Size(double.infinity, kToolbarHeight),
+                  child: CustomAppBar(
+                    title: selectedSearchIndex == 1
+                        ? "Search Jobs"
+                        : "Search Companies",
+                    centerTitle: false,
+                    leadingImage: "",
+                    leadingWidth: 5,
+                    onTap: () {},
+                    actions: ImageButton(
+                      image: MyImages.searchBlue,
+                      padding: EdgeInsets.only(left: 10, right: 20),
+                      onTap: () {
+                        AppRoutes.push(
+                            context, SearchCompany(index: selectedSearchIndex));
+                      },
+                    ),
+                  )),
+        ),
+        body: Container(
+          color: MyColors.white,
+          child:
+              BlocBuilder<GlobalCubit, InitialState>(builder: (context, state) {
+            return Column(
+              children: [
+                Padding(
+                  padding: selectedFilterIndex == 1 || selectedFilterIndex == 2
+                      ? EdgeInsets.only(left: 10.0, top: 10)
+                      : EdgeInsets.only(left: 10.0),
+                  child: Row(
                     children: [
                       Expanded(
                         child: Container(
@@ -131,9 +172,13 @@ class _SearchJobsScreenState extends State<SearchJobsScreen> {
                           ))
                     ],
                   ),
-                  SizedBox(height: 20),
-                  if (selectedFilterIndex == 0) ...[
-                    Expanded(
+                ),
+                SizedBox(height: 20),
+                if (selectedFilterIndex == 0) ...[
+                  Expanded(
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.only(left: 10.0, right: 10, top: 5),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -229,57 +274,72 @@ class _SearchJobsScreenState extends State<SearchJobsScreen> {
                                     })),
                         ],
                       ),
-                    )
-                  ] else if (selectedFilterIndex == 1 ||
-                      selectedFilterIndex == 2) ...[
-                    Expanded(
-                        child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          Slider(
-                            value: 10,
-                            onChanged: (val) {},
-                            max: 80,
+                    ),
+                  )
+                ] else if (selectedFilterIndex == 1 ||
+                    selectedFilterIndex == 2) ...[
+                  Expanded(
+                      child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        BlocBuilder<GlobalCubit, InitialState>(
+                            builder: (context, state) {
+                          var value = context.read<GlobalCubit>();
+                          return Slider(
+                            value: value.range,
+                            onChanged: (val) {
+                              value.rangeVal(val);
+                            },
+                            max: 100,
                             min: 10,
-                          ),
-                          Stack(
-                            children: [
-                              Container(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.74,
-                                color: MyColors.grey,
+                          );
+                        }),
+                        Stack(
+                          children: [
+                            Container(
+                              height: MediaQuery.of(context).size.height * 0.74,
+                              color: MyColors.grey,
+                              child: GoogleMap(
+                                initialCameraPosition: CameraPosition(
+                                    target: LatLng(0.0, 22.90), zoom: 14),
+                                zoomControlsEnabled: true,
+                                zoomGesturesEnabled: true,
+                                scrollGesturesEnabled: true,
+                                padding: EdgeInsets.only(
+                                    bottom: MediaQuery.of(context).size.height *
+                                        0.27),
                               ),
-                              Positioned(
-                                bottom: 20,
-                                left: 0,
-                                right: 0,
-                                child: SizedBox(
-                                  height: 250,
-                                  width: MediaQuery.of(context).size.width,
-                                  child: ListView.builder(
-                                      scrollDirection: Axis.horizontal,
-                                      shrinkWrap: true,
-                                      itemCount: 10,
-                                      itemBuilder: (c, i) {
-                                        return Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 8.0, vertical: 10),
-                                          child: MapTile(),
-                                        );
-                                      }),
-                                ),
+                            ),
+                            Positioned(
+                              bottom: 20,
+                              left: 0,
+                              right: 0,
+                              child: SizedBox(
+                                height: 220,
+                                width: MediaQuery.of(context).size.width,
+                                child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    shrinkWrap: true,
+                                    itemCount: 10,
+                                    itemBuilder: (c, i) {
+                                      return Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8.0, vertical: 10),
+                                        child: MapTile(),
+                                      );
+                                    }),
                               ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ))
-                  ] else
-                    ...[],
-                ],
-              );
-            }),
-          ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ))
+                ] else
+                  ...[],
+              ],
+            );
+          }),
         ));
   }
 }

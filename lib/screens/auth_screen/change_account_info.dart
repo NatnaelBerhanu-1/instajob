@@ -1,7 +1,5 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/auth_bloc/auth_cubit.dart';
@@ -10,10 +8,10 @@ import 'package:insta_job/bloc/choose_image_bloc/pick_image_cubit.dart';
 import 'package:insta_job/bloc/validation/validation_bloc.dart';
 import 'package:insta_job/bloc/validation/validation_state.dart';
 import 'package:insta_job/globals.dart';
+import 'package:insta_job/screens/insta_recruit/user_type_screen.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
 import 'package:intl/intl.dart';
-import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 import '../../utils/my_colors.dart';
 import '../../utils/my_images.dart';
@@ -23,7 +21,8 @@ import '../../widgets/custom_cards/assign_companies_tile.dart';
 import '../../widgets/custom_cards/custom_common_card.dart';
 
 class ChangeAccInfoScreen extends StatefulWidget {
-  const ChangeAccInfoScreen({super.key});
+  final bool isUpdate;
+  const ChangeAccInfoScreen({super.key, this.isUpdate = false});
 
   @override
   State<ChangeAccInfoScreen> createState() => _ChangeAccInfoScreenState();
@@ -42,22 +41,31 @@ class _ChangeAccInfoScreenState extends State<ChangeAccInfoScreen> {
       borderSide: BorderSide(color: MyColors.lightgrey, width: 1),
       borderRadius: BorderRadius.circular(10));
   update() {
+    var userImage = context.read<PickImageCubit>();
+    var model = Global.userModel!;
     if (Global.userModel?.type == "user") {
-      var userImage = context.read<PickImageCubit>();
-      var model = Global.userModel!;
-      email.text = model.email!;
-      name.text = model.name!;
-      selectedDate = model.date!;
-      phone.text = model.phoneNumber!;
+      email.text = model.email ?? "";
+      name.text = model.name ?? "";
+      selectedDate = model.date ?? "";
+      phone.text = model.phoneNumber ?? "";
       isValid = model.phoneNumber != null ? true : false;
-      userImage.imgUrl = model.uploadPhoto!;
-      setState(() {});
+      userImage.imgUrl = model.uploadPhoto ?? "";
+    } else {
+      print("########################## ${model.companyName}");
+      name.text = model.companyName ?? "";
+      email.text = model.email ?? "";
+      phone.text = model.phoneNumber ?? "";
+      isValid = model.phoneNumber != null ? true : false;
+      userImage.imgUrl = model.uploadPhoto ?? "";
     }
+    setState(() {});
   }
 
   @override
   void initState() {
-    update();
+    if (widget.isUpdate) {
+      update();
+    }
     super.initState();
   }
 
@@ -120,18 +128,8 @@ class _ChangeAccInfoScreenState extends State<ChangeAccInfoScreen> {
                 child: SingleChildScrollView(
                   child: Padding(
                     padding: const EdgeInsets.all(15),
-                    child: BlocConsumer<ValidationCubit, InitialValidation>(
-                        listener: (context, state) {
-                      if (state is InvalidEmailState) {
-                        showToast(state.email);
-                      }
-                      if (state is InvalidPasswordState) {
-                        showToast(state.pass);
-                      }
-                      if (state is RequiredValidation) {
-                        showToast(state.require);
-                      }
-                    }, builder: (context, state) {
+                    child: BlocBuilder<ValidationCubit, InitialValidation>(
+                        builder: (context, state) {
                       var validationBloc = context.read<ValidationCubit>();
 
                       return Column(
@@ -164,12 +162,20 @@ class _ChangeAccInfoScreenState extends State<ChangeAccInfoScreen> {
                               height: 10,
                               width: 10,
                             ),
-                            validator: (val) =>
-                                validationBloc.requiredValidation(
+                            validator: (val) => requiredValidation(
+                                val!,
+                                Global.userModel?.type == "user"
+                                    ? "Name"
+                                    : "Company name"),
+                            onChanged: (val) {
+                              if (!formKey.currentState!.validate()) {
+                                requiredValidation(
                                     val!,
                                     Global.userModel?.type == "user"
                                         ? "Name"
-                                        : "Company name"),
+                                        : "Company name");
+                              }
+                            },
                             // suffixIcon: ImageButton(image: MyImages.verified),
                             hint: Global.userModel?.type == "user"
                                 ? "FirstName"
@@ -184,7 +190,13 @@ class _ChangeAccInfoScreenState extends State<ChangeAccInfoScreen> {
                               height: 10,
                               width: 10,
                             ),
-                            readOnly: true,
+                            readOnly: widget.isUpdate ? true : false,
+                            validator: (val) => emailValidation(val!),
+                            onChanged: (val) {
+                              if (!formKey.currentState!.validate()) {
+                                emailValidation(val!);
+                              }
+                            },
                             // suffixIcon: ImageButton(image: MyImages.verified),
                             hint: "alexies@mygmail.com",
                           ),
@@ -217,36 +229,10 @@ class _ChangeAccInfoScreenState extends State<ChangeAccInfoScreen> {
                           Global.userModel?.type != "user"
                               ? SizedBox()
                               : SizedBox(height: 15),
-                          /*  Global.userModel?.type != "user"
-                              ? SizedBox()
-                              : IconTextField(
-                                  controller: password,
-                                  prefixIcon: ImageButton(
-                                    image: MyImages.lock,
-                                    padding: EdgeInsets.all(13),
-                                    height: 10,
-                                    width: 10,
-                                  ),
-                                  suffixIcon: GestureDetector(
-                                    onTap: () {
-                                      validationBloc.visiblePass();
-                                    },
-                                    child: Icon(
-                                      validationBloc.pass
-                                          ? Icons.visibility_off
-                                          : Icons.visibility,
-                                    ),
-                                  ),
-                                  obscureText: validationBloc.pass,
-                                  hint: "password",
-                                  maxLine: 1,
-                                  validator: (val) =>
-                                      validationBloc.passwordValidation(val!),
-                                ),*/
                           Global.userModel?.type == "user"
                               ? SizedBox()
                               : SizedBox(height: 15),
-                          Global.userModel?.phoneNumber != null
+                          widget.isUpdate
                               ? IconTextField(
                                   controller: phone,
                                   prefixIcon: ImageButton(
@@ -259,58 +245,9 @@ class _ChangeAccInfoScreenState extends State<ChangeAccInfoScreen> {
                                   hintColor: MyColors.black,
                                   hint: Global.userModel?.phoneNumber,
                                 )
-                              : InternationalPhoneNumberInput(
+                              : CustomPhonePickerTextField(
+                                  controller: phone,
                                   validator: (val) {},
-                                  onInputChanged: (PhoneNumber number) async {
-                                    // print(number);
-                                  },
-                                  onInputValidated: (val) {
-                                    isValid = val;
-                                    if (val == true) {
-                                      setState(() {});
-                                      FocusManager.instance.primaryFocus
-                                          ?.unfocus();
-                                    }
-                                    print("VAL  ::: $val");
-                                  },
-
-                                  // errorMessage: "",
-                                  autoValidateMode: AutovalidateMode.disabled,
-                                  selectorConfig: const SelectorConfig(
-                                      selectorType:
-                                          PhoneInputSelectorType.BOTTOM_SHEET,
-                                      // leadingPadding: 10,
-                                      setSelectorButtonAsPrefixIcon: true,
-                                      showFlags: false),
-                                  ignoreBlank: false,
-                                  // keyboardType: TextInputType.number,
-                                  keyboardType: Platform.isIOS
-                                      ? TextInputType.numberWithOptions(
-                                          signed: true, decimal: true)
-                                      : TextInputType.number,
-                                  formatInput: false,
-                                  initialValue: PhoneNumber(isoCode: "IN"),
-                                  textFieldController: phone,
-
-                                  inputDecoration: InputDecoration(
-                                    // prefixIcon:
-                                    // ImageButton(
-                                    //   image: MyImages.phone,
-                                    //   padding: EdgeInsets.zero,
-                                    // ),
-                                    isDense: true,
-                                    fillColor: MyColors.white,
-                                    filled: true,
-                                    contentPadding: EdgeInsets.all(8),
-                                    hintText: "9616268758",
-                                    hintStyle: TextStyle(fontSize: 14),
-                                    border: border,
-                                    enabledBorder: border,
-                                    errorBorder: border,
-                                    focusedErrorBorder: border,
-                                    focusedBorder: border,
-                                  ),
-                                  cursorColor: MyColors.black,
                                 ),
                           SizedBox(height: 15),
                           Text(
@@ -322,22 +259,12 @@ class _ChangeAccInfoScreenState extends State<ChangeAccInfoScreen> {
                           ),
                           SizedBox(height: 10),
                           uploadPhotoCard(context,
-                              isUpdate: Global.userModel?.uploadPhoto != null
-                                  ? true
-                                  : false,
+                              isUpdate: widget.isUpdate ? true : false,
                               url: context.read<PickImageCubit>().imgUrl),
-                          // BlocBuilder<PickImageCubit, InitialImage>(
-                          //     builder: (context, state) {
-                          //   if (state is PickImageState) {
-                          //     return Image.network(
-                          //         "${EndPoint.imageBaseUrl}${state.url}");
-                          //   }
-                          //   return uploadPhotoCard(context);
-                          // }),
                           SizedBox(height: 30),
                           BlocBuilder<AuthCubit, AuthInitialState>(
                               builder: (context, state) {
-                            var data = context.read<AuthCubit>();
+                            var authData = context.read<AuthCubit>();
                             var image = context.read<PickImageCubit>();
                             return CustomIconButton(
                               image: MyImages.arrowWhite,
@@ -354,11 +281,28 @@ class _ChangeAccInfoScreenState extends State<ChangeAccInfoScreen> {
                                     showToast("Please fill all details");
                                   } else {
                                     if (isValid == true) {
-                                      data.updateData(
-                                          profilePhoto: image.imgUrl,
-                                          dOB: selectedDate,
-                                          name: name.text,
-                                          phoneNumber: phone.text);
+                                      if (widget.isUpdate) {
+                                        if (Global.userModel?.type == "user") {
+                                          authData.updateUserData(
+                                              profilePhoto: image.imgUrl,
+                                              dOB: selectedDate,
+                                              name: name.text,
+                                              phoneNumber: phone.text);
+                                        } else {
+                                          authData.updateEmpData(
+                                              profilePhoto: image.imgUrl,
+                                              name: name.text,
+                                              phoneNumber: phone.text);
+                                        }
+                                      } else {
+                                        authData.dob = selectedDate;
+                                        authData.phoneNumber = phone.text;
+                                        authData.profilePic = image.imgUrl;
+                                        setState(() {});
+                                        // authData.getData();
+                                        // AppRoutes.push(
+                                        //     context, VerifyCodeScreen());
+                                      }
                                     } else {
                                       showToast("Please enter valid number");
                                     }
@@ -382,7 +326,7 @@ class _ChangeAccInfoScreenState extends State<ChangeAccInfoScreen> {
     );
   }
 
-  String selectedDate = "";
+  String selectedDate = userType == "user" ? "" : "${DateTime.now()}";
   chooseDate() async {
     DateTime date = DateTime.now();
     date = await selectDate(context, date);

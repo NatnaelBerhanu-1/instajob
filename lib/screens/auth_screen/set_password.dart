@@ -83,7 +83,12 @@ class _SetPasswordState extends State<SetPassword> {
                     obscureText: validationBloc.pass,
                     hint: "**********",
                     maxLine: 1,
-                    validator: (val) => validationBloc.passwordValidation(val!),
+                    validator: (val) => passwordValidation(val!),
+                    onChanged: (val) {
+                      if (!formKey.currentState!.validate()) {
+                        passwordValidation(val!);
+                      }
+                    },
                   ),
                   SizedBox(height: 30),
                   IconTextField(
@@ -107,8 +112,13 @@ class _SetPasswordState extends State<SetPassword> {
                     obscureText: validationBloc.cPass,
                     hint: "Confirm password",
                     maxLine: 1,
-                    validator: (val) => validationBloc.confirmPassValidation(
-                        val!, password.text),
+                    validator: (val) =>
+                        confirmPassValidation(val!, password.text),
+                    onChanged: (val) {
+                      if (!formKey.currentState!.validate()) {
+                        confirmPassValidation(val!, password.text);
+                      }
+                    },
                   ),
                   SizedBox(height: 70),
                   CustomIconButton(

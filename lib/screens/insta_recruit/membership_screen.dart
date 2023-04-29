@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:insta_job/bloc/choose_image_bloc/pick_image_cubit.dart';
 import 'package:insta_job/screens/insta_job_user/turn_on_notification_page.dart';
 import 'package:insta_job/widgets/custom_button/custom_all_small_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -120,6 +122,7 @@ class _MemberShipScreenState extends State<MemberShipScreen> {
                                 fontColor: MyColors.white,
                                 iconColor: MyColors.white,
                                 onclick: () async {
+                                  context.read<PickImageCubit>().clearImgUrl();
                                   SharedPreferences pref =
                                       await SharedPreferences.getInstance();
                                   if (isCheck) {

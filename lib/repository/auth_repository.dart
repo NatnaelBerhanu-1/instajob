@@ -16,17 +16,40 @@ class AuthRepository {
     String? name,
     String? email,
     String? password,
+    String? date,
+    String? profilePic,
+    String? phoneNumber,
+    String? cv,
+    String? companyName,
+    String? websiteLink,
     bool isUser = false,
   }) async {
     try {
-      var map = {
-        "name": name,
-        "email": email,
-        "password": password,
-        "type": userType == "user" ? "user" : "recruiters",
-        "fcm_token": "1234",
-        "firebase_id": FirebaseAuth.instance.currentUser?.uid,
-      };
+      var map = isUser
+          ? {
+              "name": name,
+              "email": email,
+              "password": password,
+              "date": date,
+              "cv": cv,
+              "phone_number": phoneNumber,
+              "upload_photo": profilePic,
+              "type": userType == "user" ? "user" : "recruiters",
+              "fcm_token": "1234",
+              "firebase_id": FirebaseAuth.instance.currentUser?.uid,
+            }
+          : {
+              "name": name,
+              "email": email,
+              "password": password,
+              "phone_number": phoneNumber,
+              "upload_photo": profilePic,
+              "company_name": companyName,
+              "website_link": websiteLink,
+              "type": userType == "user" ? "user" : "recruiters",
+              "fcm_token": "1234",
+              "firebase_id": FirebaseAuth.instance.currentUser?.uid,
+            };
       Response response = await dioClient.post(
           data: map,
           uri: isUser ? EndPoint.registerUser : EndPoint.registerEmp);
@@ -72,7 +95,7 @@ class AuthRepository {
   }
 
   /// UPDATE USER
-  Future<ApiResponse> updateData({
+  Future<ApiResponse> updateUser({
     String? name,
     String? phoneNumber,
     String? profilePhoto,
@@ -96,10 +119,32 @@ class AuthRepository {
     }
   }
 
+  /// UPDATE EMPLOYEE
+  Future<ApiResponse> updateEmp({
+    String? companyName,
+    String? phoneNumber,
+    String? profilePhoto,
+  }) async {
+    try {
+      var map = {
+        "id": Global.userModel?.id,
+        "companyname": companyName,
+        "phone_number": Global.userModel?.phoneNumber,
+        "email": "${Global.userModel?.email}",
+        "upload_photo": profilePhoto
+      };
+      Response response =
+          await dioClient.post(data: map, uri: EndPoint.employeeUpdate);
+      return ApiResponse.withSuccess(response);
+    } on DioError catch (e) {
+      return ApiResponse.withError(e.response);
+    }
+  }
+
   /// LOGOUT
   Future<ApiResponse> logOutUser() async {
     try {
-      var map = {"user_id": Global.userModel?.id};
+      var map = {"id": Global.userModel?.id};
       Response response = await dioClient.post(data: map, uri: EndPoint.logout);
       return ApiResponse.withSuccess(response);
     } on DioError catch (e) {

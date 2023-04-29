@@ -6,7 +6,6 @@ import 'package:insta_job/bloc/feedback_bloc/feedback_bloc.dart';
 import 'package:insta_job/bloc/feedback_bloc/feedback_event.dart';
 import 'package:insta_job/bloc/feedback_bloc/feedback_state.dart';
 import 'package:insta_job/globals.dart';
-import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
 
@@ -43,6 +42,9 @@ class _FeedBackScreenState extends State<FeedBackScreen> {
               if (state is ErrorState) {
                 showToast(state.error);
               }
+              // if (state is FeedBackLoaded) {
+              //   AppRoutes.pop(context);
+              // }
             }, builder: (context, state) {
               return Column(
                 children: [
@@ -61,13 +63,14 @@ class _FeedBackScreenState extends State<FeedBackScreen> {
                     iconColor: MyColors.blue,
                     onclick: () {
                       if (msg.text.isNotEmpty) {
-                        context.read<FeedBackBloc>().add(
-                              InsertFeedBackEvent(msg.text),
-                            );
-                        AppRoutes.pop(context);
+                        context
+                            .read<FeedBackBloc>()
+                            .add(InsertFeedBackEvent(msg.text));
+                      } else {
+                        showToast("Please enter feedback");
                       }
                       msg.clear();
-                      print('ADDDDD ****************         ');
+                      print('ADDDDD ****************');
                     },
                   ),
                 ],

@@ -60,7 +60,14 @@ class _SettingScreenState extends State<SettingScreen> {
               SizedBox(height: 10),
               SettingTile(
                 onTap: () {
-                  AppRoutes.push(context, ChangeAccInfoScreen());
+                  // if (Global.userModel?.type == "user") {
+                  //   AppRoutes.push(context,
+                  //       ChangeAccInfoScreen(isUpdate: true));
+                  // } else {
+                  //   AppRoutes.push(context,
+                  //       BecameAnEmployer(isUpdate: true));
+                  // }
+                  AppRoutes.push(context, ChangeAccInfoScreen(isUpdate: true));
                 },
                 leadingImage: MyImages.user,
                 title: "Change Account Information",

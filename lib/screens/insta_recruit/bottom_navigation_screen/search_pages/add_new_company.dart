@@ -42,106 +42,122 @@ class _AddNewCompanyState extends State<AddNewCompany> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size(double.infinity, kToolbarHeight),
-        child: CustomAppBar(
-          leadingImage: MyImages.backArrowBorder,
-          imageColor: MyColors.blue,
-          height: 28,
-          width: 28,
-          title: "",
-          onTap: () {
-            context
-                .read<BottomBloc>()
-                .add(SetScreenEvent(false, screenName: BottomNavScreen()));
-          },
+    return WillPopScope(
+      onWillPop: () async {
+        var image = context.read<PickImageCubit>();
+        image.clearImgUrl();
+        return true;
+      },
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size(double.infinity, kToolbarHeight),
+          child: CustomAppBar(
+            leadingImage: MyImages.backArrowBorder,
+            imageColor: MyColors.blue,
+            height: 28,
+            width: 28,
+            title: "",
+            onTap: () {
+              var image = context.read<PickImageCubit>();
+              image.clearImgUrl();
+              context
+                  .read<BottomBloc>()
+                  .add(SetScreenEvent(false, screenName: BottomNavScreen()));
+            },
+          ),
         ),
-      ),
-      body: Form(
-        key: formKey,
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15),
-            child: Column(
-              children: [
-                Center(child: Image.asset(MyImages.resume)),
-                SizedBox(height: 30),
-                CommonText(
-                  text: "Add Clients Information",
-                  fontWeight: FontWeight.w500,
-                ),
-                SizedBox(height: 30),
-                BlocConsumer<ValidationCubit, InitialValidation>(
-                    listener: (c, state) {
-                  if (state is RequiredValidation) {
-                    showToast(state.require);
-                  }
-                }, builder: (context, state) {
-                  var validate = context.read<ValidationCubit>();
-                  return IconTextField(
-                    controller: name,
-                    validator: (val) =>
-                        validate.requiredValidation(val!, "Company name"),
-                    prefixIcon: ImageButton(
-                      image: MyImages.userFilled,
-                      padding: EdgeInsets.all(14),
-                      height: 10,
-                      width: 10,
-                    ),
-                    // suffixIcon: ImageButton(image: MyImages.verified),
-                    hint: "Company Name",
-                  );
-                }),
-                SizedBox(height: 30),
-                BlocBuilder<PickImageCubit, InitialImage>(
-                    builder: (context, state) {
-                  if (state is PickImageState) {
-                    return Image.network(
-                        "${EndPoint.imageBaseUrl}${state.url}");
-                  }
-                  return uploadPhotoCard(context);
-                }),
-                SizedBox(height: 30),
-                BlocConsumer<PickImageCubit, InitialImage>(
-                    listener: (c, state) {
-                  if (state is ImageErrorState) {
-                    showToast(state.imageError);
-                  }
-                }, builder: (context, snapshot) {
-                  return BlocConsumer<ValidationCubit, InitialValidation>(
+        body: Form(
+          key: formKey,
+          child: SingleChildScrollView(
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15),
+              child: Column(
+                children: [
+                  Center(child: Image.asset(MyImages.resume)),
+                  SizedBox(height: 30),
+                  CommonText(
+                    text: "Add Clients Information",
+                    fontWeight: FontWeight.w500,
+                  ),
+                  SizedBox(height: 30),
+                  BlocConsumer<ValidationCubit, InitialValidation>(
                       listener: (c, state) {
                     if (state is RequiredValidation) {
                       showToast(state.require);
                     }
+                  }, builder: (context, state) {
+                    var validate = context.read<ValidationCubit>();
+                    return IconTextField(
+                      controller: name,
+                      validator: (val) =>
+                          requiredValidation(val!, "Company name"),
+                      prefixIcon: ImageButton(
+                        image: MyImages.userFilled,
+                        padding: EdgeInsets.all(14),
+                        height: 10,
+                        width: 10,
+                      ),
+                      // suffixIcon: ImageButton(image: MyImages.verified),
+                      hint: "Company Name",
+                      onChanged: (val) {
+                        if (!formKey.currentState!.validate()) {
+                          requiredValidation(val!, "Company name");
+                        }
+                      },
+                    );
+                  }),
+                  SizedBox(height: 30),
+                  BlocBuilder<PickImageCubit, InitialImage>(
+                      builder: (context, state) {
+                    if (state is PickImageState) {
+                      return Image.network(
+                          "${EndPoint.imageBaseUrl}${state.url}");
+                    }
+                    return uploadPhotoCard(context);
+                  }),
+                  SizedBox(height: 30),
+                  BlocConsumer<PickImageCubit, InitialImage>(
+                      listener: (c, state) {
+                    if (state is ImageErrorState) {
+                      showToast(state.imageError);
+                    }
                   }, builder: (context, snapshot) {
-                    return BlocConsumer<CompanyBloc, CompanyState>(
+                    return BlocConsumer<ValidationCubit, InitialValidation>(
                         listener: (c, state) {
-                      if (state is ErrorState) {
-                        showToast(state.error);
+                      if (state is RequiredValidation) {
+                        showToast(state.require);
                       }
                     }, builder: (context, snapshot) {
-                      var image = context.read<PickImageCubit>();
-                      return CustomButton(
-                        title: "Submit",
-                        onTap: () {
-                          if (formKey.currentState!.validate()) {
-                            if (image.imgUrl.isNotEmpty) {
-                              context.read<CompanyBloc>().add(AddCompanyEvent(
-                                  companyName: name.text, photo: image.imgUrl));
-                              context.read<BottomBloc>().add(SetScreenEvent(
-                                  false,
-                                  screenName: BottomNavScreen()));
-                            } else {
-                              showToast("Please choose image");
+                      return BlocConsumer<CompanyBloc, CompanyState>(
+                          listener: (c, state) {
+                        if (state is ErrorState) {
+                          showToast(state.error);
+                        }
+                      }, builder: (context, snapshot) {
+                        var image = context.read<PickImageCubit>();
+                        return CustomButton(
+                          title: "Submit",
+                          onTap: () {
+                            if (formKey.currentState!.validate()) {
+                              if (image.imgUrl.isNotEmpty) {
+                                context.read<CompanyBloc>().add(AddCompanyEvent(
+                                    companyName: name.text,
+                                    photo: image.imgUrl));
+                                context.read<BottomBloc>().add(SetScreenEvent(
+                                    false,
+                                    screenName: BottomNavScreen()));
+                              } else {
+                                showToast("Please choose image");
+                              }
                             }
-                          }
-                        },
-                      );
+                          },
+                        );
+                      });
                     });
-                  });
-                })
-              ],
+                  })
+                ],
+              ),
             ),
           ),
         ),

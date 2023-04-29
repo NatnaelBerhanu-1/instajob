@@ -32,8 +32,14 @@ class ExperienceLevelState extends InitialState {
   ExperienceLevelState(this.val);
 }
 
-class RangeState extends InitialState {
+class RangeValueState extends InitialState {
   final RangeValues val;
+
+  RangeValueState(this.val);
+}
+
+class RangeState extends InitialState {
+  final double val;
 
   RangeState(this.val);
 }

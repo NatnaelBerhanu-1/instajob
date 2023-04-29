@@ -28,17 +28,39 @@ class AuthCubit extends Cubit<AuthInitialState> {
   AuthCubit(this.companyBloc, this.user,
       {required this.sharedPreferences, required this.authRepository})
       : super(AuthInitialState());
+  String userName = "";
+  String companyName = "";
+  String email = "";
+  String password = "";
+  String website = "";
+  String phoneNumber = "";
+  String profilePic = "";
+  String cv = "";
+  String dob = "";
 
-  registerEmp({
-    String? name,
-    String? email,
-    String? password,
-    bool isUser = false,
-  }) async {
-    print("3333333333333333333333333333333333333333");
+  getData() {
+    print("userName: $userName");
+    print("email: $email");
+    print("password: $password");
+    print("phoneNumber: $phoneNumber");
+    print("profilePic: $profilePic");
+    print("website: $website");
+    print("cv: $cv");
+  }
+
+  registerEmp({bool isUser = false}) async {
     emit(AuthLoadingState());
     ApiResponse response = await authRepository.empRegister(
-        name: name, email: email, password: password, isUser: isUser);
+        name: userName,
+        email: email,
+        password: password,
+        isUser: isUser,
+        phoneNumber: phoneNumber,
+        profilePic: profilePic,
+        date: dob,
+        companyName: companyName,
+        cv: cv,
+        websiteLink: website);
     if (response.response.statusCode == 500) {
       emit(ErrorState("Something went wrong"));
     }
@@ -97,14 +119,14 @@ class AuthCubit extends Cubit<AuthInitialState> {
   }
 
   /// UPDATE USER
-  updateData({
+  updateUserData({
     String? name,
     String? phoneNumber,
     String? profilePhoto,
     String? dOB,
   }) async {
     emit(AuthLoadingState());
-    ApiResponse response = await authRepository.updateData(
+    ApiResponse response = await authRepository.updateUser(
       phoneNumber: phoneNumber,
       name: name,
       dOB: dOB,
@@ -128,7 +150,38 @@ class AuthCubit extends Cubit<AuthInitialState> {
     }
   }
 
+  /// EMPLOYEE UPDATE
+  updateEmpData({
+    String? name,
+    String? phoneNumber,
+    String? profilePhoto,
+  }) async {
+    emit(AuthLoadingState());
+    ApiResponse response = await authRepository.updateEmp(
+      phoneNumber: phoneNumber,
+      companyName: name,
+      profilePhoto: profilePhoto,
+    );
+    if (response.response.statusCode == 500) {
+      emit(ErrorState("Something went wrong"));
+    }
+    if (response.response.statusCode == 200) {
+      await sharedPreferences.setString(
+          "user", jsonEncode(response.response.data['data']));
+      var userModel = UserModel.fromJson(response.response.data['data']);
+      Global.userModel = userModel;
+      emit(AuthState(userModel: userModel));
+      navigationKey.currentState?.pop();
+      navigationKey.currentState?.pop();
+      user.add(UserEvent());
+    }
+    if (response.response.statusCode == 400) {
+      emit(ErrorState("${response.response.data['message']}"));
+    }
+  }
+
   /// google auth
+  bool isGoogleSignIn = false;
   googleAuth({
     bool isUser = false,
   }) async {
@@ -138,7 +191,8 @@ class AuthCubit extends Cubit<AuthInitialState> {
 
     try {
       loading(value: false);
-
+      isGoogleSignIn = true;
+      emit(AuthInitialState());
       final googleAuth = await googleUser?.authentication;
       final credential = GoogleAuthProvider.credential(
         idToken: googleAuth?.idToken,
@@ -157,10 +211,10 @@ class AuthCubit extends Cubit<AuthInitialState> {
                 password: value.user!.uid);
           } else {
             registerEmp(
-              email: value.user!.email,
+              // email: value.user!.email,
               isUser: isUser,
-              password: value.user!.uid,
-              name: value.user!.displayName,
+              // password: value.user!.uid,
+              // name: value.user!.displayName,
             );
           }
           // var userModel = UserModel.fromJson(response.response.data['data']);
@@ -176,9 +230,6 @@ class AuthCubit extends Cubit<AuthInitialState> {
       });
     } catch (e) {
       loading(value: false);
-      print(
-          "####################################################################");
-      print(e.toString());
       emit(ErrorState(e.toString()));
     }
   }
@@ -216,12 +267,18 @@ class AuthCubit extends Cubit<AuthInitialState> {
   ///logout
   logOut() async {
     ApiResponse response = await authRepository.logOutUser();
+    GoogleSignIn googleSignIn = GoogleSignIn();
+
     if (response.response.statusCode == 500) {
       emit(ErrorState("Something went wrong"));
     }
     if (response.response.statusCode == 200) {
       await sharedPreferences.remove("user");
       await FirebaseAuth.instance.signOut();
+      if (isGoogleSignIn) {
+        await googleSignIn.disconnect();
+      }
+      user.add(ResetIndex());
       navigationKey.currentState?.pushAndRemoveUntil(
           MaterialPageRoute(builder: (_) => const LoginScreen()),
           (route) => false);

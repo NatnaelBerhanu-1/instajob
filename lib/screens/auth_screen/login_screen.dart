@@ -122,13 +122,16 @@ class _LoginScreenState extends State<LoginScreen> {
                               height: 10,
                               width: 10,
                             ),
-                            // suffixIcon: validationBloc.valid
-                            //     ? ImageButton(image: MyImages.verified)
-                            //     : Icon(Icons.close, color: MyColors.lightRed),
-                            validator: (val) =>
-                                validationBloc.emailValidation(val!),
+                            suffixIcon: validationBloc.emailVAL
+                                ? verifyImage
+                                : SizedBox(),
+                            validator: (val) => emailValidation(val!),
                             onChanged: (val) {
-                              // validationBloc.emailValidation(val!);
+                              if (!formKey.currentState!.validate()) {
+                                emailValidation(val!);
+                                // validationBloc.emailCheck(
+                                //     formKey.currentState?.validate());
+                              }
                             },
                             hint: "alexis@mygmail.com",
                           ),
@@ -154,8 +157,12 @@ class _LoginScreenState extends State<LoginScreen> {
                             obscureText: validationBloc.pass,
                             hint: "password",
                             maxLine: 1,
-                            validator: (val) =>
-                                validationBloc.passwordValidation(val!),
+                            validator: (val) => passwordValidation(val!),
+                            onChanged: (val) {
+                              if (!formKey.currentState!.validate()) {
+                                passwordValidation(val!);
+                              }
+                            },
                           ),
                           SizedBox(height: 20),
                           GestureDetector(
@@ -175,58 +182,42 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                           SizedBox(height: 40),
-                          BlocConsumer<ValidationCubit, InitialValidation>(
+                          BlocConsumer<AuthCubit, AuthInitialState>(
                               listener: (context, state) {
-                            if (state is InvalidEmailState) {
-                              showToast(state.email);
-                            }
-                            if (state is InvalidPasswordState) {
-                              showToast(state.pass);
-                            }
-                            if (state is RequiredValidation) {
-                              showToast(state.require);
+                            if (state is ErrorState) {
+                              showToast(state.error);
                             }
                           }, builder: (context, state) {
-                            // var authCubit = context.read<AuthCubit>();
-                            return BlocConsumer<AuthCubit, AuthInitialState>(
-                                listener: (context, state) {
-                              if (state is ErrorState) {
-                                showToast(state.error);
-                              }
-                            }, builder: (context, state) {
-                              return CustomIconButton(
-                                image: MyImages.arrowWhite,
-                                title: "Sign In Now",
-                                backgroundColor: MyColors.blue,
-                                fontColor: MyColors.white,
-                                loading:
-                                    state is AuthLoadingState ? true : false,
-                                borderColor: MyColors.blue,
-                                iconColor: MyColors.white,
-                                onclick: () {
-                                  if (formKey.currentState!.validate()) {
-                                    if (userType == "user") {
-                                      SocialAuth.loginWithEmail(context,
-                                          email: email.text,
-                                          password: password.text,
-                                          isUser: true);
-                                    } else {
-                                      SocialAuth.loginWithEmail(context,
-                                          email: email.text,
-                                          password: password.text);
-                                    }
+                            return CustomIconButton(
+                              image: MyImages.arrowWhite,
+                              title: "Sign In Now",
+                              backgroundColor: MyColors.blue,
+                              fontColor: MyColors.white,
+                              loading: state is AuthLoadingState ? true : false,
+                              borderColor: MyColors.blue,
+                              iconColor: MyColors.white,
+                              onclick: () {
+                                if (formKey.currentState!.validate()) {
+                                  if (userType == "user") {
+                                    SocialAuth.loginWithEmail(context,
+                                        email: email.text,
+                                        password: password.text,
+                                        isUser: true);
+                                  } else {
+                                    SocialAuth.loginWithEmail(context,
+                                        email: email.text,
+                                        password: password.text);
                                   }
-
-                                  // if (Global.type == "user") {
-                                  //   AppRoutes.pushAndRemoveUntil(
-                                  //       context, MemberShipScreen());
-                                  // } else {
-                                  //   AppRoutes.pushAndRemoveUntil(
-                                  //       context, BottomNavScreen());
-                                  // }
-                                },
-                              );
-                            });
+                                }
+                                // if (Global.type == "user") {
+                                //   AppRoutes.pushAndRemoveUntil(
+                                //       context, MemberShipScreen());
+                                // } else {
+                                //   AppRoutes.pushAndRemoveUntil(
+                                //       context, BottomNavScreen());
+                                // }
+                              },
+                            );
                           }),
                           SizedBox(height: 20),
                           CustomIconButton(

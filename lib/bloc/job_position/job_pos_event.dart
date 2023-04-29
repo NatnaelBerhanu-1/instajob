@@ -3,12 +3,14 @@ import 'package:equatable/equatable.dart';
 abstract class JobPosEvent extends Equatable {}
 
 class LoadJobPosListEvent extends JobPosEvent {
-  LoadJobPosListEvent();
+  final String companyId;
+  LoadJobPosListEvent({this.companyId = ""});
   @override
   List<Object?> get props => [];
 }
 
 class AddJobPositionEvent extends JobPosEvent {
+  final String? companyId;
   final String? id;
   final bool? isUpdate;
   final String? designation;
@@ -29,7 +31,8 @@ class AddJobPositionEvent extends JobPosEvent {
   final String? shortlistedReviewContent;
 
   AddJobPositionEvent(
-      {this.jobDetails,
+      {this.companyId,
+      this.jobDetails,
       this.requirements,
       this.designation,
       this.responsibility,
@@ -47,6 +50,15 @@ class AddJobPositionEvent extends JobPosEvent {
       this.disqualifiedReviewContent,
       this.shortlistedReviewSubject,
       this.shortlistedReviewContent});
+  @override
+  List<Object?> get props => [];
+}
+
+class SaveJobPositionEvent extends JobPosEvent {
+  final String jobId;
+  final String userId;
+
+  SaveJobPositionEvent({required this.jobId, required this.userId});
   @override
   List<Object?> get props => [];
 }

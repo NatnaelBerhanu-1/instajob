@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/model/company_model.dart';
 import 'package:insta_job/model/job_position_model.dart';
+import 'package:insta_job/network/end_points.dart';
 import 'package:insta_job/screens/insta_job_user/bottom_nav_screen/search_pages/search_jobs_screen.dart';
 import 'package:insta_job/screens/insta_job_user/confirm_detail_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/bottom_navigation_screen.dart';
@@ -43,7 +44,9 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
               right: 0,
               top: 0,
               left: 0,
-              child: Image.asset(MyImages.jobUser, fit: BoxFit.cover)),
+              child: Image.network(
+                  "${EndPoint.imageBaseUrl}${widget.jobPosModel!.uploadPhoto}",
+                  fit: BoxFit.cover)),
           Positioned(
             top: 0,
             child: BlocBuilder<BottomBloc, BottomInitialState>(
@@ -59,7 +62,7 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                             companyModel: widget.companyModel)));
                   }
 
-                  AppRoutes.push(context, BottomNavScreen());
+                  AppRoutes.pushAndRemoveUntil(context, BottomNavScreen());
                 },
                 image: MyImages.backArrow,
                 height: 40,
@@ -157,13 +160,12 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                                                   context
                                                       .read<BottomBloc>()
                                                       .add(SetScreenEvent(true,
-                                                          screenName:
-                                                              AddJobPositionScreen(
-                                                                  jobPosModel:
-                                                                      widget
-                                                                          .jobPosModel,
-                                                                  isUpdate:
-                                                                      true)));
+                                                          screenName: AddJobPositionScreen(
+                                                              jobPosModel: widget
+                                                                  .jobPosModel,
+                                                              companyModel: widget
+                                                                  .companyModel,
+                                                              isUpdate: true)));
 
                                                   AppRoutes.push(context,
                                                       BottomNavScreen());

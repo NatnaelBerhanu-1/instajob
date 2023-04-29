@@ -52,10 +52,11 @@ class GlobalCubit extends Cubit<InitialState> {
 
   /// RangeSlider
 
-  RangeValues range = const RangeValues(10, 30);
+  RangeValues rangeValue = const RangeValues(10, 30);
   rangeValues(RangeValues values) {
-    range = values;
-    emit(RangeState(range));
+    rangeValue = values;
+    // print("@@@@@@@@@@ |||||||  $rangeValue");
+    emit(RangeValueState(rangeValue));
   }
 
   /// SKILLS
@@ -65,6 +66,15 @@ class GlobalCubit extends Cubit<InitialState> {
     emit(AddTopSkillsState(skillVal));
   }
 
-  /// CALENDER
-  chooseDate() {}
+  removeSkill(index) {
+    skills.removeAt(index);
+    emit(InitialState());
+  }
+
+  /// SLIDER
+  double range = 10;
+  rangeVal(double val) {
+    range = val;
+    emit(RangeState(range));
+  }
 }

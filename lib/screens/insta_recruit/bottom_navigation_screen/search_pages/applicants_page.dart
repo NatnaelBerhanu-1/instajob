@@ -24,6 +24,8 @@ class Applicants extends StatelessWidget {
           imageColor: MyColors.blue,
           centerTitle: false,
           leadingImage: MyImages.backArrowBorder,
+          height: 25,
+          width: 25,
           title: "Applicants",
           onTap: () {
             // context

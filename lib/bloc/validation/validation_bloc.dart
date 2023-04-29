@@ -3,7 +3,7 @@ import 'package:insta_job/bloc/validation/validation_state.dart';
 
 class ValidationCubit extends Cubit<InitialValidation> {
   ValidationCubit() : super(InitialValidation());
-  bool valid = false;
+  bool emailVAL = false;
   bool pass = true;
   bool cPass = true;
   bool checkBox = false;
@@ -23,69 +23,92 @@ class ValidationCubit extends Cubit<InitialValidation> {
     emit(VisiblePassState(checkBox));
   }
 
-  String? emailValidation(String s) {
-    RegExp pattern = RegExp(r'^.+@[a-zA-Z]+\.[a-zA-Z]+(\.?[a-zA-Z]+)$');
-    if (s.isEmpty) {
-      valid = false;
-      emit(RequiredValidation("Email cannot be empty"));
-      return "";
-    } else if (!pattern.hasMatch(s)) {
-      valid = false;
-      emit(InvalidEmailState("Enter valid email"));
-      return "";
-    } else {
-      // valid = true;
-      // emit(ValidState("valid"));
-      // return s;
-    }
-
-    return null;
+  emailCheck(val) {
+    emailVAL = val;
+    emit(InvalidEmailState(emailVAL));
   }
+}
 
-  String? requiredValidation(String s, value) {
-    if (s.isEmpty || s == "") {
-      print(">>>>>>>>>>  $s");
-      emit(RequiredValidation("$value is required"));
-      return "";
-    } else {
-      print(">>>>>>>>>> 1111 $s");
-    }
+String? emailValidation(String s) {
+  RegExp pattern = RegExp(r'^.+@[a-zA-Z]+\.[a-zA-Z]+(\.?[a-zA-Z]+)$');
+  if (s.isEmpty) {
+    print("!!!!!!!!");
+    // showToast("Email cannot be empty");
+    // emit(RequiredValidation("Email cannot be empty"));
+    return "Email cannot be empty";
+  }
+  if (!pattern.hasMatch(s)) {
+    // showToast("Enter valid email");
+    // emit(InvalidEmailState("Enter valid email"));
+    return "Enter valid email";
+  } else {
+    // valid = true;
     // emit(ValidState("valid"));
-    return null;
-  }
-/*
-  String? phoneValidation(String s) {
-    if (s.isEmpty || s == "") {
-      emit(RequiredValidation("Phone number is required"));
-      return "";
-    } else if (s.length < 10) {
-      emit(InvalidPhoneState("Invalid Phone"));
-      return "";
-    }
-    return null;
-  }*/
-
-  String? passwordValidation(String s) {
-    if (s.isEmpty || s == "") {
-      emit(RequiredValidation("Password cannot be empty"));
-      return "";
-    } else if (s.length < 6) {
-      emit(InvalidPasswordState("Password must not be less then 6 digits"));
-      return "";
-    }
-    // emit(ValidState("valid"));
-    return null;
+    // return s;
   }
 
-  String? confirmPassValidation(String s, String passValue) {
-    if (s.isEmpty || s == "") {
-      emit(RequiredValidation("Confirm Password cannot be empty"));
-      return "";
-    } else if (s != passValue) {
-      emit(ConfirmPasswordState("Password doesn't match"));
-      return "";
-    }
-    // emit(ValidState("valid"));
-    return null;
+  return null;
+}
+
+String? requiredValidation(String s, value) {
+  if (s.isEmpty || s == "") {
+    print(">>>>>>>>>>  $s");
+    // showToast("$value is required");
+
+    // emit(RequiredValidation("$value is required"));
+    return "$value is required";
+  } else {
+    print(">>>>>>>>>> 1111 $s");
   }
+  // emit(ValidState("valid"));
+  return null;
+}
+
+String? phoneValidation(String s) {
+  if (s.isEmpty || s == "") {
+    return "Phone number cannot be empty";
+  } else {
+    return "Enter valid phone number";
+  }
+
+  // return null;
+}
+
+String? passwordValidation(String s) {
+  if (s.isEmpty || s == "") {
+    // showToast("Password cannot be empty");
+    // emit(RequiredValidation("Password cannot be empty"));
+    return "Password cannot be empty";
+  } else if (s.length < 6) {
+    // showToast("Password must not be less then 6 digits");
+    // emit(InvalidPasswordState("Password must not be less then 6 digits"));
+    return "Password must not be less then 6 digits";
+  }
+  // emit(ValidState("valid"));
+  return null;
+}
+
+String? confirmPassValidation(String s, String passValue) {
+  if (s.isEmpty || s == "") {
+    // showToast("Confirm Password cannot be empty");
+    // emit(RequiredValidation("Confirm Password cannot be empty"));
+    return "Confirm Password cannot be empty";
+  } else if (s != passValue) {
+    // showToast("Password doesn't match");
+    // emit(ConfirmPasswordState("Password doesn't match"));
+    return "Password doesn't match";
+  }
+  // emit(ValidState("valid"));
+  return null;
+}
+
+String? hasValidUrl(String s, val) {
+  String pattern = r'(?:https?://)?\S+\.\S+\.\S+';
+  RegExp regExp = RegExp(pattern);
+  if (s.isEmpty) {
+    return '$val is required';
+  } else if (!regExp.hasMatch(s)) {
+    return 'Please enter valid url';
+  }
+  return null;
 }

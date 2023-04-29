@@ -7,14 +7,15 @@ import 'package:insta_job/bloc/auth_bloc/auth_cubit.dart';
 import 'package:insta_job/bloc/auth_bloc/auth_state.dart';
 import 'package:insta_job/bloc/validation/validation_state.dart';
 import 'package:insta_job/globals.dart';
+import 'package:insta_job/screens/auth_screen/change_account_info.dart';
 import 'package:insta_job/screens/auth_screen/login_screen.dart';
+import 'package:insta_job/screens/insta_recruit/became_an_employeer.dart';
 import 'package:insta_job/screens/insta_recruit/membership_screen.dart';
 import 'package:insta_job/screens/insta_recruit/user_type_screen.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/widgets/custom_button/custom_all_small_button.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
 
-import '../../bloc/auth_bloc/social_auth/social_auth.dart';
 import '../../bloc/validation/validation_bloc.dart';
 import '../../utils/my_colors.dart';
 import '../../utils/my_images.dart';
@@ -79,21 +80,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 child: SingleChildScrollView(
                   child: Padding(
                     padding: const EdgeInsets.all(15),
-                    child: BlocConsumer<ValidationCubit, InitialValidation>(
-                        listener: (context, state) {
-                      if (state is InvalidEmailState) {
-                        showToast(state.email);
-                      }
-                      if (state is InvalidPasswordState) {
-                        showToast(state.pass);
-                      }
-                      if (state is ConfirmPasswordState) {
-                        showToast(state.pass);
-                      }
-                      if (state is RequiredValidation) {
-                        showToast(state.require);
-                      }
-                    }, builder: (context, state) {
+                    child: BlocBuilder<ValidationCubit, InitialValidation>(
+                        builder: (context, state) {
                       var validationBloc = context.read<ValidationCubit>();
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -126,9 +114,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               width: 9,
                             ),
                             validator: (val) =>
-                                validationBloc.requiredValidation(val!, "Name"),
-                            // suffixIcon: ImageButton(image: MyImages.verified),
+                                requiredValidation(val!, "Name"),
+                            // suffixIcon: formKey.currentState!.validate()
+                            //     ? SizedBox()
+                            //     : verifyImage,
                             hint: "Alexies Martan",
+                            onChanged: (val) {
+                              if (!formKey.currentState!.validate()) {
+                                requiredValidation(val!, "Name");
+                              }
+                            },
                           ),
                           SizedBox(height: 15),
                           IconTextField(
@@ -139,10 +134,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               height: 9,
                               width: 9,
                             ),
-                            validator: (val) =>
-                                validationBloc.emailValidation(val!),
-                            // suffixIcon: ImageButton(image: MyImages.verified),
                             hint: "alexis@mygmail.com",
+                            // suffixIcon: formKey.currentState!.validate()
+                            //     ? SizedBox()
+                            //     : verifyImage,
+                            validator: (val) => emailValidation(val!),
+                            onChanged: (val) {
+                              if (!formKey.currentState!.validate()) {
+                                requiredValidation(val!, "Name");
+                              }
+                            },
                           ),
                           SizedBox(height: 15),
                           IconTextField(
@@ -163,11 +164,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     : Icons.visibility,
                               ),
                             ),
-                            validator: (val) =>
-                                validationBloc.passwordValidation(val!),
+                            validator: (val) => passwordValidation(val!),
                             obscureText: validationBloc.pass,
                             hint: "Password",
                             maxLine: 1,
+                            onChanged: (val) {
+                              if (!formKey.currentState!.validate()) {
+                                passwordValidation(val!);
+                              }
+                            },
                           ),
                           SizedBox(height: 15),
                           IconTextField(
@@ -191,8 +196,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             obscureText: validationBloc.cPass,
                             hint: "Confirm password",
                             maxLine: 1,
-                            validator: (val) => validationBloc
-                                .confirmPassValidation(val!, password.text),
+                            validator: (val) =>
+                                confirmPassValidation(val!, password.text),
+                            onChanged: (val) {
+                              if (!formKey.currentState!.validate()) {
+                                confirmPassValidation(val!, password.text);
+                              }
+                            },
                           ),
                           SizedBox(height: 20),
                           CustomCheckbox(
@@ -243,6 +253,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               showToast(state.error);
                             }
                           }, builder: (context, snapshot) {
+                            var authData = context.read<AuthCubit>();
                             return CustomIconButton(
                               image: MyImages.arrowWhite,
                               title: "Register",
@@ -254,18 +265,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               onclick: () {
                                 if (formKey.currentState!.validate()) {
                                   if (validationBloc.checkBox) {
+                                    authData.userName = name.text;
+                                    authData.email = email.text;
+                                    authData.password = password.text;
+                                    setState(() {});
                                     if (userType == "user") {
-                                      SocialAuth.emailAndPass(context,
-                                          name: name.text,
-                                          email: email.text,
-                                          password: password.text,
-                                          isUser: true);
+                                      AppRoutes.push(
+                                          context, ChangeAccInfoScreen());
                                     } else {
-                                      SocialAuth.emailAndPass(context,
-                                          name: name.text,
-                                          email: email.text,
-                                          password: password.text);
+                                      AppRoutes.push(
+                                          context, BecameAnEmployer());
                                     }
+                                    authData.getData();
                                     // context
                                     //     .read<CompanyBloc>()
                                     //     .add(LoadCompanyListEvent());

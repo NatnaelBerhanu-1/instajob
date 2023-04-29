@@ -48,6 +48,6 @@ class PickImageCubit extends Cubit<InitialImage> {
 
   clearImgUrl() {
     imgUrl = "";
-    emit(ImageErrorState(""));
+    emit(InitialImage());
   }
 }

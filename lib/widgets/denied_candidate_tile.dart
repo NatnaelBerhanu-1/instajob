@@ -30,7 +30,7 @@ class DeniedCandidateTile extends StatelessWidget {
             decoration: BoxDecoration(
                 color: MyColors.white,
                 borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: MyColors.grey.withOpacity(.30)),
+                border: Border.all(color: MyColors.lightgrey),
                 boxShadow: [
                   BoxShadow(
                       color: Colors.grey.withOpacity(0.10),
@@ -131,7 +131,7 @@ Widget buildDeniedCandidateTile() {
       itemCount: 7,
       itemBuilder: (c, i) {
         return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 23.0, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
           child: DeniedCandidateTile(),
         );
       });

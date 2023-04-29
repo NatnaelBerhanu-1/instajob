@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:insta_job/globals.dart';
 import 'package:insta_job/model/company_model.dart';
 import 'package:insta_job/model/job_position_model.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/job_opening/job_position_screen.dart';
@@ -15,11 +16,9 @@ import '../../utils/my_colors.dart';
 import '../custom_button/custom_img_button.dart';
 
 class JobOpeningTile extends StatelessWidget {
-  final bool? isFav;
   final JobPosModel jobPosModel;
   final CompanyModel? companyModel;
-  const JobOpeningTile(
-      {Key? key, this.isFav, required this.jobPosModel, this.companyModel})
+  const JobOpeningTile({Key? key, required this.jobPosModel, this.companyModel})
       : super(key: key);
 
   @override
@@ -28,7 +27,9 @@ class JobOpeningTile extends StatelessWidget {
       padding: const EdgeInsets.only(top: 15),
       child: GestureDetector(
         onTap: () {
-          context.read<JobPositionBloc>().add(LoadJobPosListEvent());
+          context
+              .read<JobPositionBloc>()
+              .add(LoadJobPosListEvent(companyId: companyModel!.id.toString()));
           print(
               'JOBPOSITION ID ----------------- ********        *************         ${jobPosModel.id}');
           AppRoutes.push(
@@ -68,7 +69,7 @@ class JobOpeningTile extends StatelessWidget {
                     fontWeight: FontWeight.w400,
                   ),
                   Spacer(),
-                  isFav == true
+                  Global.userModel?.type == "user"
                       ? Padding(
                           padding: const EdgeInsets.only(right: 10.0),
                           child: ImageButton(

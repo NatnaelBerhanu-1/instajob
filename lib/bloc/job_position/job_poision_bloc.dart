@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/job_position/job_pos_event.dart';
 import 'package:insta_job/bloc/job_position/job_pos_state.dart';
+import 'package:insta_job/globals.dart';
 import 'package:insta_job/model/job_position_model.dart';
 import 'package:insta_job/network/api_response.dart';
 import 'package:insta_job/repository/job_position_repo.dart';
@@ -26,16 +27,19 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
   JobPositionBloc(this.jobPositionRepository) : super(JobPosInitialState()) {
     on<LoadJobPosListEvent>((event, emit) async {
       emit(JobPosLoading());
-      List<JobPosModel> jobPosList = await _getJobPositionList(emit);
+      List<JobPosModel> jobPosList = await _getJobPositionList(emit,
+          id: Global.userModel!.type == "user" ? "" : event.companyId);
       emit(JobPosLoaded(jobPosList));
       if (jobPosList.isEmpty) {
         emit(const JobErrorState("Data not found"));
       }
     });
+
     on<AddJobPositionEvent>((event, emit) async {
       if (event.isUpdate != true) {
         emit(JobPosLoading());
         ApiResponse response = await jobPositionRepository.addJobPosition(
+          companyId: event.companyId,
           jobDetails: event.jobDetails,
           designation: event.designation,
           requirements: event.requirements,
@@ -57,7 +61,7 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
           emit(const JobErrorState("Something went wrong"));
         }
         if (response.response.statusCode == 200) {
-          await _getJobPositionList(emit);
+          await _getJobPositionList(emit, id: event.companyId);
         } else if (response.response.statusCode == 400) {
           emit(const JobErrorState("Please fill all details"));
         }
@@ -65,6 +69,7 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
         ApiResponse response = await jobPositionRepository.updateJobPosition(
           id: event.id,
           isUpdate: true,
+          designation: event.designation,
           jobDetails: event.jobDetails,
           requirements: event.requirements,
           responsibility: event.responsibility,
@@ -81,7 +86,17 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
           shortlistedReviewSubject: event.shortlistedReviewSubject,
           shortlistedReviewContent: event.shortlistedReviewContent,
         );
+        if (response.response.statusCode == 500) {
+          emit(const JobErrorState("Something went wrong"));
+        }
+        if (response.response.statusCode == 200) {
+          await _getJobPositionList(emit, id: event.companyId);
+        } else if (response.response.statusCode == 400) {
+          emit(const JobErrorState("Please fill all details"));
+        }
       }
     });
+
+    on<SaveJobPositionEvent>((event, emit) async {});
   }
 }

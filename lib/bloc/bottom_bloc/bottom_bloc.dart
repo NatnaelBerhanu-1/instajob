@@ -28,6 +28,13 @@ class BottomBloc extends Bloc<BottomEvent, BottomInitialState> {
       emit(BottomNavIndexState(event.index));
     });
 
+    /// Reset Index
+    on<ResetIndex>((event, emit) {
+      currentIndex = 0;
+      selectScreen = false;
+      emit(BottomNavIndexState(0));
+    });
+
     /// set Screen
 
     on<SetScreenEvent>((event, emit) {
@@ -113,6 +120,8 @@ class GetIndexEvent extends BottomEvent {
 
   GetIndexEvent(this.index);
 }
+
+class ResetIndex extends BottomEvent {}
 
 class SetScreenEvent extends BottomEvent {
   final value;

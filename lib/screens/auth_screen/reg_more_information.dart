@@ -40,8 +40,8 @@ class RegMoreInfoScreen extends StatelessWidget {
               IconTextField(
                 readOnly: true,
                 prefixIcon: ImageButton(image: MyImages.cal),
-                suffixIcon: Icon(Icons.arrow_drop_down,
-                    size: 25, color: MyColors.black),
+                suffixIcon: Icon(Icons.arrow_drop_down_sharp,
+                    color: MyColors.black, size: 25),
                 hint: "9/09/1987",
               ),
               SizedBox(height: 30),

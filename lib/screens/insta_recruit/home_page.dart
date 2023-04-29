@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/network/end_points.dart';
+import 'package:insta_job/screens/auth_screen/change_account_info.dart';
 import 'package:insta_job/screens/insta_job_user/SliderScreen/Slider_screen.dart';
 import 'package:insta_job/screens/insta_job_user/bottom_nav_screen/user_account/save_jobs/save_jobs_screen.dart';
 import 'package:insta_job/screens/insta_job_user/career_cluster_screen.dart';
@@ -51,12 +52,37 @@ class _HomePageState extends State<HomePage> {
                     Expanded(
                       child: Column(
                         children: [
-                          Image.asset(
-                            MyImages.user_4x,
-                            fit: BoxFit.cover,
-                            color: MyColors.user,
-                            // height: 100,
-                            width: 90,
+                          Stack(
+                            children: [
+                              Image.asset(
+                                MyImages.user_4x,
+                                fit: BoxFit.cover,
+                                color: MyColors.user,
+                                // height: 100,
+                                width: 90,
+                              ),
+                              Positioned(
+                                bottom: 0,
+                                right: 0,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    AppRoutes.push(context,
+                                        ChangeAccInfoScreen(isUpdate: true));
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.all(4),
+                                    decoration: BoxDecoration(
+                                        color: MyColors.blue,
+                                        shape: BoxShape.circle),
+                                    child: Image.asset(MyImages.edit,
+                                        fit: BoxFit.cover,
+                                        color: MyColors.white,
+                                        // height: 100,
+                                        width: 22),
+                                  ),
+                                ),
+                              )
+                            ],
                           ),
                           SizedBox(height: 19),
                           CommonText(
@@ -120,7 +146,7 @@ class _HomePageState extends State<HomePage> {
                                 index: 0,
                                 selectedIndex: selectedIndex,
                                 width: double.infinity,
-                                img: MyImages.resume1,
+                                img: MyImages.automateMsg,
                                 title: "Edit Resume/Bio",
                               ),
                             ),

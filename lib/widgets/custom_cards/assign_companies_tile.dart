@@ -39,10 +39,11 @@ class AssignCompaniesTile extends StatelessWidget {
           ]),
       child: ListTile(
         onTap: () {
-          context.read<JobPositionBloc>().add(LoadJobPosListEvent());
+          context
+              .read<JobPositionBloc>()
+              .add(LoadJobPosListEvent(companyId: companyModel!.id.toString()));
           context.read<BottomBloc>().add(SetScreenEvent(true,
               screenName: JobOpeningScreen(companyModel: companyModel)));
-          print('JOB OPNINIG SCREEN ***********          ');
         },
         shape: RoundedRectangleBorder(
             side: BorderSide(color: MyColors.grey),
