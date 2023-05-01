@@ -255,11 +255,11 @@ class _SearchJobsScreenState extends State<SearchJobsScreen> {
                                                         vertical: 7,
                                                         horizontal: 5),
                                                 child: AssignCompaniesTile(
-                                                  companyModel: data,
-                                                  // leadingImage:
-                                                  //     MyImages.businessAndTrade,
-                                                  // title: "Ford",
-                                                ),
+                                                    companyModel: data
+                                                    // leadingImage:
+                                                    //     MyImages.businessAndTrade,
+                                                    // title: "Ford",
+                                                    ),
                                               );
                                             });
                                       }

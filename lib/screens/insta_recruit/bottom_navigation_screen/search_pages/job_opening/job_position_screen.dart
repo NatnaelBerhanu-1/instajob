@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
+import 'package:insta_job/bloc/job_position/job_pos_state.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/model/company_model.dart';
 import 'package:insta_job/model/job_position_model.dart';
@@ -197,26 +199,31 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                   ],
                 ),
               )),
-          Positioned(
-            top: MediaQuery.of(context).size.height * 0.334,
-            right: 20,
-            child: Global.userModel?.type == "user"
-                ? CustomCommonCard(
-                    onTap: () {
-                      isSaved = !isSaved;
-                      setState(() {});
-                    },
-                    bgColor: MyColors.blue,
-                    borderRadius: BorderRadius.circular(10),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Icon(
-                          isSaved ? Icons.favorite : Icons.favorite_border,
-                          color: MyColors.white),
-                    ),
-                  )
-                : SizedBox(),
-          ),
+          BlocBuilder<JobPositionBloc, JobPosState>(builder: (context, state) {
+            return Positioned(
+              top: MediaQuery.of(context).size.height * 0.334,
+              right: 20,
+              child: Global.userModel?.type == "user"
+                  ? CustomCommonCard(
+                      onTap: () {
+                        isSaved = !isSaved;
+                        setState(() {});
+                        // context.read<JobPositionBloc>().add(
+                        //     SaveJobPositionEvent(
+                        //         jobId: widget.jobPosModel!.id.toString()));
+                      },
+                      bgColor: MyColors.blue,
+                      borderRadius: BorderRadius.circular(10),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Icon(
+                            isSaved ? Icons.favorite : Icons.favorite_border,
+                            color: MyColors.white),
+                      ),
+                    )
+                  : SizedBox(),
+            );
+          }),
         ],
       ),
     ));
