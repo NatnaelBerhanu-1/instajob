@@ -67,7 +67,7 @@ class _SettingScreenState extends State<SettingScreen> {
                   //   AppRoutes.push(context,
                   //       BecameAnEmployer(isUpdate: true));
                   // }
-                  AppRoutes.push(context, ChangeAccInfoScreen(isUpdate: true));
+                  AppRoutes.push(context, ChangeAccInfoScreen());
                 },
                 leadingImage: MyImages.user,
                 title: "Change Account Information",

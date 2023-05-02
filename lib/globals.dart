@@ -62,7 +62,7 @@ showToast(message, {color, textColor, bool isError = false}) {
   EasyLoading.instance
     ..toastPosition = EasyLoadingToastPosition.top
     ..textColor = textColor ?? MyColors.white
-    ..backgroundColor = isError ? MyColors.lightRed : color;
+    ..backgroundColor = isError ? MyColors.lightRed : MyColors.black;
   EasyLoading.showToast(message);
 }
 

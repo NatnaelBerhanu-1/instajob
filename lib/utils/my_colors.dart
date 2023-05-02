@@ -19,6 +19,7 @@ class MyColors {
   static Color tabClr = const Color(0xffA0A0A0);
   static Color dividerClr = const Color(0xffE9F2FA);
   static Color lightGreen = const Color(0xffCAFFC8);
+  static Color cyan = const Color(0xff0FBCFD);
 
   ///userPage clr
   static Color user = const Color(0xffECF6FF);

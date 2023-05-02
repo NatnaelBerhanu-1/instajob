@@ -21,8 +21,8 @@ import '../../widgets/custom_cards/assign_companies_tile.dart';
 import '../../widgets/custom_cards/custom_common_card.dart';
 
 class ChangeAccInfoScreen extends StatefulWidget {
-  final bool isUpdate;
-  const ChangeAccInfoScreen({super.key, this.isUpdate = false});
+  // final bool isUpdate;
+  const ChangeAccInfoScreen({super.key});
 
   @override
   State<ChangeAccInfoScreen> createState() => _ChangeAccInfoScreenState();
@@ -34,7 +34,6 @@ class _ChangeAccInfoScreenState extends State<ChangeAccInfoScreen> {
   TextEditingController name = TextEditingController();
   TextEditingController phone = TextEditingController();
 
-  bool? isValid;
   final formKey = GlobalKey<FormState>();
 
   InputBorder border = OutlineInputBorder(
@@ -48,14 +47,12 @@ class _ChangeAccInfoScreenState extends State<ChangeAccInfoScreen> {
       name.text = model.name ?? "";
       selectedDate = model.date ?? "";
       phone.text = model.phoneNumber ?? "";
-      isValid = model.phoneNumber != null ? true : false;
       userImage.imgUrl = model.uploadPhoto ?? "";
     } else {
       print("########################## ${model.companyName}");
       name.text = model.companyName ?? "";
       email.text = model.email ?? "";
       phone.text = model.phoneNumber ?? "";
-      isValid = model.phoneNumber != null ? true : false;
       userImage.imgUrl = model.uploadPhoto ?? "";
     }
     setState(() {});
@@ -63,9 +60,8 @@ class _ChangeAccInfoScreenState extends State<ChangeAccInfoScreen> {
 
   @override
   void initState() {
-    if (widget.isUpdate) {
-      update();
-    }
+    update();
+
     super.initState();
   }
 
@@ -190,7 +186,7 @@ class _ChangeAccInfoScreenState extends State<ChangeAccInfoScreen> {
                               height: 10,
                               width: 10,
                             ),
-                            readOnly: widget.isUpdate ? true : false,
+                            readOnly: true,
                             validator: (val) => emailValidation(val!),
                             onChanged: (val) {
                               if (!formKey.currentState!.validate()) {
@@ -232,23 +228,25 @@ class _ChangeAccInfoScreenState extends State<ChangeAccInfoScreen> {
                           Global.userModel?.type == "user"
                               ? SizedBox()
                               : SizedBox(height: 15),
-                          widget.isUpdate
-                              ? IconTextField(
-                                  controller: phone,
-                                  prefixIcon: ImageButton(
-                                    image: MyImages.phone,
-                                    padding: EdgeInsets.all(16),
-                                    height: 10,
-                                    width: 10,
-                                  ),
-                                  readOnly: true,
-                                  hintColor: MyColors.black,
-                                  hint: Global.userModel?.phoneNumber,
-                                )
-                              : CustomPhonePickerTextField(
-                                  controller: phone,
-                                  validator: (val) {},
-                                ),
+                          // widget.isUpdate
+                          //     ?
+                          IconTextField(
+                            controller: phone,
+                            prefixIcon: ImageButton(
+                              image: MyImages.phone,
+                              padding: EdgeInsets.all(16),
+                              height: 10,
+                              width: 10,
+                            ),
+                            readOnly: true,
+                            hintColor: MyColors.black,
+                            hint: Global.userModel?.phoneNumber,
+                          ),
+                          //     :
+                          // CustomPhonePickerTextField(
+                          //         controller: phone,
+                          //         validator: (val) {},
+                          //       ),
                           SizedBox(height: 15),
                           Text(
                             "Upload Photo",
@@ -259,7 +257,7 @@ class _ChangeAccInfoScreenState extends State<ChangeAccInfoScreen> {
                           ),
                           SizedBox(height: 10),
                           uploadPhotoCard(context,
-                              isUpdate: widget.isUpdate ? true : false,
+                              isUpdate: true,
                               url: context.read<PickImageCubit>().imgUrl),
                           SizedBox(height: 30),
                           BlocBuilder<AuthCubit, AuthInitialState>(
@@ -280,32 +278,32 @@ class _ChangeAccInfoScreenState extends State<ChangeAccInfoScreen> {
                                       selectedDate.isEmpty) {
                                     showToast("Please fill all details");
                                   } else {
-                                    if (isValid == true) {
-                                      if (widget.isUpdate) {
-                                        if (Global.userModel?.type == "user") {
-                                          authData.updateUserData(
-                                              profilePhoto: image.imgUrl,
-                                              dOB: selectedDate,
-                                              name: name.text,
-                                              phoneNumber: phone.text);
-                                        } else {
-                                          authData.updateEmpData(
-                                              profilePhoto: image.imgUrl,
-                                              name: name.text,
-                                              phoneNumber: phone.text);
-                                        }
-                                      } else {
-                                        authData.dob = selectedDate;
-                                        authData.phoneNumber = phone.text;
-                                        authData.profilePic = image.imgUrl;
-                                        setState(() {});
-                                        // authData.getData();
-                                        // AppRoutes.push(
-                                        //     context, VerifyCodeScreen());
-                                      }
+                                    // if (isValid == true) {
+                                    if (Global.userModel?.type == "user") {
+                                      authData.updateUserData(
+                                          profilePhoto: image.imgUrl,
+                                          dOB: selectedDate,
+                                          name: name.text,
+                                          phoneNumber: phone.text);
                                     } else {
-                                      showToast("Please enter valid number");
+                                      authData.updateEmpData(
+                                          profilePhoto: image.imgUrl,
+                                          name: name.text);
                                     }
+                                    // if (widget.isUpdate) {
+                                    //
+                                    // } else {
+                                    //   authData.dob = selectedDate;
+                                    //   authData.phoneNumber = phone.text;
+                                    //   authData.profilePic = image.imgUrl;
+                                    //   setState(() {});
+                                    //   // authData.getData();
+                                    //   // AppRoutes.push(
+                                    //   //     context, VerifyCodeScreen());
+                                    // }
+                                    // } else {
+                                    //   showToast("Please enter valid number");
+                                    // }
                                   }
                                 } else {
                                   print("333333333333333");

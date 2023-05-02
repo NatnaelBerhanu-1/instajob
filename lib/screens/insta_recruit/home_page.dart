@@ -66,8 +66,8 @@ class _HomePageState extends State<HomePage> {
                                 right: 0,
                                 child: GestureDetector(
                                   onTap: () {
-                                    AppRoutes.push(context,
-                                        ChangeAccInfoScreen(isUpdate: true));
+                                    AppRoutes.push(
+                                        context, ChangeAccInfoScreen());
                                   },
                                   child: Container(
                                     padding: EdgeInsets.all(4),
@@ -86,8 +86,9 @@ class _HomePageState extends State<HomePage> {
                           ),
                           SizedBox(height: 19),
                           CommonText(
-                            text:
-                                "${Global.userModel?.name?[0].toUpperCase()}${Global.userModel?.name?.substring(1)}",
+                            text: Global.userModel?.type == "user"
+                                ? "${Global.userModel?.name?[0].toUpperCase()}${Global.userModel?.name?.substring(1)}"
+                                : "${Global.userModel?.companyName?[0].toUpperCase()}${Global.userModel?.companyName?.substring(1)}",
                             fontSize: 21,
                             fontWeight: FontWeight.w500,
                             fontColor: MyColors.blue,

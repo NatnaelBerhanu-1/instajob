@@ -10,6 +10,13 @@ class GlobalCubit extends Cubit<InitialState> {
   bool pass = false;
   bool cPass = false;
   bool checkBox = false;
+  int selectedTab = 0;
+
+  changeTabValue(val) {
+    selectedTab = val;
+    print("SELECTED TAB $selectedTab");
+    emit(TabState(selectedTab));
+  }
 
   visiblePass() {
     pass = !pass;

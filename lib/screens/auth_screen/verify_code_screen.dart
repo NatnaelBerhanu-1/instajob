@@ -1,6 +1,9 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:insta_job/bloc/auth_bloc/auth_cubit.dart';
+import 'package:insta_job/bloc/auth_bloc/auth_state.dart';
 import 'package:insta_job/bloc/auth_bloc/social_auth/social_auth.dart';
 import 'package:insta_job/screens/insta_recruit/user_type_screen.dart';
 import 'package:insta_job/utils/my_colors.dart';
@@ -122,22 +125,34 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
                 ),
                 SizedBox(height: 70),
                 // Spacer(),
-                CustomIconButton(
-                  image: MyImages.arrowWhite,
-                  title: "Enter Code",
-                  backgroundColor: MyColors.blue,
-                  fontColor: MyColors.white,
-                  borderColor: MyColors.blue,
-                  iconColor: MyColors.white,
-                  onclick: () {
-                    if (userType == "user") {
-                      SocialAuth.emailAndPass(context, isUser: true);
-                    } else {
-                      SocialAuth.emailAndPass(context);
-                    }
-                    // AppRoutes.push(context, SetPassword());
-                  },
-                ),
+                BlocBuilder<AuthCubit, AuthInitialState>(
+                    builder: (context, state) {
+                  var authData = context.read<AuthCubit>();
+                  return CustomIconButton(
+                    image: MyImages.arrowWhite,
+                    title: "Enter Code",
+                    backgroundColor: MyColors.blue,
+                    fontColor: MyColors.white,
+                    borderColor: MyColors.blue,
+                    iconColor: MyColors.white,
+                    onclick: () {
+                      if (userType == "user") {
+                        if (authData.isSocialAuth) {
+                          authData.registerEmp(isUser: true);
+                        } else {
+                          SocialAuth.emailAndPass(context, isUser: true);
+                        }
+                      } else {
+                        if (authData.isSocialAuth) {
+                          authData.registerEmp();
+                        } else {
+                          SocialAuth.emailAndPass(context);
+                        }
+                      }
+                      // AppRoutes.push(context, SetPassword());
+                    },
+                  );
+                }),
                 // Spacer(),
                 // Spacer(),
               ],

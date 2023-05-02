@@ -13,6 +13,8 @@ import 'package:insta_job/model/user_model.dart';
 import 'package:insta_job/network/api_response.dart';
 import 'package:insta_job/repository/auth_repository.dart';
 import 'package:insta_job/screens/auth_screen/login_screen.dart';
+import 'package:insta_job/screens/auth_screen/reg_more_information.dart';
+import 'package:insta_job/screens/insta_recruit/became_an_employeer.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/bottom_navigation_screen.dart';
 import 'package:insta_job/screens/insta_recruit/membership_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -37,6 +39,7 @@ class AuthCubit extends Cubit<AuthInitialState> {
   String profilePic = "";
   String cv = "";
   String dob = "";
+  bool isGUser = false;
 
   getData() {
     print("userName: $userName");
@@ -108,7 +111,6 @@ class AuthCubit extends Cubit<AuthInitialState> {
       print('user ----------        ${userModel.id}  ');
       emit(AuthState(userModel: userModel));
       companyBloc.add(LoadCompanyListEvent());
-
       navigationKey.currentState?.pushAndRemoveUntil(
           MaterialPageRoute(builder: (_) => const BottomNavScreen()),
           (route) => false);
@@ -141,8 +143,6 @@ class AuthCubit extends Cubit<AuthInitialState> {
       var userModel = UserModel.fromJson(response.response.data['data']);
       Global.userModel = userModel;
       emit(AuthState(userModel: userModel));
-      navigationKey.currentState?.pop();
-      navigationKey.currentState?.pop();
       user.add(UserEvent());
     }
     if (response.response.statusCode == 400) {
@@ -153,12 +153,12 @@ class AuthCubit extends Cubit<AuthInitialState> {
   /// EMPLOYEE UPDATE
   updateEmpData({
     String? name,
-    String? phoneNumber,
+    // String? phoneNumber,
     String? profilePhoto,
   }) async {
     emit(AuthLoadingState());
     ApiResponse response = await authRepository.updateEmp(
-      phoneNumber: phoneNumber,
+      // phoneNumber: phoneNumber,
       companyName: name,
       profilePhoto: profilePhoto,
     );
@@ -181,7 +181,7 @@ class AuthCubit extends Cubit<AuthInitialState> {
   }
 
   /// google auth
-  bool isGoogleSignIn = false;
+  bool isSocialAuth = false;
   googleAuth({
     bool isUser = false,
   }) async {
@@ -191,7 +191,7 @@ class AuthCubit extends Cubit<AuthInitialState> {
 
     try {
       loading(value: false);
-      isGoogleSignIn = true;
+      isSocialAuth = true;
       emit(AuthInitialState());
       final googleAuth = await googleUser?.authentication;
       final credential = GoogleAuthProvider.credential(
@@ -209,28 +209,39 @@ class AuthCubit extends Cubit<AuthInitialState> {
                 email: value.user!.email,
                 isUser: isUser,
                 password: value.user!.uid);
+            // navigationKey.currentState?.pushAndRemoveUntil(
+            //     MaterialPageRoute(builder: (_) => const BottomNavScreen()),
+            //     (route) => false);
           } else {
-            registerEmp(
-              // email: value.user!.email,
-              isUser: isUser,
-              // password: value.user!.uid,
-              // name: value.user!.displayName,
-            );
+            userName = value.user!.displayName!;
+            email = value.user!.email!;
+            password = value.user!.uid;
+            getData();
+            navigationKey.currentState?.pushAndRemoveUntil(
+                MaterialPageRoute(
+                    builder: (_) => isUser
+                        ? const RegMoreInfoScreen()
+                        : const BecameAnEmployer()),
+                (route) => false);
           }
+          // registerEmp(
+          // email: value.user!.email,
+          // isUser: isUser,
+          // password: value.user!.uid,
+          // name: value.user!.displayName,
+          // );
           // var userModel = UserModel.fromJson(response.response.data['data']);
           // Global.userModel = userModel;
           // await sharedPreferences.setString(
           //     "user", jsonEncode(response.response.data['data']));
           // emit(AuthState(userModel: userModel));
-          navigationKey.currentState?.pushAndRemoveUntil(
-              MaterialPageRoute(builder: (_) => const BottomNavScreen()),
-              (route) => false);
+
           print('USERRRR ------------------           ${value.user}');
         }
       });
     } catch (e) {
       loading(value: false);
-      emit(ErrorState(e.toString()));
+      emit(ErrorState("Something went wrong"));
     }
   }
 
@@ -274,9 +285,13 @@ class AuthCubit extends Cubit<AuthInitialState> {
     }
     if (response.response.statusCode == 200) {
       await sharedPreferences.remove("user");
-      await FirebaseAuth.instance.signOut();
-      if (isGoogleSignIn) {
+
+      if (isSocialAuth) {
         await googleSignIn.disconnect();
+        await googleSignIn.signOut();
+        await FirebaseAuth.instance.signOut();
+      } else {
+        await FirebaseAuth.instance.signOut();
       }
       user.add(ResetIndex());
       navigationKey.currentState?.pushAndRemoveUntil(

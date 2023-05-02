@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/bottom_navigation_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/applicants_page.dart';
 import 'package:insta_job/utils/app_routes.dart';
@@ -17,6 +18,7 @@ class DeniedCandidateTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var tab = context.watch<GlobalCubit>();
     return BlocBuilder<BottomBloc, BottomInitialState>(
         builder: (context, state) {
       return GestureDetector(
@@ -124,15 +126,4 @@ class DeniedCandidateTile extends StatelessWidget {
       );
     });
   }
-}
-
-Widget buildDeniedCandidateTile() {
-  return ListView.builder(
-      itemCount: 7,
-      itemBuilder: (c, i) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
-          child: DeniedCandidateTile(),
-        );
-      });
 }

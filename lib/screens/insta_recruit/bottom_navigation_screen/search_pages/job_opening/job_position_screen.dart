@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
+import 'package:insta_job/bloc/job_position/job_pos_event.dart';
 import 'package:insta_job/bloc/job_position/job_pos_state.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/model/company_model.dart';
@@ -181,8 +182,11 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                                                   context
                                                       .read<BottomBloc>()
                                                       .add(SetScreenEvent(true,
-                                                          screenName:
-                                                              ViewCandidates()));
+                                                          screenName: ViewCandidates(
+                                                              jobPosModel: widget
+                                                                  .jobPosModel,
+                                                              companyModel: widget
+                                                                  .companyModel)));
 
                                                   AppRoutes.push(context,
                                                       BottomNavScreen());
@@ -208,9 +212,9 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                       onTap: () {
                         isSaved = !isSaved;
                         setState(() {});
-                        // context.read<JobPositionBloc>().add(
-                        //     SaveJobPositionEvent(
-                        //         jobId: widget.jobPosModel!.id.toString()));
+                        context.read<JobPositionBloc>().add(
+                            SaveJobPositionEvent(
+                                jobId: widget.jobPosModel!.id.toString()));
                       },
                       bgColor: MyColors.blue,
                       borderRadius: BorderRadius.circular(10),

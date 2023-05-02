@@ -150,7 +150,9 @@ class _BecameAnEmployerState extends State<BecameAnEmployer> {
                                 hint: Global.userModel?.phoneNumber,
                               )
                             : CustomPhonePickerTextField(
-                                validator: (val) {},
+                                validator: (val) {
+                                  return null;
+                                },
                                 controller: phone,
                                 onInputValidated: (val) {
                                   isValid = val;
@@ -198,8 +200,9 @@ class _BecameAnEmployerState extends State<BecameAnEmployer> {
                             iconColor: MyColors.blue,
                             onclick: () {
                               if (formKey.currentState!.validate()) {
-                                if (phone.text.isEmpty) {
-                                  showToast("Please enter phone number");
+                                if (phone.text.isEmpty ||
+                                    image.imgUrl.isEmpty) {
+                                  showToast("Please fill all details");
                                 } else {
                                   if (isValid) {
                                     if (image.imgUrl.isNotEmpty) {

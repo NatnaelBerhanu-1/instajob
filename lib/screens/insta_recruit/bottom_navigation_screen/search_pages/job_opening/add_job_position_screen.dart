@@ -69,7 +69,7 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
       disqualifiedReviewContent.text = model.disqualifiedReviewContent!;
       shortlistedReviewSubject.text = model.shortlistedReviewSubject!;
       shortlistedReviewContent.text = model.shortlistedReviewContent!;
-      // value.skills = model.topskills ?? [];
+      value.skills = model.topskills ?? [];
       value.jobTypeValue = model.jobsType!;
       value.experienceLevelVal = model.experienceLevel!;
       uploadPhoto.imgUrl = model.uploadPhoto!;

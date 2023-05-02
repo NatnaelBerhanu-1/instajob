@@ -7,8 +7,8 @@ import 'package:insta_job/bloc/auth_bloc/auth_cubit.dart';
 import 'package:insta_job/bloc/auth_bloc/auth_state.dart';
 import 'package:insta_job/bloc/validation/validation_state.dart';
 import 'package:insta_job/globals.dart';
-import 'package:insta_job/screens/auth_screen/change_account_info.dart';
 import 'package:insta_job/screens/auth_screen/login_screen.dart';
+import 'package:insta_job/screens/auth_screen/reg_more_information.dart';
 import 'package:insta_job/screens/insta_recruit/became_an_employeer.dart';
 import 'package:insta_job/screens/insta_recruit/membership_screen.dart';
 import 'package:insta_job/screens/insta_recruit/user_type_screen.dart';
@@ -271,7 +271,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     setState(() {});
                                     if (userType == "user") {
                                       AppRoutes.push(
-                                          context, ChangeAccInfoScreen());
+                                          context, RegMoreInfoScreen());
                                     } else {
                                       AppRoutes.push(
                                           context, BecameAnEmployer());

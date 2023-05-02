@@ -77,7 +77,12 @@ class AssignCompaniesTile extends StatelessWidget {
 
 Widget uploadPhotoCard(BuildContext context,
     {bool isUpdate = false, String? url}) {
-  return BlocConsumer<PickImageCubit, InitialImage>(listener: (c, state) {
+  return BlocConsumer<PickImageCubit, InitialImage>(buildWhen: (c, state) {
+    if (state is PickImageState) {
+      return true;
+    }
+    return false;
+  }, listener: (c, state) {
     if (state is ImageErrorState) {
       showToast(state.imageError);
     }

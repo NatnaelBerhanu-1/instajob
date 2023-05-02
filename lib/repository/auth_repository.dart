@@ -122,13 +122,13 @@ class AuthRepository {
   /// UPDATE EMPLOYEE
   Future<ApiResponse> updateEmp({
     String? companyName,
-    String? phoneNumber,
+    // String? phoneNumber,
     String? profilePhoto,
   }) async {
     try {
       var map = {
         "id": Global.userModel?.id,
-        "companyname": companyName,
+        "company_name": companyName,
         "phone_number": Global.userModel?.phoneNumber,
         "email": "${Global.userModel?.email}",
         "upload_photo": profilePhoto

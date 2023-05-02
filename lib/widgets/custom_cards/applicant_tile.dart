@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:insta_job/utils/my_colors.dart';
-import 'package:insta_job/widgets/custom_button/custom_btn.dart';
 import 'package:insta_job/widgets/custom_divider.dart';
 
 class ApplicantTiles extends StatelessWidget {
@@ -41,7 +40,7 @@ class ApplicantTiles extends StatelessWidget {
                 );
               }),
         ),
-        Expanded(
+        /*Expanded(
           flex: 0,
           child: Padding(
             padding: const EdgeInsets.only(left: 15.0, right: 15, top: 10),
@@ -62,7 +61,7 @@ class ApplicantTiles extends StatelessWidget {
               ],
             ),
           ),
-        )
+        )*/
       ],
     );
   }

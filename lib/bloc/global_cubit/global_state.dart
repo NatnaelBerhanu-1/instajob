@@ -26,6 +26,12 @@ class JobTypeState extends InitialState {
   JobTypeState(this.val);
 }
 
+class TabState extends InitialState {
+  final int val;
+
+  TabState(this.val);
+}
+
 class ExperienceLevelState extends InitialState {
   final String val;
 

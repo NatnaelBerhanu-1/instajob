@@ -1,10 +1,14 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
+import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/bottom_navigation_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/job_opening/view_candidate.dart';
+import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_app_bar.dart';
+import 'package:insta_job/widgets/custom_button/custom_btn.dart';
 import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 import 'package:insta_job/widgets/custom_cards/applicant_tile.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
@@ -12,11 +16,18 @@ import 'package:provider/provider.dart';
 
 import '../../../../bloc/bottom_bloc/bottom_bloc.dart';
 
-class Applicants extends StatelessWidget {
+class Applicants extends StatefulWidget {
   const Applicants({Key? key}) : super(key: key);
 
   @override
+  State<Applicants> createState() => _ApplicantsState();
+}
+
+class _ApplicantsState extends State<Applicants> {
+  @override
   Widget build(BuildContext context) {
+    var tab = context.watch<GlobalCubit>();
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size(double.infinity, kToolbarHeight),
@@ -24,8 +35,8 @@ class Applicants extends StatelessWidget {
           imageColor: MyColors.blue,
           centerTitle: false,
           leadingImage: MyImages.backArrowBorder,
-          height: 25,
-          width: 25,
+          height: 30,
+          width: 30,
           title: "Applicants",
           onTap: () {
             // context
@@ -34,6 +45,7 @@ class Applicants extends StatelessWidget {
             context
                 .read<BottomBloc>()
                 .add(SetScreenEvent(true, screenName: ViewCandidates()));
+            AppRoutes.push(context, BottomNavScreen());
           },
         ),
       ),
@@ -236,7 +248,40 @@ class Applicants extends StatelessWidget {
                       ]))
                     ],
                   )),
-            )
+            ),
+            Expanded(
+              flex: 0,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 15.0, right: 15, top: 10),
+                child: Row(
+                  children: [
+                    Expanded(
+                        child: CustomButton(
+                      height: MediaQuery.of(context).size.height * 0.055,
+                      title: "Contact",
+                    )),
+                    tab.selectedTab == 1 ? SizedBox() : SizedBox(width: 15),
+                    tab.selectedTab == 1
+                        ? SizedBox()
+                        : Expanded(
+                            child: CustomButton(
+                            height: MediaQuery.of(context).size.height * 0.055,
+                            title: "Shortlisted",
+                            bgColor: MyColors.cyan,
+                          )),
+                    tab.selectedTab == 4 ? SizedBox() : SizedBox(width: 15),
+                    tab.selectedTab == 4
+                        ? SizedBox()
+                        : Expanded(
+                            child: CustomButton(
+                            height: MediaQuery.of(context).size.height * 0.055,
+                            bgColor: MyColors.lightRed,
+                            title: "Deny",
+                          )),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),

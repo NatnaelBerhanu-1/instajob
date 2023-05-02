@@ -10,9 +10,9 @@ import 'package:insta_job/repository/company_repo.dart';
 class PickImageCubit extends Cubit<InitialImage> {
   final CompanyRepository companyRepository;
   PickImageCubit(this.companyRepository) : super(InitialImage());
-  File? img;
+
   String imgUrl = "";
-  final picker = ImagePicker();
+  String cvUrl = "";
   bool isCamera = false;
 
   String getFileExtension(String fileName) {
@@ -20,6 +20,7 @@ class PickImageCubit extends Cubit<InitialImage> {
   }
 
   getImage() async {
+    final picker = ImagePicker();
     var image = await picker.pickImage(
       source: isCamera == true ? ImageSource.camera : ImageSource.gallery,
       imageQuality: 100,
@@ -27,8 +28,9 @@ class PickImageCubit extends Cubit<InitialImage> {
       maxWidth: 100,
     );
     if (image != null) {
+      File? img;
       img = File(image.path);
-      var base64 = base64Encode(img!.readAsBytesSync());
+      var base64 = base64Encode(img.readAsBytesSync());
       var type = getFileExtension(image.path);
       emit(LoadingImageState());
       ApiResponse response =
@@ -36,11 +38,40 @@ class PickImageCubit extends Cubit<InitialImage> {
       print('TYPEE **************      $type');
       if (response.response.statusCode == 200) {
         imgUrl = response.response.data['data'];
+        print('URL ---------      ---- $imgUrl');
+        emit(PickImageState(imgUrl));
       } else {
         emit(ImageErrorState("Something went wrong"));
       }
-      print('URL ---------      ---- $imgUrl');
-      emit(PickImageState(imgUrl));
+    } else {
+      emit(ImageErrorState("Please choose image"));
+    }
+  }
+
+  getCvImage() async {
+    final picker = ImagePicker();
+    var image = await picker.pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 100,
+      maxHeight: 100,
+      maxWidth: 100,
+    );
+    if (image != null) {
+      File? img;
+      img = File(image.path);
+      var base64 = base64Encode(img.readAsBytesSync());
+      var type = getFileExtension(image.path);
+      emit(LoadingImageState());
+      ApiResponse response =
+          await companyRepository.base64ImgApi(base64, ".$type");
+      print('TYPEE **************      $type');
+      if (response.response.statusCode == 200) {
+        cvUrl = response.response.data['data'];
+        print('CV URL ---------      ---- $cvUrl');
+        emit(PickCVImageState(cvUrl));
+      } else {
+        emit(ImageErrorState("Something went wrong"));
+      }
     } else {
       emit(ImageErrorState("Please choose image"));
     }
@@ -49,5 +80,10 @@ class PickImageCubit extends Cubit<InitialImage> {
   clearImgUrl() {
     imgUrl = "";
     emit(InitialImage());
+  }
+
+  clearCVUrl() {
+    cvUrl = "";
+    emit(ClearImageState());
   }
 }
