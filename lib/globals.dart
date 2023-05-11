@@ -1,6 +1,11 @@
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:insta_job/utils/my_colors.dart';
+import 'package:open_file_safe/open_file_safe.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'model/user_model.dart';
 import 'utils/my_images.dart';
@@ -9,6 +14,43 @@ import 'widgets/custom_button/custom_img_button.dart';
 class Global {
   // static String? type;
   static UserModel? userModel;
+
+  Future<File?> downloadPdf(context, String url, String fileName) async {
+    final pdfStorage = await getApplicationDocumentsDirectory();
+    var pdf = File("${pdfStorage.path}/$fileName");
+    try {
+      loading(value: true);
+      final response = await Dio().get(url,
+          onReceiveProgress: (count, total) {},
+          options: Options(
+            responseType: ResponseType.bytes,
+            followRedirects: false,
+            // headers: {
+            //   "Authorization": Global.userModel?.token,
+            //   "Accept": "application/json",
+            //   "Access-Control_Allow_Origin": "*"
+            // },
+          ));
+      loading(value: false);
+      final exe = pdf.openSync(mode: FileMode.write);
+      exe.writeFromSync(response.data);
+      await exe.close();
+      return pdf;
+    } on DioError catch (e) {
+      loading(value: false);
+      print("@@@ Error ${e.type}");
+      showToast("Something went wrong");
+      return null;
+    }
+  }
+
+  openPdf(BuildContext context, String url, String fileName) async {
+    final file = await downloadPdf(context, url, fileName.split('/').last);
+    if (file == null) return;
+
+    print("Path : ${file.path}");
+    await OpenFile.open(file.path);
+  }
 }
 
 Widget verifyImage = ImageButton(

@@ -94,7 +94,10 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
   }
 
   Widget buildColumn(
-      {int? index, int? selectedIndex, String? image, VoidCallback? onTap}) {
+      {int? index,
+      int? selectedIndex,
+      String? image,
+      required VoidCallback onTap}) {
     return GestureDetector(
       onTap: onTap,
       child: Column(

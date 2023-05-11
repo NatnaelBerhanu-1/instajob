@@ -68,7 +68,7 @@
 //                               radius: 8,
 //                               backgroundColor: _activePage == index
 //                                   ? Colors.amber
-//                                   : Colors.grey,
+//                             : Colors.grey,
 //                             ),
 //                           ),
 //                         )),
@@ -259,14 +259,13 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }*/
 
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:insta_job/bloc/validation/validation_bloc.dart';
-import 'package:insta_job/bloc/validation/validation_state.dart';
-import 'package:insta_job/utils/my_colors.dart';
+import 'dart:isolate';
+import 'dart:ui';
 
-import 'globals.dart';
-import 'widgets/custom_text_field.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class TimePickerDropDown extends StatefulWidget {
   final Function(DateTime)? onTimeSelected;
@@ -346,21 +345,6 @@ class _TimePickerDropDownState extends State<TimePickerDropDown> {
     );
   }
 }
-/*
-  RangeValues rangeValue = const RangeValues(10, 30);
-
- Text(
-            "${rangeValue.start.toStringAsFixed(0)}K - ${rangeValue.end.toStringAsFixed(0)}K"),
-        RangeSlider(
-          values: rangeValue,
-          onChanged: (val) {
-            rangeValue = val;
-            setState(() {});
-            print("value: $val");
-          },
-          max: 100,
-          min: 0,
-        ),*/
 
 class TimePickerDialog extends StatefulWidget {
   @override
@@ -433,56 +417,86 @@ class MyApp1 extends StatelessWidget {
   }
 }
 
-class Test extends StatefulWidget {
-  const Test({Key? key}) : super(key: key);
+class MyHomePage extends StatefulWidget {
+  MyHomePage({Key? key}) : super(key: key);
 
   @override
-  State<Test> createState() => _TestState();
+  _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _TestState extends State<Test> {
-  TextEditingController controller = TextEditingController();
-  List list = [];
-  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+class _MyHomePageState extends State<MyHomePage> {
+  int progress = 0;
+
+  final ReceivePort _receivePort = ReceivePort();
+
+  static downloadingCallback(id, status, progress) {
+    ///Looking up for a send port
+    SendPort? sendPort = IsolateNameServer.lookupPortByName("downloading");
+
+    ///ssending the data
+    sendPort?.send([id, status, progress]);
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    ///register a send port for the other isolates
+    IsolateNameServer.registerPortWithName(
+        _receivePort.sendPort, "downloading");
+
+    ///Listening for the data is comming other isolataes
+    _receivePort.listen((message) {
+      setState(() {
+        progress = message[2];
+      });
+
+      print(progress);
+    });
+
+    FlutterDownloader.registerCallback(downloadingCallback);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-          child: Form(
-        key: formKey,
-        child: BlocConsumer<ValidationCubit, InitialValidation>(
-            listener: (context, state) {
-          if (state is RequiredValidation) {
-            showToast(state.require);
-          }
-        }, builder: (context, state) {
-          var validation = context.read<ValidationCubit>();
-          return Column(
-            children: [
-              CustomTextField(
-                  controller: controller,
-                  label: "Enter Responsibilities",
-                  lblColor: MyColors.black,
-                  hint: "",
-                  maxLine: 5,
-                  validator: (val) {
-                    requiredValidation(val!, 'Designation');
-                    return "null";
-                  }),
-              ElevatedButton(
-                  onPressed: () {
-                    if (formKey.currentState!.validate()) {
-                      print('2222222222');
-                    } else {
-                      print('11111111');
-                    }
-                  },
-                  child: Text("Add")),
-            ],
-          );
-        }),
-      )),
+      appBar: AppBar(),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              "$progress",
+              style: TextStyle(fontSize: 40),
+            ),
+            SizedBox(
+              height: 60,
+            ),
+            TextButton(
+              child: Text("Start Downloading"),
+              onPressed: () async {
+                final status = await Permission.storage.request();
+
+                if (status.isGranted) {
+                  final externalDir = await getExternalStorageDirectory();
+
+                  await FlutterDownloader.enqueue(
+                    url:
+                        "https://shaybani-web.ondemandservicesappinflutter.online/storage/files/64522e9faa054.pdf",
+                    savedDir: externalDir!.path,
+                    fileName: "download",
+                    showNotification: true,
+                    openFileFromNotification: true,
+                  );
+                } else {
+                  print("Permission deined");
+                }
+              },
+            )
+          ],
+        ),
+      ),
     );
   }
 }

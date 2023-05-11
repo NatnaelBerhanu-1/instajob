@@ -7,6 +7,7 @@ import 'package:insta_job/repository/job_position_repo.dart';
 
 class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
   final JobPositionRepository jobPositionRepository;
+  JobPosModel jobModel = JobPosModel();
   _getJobPositionList(Emitter emit, {String? id}) async {
     ApiResponse response = await jobPositionRepository.getJobPositions(id: id);
     if (response.response.statusCode == 500) {
@@ -112,6 +113,20 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
       }
     });
 
+    on<ApplyJobEvent>((event, emit) async {
+      emit(JobPosLoading());
+      ApiResponse response = await jobPositionRepository.applyForJob(
+          jobId: event.jobId, resume: event.resume);
+      if (response.response.statusCode == 500) {
+        emit(const JobErrorState("Something went wrong"));
+      }
+      if (response.response.statusCode == 200) {
+        emit(const JobAppliedSuccessState());
+      } else if (response.response.statusCode == 400) {
+        emit(JobErrorState(response.response.data['message']));
+      }
+    });
+
     on<SaveJobPositionEvent>((event, emit) async {
       emit(JobPosLoading());
       ApiResponse response =
@@ -130,6 +145,19 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
       emit(JobPosLoaded(jobPosList));
       if (jobPosList.isEmpty) {
         emit(const JobErrorState("Data not found"));
+      }
+    });
+
+    on<DeleteJobPositionEvent>((event, emit) async {
+      ApiResponse response =
+          await jobPositionRepository.deleteJobPosition(jobId: event.jobId);
+      if (response.response.statusCode == 500) {
+        emit(const JobErrorState("Something went wrong"));
+      }
+      if (response.response.statusCode == 200) {
+        print("DELETE SUCCESSFULLY");
+      } else if (response.response.statusCode == 400) {
+        emit(JobErrorState(response.response.data['message']));
       }
     });
   }

@@ -72,14 +72,17 @@ class JobOpeningTile extends StatelessWidget {
                   Global.userModel?.type == "user"
                       ? Padding(
                           padding: const EdgeInsets.only(right: 10.0),
-                          child: ImageButton(
-                            image: MyImages.fav,
-                            color: MyColors.grey,
-                            padding: EdgeInsets.zero,
-                            height: 20,
-                            width: 20,
-                          ),
-                        )
+                          child: IconButton(
+                            onPressed: () {},
+                            icon: Icon(
+                              jobPosModel.jobStatus == 1
+                                  ? Icons.favorite
+                                  : Icons.favorite_border,
+                              color: jobPosModel.jobStatus == 1
+                                  ? MyColors.lightRed
+                                  : MyColors.grey,
+                            ),
+                          ))
                       : CustomCommonCard(
                           bgColor: MyColors.lightBlue,
                           borderRadius: BorderRadius.circular(5),

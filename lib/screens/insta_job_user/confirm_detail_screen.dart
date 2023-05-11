@@ -25,14 +25,18 @@ class ConfirmDetailsScreen extends StatefulWidget {
 class _ConfirmDetailsScreenState extends State<ConfirmDetailsScreen> {
   TextEditingController name =
       TextEditingController(text: Global.userModel?.name);
-  TextEditingController phoneNumber = TextEditingController(text: "98765429");
+  TextEditingController phoneNumber = TextEditingController(text: "9876542923");
   TextEditingController previousWork = TextEditingController(
-      text: "work with software company for 2 years, Freelancing on fiverr");
-  TextEditingController passion = TextEditingController();
-  TextEditingController skills = TextEditingController();
+      text: "Work with software company for 2 years, Freelancing on fiverr");
+  TextEditingController passion = TextEditingController(
+      text:
+          "I am capable and consistent problem solver skilled at prioritizing and managing projects with proficiency");
+  TextEditingController skills =
+      TextEditingController(text: "Photoshop\nAdobe XD\nUI/UX designing");
   String nameVal = "";
   String phone = "";
   String passionVal = "";
+  String skillVal = "";
   String pWork = "";
 
   @override
@@ -79,7 +83,9 @@ class _ConfirmDetailsScreenState extends State<ConfirmDetailsScreen> {
                   controller: phoneNumber,
                   lblColor: MyColors.black,
                   label: "Phone Number",
+                  maxLength: 10,
                   suffixIcon: buildSuffix(),
+                  keyboardType: TextInputType.number,
                   hint: "9729864329",
                   onChanged: (val) {
                     phone = val;
@@ -93,9 +99,10 @@ class _ConfirmDetailsScreenState extends State<ConfirmDetailsScreen> {
                   lblColor: MyColors.black,
                   suffixIcon: buildSuffix(),
                   hint: "",
+                  keyboardType: TextInputType.multiline,
                   onChanged: (val) {
-                    // nameVal = val;
-                    // setState(() {});
+                    skillVal = val;
+                    setState(() {});
                   },
                 ),
                 SizedBox(height: 20),
@@ -136,7 +143,8 @@ class _ConfirmDetailsScreenState extends State<ConfirmDetailsScreen> {
                         previousWork: pWork.isEmpty ? previousWork.text : pWork,
                         yourPassion:
                             passionVal.isEmpty ? passion.text : passionVal,
-                        yourTop5Skills: "java");
+                        yourTop5Skills:
+                            skillVal.isEmpty ? skills.text : skillVal);
                     resumeData.add(AddResumeEvent(resumeModel));
                     AppRoutes.push(
                         context, CoverLetterScreen(resumeModel: resumeModel));

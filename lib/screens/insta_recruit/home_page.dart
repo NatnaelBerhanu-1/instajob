@@ -4,6 +4,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
+import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
+import 'package:insta_job/bloc/job_position/job_pos_event.dart';
+import 'package:insta_job/bloc/job_position/job_pos_state.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/network/end_points.dart';
 import 'package:insta_job/screens/auth_screen/change_account_info.dart';
@@ -20,6 +23,7 @@ import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:insta_job/widgets/user_tile/custom_acc_details.dart';
 
 import '../../bloc/global_cubit/global_state.dart';
+import '../../widgets/custom_chip.dart';
 import 'bottom_navigation_screen/user_account/feedback/feedback_screen.dart';
 
 class HomePage extends StatefulWidget {
@@ -202,26 +206,35 @@ class _HomePageState extends State<HomePage> {
                           ),
                           SizedBox(width: 15),
                           Expanded(
-                            child: CustomAccDetails(
-                              onTap: () {
-                                index = 3;
-                                context.read<GlobalCubit>().changeIndex(index);
-                                if (Global.userModel?.type == "user") {
-                                  AppRoutes.push(context, SaveJobsScreen());
-                                } else {
-                                  AppRoutes.push(context, AutomateMsgScreen());
-                                }
-                              },
-                              index: 3,
-                              selectedIndex: selectedIndex,
-                              width: double.infinity,
-                              img: Global.userModel?.type == "user"
-                                  ? MyImages.suitcase
-                                  : MyImages.automateMsg,
-                              title: Global.userModel?.type == "user"
-                                  ? "Saved Jobs"
-                                  : "Automate Message",
-                            ),
+                            child: BlocBuilder<JobPositionBloc, JobPosState>(
+                                builder: (context, state) {
+                              return CustomAccDetails(
+                                onTap: () {
+                                  index = 3;
+                                  context
+                                      .read<GlobalCubit>()
+                                      .changeIndex(index);
+                                  if (Global.userModel?.type == "user") {
+                                    context
+                                        .read<JobPositionBloc>()
+                                        .add(SavedJobPositionListEvent());
+                                    AppRoutes.push(context, SaveJobsScreen());
+                                  } else {
+                                    AppRoutes.push(
+                                        context, AutomateMsgScreen());
+                                  }
+                                },
+                                index: 3,
+                                selectedIndex: selectedIndex,
+                                width: double.infinity,
+                                img: Global.userModel?.type == "user"
+                                    ? MyImages.suitcase
+                                    : MyImages.automateMsg,
+                                title: Global.userModel?.type == "user"
+                                    ? "Saved Jobs"
+                                    : "Automate Message",
+                              );
+                            }),
                           ),
                         ],
                       ),

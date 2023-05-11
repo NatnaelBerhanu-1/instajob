@@ -1,12 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/job_opening/job_position_screen.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/widgets/custom_button/custom_btn.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 
-import '../utils/app_routes.dart';
 import '../utils/my_images.dart';
 
 class AppliedSuccessDialog extends StatelessWidget {
@@ -34,7 +32,14 @@ class AppliedSuccessDialog extends StatelessWidget {
             CustomButton(
               title: "Thanks!",
               onTap: () {
-                AppRoutes.pushReplacement(context, JobPositionScreen());
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
+                // AppRoutes.pushReplacement(
+                //     context,
+                //     JobPositionScreen(
+                //       companyModel: context.read<CompanyBloc>().companyModel,
+                //       jobPosModel: context.read<JobPositionBloc>().jobModel,
+                //     ));
               },
             ),
           ],

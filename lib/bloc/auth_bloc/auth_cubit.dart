@@ -14,6 +14,8 @@ import 'package:insta_job/network/api_response.dart';
 import 'package:insta_job/repository/auth_repository.dart';
 import 'package:insta_job/screens/auth_screen/login_screen.dart';
 import 'package:insta_job/screens/auth_screen/reg_more_information.dart';
+import 'package:insta_job/screens/auth_screen/set_password.dart';
+import 'package:insta_job/screens/auth_screen/verify_code_screen.dart';
 import 'package:insta_job/screens/insta_recruit/became_an_employeer.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/bottom_navigation_screen.dart';
 import 'package:insta_job/screens/insta_recruit/membership_screen.dart';
@@ -299,6 +301,41 @@ class AuthCubit extends Cubit<AuthInitialState> {
           (route) => false);
     } else {
       emit(ErrorState("Something went wrong"));
+    }
+  }
+
+  /// SEND CODE
+  sendCodeOnEmail({required String email}) async {
+    emit(AuthLoadingState());
+    ApiResponse response = await authRepository.sendCodeOnEmail(email: email);
+    if (response.response.statusCode == 500) {
+      emit(ErrorState("Something went wrong"));
+    }
+    if (response.response.statusCode == 200) {
+      emit(SuccessState());
+      navigationKey.currentState?.push(MaterialPageRoute(
+          builder: (_) => const VerifyCodeScreen(isForgotPassword: true)));
+    }
+    if (response.response.statusCode == 400) {
+      emit(ErrorState("${response.response.data['message']}"));
+    }
+  }
+
+  checkEmailVerificationCode(
+      {required String email, required String code}) async {
+    emit(AuthLoadingState());
+    ApiResponse response = await authRepository.checkEmailVerificationCode(
+        email: email, code: code);
+    if (response.response.statusCode == 500) {
+      emit(ErrorState("Something went wrong"));
+    }
+    if (response.response.statusCode == 200) {
+      emit(SuccessState());
+      navigationKey.currentState
+          ?.push(MaterialPageRoute(builder: (_) => const SetPassword()));
+    }
+    if (response.response.statusCode == 400) {
+      emit(ErrorState("${response.response.data['message']}"));
     }
   }
 }

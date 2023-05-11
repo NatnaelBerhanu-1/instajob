@@ -23,7 +23,9 @@ import '../../../../widgets/custom_text_field.dart';
 
 class SearchCompany extends StatefulWidget {
   final int? index;
-  const SearchCompany({Key? key, this.index}) : super(key: key);
+  final bool isJobSearch;
+  const SearchCompany({Key? key, this.index, this.isJobSearch = false})
+      : super(key: key);
 
   @override
   State<SearchCompany> createState() => _SearchCompanyState();
@@ -31,12 +33,13 @@ class SearchCompany extends StatefulWidget {
 
 class _SearchCompanyState extends State<SearchCompany> {
   final TextEditingController search = TextEditingController();
-
+  // CompanyModel companyData = CompanyModel();
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
         search.clear();
+        FocusManager.instance.primaryFocus?.unfocus();
         return true;
       },
       child: Scaffold(
@@ -46,8 +49,13 @@ class _SearchCompanyState extends State<SearchCompany> {
               leadingImage: MyImages.backArrow,
               centerTitle: false,
               onTap: () {
-                context.read<CompanyBloc>().add(LoadCompanyListEvent());
+                FocusManager.instance.primaryFocus?.unfocus();
+                var cData = context.read<CompanyBloc>();
+                cData.add(LoadCompanyListEvent());
+                context.read<JobPositionBloc>().add(LoadJobPosListEvent(
+                    companyId: cData.companyModel.id.toString()));
                 AppRoutes.pop(context);
+                print("@@@@@@@ ${cData.companyModel.id.toString()}");
               },
               title: "Search",
             ),
@@ -83,7 +91,10 @@ class _SearchCompanyState extends State<SearchCompany> {
                                 : data.add(
                                     CompanySearchEvent(search: search.text));
                           } else {
-                            data.add(CompanySearchEvent(search: search.text));
+                            widget.isJobSearch
+                                ? data.add(JobSearchEvent(search: search.text))
+                                : data.add(
+                                    CompanySearchEvent(search: search.text));
                           }
 
                           // context.read<CompanyBloc>().add(LoadCompanyListEvent());
@@ -117,6 +128,8 @@ class _SearchCompanyState extends State<SearchCompany> {
                                     itemCount: state.searchCompanyList.length,
                                     itemBuilder: (c, i) {
                                       var companyData =
+                                          context.read<CompanyBloc>();
+                                      companyData.companyModel =
                                           state.searchCompanyList[i];
                                       return Padding(
                                         padding: const EdgeInsets.symmetric(
@@ -125,20 +138,20 @@ class _SearchCompanyState extends State<SearchCompany> {
                                           onTap: () {
                                             context.read<JobPositionBloc>().add(
                                                 LoadJobPosListEvent(
-                                                    companyId: companyData.id
+                                                    companyId: companyData
+                                                        .companyModel.id
                                                         .toString()));
                                             context.read<BottomBloc>().add(
                                                 SetScreenEvent(true,
-                                                    screenName:
-                                                        JobOpeningScreen(
-                                                            companyModel:
-                                                                companyData)));
+                                                    screenName: JobOpeningScreen(
+                                                        companyModel: companyData
+                                                            .companyModel)));
                                             AppRoutes.push(
                                                 context, BottomNavScreen());
                                             // search.clear();
                                           },
                                           child: Text(
-                                              "${companyData.companyName}"),
+                                              "${companyData.companyModel.companyName}"),
                                         ),
                                       );
                                     },
@@ -169,6 +182,9 @@ class _SearchCompanyState extends State<SearchCompany> {
                                     physics: BouncingScrollPhysics(),
                                     itemCount: state.searchJobList.length,
                                     itemBuilder: (c, i) {
+                                      var companyData = context
+                                          .read<CompanyBloc>()
+                                          .companyModel;
                                       var data = state.searchJobList[i];
                                       return Padding(
                                         padding: const EdgeInsets.symmetric(
@@ -177,13 +193,15 @@ class _SearchCompanyState extends State<SearchCompany> {
                                           onTap: () {
                                             print(
                                                 "$state clikkkkkkkkkkkkkkkkkkk");
-                                            context
-                                                .read<JobPositionBloc>()
-                                                .add(LoadJobPosListEvent());
+                                            context.read<JobPositionBloc>().add(
+                                                LoadJobPosListEvent(
+                                                    companyId: data.companyId
+                                                        .toString()));
                                             AppRoutes.push(
                                                 context,
                                                 JobPositionScreen(
-                                                    jobPosModel: data));
+                                                    jobPosModel: data,
+                                                    companyModel: companyData));
                                             // search.clear();
                                           },
                                           child: Text("${data.designation}"),
@@ -199,6 +217,9 @@ class _SearchCompanyState extends State<SearchCompany> {
                             ],
                             if (state is ErrorState) ...[
                               Center(child: Text(state.error)),
+                            ],
+                            if (state is CompanyLoading) ...[
+                              Center(child: CircularProgressIndicator())
                             ]
                           ],
                         ),

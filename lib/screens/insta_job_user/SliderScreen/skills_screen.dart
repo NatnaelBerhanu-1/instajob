@@ -110,7 +110,7 @@ class SkillsScreen extends StatelessWidget {
               title: "Continue",
               backgroundColor: MyColors.blue,
               borderColor: MyColors.blue,
-              image: MyImages.arrowWhite,
+              image: MyImages.arrowWhite, onclick: () {  },
               // onclick: onContinueTap,
             ),
           ],

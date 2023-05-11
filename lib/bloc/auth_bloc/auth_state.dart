@@ -14,6 +14,12 @@ class AuthLoadingState extends AuthInitialState {
   // AuthLoadingState({required this.isLoading});
 }
 
+class SuccessState extends AuthInitialState {
+  // final bool isLoading;
+
+  // AuthLoadingState({required this.isLoading});
+}
+
 class ErrorState extends AuthInitialState {
   final String error;
 

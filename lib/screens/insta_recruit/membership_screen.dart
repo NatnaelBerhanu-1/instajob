@@ -43,16 +43,32 @@ class _MemberShipScreenState extends State<MemberShipScreen> {
                     Padding(
                       padding: const EdgeInsets.only(top: 40),
                       child: Center(
-                        child: Column(
+                        child: Row(
                           children: [
-                            Image.asset(
-                              MyImages.instaLogo_,
-                              color: MyColors.white,
+                            IconButton(
+                                onPressed: () {
+                                  AppRoutes.pop(context);
+                                },
+                                icon: Icon(
+                                  Icons.arrow_back_ios,
+                                  size: 18,
+                                  color: MyColors.white,
+                                )),
+                            Spacer(),
+                            Column(
+                              children: [
+                                Image.asset(
+                                  MyImages.instaLogo_,
+                                  color: MyColors.white,
+                                ),
+                                CommonText(
+                                  text: "Employ instantly",
+                                  fontColor: MyColors.white,
+                                ),
+                              ],
                             ),
-                            CommonText(
-                              text: "Employ instantly",
-                              fontColor: MyColors.white,
-                            ),
+                            Spacer(),
+                            Spacer(),
                           ],
                         ),
                       ),

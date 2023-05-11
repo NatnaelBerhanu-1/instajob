@@ -8,6 +8,7 @@ import 'package:insta_job/bloc/choose_image_bloc/pick_image_cubit.dart';
 import 'package:insta_job/bloc/validation/validation_bloc.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/screens/auth_screen/verify_code_screen.dart';
+import 'package:insta_job/screens/insta_recruit/welcome_screen.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
@@ -80,7 +81,8 @@ class _BecameAnEmployerState extends State<BecameAnEmployer> {
                           // Spacer(),
                           ImageButton(
                               onTap: () {
-                                Navigator.of(context).pop();
+                                AppRoutes.pushAndRemoveUntil(
+                                    context, WelcomeScreen());
                               },
                               image: MyImages.backArrow,
                               height: 30,

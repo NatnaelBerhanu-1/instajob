@@ -31,7 +31,9 @@ class _FilterScreenState extends State<FilterScreen> {
                 actions: Padding(
                   padding: const EdgeInsets.only(right: 12.0, top: 10),
                   child: CustomCommonCard(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
                     borderColor: MyColors.blue,
                     borderRadius: BorderRadius.circular(20),
                     child: Padding(

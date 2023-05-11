@@ -60,16 +60,16 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
     var uploadPhoto = context.read<PickImageCubit>();
     if (widget.isUpdate) {
       designation.text = model.designation!;
-      jobDetails.text = model.jobdetails!;
+      jobDetails.text = model.jobDetails!;
       requirements.text = model.requirements!;
-      responsibility.text = model.responsilibites!;
+      responsibility.text = model.responsibilities!;
       applicationReceivedSubject.text = model.applicationReceivedSubject!;
       applicationReceivedContent.text = model.applicationReceivedContent!;
       disqualifiedReviewSubject.text = model.disqualifiedReviewSubject!;
       disqualifiedReviewContent.text = model.disqualifiedReviewContent!;
       shortlistedReviewSubject.text = model.shortlistedReviewSubject!;
       shortlistedReviewContent.text = model.shortlistedReviewContent!;
-      value.skills = model.topskills ?? [];
+      value.skills = model.topSkills ?? [];
       value.jobTypeValue = model.jobsType!;
       value.experienceLevelVal = model.experienceLevel!;
       uploadPhoto.imgUrl = model.uploadPhoto!;
@@ -152,34 +152,57 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                         ),
                         SizedBox(width: 52),
                         widget.isUpdate
-                            ? GestureDetector(
-                                onTap: () {
-                                  buildDialog(
-                                      context,
-                                      CustomDialog(
-                                        desc1: "You want to Remove Listing",
-                                      ));
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.all(10),
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                      color: MyColors.white,
-                                      borderRadius: BorderRadius.circular(20),
-                                      border:
-                                          Border.all(color: MyColors.lightRed)),
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 10.0, right: 10),
-                                    child: Text(
-                                      "Remove Listing",
-                                      style: TextStyle(
-                                          fontSize: 13,
-                                          color: MyColors.lightRed),
+                            ? BlocBuilder<BottomBloc, BottomInitialState>(
+                                builder: (context, value) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    buildDialog(
+                                        context,
+                                        CustomDialog(
+                                          desc1: "You want to Remove Listing",
+                                          okOnTap: () {
+                                            context.read<JobPositionBloc>().add(
+                                                DeleteJobPositionEvent(
+                                                    jobId:
+                                                        "${widget.jobPosModel?.id}"));
+                                            context.read<JobPositionBloc>().add(
+                                                LoadJobPosListEvent(
+                                                    companyId:
+                                                        "${widget.companyModel?.id}"));
+                                            context.read<BottomBloc>().add(
+                                                SetScreenEvent(true,
+                                                    screenName: JobOpeningScreen(
+                                                        companyModel: widget
+                                                            .companyModel)));
+                                            AppRoutes.push(
+                                                context, BottomNavScreen());
+                                          },
+                                          cancelOnTap: () {
+                                            Navigator.pop(context);
+                                          },
+                                        ));
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.all(10),
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                        color: MyColors.white,
+                                        borderRadius: BorderRadius.circular(20),
+                                        border: Border.all(
+                                            color: MyColors.lightRed)),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 10.0, right: 10),
+                                      child: Text(
+                                        "Remove Listing",
+                                        style: TextStyle(
+                                            fontSize: 13,
+                                            color: MyColors.lightRed),
+                                      ),
                                     ),
                                   ),
-                                ),
-                              )
+                                );
+                              })
                             : SizedBox()
                       ],
                     ),
@@ -425,32 +448,39 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                         fontSize: 14,
                       ),
                       SizedBox(height: 10),
-                      CustomCommonCard(
-                        borderColor: MyColors.grey.withOpacity(.30),
-                        borderRadius: BorderRadius.circular(7),
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              CommonText(
-                                text: "With in 25 min",
-                                fontSize: 12,
-                                fontColor: MyColors.blue,
-                              ),
-                              SizedBox(height: 10),
-                              divider(color: MyColors.grey.withOpacity(.40)),
-                              SizedBox(height: 10),
-                              Slider(
-                                value: 10,
-                                onChanged: (val) {},
-                                max: 80,
-                                min: 10,
-                              ),
-                            ],
+                      BlocBuilder<GlobalCubit, InitialState>(
+                          builder: (context, state) {
+                        var value = context.read<GlobalCubit>();
+                        return CustomCommonCard(
+                          borderColor: MyColors.blue.withOpacity(.30),
+                          borderRadius: BorderRadius.circular(7),
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                CommonText(
+                                  text:
+                                      "With in ${value.range.toStringAsFixed(0)} miles",
+                                  fontSize: 12,
+                                  fontColor: MyColors.blue,
+                                ),
+                                SizedBox(height: 10),
+                                divider(color: MyColors.grey.withOpacity(.40)),
+                                SizedBox(height: 10),
+                                Slider(
+                                  value: value.range,
+                                  onChanged: (val) {
+                                    value.rangeVal(val);
+                                  },
+                                  max: 100,
+                                  min: 10,
+                                )
+                              ],
+                            ),
                           ),
-                        ),
-                      ),
+                        );
+                      }),
                       SizedBox(height: 15),
                       CommonText(
                         text: "Jobs Type",
@@ -724,6 +754,7 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                           fontColor: MyColors.white,
                           borderColor: MyColors.blue,
                           onclick: () async {
+                            FocusManager.instance.primaryFocus?.unfocus();
                             if (formKey.currentState!.validate()) {
                               var value = context.read<GlobalCubit>();
                               var uploadPhoto = context.read<PickImageCubit>();
@@ -740,7 +771,8 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                                     applicationReceivedContent.text,
                                 applicationReceivedSubject:
                                     applicationReceivedSubject.text,
-                                areaDistance: "45.20",
+                                areaDistance:
+                                    "${value.range.toStringAsFixed(0)} miles",
                                 disqualifiedReviewContent:
                                     disqualifiedReviewContent.text,
                                 disqualifiedReviewSubject:

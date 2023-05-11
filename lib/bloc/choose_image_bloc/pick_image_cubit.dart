@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:insta_job/bloc/choose_image_bloc/pick_image_state.dart';
@@ -49,18 +50,19 @@ class PickImageCubit extends Cubit<InitialImage> {
   }
 
   getCvImage() async {
-    final picker = ImagePicker();
-    var image = await picker.pickImage(
-      source: ImageSource.gallery,
-      imageQuality: 100,
-      maxHeight: 100,
-      maxWidth: 100,
-    );
-    if (image != null) {
-      File? img;
-      img = File(image.path);
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+        allowMultiple: false,
+        type: FileType.custom,
+        allowedExtensions: [
+          'pdf',
+          'doc',
+        ]);
+
+    if (result != null) {
+      PlatformFile file = result.files.first;
+      var img = File(file.path!);
       var base64 = base64Encode(img.readAsBytesSync());
-      var type = getFileExtension(image.path);
+      var type = getFileExtension(file.path!);
       emit(LoadingImageState());
       ApiResponse response =
           await companyRepository.base64ImgApi(base64, ".$type");
@@ -73,7 +75,7 @@ class PickImageCubit extends Cubit<InitialImage> {
         emit(ImageErrorState("Something went wrong"));
       }
     } else {
-      emit(ImageErrorState("Please choose image"));
+      emit(ImageErrorState("Please choose file"));
     }
   }
 

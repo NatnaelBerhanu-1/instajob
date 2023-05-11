@@ -123,11 +123,13 @@ class _AssignCompanyState extends State<AssignCompany> {
                     shrinkWrap: true,
                     itemCount: state.companyList.length,
                     itemBuilder: (c, i) {
+                      var data = context.read<CompanyBloc>();
+                      data.companyModel = state.companyList[i];
                       return Padding(
                         padding: const EdgeInsets.symmetric(
                             vertical: 7.0, horizontal: 12),
                         child: AssignCompaniesTile(
-                          companyModel: state.companyList[i],
+                          companyModel: data.companyModel,
                         ),
                       );
                     });

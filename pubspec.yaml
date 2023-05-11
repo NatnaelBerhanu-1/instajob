@@ -45,6 +45,15 @@ dependencies:
   image_picker: ^0.8.7+1
   flutter_time_picker_spinner: ^2.0.0
   google_maps_flutter: ^2.2.5
+  syncfusion_flutter_pdfviewer: any
+  file_picker: any
+  open_file_safe: any
+  path_provider: ^2.0.14
+  pdf: ^3.10.1
+  printing: ^5.10.3
+  flutter_downloader: ^1.10.2
+  permission_handler: ^10.2.0
+
 
   #auth
   firebase_core: ^2.8.0

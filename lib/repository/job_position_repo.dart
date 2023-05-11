@@ -41,6 +41,31 @@ class JobPositionRepository {
     }
   }
 
+  Future<ApiResponse> applyForJob({String? jobId, String? resume}) async {
+    var map = {
+      "user_id": Global.userModel?.id,
+      "job_id": "2",
+      "upload_resume": resume
+    };
+    try {
+      Response response =
+          await dioClient.post(data: map, uri: EndPoint.applyForJob);
+      return ApiResponse.withSuccess(response);
+    } on DioError catch (e) {
+      return ApiResponse.withError(e.response);
+    }
+  }
+
+  Future<ApiResponse> deleteJobPosition({String? jobId}) async {
+    try {
+      Response response = await dioClient
+          .post(data: {"id": jobId}, uri: EndPoint.deleteJobPosition);
+      return ApiResponse.withSuccess(response);
+    } on DioError catch (e) {
+      return ApiResponse.withError(e.response);
+    }
+  }
+
   Future<ApiResponse> addJobPosition({
     String? companyId,
     String? designation,

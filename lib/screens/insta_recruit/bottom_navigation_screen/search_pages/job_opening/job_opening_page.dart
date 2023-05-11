@@ -73,7 +73,8 @@ class JobOpeningScreen extends StatelessWidget {
                       borderRadius: 25,
                       hint: "search",
                       onPressed: () {
-                        AppRoutes.push(context, SearchCompany());
+                        AppRoutes.push(
+                            context, SearchCompany(isJobSearch: true));
                       },
                     ),
                   ),

@@ -124,7 +124,7 @@ class GetIndexEvent extends BottomEvent {
 class ResetIndex extends BottomEvent {}
 
 class SetScreenEvent extends BottomEvent {
-  final value;
+  final dynamic value;
   final Widget? screenName;
 
   SetScreenEvent(this.value, {this.screenName});

@@ -30,7 +30,7 @@ class WelcomeScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
+              SizedBox(
                 height: 340,
                 // color: MyColors.blue,
                 child: Stack(

@@ -178,9 +178,7 @@ class CustomTextField extends StatelessWidget {
               ),
         SizedBox(height: 9),
         TextFormField(
-          style: TextStyle(
-            color: MyColors.black,
-          ),
+          style: TextStyle(color: MyColors.black, fontSize: 14),
           onChanged: onChanged,
           onTap: onPressed,
           maxLines: maxLine,

@@ -152,7 +152,7 @@ class DottedButton extends StatelessWidget {
         radius: Radius.circular(5),
         strokeWidth: 1,
         strokeCap: StrokeCap.round,
-        dashPattern: [8, 4],
+        dashPattern: const [8, 4],
         color: MyColors.blue.withOpacity(0.70),
         child: Container(
           width: MediaQuery.of(context).size.width,

@@ -15,6 +15,7 @@ import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_cards/insta_job_user_cards/filter_tiles/custom_filter_tile.dart';
 import 'package:insta_job/widgets/custom_cards/insta_job_user_cards/map_tile.dart';
+import 'package:insta_job/widgets/custom_chip.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
 
 import '../../../../utils/my_colors.dart';
@@ -22,7 +23,6 @@ import '../../../../widgets/custom_app_bar.dart';
 import '../../../../widgets/custom_button/custom_img_button.dart';
 import '../../../../widgets/custom_cards/assign_companies_tile.dart';
 import '../../../../widgets/custom_cards/insta_job_user_cards/search_job_tile.dart';
-import '../../../../widgets/custom_chip.dart';
 import '../../../insta_recruit/bottom_navigation_screen/search_pages/search_company.dart';
 import '../../../insta_recruit/bottom_navigation_screen/user_account/setting_pages/save_card_screen.dart';
 import 'filter_screen.dart';
@@ -43,10 +43,12 @@ class _SearchJobsScreenState extends State<SearchJobsScreen> {
     super.initState();
   }
 
+  // CompanyModel companyData = CompanyModel();
+
   @override
   Widget build(BuildContext context) {
     var selectedFilterIndex = context.watch<GlobalCubit>().fIndex;
-    var selectedSearchIndex = context.watch<GlobalCubit>().sIndex;
+    var selectedSearchIndex = context.read<GlobalCubit>().sIndex;
     return Scaffold(
         backgroundColor: MyColors.white,
         appBar: PreferredSize(
@@ -223,12 +225,18 @@ class _SearchJobsScreenState extends State<SearchJobsScreen> {
                                             itemCount: state.jobPosList.length,
                                             itemBuilder: (c, i) {
                                               var data = state.jobPosList[i];
+                                              context
+                                                  .read<JobPositionBloc>()
+                                                  .jobModel = data;
                                               return Padding(
                                                   padding: const EdgeInsets
                                                           .symmetric(
                                                       vertical: 7,
                                                       horizontal: 5),
                                                   child: SearchJobTile(
+                                                      companyModel: context
+                                                          .read<CompanyBloc>()
+                                                          .companyModel,
                                                       jobPosModel: data));
                                             });
                                       }
@@ -244,18 +252,22 @@ class _SearchJobsScreenState extends State<SearchJobsScreen> {
                                   : BlocBuilder<CompanyBloc, CompanyState>(
                                       builder: (context, state) {
                                       if (state is CompanyLoaded) {
+                                        var companyData =
+                                            context.read<CompanyBloc>();
                                         return ListView.builder(
                                             shrinkWrap: true,
                                             itemCount: state.companyList.length,
                                             itemBuilder: (c, i) {
-                                              var data = state.companyList[i];
+                                              companyData.companyModel =
+                                                  state.companyList[i];
                                               return Padding(
                                                 padding:
                                                     const EdgeInsets.symmetric(
                                                         vertical: 7,
                                                         horizontal: 5),
                                                 child: AssignCompaniesTile(
-                                                    companyModel: data
+                                                    companyModel:
+                                                        companyData.companyModel
                                                     // leadingImage:
                                                     //     MyImages.businessAndTrade,
                                                     // title: "Ford",

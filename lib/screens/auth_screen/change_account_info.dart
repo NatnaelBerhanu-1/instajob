@@ -61,7 +61,6 @@ class _ChangeAccInfoScreenState extends State<ChangeAccInfoScreen> {
   @override
   void initState() {
     update();
-
     super.initState();
   }
 

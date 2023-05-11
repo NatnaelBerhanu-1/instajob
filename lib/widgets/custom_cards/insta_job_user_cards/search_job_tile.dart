@@ -1,23 +1,29 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:insta_job/model/company_model.dart';
 import 'package:insta_job/model/job_position_model.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/job_opening/job_position_screen.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
-import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 
 class SearchJobTile extends StatelessWidget {
   final JobPosModel jobPosModel;
-  const SearchJobTile({Key? key, required this.jobPosModel}) : super(key: key);
+  final CompanyModel companyModel;
+  const SearchJobTile(
+      {Key? key, required this.jobPosModel, required this.companyModel})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        AppRoutes.push(context, JobPositionScreen(jobPosModel: jobPosModel));
+        AppRoutes.push(
+            context,
+            JobPositionScreen(
+                jobPosModel: jobPosModel, companyModel: companyModel));
       },
       child: Container(
           decoration: BoxDecoration(
@@ -122,12 +128,15 @@ class SearchJobTile extends StatelessWidget {
                   ],
                 ),
                 Spacer(),
-                ImageButton(
-                  image: MyImages.fav,
-                  color: MyColors.grey,
-                  padding: EdgeInsets.zero,
-                  height: 20,
-                  width: 20,
+                IconButton(
+                  onPressed: () {},
+                  icon: Icon(
+                      jobPosModel.jobStatus == 1
+                          ? Icons.favorite
+                          : Icons.favorite_border,
+                      color: jobPosModel.jobStatus == 1
+                          ? MyColors.lightRed
+                          : MyColors.grey),
                 ),
                 SizedBox(width: 15),
               ],

@@ -82,4 +82,5 @@ class MyImages {
   static String resumeImg = "$baseUrl/resume_img.png";
   static String welcomeLogo = "$baseUrl/welcom_logo.png";
   static String sCurve = "$baseUrl/s_curve.png";
+  static String download = "$baseUrl/download.png";
 }

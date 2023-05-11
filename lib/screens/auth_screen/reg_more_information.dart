@@ -8,6 +8,7 @@ import 'package:insta_job/bloc/choose_image_bloc/pick_image_state.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/screens/auth_screen/verify_code_screen.dart';
 import 'package:insta_job/screens/insta_recruit/user_type_screen.dart';
+import 'package:insta_job/screens/insta_recruit/welcome_screen.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
@@ -35,6 +36,9 @@ class _RegMoreInfoScreenState extends State<RegMoreInfoScreen> {
       appBar: PreferredSize(
           preferredSize: Size(double.infinity, kToolbarHeight),
           child: CustomAppBar(
+            onTap: () {
+              AppRoutes.pushAndRemoveUntil(context, WelcomeScreen());
+            },
             title: "",
           )),
       body: Padding(

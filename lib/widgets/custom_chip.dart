@@ -82,3 +82,20 @@ class CustomSearchChip extends StatelessWidget {
     );
   }
 }
+
+class CustomGesture extends StatelessWidget {
+  final Widget child;
+  final VoidCallback onTap;
+  const CustomGesture({Key? key, required this.child, required this.onTap})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ActionChip(
+      onPressed: onTap,
+      label: child,
+      pressElevation: 0,
+      backgroundColor: MyColors.white,
+    );
+  }
+}

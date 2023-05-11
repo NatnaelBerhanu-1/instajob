@@ -83,10 +83,9 @@ class _CustomDialogState extends State<CustomDialog> {
                             context.read<GlobalCubit>().changeIndex(index);
                             Navigator.pop(context);
                           },
-                      bgColor:
-                          selectedIndex == 1 ? MyColors.blue : MyColors.white,
-                      borderColor:
-                          selectedIndex == 1 ? MyColors.white : MyColors.blue,
+                      // bgColor:
+                      //     selectedIndex == 1 ? MyColors.blue : MyColors.white,
+                      borderColor: MyColors.blue,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                             vertical: 12.0, horizontal: 30),
@@ -108,10 +107,9 @@ class _CustomDialogState extends State<CustomDialog> {
                             context.read<GlobalCubit>().changeIndex(index);
                             Navigator.pop(context);
                           },
-                      bgColor:
-                          selectedIndex == 2 ? MyColors.blue : MyColors.white,
-                      borderColor:
-                          selectedIndex == 2 ? MyColors.white : MyColors.blue,
+                      // bgColor:
+                      //     selectedIndex == 2 ? MyColors.blue : MyColors.white,
+                      borderColor: MyColors.blue,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                             vertical: 12.0, horizontal: 30),

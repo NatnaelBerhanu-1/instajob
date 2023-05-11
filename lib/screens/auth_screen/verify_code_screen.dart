@@ -15,25 +15,8 @@ import '../../widgets/custom_button/custom_btn.dart';
 import '../../widgets/custom_cards/custom_common_card.dart';
 
 class VerifyCodeScreen extends StatefulWidget {
-  final String? verificationId;
-  final String? phone;
-  final String? email;
-  final bool? isLogin;
-  final bool? isEmail;
-  final String? userType;
-  final String? id;
-  final String? dialCode;
-  const VerifyCodeScreen({
-    Key? key,
-    this.verificationId,
-    this.phone,
-    this.isLogin,
-    this.isEmail,
-    this.email,
-    this.userType,
-    this.id,
-    this.dialCode,
-  }) : super(key: key);
+  final bool isForgotPassword;
+  const VerifyCodeScreen({super.key, this.isForgotPassword = false});
 
   @override
   State<VerifyCodeScreen> createState() => _VerifyCodeScreenState();
@@ -127,7 +110,6 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
                 // Spacer(),
                 BlocBuilder<AuthCubit, AuthInitialState>(
                     builder: (context, state) {
-                  var authData = context.read<AuthCubit>();
                   return CustomIconButton(
                     image: MyImages.arrowWhite,
                     title: "Enter Code",
@@ -136,20 +118,7 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
                     borderColor: MyColors.blue,
                     iconColor: MyColors.white,
                     onclick: () {
-                      if (userType == "user") {
-                        if (authData.isSocialAuth) {
-                          authData.registerEmp(isUser: true);
-                        } else {
-                          SocialAuth.emailAndPass(context, isUser: true);
-                        }
-                      } else {
-                        if (authData.isSocialAuth) {
-                          authData.registerEmp();
-                        } else {
-                          SocialAuth.emailAndPass(context);
-                        }
-                      }
-                      // AppRoutes.push(context, SetPassword());
+                      onSubmit();
                     },
                   );
                 }),
@@ -159,5 +128,25 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
             ),
           ),
         ));
+  }
+
+  onSubmit() {
+    var authData = context.read<AuthCubit>();
+    if (widget.isForgotPassword) {
+    } else {
+      if (userType == "user") {
+        if (authData.isSocialAuth) {
+          authData.registerEmp(isUser: true);
+        } else {
+          SocialAuth.emailAndPass(context, isUser: true);
+        }
+      } else {
+        if (authData.isSocialAuth) {
+          authData.registerEmp();
+        } else {
+          SocialAuth.emailAndPass(context);
+        }
+      }
+    }
   }
 }

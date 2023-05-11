@@ -108,7 +108,6 @@ class AuthRepository {
         "email": Global.userModel?.email,
         "date": dOB,
         "phone_number": phoneNumber,
-        "password": "123456",
         "upload_photo": profilePhoto
       };
       Response response =
@@ -146,6 +145,42 @@ class AuthRepository {
     try {
       var map = {"id": Global.userModel?.id};
       Response response = await dioClient.post(data: map, uri: EndPoint.logout);
+      return ApiResponse.withSuccess(response);
+    } on DioError catch (e) {
+      return ApiResponse.withError(e.response);
+    }
+  }
+
+  /// SEND CODE
+  Future<ApiResponse> sendCodeOnEmail({required String email}) async {
+    try {
+      var map = {"email": email};
+      Response response =
+          await dioClient.post(data: map, uri: EndPoint.sendCode);
+      return ApiResponse.withSuccess(response);
+    } on DioError catch (e) {
+      return ApiResponse.withError(e.response);
+    }
+  }
+
+  Future<ApiResponse> checkEmailVerificationCode(
+      {required String email, required String code}) async {
+    try {
+      var map = {"email": email, "code": code};
+      Response response =
+          await dioClient.post(data: map, uri: EndPoint.checkVerificationCode);
+      return ApiResponse.withSuccess(response);
+    } on DioError catch (e) {
+      return ApiResponse.withError(e.response);
+    }
+  }
+
+  /// RESEND CODE
+  Future<ApiResponse> resendCode({required String email}) async {
+    try {
+      var map = {"email": email};
+      Response response =
+          await dioClient.post(data: map, uri: EndPoint.reSendCode);
       return ApiResponse.withSuccess(response);
     } on DioError catch (e) {
       return ApiResponse.withError(e.response);

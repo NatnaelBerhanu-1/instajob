@@ -7,8 +7,11 @@ class EndPoint {
   /// Common api's
   static String checkUser = "check_user";
   static String logout = "logout";
+  static String sendCode = "forgotpassword";
+  static String reSendCode = "resendpassword";
+  static String checkVerificationCode = "";
 
-  /// EMPLOYEE INTERFACE
+  /// ------- EMPLOYEE INTERFACE -------- ///
 
   /// base64
   static String base64 = "base64";
@@ -29,11 +32,15 @@ class EndPoint {
   static String editJobPosition = "edit_of_jobposition";
   static String saveJob = "save_job";
   static String insertSaveJob = "insert_savejob";
+  static String deleteJobPosition = "delete_jobposition";
+
+  /// Apply Job
+  static String applyForJob = "apply";
 
   /// feedBack
   static String feedbackInsert = "feedback_insert";
 
-  /// USER INTERFACE
+  /// -------  USER INTERFACE -------  ///
 
   /// auth
   static String loginUser = "login";

@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/auth_bloc/auth_cubit.dart';
+import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
 import 'package:insta_job/globals.dart';
 
 class SocialAuth {
@@ -38,6 +39,8 @@ class SocialAuth {
       context
           .read<AuthCubit>()
           .login(email: email, password: password, isUser: isUser);
+      context.read<GlobalCubit>().changeIndex(1);
+      print(" @@@@@@ ${context.read<GlobalCubit>().sIndex}");
       // context.read<CompanyBloc>().add(LoadCompanyListEvent());
     }).catchError((e) {
       print("!!!!!! ${e.code}");
@@ -47,6 +50,9 @@ class SocialAuth {
           break;
         case "wrong-password":
           showToast("Invalid email and password");
+          break;
+        case "too-many-request":
+          showToast("Try it after few minutes");
       }
     });
   }

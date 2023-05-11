@@ -73,7 +73,7 @@ Widget buildTopSkillsTile(JobPosModel jobPosModel) {
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
-              children: List.generate(jobPosModel.topskills!.length, (index) {
+              children: List.generate(jobPosModel.topSkills!.length, (index) {
                 // print("TOPPPPPPPPPPPPPPPPP ${jobPosModel.topskills?[index]}");
                 return Padding(
                   padding: const EdgeInsets.all(4.0),
@@ -83,7 +83,7 @@ Widget buildTopSkillsTile(JobPosModel jobPosModel) {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: CommonText(
-                        text: jobPosModel.topskills?[index],
+                        text: jobPosModel.topSkills?[index],
                         fontColor: MyColors.blue,
                         fontSize: 13,
                       ),
@@ -117,7 +117,7 @@ Widget buildResponsibilityTile(JobPosModel jobPosModel) {
               SizedBox(width: 7),
               Expanded(
                 child: CommonText(
-                  text: jobPosModel.responsilibites,
+                  text: jobPosModel.responsibilities,
                   fontSize: 13,
                   fontColor: MyColors.grey,
                 ),

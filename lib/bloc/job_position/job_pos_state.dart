@@ -25,3 +25,9 @@ class JobErrorState extends JobPosState {
   @override
   List<Object?> get props => [];
 }
+
+class JobAppliedSuccessState extends JobPosState {
+  const JobAppliedSuccessState();
+  @override
+  List<Object?> get props => [];
+}
