@@ -2,6 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
+import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
+import 'package:insta_job/bloc/job_position/job_pos_event.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/screens/insta_job_user/bottom_nav_screen/search_pages/search_jobs_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/notification_pages/interviews_screen.dart';
@@ -31,12 +34,6 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
   ];
 
   @override
-  void initState() {
-    context.read<CompanyBloc>().add(LoadCompanyListEvent());
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     var bottomBloc = context.read<BottomBloc>();
     return BlocBuilder<BottomBloc, BottomInitialState>(
@@ -53,8 +50,11 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
               children: [
                 buildColumn(
                   onTap: () {
+                    context.read<GlobalCubit>().changeIndex(1);
                     bottomBloc.add(SetScreenEvent(false));
                     bottomBloc.add(GetIndexEvent(0));
+                    context.read<CompanyBloc>().add(LoadCompanyListEvent());
+                    context.read<JobPositionBloc>().add(LoadJobPosListEvent());
                   },
                   index: 0,
                   selectedIndex: bottomBloc.currentIndex,

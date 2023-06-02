@@ -128,6 +128,7 @@ class CustomTextField extends StatelessWidget {
   final int? maxLength;
   final TextEditingController? controller;
   final bool? autofocus;
+  final TextCapitalization? textCapitalization;
   final FormFieldValidator<String>? validator;
   final List<TextInputFormatter>? inputFormatter;
   final ValueChanged? onChanged;
@@ -156,6 +157,7 @@ class CustomTextField extends StatelessWidget {
     this.maxLength,
     this.suffixIcon,
     this.borderRadius,
+    this.textCapitalization,
   }) : super(key: key);
 
   @override
@@ -187,6 +189,7 @@ class CustomTextField extends StatelessWidget {
           inputFormatters: inputFormatter,
           maxLength: maxLength,
           controller: controller,
+          textCapitalization: textCapitalization ?? TextCapitalization.none,
           autofocus: autofocus!,
           obscureText: obscureText ?? false,
           cursorColor: MyColors.black,

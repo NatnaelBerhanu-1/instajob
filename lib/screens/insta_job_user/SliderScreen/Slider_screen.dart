@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, sort_child_properties_last
 
 import 'package:flutter/material.dart';
+import 'package:insta_job/screens/insta_job_user/SliderScreen/skills_screen.dart';
 import 'package:insta_job/screens/insta_job_user/SliderScreen/tellus_about_yslf_page.dart';
 import 'package:insta_job/screens/insta_job_user/SliderScreen/work_experience_screen.dart';
 import 'package:insta_job/utils/my_colors.dart';
@@ -56,7 +57,7 @@ class _SliderScreenState extends State<SliderScreen> {
                 child: PageView(
                   allowImplicitScrolling: true,
                   scrollDirection: Axis.horizontal,
-                  // physics: NeverScrollableScrollPhysics(),
+                  physics: NeverScrollableScrollPhysics(),
                   children: [
                     TellUsAboutYSlfPage(
                       onTap: () {
@@ -66,40 +67,43 @@ class _SliderScreenState extends State<SliderScreen> {
                             duration: Duration(seconds: 1), curve: Curves.ease);
                       },
                     ),
-                    PageView(
-                      allowImplicitScrolling: true,
-                      scrollDirection: Axis.horizontal,
-                      // physics: NeverScrollableScrollPhysics(),
-                      controller: c,
-                      onPageChanged: (val) {
-                        sIndex = val;
-                        print("WWWW => $val");
-                        setState(() {});
+                    EducationScreen(
+                      pageController: pageController,
+                      onSkipTap: () {
+                        sIndex = 1;
                       },
-                      children: [
-                        EducationScreen(
-                          pageController: pageController,
-                          onSkipTap: () {
-                            sIndex = 1;
-                          },
-                        ),
-                        EducationScreen(
-                          // isWork: true,
-                          pageController: pageController,
-                          onSkipTap: () {
-                            sIndex = 1;
-                          },
-                        ),
-                      ],
+                      onContinueTap: () {
+                        pageController.animateToPage(2,
+                            duration: Duration(seconds: 1), curve: Curves.ease);
+                      },
                     ),
-                    // EducationScreen(
-                    //   pageController: pageController,
-                    //   onSkipTap: () {
-                    //     sIndex = 1;
+                    EducationScreen(
+                      pageController: pageController,
+                      isWork: true,
+                      onSkipTap: () {
+                        sIndex = 1;
+                      },
+                      onContinueTap: () {
+                        pageController.animateToPage(3,
+                            duration: Duration(seconds: 1), curve: Curves.ease);
+                      },
+                    ),
+                    // PageView(
+                    //   allowImplicitScrolling: true,
+                    //   scrollDirection: Axis.horizontal,
+                    //   // physics: NeverScrollableScrollPhysics(),
+                    //   controller: c,
+                    //   onPageChanged: (val) {
+                    //     sIndex = val;
+                    //     print("WWWW => $val");
+                    //     setState(() {});
                     //   },
+                    //   children: [
+                    //
+                    //   ],
                     // ),
-                    Container(),
-                    Container(),
+
+                    SkillsScreen(pageController: pageController)
                   ],
                   controller: pageController,
                   onPageChanged: (val) {

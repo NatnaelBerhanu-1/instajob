@@ -136,13 +136,13 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
     } else {
       if (userType == "user") {
         if (authData.isSocialAuth) {
-          authData.registerEmp(isUser: true);
+          authData.registerData(isUser: true);
         } else {
           SocialAuth.emailAndPass(context, isUser: true);
         }
       } else {
         if (authData.isSocialAuth) {
-          authData.registerEmp();
+          authData.registerData();
         } else {
           SocialAuth.emailAndPass(context);
         }

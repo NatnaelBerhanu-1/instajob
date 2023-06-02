@@ -22,7 +22,7 @@ class SocialAuth {
         .createUserWithEmailAndPassword(
             email: data.email, password: data.password)
         .then((value) {
-      context.read<AuthCubit>().registerEmp(isUser: isUser);
+      context.read<AuthCubit>().registerData(isUser: isUser);
       // context.read<CompanyBloc>().add(LoadCompanyListEvent());
     }).catchError((e) {
       showToast(e.message);

@@ -47,13 +47,30 @@ class GlobalCubit extends Cubit<InitialState> {
   String jobTypeValue = "";
   jobType(String val) {
     jobTypeValue = val;
+    print("JOB TYPE $jobTypeValue");
     emit(JobTypeState(jobTypeValue));
+  }
+
+  /// Filter Value
+  String sortByValue = '';
+  sortBy(String val) {
+    sortByValue = val;
+    print("SORT BY $sortByValue");
+    emit(JobTypeState(sortByValue));
+  }
+
+  String durationValue = '';
+  duration(String val) {
+    durationValue = val;
+    print("DURATION $durationValue");
+    emit(JobTypeState(durationValue));
   }
 
   /// Experience level
   String experienceLevelVal = "";
   experienceLevel(String val) {
     experienceLevelVal = val;
+    print("EXPERIENCE $experienceLevelVal");
     emit(JobTypeState(experienceLevelVal));
   }
 

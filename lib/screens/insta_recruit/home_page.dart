@@ -10,7 +10,7 @@ import 'package:insta_job/bloc/job_position/job_pos_state.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/network/end_points.dart';
 import 'package:insta_job/screens/auth_screen/change_account_info.dart';
-import 'package:insta_job/screens/insta_job_user/SliderScreen/Slider_screen.dart';
+import 'package:insta_job/screens/boading_screen/boarding_screen.dart';
 import 'package:insta_job/screens/insta_job_user/bottom_nav_screen/user_account/save_jobs/save_jobs_screen.dart';
 import 'package:insta_job/screens/insta_job_user/career_cluster_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/user_account/automate_messages/automate_message_screen.dart';
@@ -23,7 +23,6 @@ import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:insta_job/widgets/user_tile/custom_acc_details.dart';
 
 import '../../bloc/global_cubit/global_state.dart';
-import '../../widgets/custom_chip.dart';
 import 'bottom_navigation_screen/user_account/feedback/feedback_screen.dart';
 
 class HomePage extends StatefulWidget {
@@ -146,7 +145,7 @@ class _HomePageState extends State<HomePage> {
                                   context
                                       .read<GlobalCubit>()
                                       .changeIndex(index);
-                                  AppRoutes.push(context, SliderScreen());
+                                  AppRoutes.push(context, OnBoardingScreen());
                                 },
                                 index: 0,
                                 selectedIndex: selectedIndex,

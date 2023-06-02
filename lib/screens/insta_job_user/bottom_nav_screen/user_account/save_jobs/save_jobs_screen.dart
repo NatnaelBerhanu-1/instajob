@@ -39,6 +39,7 @@ class _SaveJobsScreenState extends State<SaveJobsScreen> {
                         child: TabBar(
                             unselectedLabelColor: MyColors.tabClr,
                             labelColor: MyColors.blue,
+                            indicatorColor: MyColors.blue,
                             tabs: [
                               Tab(text: "Saved"),
                               Tab(text: "Applied"),

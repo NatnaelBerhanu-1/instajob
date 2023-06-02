@@ -6,6 +6,7 @@ import 'package:insta_job/bloc/auth_bloc/auth_cubit.dart';
 import 'package:insta_job/bloc/auth_bloc/auth_state.dart';
 import 'package:insta_job/dialog/custom_dialog.dart';
 import 'package:insta_job/globals.dart';
+import 'package:insta_job/network/end_points.dart';
 import 'package:insta_job/screens/auth_screen/change_account_info.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/user_account/setting_pages/save_card_screen.dart';
 import 'package:insta_job/screens/insta_recruit/membership_screen.dart';
@@ -37,6 +38,23 @@ class _SettingScreenState extends State<SettingScreen> {
               leadingImage: MyImages.arrowBlueLeft,
               height: 17,
               width: 17,
+              actions: Global.userModel?.uploadPhoto == null
+                  ? SizedBox()
+                  : Padding(
+                      padding:
+                          const EdgeInsets.only(top: 5.0, right: 10, bottom: 5),
+                      child: Container(
+                        height: 50,
+                        width: 50,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          image: DecorationImage(
+                              image: NetworkImage(
+                                  "${EndPoint.imageBaseUrl}${Global.userModel?.uploadPhoto}"),
+                              fit: BoxFit.cover),
+                        ),
+                      ),
+                    ),
             )),
         body: Padding(
           padding: const EdgeInsets.all(20.0),

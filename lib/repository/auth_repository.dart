@@ -12,7 +12,7 @@ class AuthRepository {
   AuthRepository({required this.dioClient});
 
   /// EMPLOYEE REGISTRATION
-  Future<ApiResponse> empRegister({
+  Future<ApiResponse> registerData({
     String? name,
     String? email,
     String? password,
@@ -60,7 +60,7 @@ class AuthRepository {
   }
 
   /// EMPLOYEE LOGIN
-  Future<ApiResponse> empLogin({
+  Future<ApiResponse> loginData({
     String? email,
     String? password,
     bool isUser = false,

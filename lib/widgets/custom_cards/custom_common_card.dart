@@ -82,8 +82,8 @@ class CommonText extends StatelessWidget {
 
 jobTypeTile(
     {String? title,
-    String? index,
-    String? selectedIndex,
+    String? value,
+    String? selectedValue,
     VoidCallback? onTap}) {
   return GestureDetector(
     onTap: onTap,
@@ -96,10 +96,10 @@ jobTypeTile(
           CommonText(
             padding: true,
             text: "$title",
-            fontSize: 12,
-            fontColor: index == selectedIndex ? MyColors.blue : MyColors.grey,
+            fontSize: 13,
+            fontColor: value == selectedValue ? MyColors.blue : MyColors.grey,
           ),
-          index == selectedIndex
+          value == selectedValue
               ? ImageButton(
                   image: MyImages.verified,
                   padding: EdgeInsets.zero,

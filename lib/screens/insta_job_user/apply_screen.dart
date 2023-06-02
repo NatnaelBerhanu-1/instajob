@@ -1,5 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:isolate';
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
@@ -28,6 +31,33 @@ class ApplyScreen extends StatefulWidget {
 }
 
 class _ApplyScreenState extends State<ApplyScreen> {
+  final ReceivePort _port = ReceivePort();
+   void downloadCallback(String id, DownloadTaskStatus status, int progress) {
+    final SendPort? send = IsolateNameServer.lookupPortByName('downloader_send_port');
+    send?.send([id, status, progress]);
+  }
+  @override
+  void initState() {
+    super.initState();
+
+    IsolateNameServer.registerPortWithName(_port.sendPort, 'downloader_send_port');
+    _port.listen((dynamic data) {
+      String id = data[0];
+      DownloadTaskStatus status = DownloadTaskStatus(data[1]);
+      int progress = data[2];
+      print("QQQWWWW-->  $data");
+      setState((){ });
+    });
+
+    FlutterDownloader.registerCallback(downloadCallback);
+  }
+
+  @override
+  void dispose() {
+    IsolateNameServer.removePortNameMapping('downloader_send_port');
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,15 +70,16 @@ class _ApplyScreenState extends State<ApplyScreen> {
               onTap: () async {
                 final pdfStorage = await getApplicationDocumentsDirectory();
 
-                await FlutterDownloader.enqueue(
+                /*await FlutterDownloader.enqueue(
                   url: "${EndPoint.imageBaseUrl}${Global.userModel?.cv}",
                   headers: {}, // optional: header send with url (auth token etc)
                   savedDir: pdfStorage.path,
+                  saveInPublicStorage: true,
                   showNotification:
                       true, // show download progress in status bar (for Android)
                   openFileFromNotification:
                       true, // click on notification to open downloaded file (for Android)
-                );
+                );*/
                 // Global().openPdf(
                 //     context,
                 //     "${EndPoint.imageBaseUrl}${Global.userModel?.cv}",

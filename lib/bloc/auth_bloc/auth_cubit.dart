@@ -53,9 +53,9 @@ class AuthCubit extends Cubit<AuthInitialState> {
     print("cv: $cv");
   }
 
-  registerEmp({bool isUser = false}) async {
+  registerData({bool isUser = false}) async {
     emit(AuthLoadingState());
-    ApiResponse response = await authRepository.empRegister(
+    ApiResponse response = await authRepository.registerData(
         name: userName,
         email: email,
         password: password,
@@ -100,7 +100,7 @@ class AuthCubit extends Cubit<AuthInitialState> {
     bool isUser = false,
   }) async {
     emit(AuthLoadingState());
-    ApiResponse response = await authRepository.empLogin(
+    ApiResponse response = await authRepository.loginData(
         email: email, password: password, isUser: isUser);
     if (response.response.statusCode == 500) {
       emit(ErrorState("Something went wrong"));

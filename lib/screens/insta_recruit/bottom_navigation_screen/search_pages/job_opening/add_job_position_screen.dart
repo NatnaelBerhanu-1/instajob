@@ -341,6 +341,8 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                                     child: CustomTextField(
                                       controller: topSkills,
                                       hint: "",
+                                      textCapitalization:
+                                          TextCapitalization.words,
                                       // validator: (val) =>
                                       //     validate.requiredValidation(
                                       //         val!, "Skills"),
@@ -502,56 +504,43 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                                   children: [
                                     jobTypeTile(
                                       title: "Full Time",
-                                      index: value.jobTypeValue,
-                                      selectedIndex: "Full Time",
+                                      value: value.jobTypeValue,
+                                      selectedValue: "Full Time",
                                       onTap: () {
                                         // validate.checkBoxValue();
                                         value.jobType("Full Time");
-                                        print(
-                                            "JOB VALUE ${value.jobTypeValue}");
                                       },
                                     ),
                                     divider(
                                         color: MyColors.grey.withOpacity(.40)),
                                     jobTypeTile(
                                       title: "Part Time",
-                                      index: value.jobTypeValue,
-                                      selectedIndex: "Part Time",
+                                      value: value.jobTypeValue,
+                                      selectedValue: "Part Time",
                                       onTap: () {
-                                        // validate.checkBoxValue();
                                         value.jobType("Part Time");
-                                        print(
-                                            "JOB VALUE ${value.jobTypeValue}");
                                       },
                                     ),
                                     divider(
                                         color: MyColors.grey.withOpacity(.40)),
                                     jobTypeTile(
                                       title: "Contact",
-                                      index: value.jobTypeValue,
-                                      selectedIndex: "Contact",
+                                      value: value.jobTypeValue,
+                                      selectedValue: "Contact",
                                       onTap: () {
-                                        // validate.checkBoxValue();
                                         value.jobType("Contact");
-                                        print(
-                                            "JOB VALUE ${value.jobTypeValue}");
                                       },
                                     ),
-
                                     divider(
                                         color: MyColors.grey.withOpacity(.40)),
                                     jobTypeTile(
                                       title: "Temporary",
-                                      index: value.jobTypeValue,
-                                      selectedIndex: "Temporary",
+                                      value: value.jobTypeValue,
+                                      selectedValue: "Temporary",
                                       onTap: () {
-                                        // validate.checkBoxValue();
                                         value.jobType("Temporary");
-                                        print(
-                                            "JOB VALUE ${value.jobTypeValue}");
                                       },
                                     ),
-                                    // divider(color: MyColors.grey.withOpacity(.40)),
                                   ],
                                 ),
                               ),
@@ -567,37 +556,31 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                                   children: [
                                     jobTypeTile(
                                       title: "All Experience Level",
-                                      index: value.experienceLevelVal,
-                                      selectedIndex: "All Experience Level",
+                                      value: value.experienceLevelVal,
+                                      selectedValue: "All Experience Level",
                                       onTap: () {
                                         value.experienceLevel(
                                             "All Experience Level");
-                                        print(
-                                            "JOB VALUE ${value.experienceLevelVal}");
                                       },
                                     ),
                                     divider(
                                         color: MyColors.grey.withOpacity(.40)),
                                     jobTypeTile(
                                       title: "Entry Level",
-                                      index: value.experienceLevelVal,
-                                      selectedIndex: "Enter Level",
+                                      value: value.experienceLevelVal,
+                                      selectedValue: "Enter Level",
                                       onTap: () {
                                         value.experienceLevel("Enter Level");
-                                        print(
-                                            "JOB VALUE ${value.experienceLevelVal}");
                                       },
                                     ),
                                     divider(
                                         color: MyColors.grey.withOpacity(.40)),
                                     jobTypeTile(
                                       title: "Mid Level",
-                                      index: value.experienceLevelVal,
-                                      selectedIndex: "Mid Level",
+                                      value: value.experienceLevelVal,
+                                      selectedValue: "Mid Level",
                                       onTap: () {
                                         value.experienceLevel("Mid Level");
-                                        print(
-                                            "JOB VALUE ${value.experienceLevelVal}");
                                       },
                                     ),
 
@@ -605,12 +588,10 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                                         color: MyColors.grey.withOpacity(.40)),
                                     jobTypeTile(
                                       title: "Senior Level",
-                                      index: value.experienceLevelVal,
-                                      selectedIndex: "Senior Level",
+                                      value: value.experienceLevelVal,
+                                      selectedValue: "Senior Level",
                                       onTap: () {
                                         value.experienceLevel("Senior Level");
-                                        print(
-                                            "JOB VALUE ${value.experienceLevelVal}");
                                       },
                                     ),
                                     // divider(color: MyColors.grey.withOpacity(.40)),
