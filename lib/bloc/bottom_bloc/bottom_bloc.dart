@@ -10,6 +10,7 @@ import 'package:insta_job/globals.dart';
 import 'package:insta_job/model/user_model.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/bottom_navigation_screen.dart';
 import 'package:insta_job/screens/insta_recruit/user_type_screen.dart';
+import 'package:insta_job/screens/insta_recruit/welcome_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class BottomBloc extends Bloc<BottomEvent, BottomInitialState> {
@@ -61,11 +62,21 @@ class BottomBloc extends Bloc<BottomEvent, BottomInitialState> {
                 MaterialPageRoute(builder: (_) => const BottomNavScreen()),
                 (route) => false));
       } else {
-        Timer(
-            const Duration(seconds: 1),
-            () => navigationKey.currentState?.pushAndRemoveUntil(
-                MaterialPageRoute(builder: (_) => const UserTypeScreen()),
-                (route) => false));
+        var type = pref.getString("type");
+        print("TYPEEEEEEEEEEEEEEEEEE  $type");
+        if (type != null) {
+          Timer(
+              const Duration(seconds: 1),
+              () => navigationKey.currentState?.pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (_) => const WelcomeScreen()),
+                  (route) => false));
+        } else {
+          Timer(
+              const Duration(seconds: 1),
+              () => navigationKey.currentState?.pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (_) => const UserTypeScreen()),
+                  (route) => false));
+        }
       }
     });
   }

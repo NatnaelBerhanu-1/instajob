@@ -73,6 +73,9 @@ class _SaveJobsScreenState extends State<SaveJobsScreen> {
                               ),
                             )
                           ],
+                          if (state is JobErrorState) ...[
+                            Center(child: Text(state.error))
+                          ],
                           if (state is JobPosLoading) ...[
                             Center(child: CircularProgressIndicator()),
                           ],

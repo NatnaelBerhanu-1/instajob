@@ -23,6 +23,8 @@ class SocialAuth {
             email: data.email, password: data.password)
         .then((value) {
       context.read<AuthCubit>().registerData(isUser: isUser);
+      context.read<GlobalCubit>().changeIndex(1);
+      print(" @@@@@@ ${context.read<GlobalCubit>().sIndex}");
       // context.read<CompanyBloc>().add(LoadCompanyListEvent());
     }).catchError((e) {
       showToast(e.message);

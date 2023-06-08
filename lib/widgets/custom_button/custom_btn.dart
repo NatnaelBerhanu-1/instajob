@@ -141,7 +141,10 @@ class CustomIconButton extends StatelessWidget {
 
 class DottedButton extends StatelessWidget {
   final VoidCallback? onTap;
-  const DottedButton({Key? key, this.onTap}) : super(key: key);
+  final String? title;
+  final Color? bgColor;
+  const DottedButton({Key? key, this.onTap, this.title, this.bgColor})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -157,13 +160,13 @@ class DottedButton extends StatelessWidget {
         child: Container(
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
-              color: Colors.blue.shade50,
+              color: bgColor ?? Colors.blue.shade50,
               borderRadius: BorderRadius.circular(5)),
           child: Padding(
             padding: const EdgeInsets.all(18.0),
             child: Center(
               child: CommonText(
-                text: "Add New Card",
+                text: title ?? "Add New Card",
                 fontColor: MyColors.blue,
               ),
             ),

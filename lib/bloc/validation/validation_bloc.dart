@@ -29,6 +29,13 @@ class ValidationCubit extends Cubit<InitialValidation> {
   }
 }
 
+String? requiredValidationn(String s) {
+  if (s.isEmpty || s == "") {
+    return "*";
+  }
+  return null;
+}
+
 String? emailValidation(String s) {
   RegExp pattern = RegExp(r'^.+@[a-zA-Z]+\.[a-zA-Z]+(\.?[a-zA-Z]+)$');
   if (s.isEmpty) {

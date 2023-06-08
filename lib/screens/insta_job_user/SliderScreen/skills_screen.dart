@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
 import 'package:insta_job/bloc/global_cubit/global_state.dart';
+import 'package:insta_job/bloc/resume_bloc/resume_bloc.dart';
+import 'package:insta_job/bloc/resume_bloc/resume_event.dart';
+import 'package:insta_job/bloc/resume_bloc/resume_state.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
-import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 import 'package:insta_job/widgets/custom_divider.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
 
@@ -40,15 +42,22 @@ class SkillsScreen extends StatelessWidget {
         children: [
           Row(
             children: [
-              ImageButton(
+              GestureDetector(
                 onTap: () {
-                  pageController?.animateToPage(2,
-                      duration: Duration(seconds: 1), curve: Curves.ease);
+                  pageController?.jumpToPage(2);
                 },
-                image: MyImages.arrowBlueLeft,
-                padding: EdgeInsets.zero,
-                height: 17,
-                width: 17,
+                child: Container(
+                  color: MyColors.white,
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.only(right: 10.0, top: 8, bottom: 8),
+                    child: Image.asset(
+                      MyImages.arrowBlueLeft,
+                      height: 17,
+                      width: 17,
+                    ),
+                  ),
+                ),
               ),
               SizedBox(width: 15),
               CommonText(
@@ -66,8 +75,60 @@ class SkillsScreen extends StatelessWidget {
             width: 200,
             fit: BoxFit.cover,
           )),
-          // SizedBox(height: 15),
-
+          SizedBox(height: 15),
+          context.read<GlobalCubit>().skills.isEmpty
+              ? SizedBox()
+              : CustomDivider(
+                  title: "Added",
+                  color: MyColors.black,
+                ),
+          SizedBox(height: 15),
+          BlocBuilder<GlobalCubit, InitialState>(builder: (context, state) {
+            var skillList = context.read<GlobalCubit>();
+            return skillList.skills.isEmpty
+                ? SizedBox()
+                : GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      childAspectRatio: 4 / 1,
+                      mainAxisSpacing: 10,
+                      crossAxisSpacing: 10,
+                    ),
+                    // primary: false,
+                    shrinkWrap: true,
+                    itemCount: skillList.skills.length,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        decoration: BoxDecoration(
+                          color: MyColors.lightBlue.withOpacity(.20),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(5),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              CommonText(
+                                text: skillList.skills[index],
+                                fontColor: MyColors.blue,
+                                fontSize: 13,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  skillList.removeSkill(index);
+                                },
+                                child: Icon(
+                                  Icons.close,
+                                  color: MyColors.red,
+                                  size: 15,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    });
+          }),
           SizedBox(height: 15),
           BlocBuilder<GlobalCubit, InitialState>(builder: (context, state) {
             var skillList = context.read<GlobalCubit>();
@@ -92,7 +153,6 @@ class SkillsScreen extends StatelessWidget {
                           controller: topSkills,
                           hint: "",
                           textCapitalization: TextCapitalization.words,
-
                           // validator: (val) =>
                           //     validate.requiredValidation(
                           //         val!, "Skills"),
@@ -147,60 +207,6 @@ class SkillsScreen extends StatelessWidget {
             color: MyColors.lightRed,
           ),*/
           SizedBox(height: 15),
-          CustomDivider(
-            title: "Added",
-            color: MyColors.black,
-          ),
-          SizedBox(height: 15),
-          BlocBuilder<GlobalCubit, InitialState>(builder: (context, state) {
-            var skillList = context.read<GlobalCubit>();
-            return skillList.skills.isEmpty
-                ? SizedBox()
-                : GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      childAspectRatio: 4 / 1,
-                      mainAxisSpacing: 10,
-                      crossAxisSpacing: 10,
-                    ),
-                    // primary: false,
-                    shrinkWrap: true,
-                    itemCount: skillList.skills.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: MyColors.lightBlue.withOpacity(.20),
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(5),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                CommonText(
-                                  text: skillList.skills[index],
-                                  fontColor: MyColors.blue,
-                                  fontSize: 13,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    skillList.removeSkill(index);
-                                  },
-                                  child: Icon(
-                                    Icons.close,
-                                    color: MyColors.red,
-                                    size: 15,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
-                    });
-          }),
           /*  GridView.builder(
             itemCount: 7,
             shrinkWrap: true,
@@ -213,18 +219,28 @@ class SkillsScreen extends StatelessWidget {
                 crossAxisSpacing: 10,
                 childAspectRatio: 15 / 5),
           ),*/
+          // SizedBox(height: 100),
           CustomButton(
             title: "Skip",
             bgColor: MyColors.white,
             fontColor: MyColors.black,
           ),
-          CustomIconButton(
-            title: "Continue",
-            backgroundColor: MyColors.blue,
-            borderColor: MyColors.blue,
-            image: MyImages.arrowWhite, onclick: () {},
-            // onclick: onContinueTap,
-          ),
+          BlocBuilder<ResumeBloc, ResumeState>(builder: (context, state) {
+            return CustomIconButton(
+              title: "Continue",
+              backgroundColor: MyColors.blue,
+              borderColor: MyColors.blue,
+              image: MyImages.arrowWhite,
+              onclick: () {
+                if (context.read<GlobalCubit>().skills.isNotEmpty) {
+                  context
+                      .read<ResumeBloc>()
+                      .add(AddSkillsEvent(context.read<GlobalCubit>().skills));
+                }
+              },
+              // onclick: onContinueTap,
+            );
+          }),
         ],
       ),
     ));

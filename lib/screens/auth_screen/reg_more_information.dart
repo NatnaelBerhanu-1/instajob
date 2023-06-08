@@ -8,12 +8,12 @@ import 'package:insta_job/bloc/choose_image_bloc/pick_image_state.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/screens/auth_screen/verify_code_screen.dart';
 import 'package:insta_job/screens/insta_recruit/user_type_screen.dart';
-import 'package:insta_job/screens/insta_recruit/welcome_screen.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 import 'package:insta_job/widgets/custom_cards/assign_companies_tile.dart';
 import 'package:intl/intl.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 import '../../utils/my_images.dart';
 import '../../widgets/custom_app_bar.dart';
@@ -37,7 +37,8 @@ class _RegMoreInfoScreenState extends State<RegMoreInfoScreen> {
           preferredSize: Size(double.infinity, kToolbarHeight),
           child: CustomAppBar(
             onTap: () {
-              AppRoutes.pushAndRemoveUntil(context, WelcomeScreen());
+              // AppRoutes.pushAndRemoveUntil(context, WelcomeScreen());
+              Navigator.of(context).pop();
             },
             title: "",
           )),
@@ -85,7 +86,12 @@ class _RegMoreInfoScreenState extends State<RegMoreInfoScreen> {
                     FocusManager.instance.primaryFocus?.unfocus();
                   }
                 },
-                validator: (val) {},
+                onInputChanged: (PhoneNumber number) async {
+                  context.read<AuthCubit>().countryCode = number.dialCode ?? "";
+                  print(
+                      "COUNTRY CODE -->  ${context.read<AuthCubit>().countryCode}");
+                },
+                // validator: (val) {},
               ),
               SizedBox(height: 10),
               Text(
@@ -155,8 +161,16 @@ class _RegMoreInfoScreenState extends State<RegMoreInfoScreen> {
                 );
               }),
               SizedBox(height: 50),
-              BlocBuilder<AuthCubit, AuthInitialState>(
-                  builder: (context, state) {
+              BlocConsumer<AuthCubit, AuthInitialState>(
+                  listener: (context, state) {
+                print("**************************** $state");
+                if (state is ErrorState) {
+                  showToast(state.error);
+                }
+                if (state is CodeSentState) {
+                  AppRoutes.push(context, VerifyCodeScreen());
+                }
+              }, builder: (context, state) {
                 var authData = context.read<AuthCubit>();
                 var image = context.read<PickImageCubit>();
                 return CustomIconButton(
@@ -166,6 +180,7 @@ class _RegMoreInfoScreenState extends State<RegMoreInfoScreen> {
                   fontColor: MyColors.white,
                   borderColor: MyColors.blue,
                   iconColor: MyColors.white,
+                  loading: state is AuthLoadingState ? true : false,
                   onclick: () {
                     if (phone.text.isEmpty ||
                         selectedDate.isEmpty ||
@@ -179,7 +194,7 @@ class _RegMoreInfoScreenState extends State<RegMoreInfoScreen> {
                         authData.profilePic = image.imgUrl;
                         authData.cv = image.cvUrl;
                         authData.getData();
-                        AppRoutes.push(context, VerifyCodeScreen());
+                        authData.verifyPhone(context);
                       } else {
                         showToast("Please enter valid number");
                       }

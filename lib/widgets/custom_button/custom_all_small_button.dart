@@ -30,7 +30,7 @@ class CustomCheckbox extends StatelessWidget {
             value: value,
             // activeColor: MyColors.green,
             // checkColor: MyColors.white,
-            side: BorderSide(color: MyColors.blue, width: 1.2),
+            side: BorderSide(color: MyColors.grey, width: 1.2),
           ),
         ),
         Expanded(child: title!),

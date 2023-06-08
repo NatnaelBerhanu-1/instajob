@@ -12,7 +12,6 @@ import '../utils/my_colors.dart';
 import '../utils/my_images.dart';
 import 'custom_button/custom_img_button.dart';
 import 'custom_cards/custom_common_card.dart';
-import 'custom_chip.dart';
 
 class DeniedCandidateTile extends StatelessWidget {
   const DeniedCandidateTile({Key? key}) : super(key: key);

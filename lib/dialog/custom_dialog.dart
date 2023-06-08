@@ -40,7 +40,7 @@ class _CustomDialogState extends State<CustomDialog> {
   int? index;
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
+    // var size = MediaQuery.of(context).size;
     var selectedIndex = context.watch<GlobalCubit>().sIndex;
     return Dialog(
       insetPadding: EdgeInsets.all(55),
@@ -133,11 +133,34 @@ class _CustomDialogState extends State<CustomDialog> {
   }
 }
 
-buildDialog(context, Widget widget) {
+buildDialog(context, Widget widget, {bool barrierDismissible = false}) {
   return showDialog(
-      barrierDismissible: false,
+      barrierDismissible: barrierDismissible,
       context: context,
       builder: (BuildContext context) {
         return widget;
       });
+}
+
+class YearPickerDialog extends StatelessWidget {
+  final ValueChanged<DateTime> onChange;
+  const YearPickerDialog({Key? key, required this.onChange}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text("Select Year"),
+      content: SizedBox(
+        width: 300,
+        height: 300,
+        child: YearPicker(
+          firstDate: DateTime(DateTime.now().year - 100, 1),
+          lastDate: DateTime(DateTime.now().year),
+          initialDate: DateTime.now(),
+          selectedDate: DateTime.now(),
+          onChanged: onChange,
+        ),
+      ),
+    );
+  }
 }

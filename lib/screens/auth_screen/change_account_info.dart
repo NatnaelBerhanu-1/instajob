@@ -125,7 +125,7 @@ class _ChangeAccInfoScreenState extends State<ChangeAccInfoScreen> {
                     padding: const EdgeInsets.all(15),
                     child: BlocBuilder<ValidationCubit, InitialValidation>(
                         builder: (context, state) {
-                      var validationBloc = context.read<ValidationCubit>();
+                      // var validationBloc = context.read<ValidationCubit>();
 
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

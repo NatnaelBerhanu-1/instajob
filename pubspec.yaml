@@ -40,7 +40,7 @@ dependencies:
   flutter_bloc: ^8.1.1
   equatable: ^2.0.3
   dio: ^5.1.1
-  intl: ^0.17.0
+  intl:
   intl_phone_number_input: ^0.7.3+1
   image_picker: ^0.8.7+1
   flutter_time_picker_spinner: ^2.0.0
@@ -53,7 +53,6 @@ dependencies:
   printing: ^5.10.3
   flutter_downloader: ^1.10.2
   permission_handler: ^10.2.0
-
 
   #auth
   firebase_core: ^2.8.0

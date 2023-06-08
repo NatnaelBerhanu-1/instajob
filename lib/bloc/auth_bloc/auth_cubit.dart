@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:insta_job/bloc/auth_bloc/auth_state.dart';
+import 'package:insta_job/bloc/auth_bloc/social_auth/social_auth.dart';
 import 'package:insta_job/bloc/bottom_bloc/bottom_bloc.dart';
 import 'package:insta_job/bloc/company_bloc/company_event.dart';
 import 'package:insta_job/globals.dart';
@@ -19,6 +20,7 @@ import 'package:insta_job/screens/auth_screen/verify_code_screen.dart';
 import 'package:insta_job/screens/insta_recruit/became_an_employeer.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/bottom_navigation_screen.dart';
 import 'package:insta_job/screens/insta_recruit/membership_screen.dart';
+import 'package:insta_job/screens/insta_recruit/user_type_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../company_bloc/company_bloc.dart';
@@ -38,6 +40,7 @@ class AuthCubit extends Cubit<AuthInitialState> {
   String password = "";
   String website = "";
   String phoneNumber = "";
+  String countryCode = "";
   String profilePic = "";
   String cv = "";
   String dob = "";
@@ -48,6 +51,7 @@ class AuthCubit extends Cubit<AuthInitialState> {
     print("email: $email");
     print("password: $password");
     print("phoneNumber: $phoneNumber");
+    print("countryCode: $countryCode");
     print("profilePic: $profilePic");
     print("website: $website");
     print("cv: $cv");
@@ -77,7 +81,6 @@ class AuthCubit extends Cubit<AuthInitialState> {
       Global.userModel = userModel;
       emit(AuthState(userModel: userModel));
       companyBloc.add(LoadCompanyListEvent());
-
       var agree = sharedPreferences.getBool('isAgree');
       if (agree == true) {
         navigationKey.currentState?.pushAndRemoveUntil(
@@ -121,6 +124,77 @@ class AuthCubit extends Cubit<AuthInitialState> {
       emit(ErrorState("${response.response.data['message']}"));
     }
   }
+
+  /// =================== PHONE AUTH ================== ///
+  String verificationCode = "";
+
+  verifyPhone(BuildContext context) async {
+    emit(AuthLoadingState());
+    await FirebaseAuth.instance.verifyPhoneNumber(
+        phoneNumber: countryCode + phoneNumber,
+        verificationCompleted: (PhoneAuthCredential credential) {
+          _onVerificationCompletedRegister(credential, context);
+          emit(VerificationCompletedState(credential));
+        },
+        verificationFailed: (FirebaseAuthException exception) {
+          emit(ErrorState(exception.message.toString()));
+        },
+        codeSent: (String verificationId, int? resendToken) {
+          verificationCode = verificationId;
+          emit(CodeSentState());
+        },
+        codeAutoRetrievalTimeout: (String verificationId) {
+          verificationCode = verificationId;
+        },
+        timeout: const Duration(seconds: 60));
+    // emit(AuthInitialState());
+  }
+
+  void _onVerificationCompletedRegister(
+      PhoneAuthCredential phoneAuthCredential, BuildContext context) async {
+    FirebaseAuth.instance
+        .signInWithCredential(phoneAuthCredential)
+        .then((value) async {
+      if (value.user != null) {
+        if (userType == "user") {
+          if (isSocialAuth) {
+            registerData(isUser: true);
+          } else {
+            SocialAuth.emailAndPass(context, isUser: true);
+          }
+        } else {
+          if (isSocialAuth) {
+            registerData();
+          } else {
+            SocialAuth.emailAndPass(context);
+          }
+        }
+        // registerData(isUser: userType == "user" ? true : false);
+      }
+    }).catchError((e) {
+      print("@@@@@@@@@ $e");
+      if (e.code == "invalid-verification-code") {
+        emit(ErrorState("Invalid OTP"));
+      } else {
+        emit(ErrorState(e.code.toString().replaceAll("-", " ")));
+      }
+    });
+  }
+
+  validateOTP(String code, BuildContext context,
+      {bool isForgotPassword = false}) async {
+    emit(AuthLoadingState());
+    try {
+      final PhoneAuthCredential credential = PhoneAuthProvider.credential(
+          verificationId: verificationCode, smsCode: code);
+      _onVerificationCompletedRegister(credential, context);
+    } catch (e) {
+      emit(ErrorState(e.toString()));
+      showToast("Invalid OTP");
+    }
+  }
+
+  /// ======================================================== ///
 
   /// UPDATE USER
   updateUserData({

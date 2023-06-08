@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/auth_bloc/auth_cubit.dart';
 import 'package:insta_job/bloc/auth_bloc/auth_state.dart';
-import 'package:insta_job/bloc/auth_bloc/social_auth/social_auth.dart';
-import 'package:insta_job/screens/insta_recruit/user_type_screen.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:pinput/pinput.dart';
 
@@ -58,7 +56,7 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
             child: Column(
               children: [
                 Text(
-                  "Please enter your code found in your email",
+                  "Please enter your code found in your number",
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w400,
@@ -68,7 +66,7 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
                 Pinput(
                   controller: code,
                   autofocus: true,
-                  length: 4,
+                  length: 6,
                   defaultPinTheme: PinTheme(
                     width: 58,
                     height: 72,
@@ -112,13 +110,14 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
                     builder: (context, state) {
                   return CustomIconButton(
                     image: MyImages.arrowWhite,
-                    title: "Enter Code",
+                    title: "Verify Code",
+                    loading: state is AuthLoadingState ? true : false,
                     backgroundColor: MyColors.blue,
                     fontColor: MyColors.white,
                     borderColor: MyColors.blue,
                     iconColor: MyColors.white,
                     onclick: () {
-                      onSubmit();
+                      context.read<AuthCubit>().validateOTP(code.text, context);
                     },
                   );
                 }),
@@ -128,25 +127,5 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
             ),
           ),
         ));
-  }
-
-  onSubmit() {
-    var authData = context.read<AuthCubit>();
-    if (widget.isForgotPassword) {
-    } else {
-      if (userType == "user") {
-        if (authData.isSocialAuth) {
-          authData.registerData(isUser: true);
-        } else {
-          SocialAuth.emailAndPass(context, isUser: true);
-        }
-      } else {
-        if (authData.isSocialAuth) {
-          authData.registerData();
-        } else {
-          SocialAuth.emailAndPass(context);
-        }
-      }
-    }
   }
 }

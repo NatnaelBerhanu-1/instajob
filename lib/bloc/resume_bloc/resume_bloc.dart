@@ -38,6 +38,64 @@ class ResumeBloc extends Bloc<ResumeEvent, ResumeState> {
       print(
           "QQQQQQQQQQQQQQ -------------  ${response.response.data['data']['id']}");
     });
+
+    on<AddEducationEvent>((event, emit) async {
+      ApiResponse response = await resumeRepository.addEducation(
+          educationModel: event.educationModel);
+      if (response.response.statusCode == 500) {
+        emit(const ErrorState("Something went wrong"));
+      }
+      if (response.response.statusCode == 200) {
+        emit(ResumeInitial());
+      }
+      if (response.response.statusCode == 400) {
+        emit(const ErrorState("Data Not Found"));
+      }
+    });
+
+    on<TellMeAbtYourSelfEvent>((event, emit) async {
+      ApiResponse response =
+          await resumeRepository.addTellAbtSelf(tellUs: event.data);
+      if (response.response.statusCode == 500) {
+        emit(const ErrorState("Something went wrong"));
+      }
+      if (response.response.statusCode == 200) {
+        emit(ResumeInitial());
+      }
+      if (response.response.statusCode == 400) {
+        emit(const ErrorState("Data Not Found"));
+      }
+    });
+
+    on<AddWorkExpEvent>((event, emit) async {
+      ApiResponse response = await resumeRepository.addWorkExperience(
+          educationModel: event.educationModel);
+      if (response.response.statusCode == 500) {
+        emit(const ErrorState("Something went wrong"));
+      }
+      if (response.response.statusCode == 200) {
+        // showToast("Success");
+        emit(ResumeInitial());
+      }
+      if (response.response.statusCode == 400) {
+        emit(const ErrorState("Data Not Found"));
+      }
+    });
+
+    on<AddSkillsEvent>((event, emit) async {
+      ApiResponse response =
+          await resumeRepository.addSkills(skills: event.skills);
+      if (response.response.statusCode == 500) {
+        emit(const ErrorState("Something went wrong"));
+      }
+      if (response.response.statusCode == 200) {
+        // showToast("Success");
+        emit(ResumeInitial());
+      }
+      if (response.response.statusCode == 400) {
+        emit(const ErrorState("Data Not Found"));
+      }
+    });
   }
 /*
   String name = "";

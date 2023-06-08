@@ -178,7 +178,7 @@ class CustomTextField extends StatelessWidget {
                     fontSize: 13.5,
                     fontWeight: FontWeight.w400),
               ),
-        SizedBox(height: 9),
+        SizedBox(height: 5),
         TextFormField(
           style: TextStyle(color: MyColors.black, fontSize: 14),
           onChanged: onChanged,
@@ -226,12 +226,14 @@ class CustomPhonePickerTextField extends StatelessWidget {
   final TextEditingController? controller;
   final String? Function(String?)? validator;
   final ValueChanged<bool>? onInputValidated;
+  final ValueChanged<PhoneNumber>? onInputChanged;
   CustomPhonePickerTextField(
       {Key? key,
       this.controller,
       this.label,
       this.validator,
-      this.onInputValidated})
+      this.onInputValidated,
+      this.onInputChanged})
       : super(key: key);
   InputBorder border = OutlineInputBorder(
       borderSide: BorderSide(color: MyColors.lightgrey, width: 1),
@@ -252,15 +254,13 @@ class CustomPhonePickerTextField extends StatelessWidget {
               ),
         SizedBox(height: 9),
         InternationalPhoneNumberInput(
-          onInputChanged: (PhoneNumber number) async {
-            // print(number);
-          },
+          onInputChanged: onInputChanged,
           onInputValidated: onInputValidated,
           errorMessage: "",
           validator: validator,
           // autoValidateMode: AutovalidateMode.always,
           selectorConfig: const SelectorConfig(
-              selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
+              selectorType: PhoneInputSelectorType.DIALOG,
               leadingPadding: 10,
               setSelectorButtonAsPrefixIcon: true,
               showFlags: false),
@@ -270,7 +270,7 @@ class CustomPhonePickerTextField extends StatelessWidget {
               ? TextInputType.numberWithOptions(signed: true, decimal: true)
               : TextInputType.number,
           formatInput: false,
-          initialValue: PhoneNumber(isoCode: "IN"),
+          // initialValue: PhoneNumber(isoCode: "IN"),
           textFieldController: controller,
           inputDecoration: InputDecoration(
             // prefixIcon:

@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, sort_child_properties_last
 
 import 'package:flutter/material.dart';
+import 'package:insta_job/screens/insta_job_user/SliderScreen/education_screen.dart';
 import 'package:insta_job/screens/insta_job_user/SliderScreen/skills_screen.dart';
 import 'package:insta_job/screens/insta_job_user/SliderScreen/tellus_about_yslf_page.dart';
 import 'package:insta_job/screens/insta_job_user/SliderScreen/work_experience_screen.dart';
@@ -16,7 +17,7 @@ class SliderScreen extends StatefulWidget {
 class _SliderScreenState extends State<SliderScreen> {
   int sIndex = 0;
   PageController pageController = PageController(initialPage: 0);
-  PageController c = PageController(initialPage: 1);
+  // PageController c = PageController(initialPage: 1);
   @override
   Widget build(BuildContext context) {
     // var selectedIndex = context.watch<IndexBloc>().sIndex;
@@ -59,33 +60,17 @@ class _SliderScreenState extends State<SliderScreen> {
                   scrollDirection: Axis.horizontal,
                   physics: NeverScrollableScrollPhysics(),
                   children: [
-                    TellUsAboutYSlfPage(
-                      onTap: () {
-                        sIndex = 1;
-                        // context.read<IndexBloc>().changeIndex(sIndex);
-                        pageController.animateToPage(1,
-                            duration: Duration(seconds: 1), curve: Curves.ease);
-                      },
-                    ),
+                    TellUsAboutYSlfPage(pageController: pageController),
                     EducationScreen(
                       pageController: pageController,
                       onSkipTap: () {
                         sIndex = 1;
                       },
-                      onContinueTap: () {
-                        pageController.animateToPage(2,
-                            duration: Duration(seconds: 1), curve: Curves.ease);
-                      },
                     ),
-                    EducationScreen(
+                    WorkExpScreen(
                       pageController: pageController,
-                      isWork: true,
                       onSkipTap: () {
                         sIndex = 1;
-                      },
-                      onContinueTap: () {
-                        pageController.animateToPage(3,
-                            duration: Duration(seconds: 1), curve: Curves.ease);
                       },
                     ),
                     // PageView(

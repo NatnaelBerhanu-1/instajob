@@ -95,6 +95,9 @@ class GlobalCubit extends Cubit<InitialState> {
     emit(InitialState());
   }
 
+  // /// Drop Down Value
+  // changeMonth() {}
+
   /// SLIDER
   double range = 10;
   rangeVal(double val) {

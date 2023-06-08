@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:insta_job/screens/insta_job_user/SliderScreen/Slider_screen.dart';
+import 'package:insta_job/screens/resume_edit_screens/cv_template_screen.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
@@ -130,7 +130,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                       if (_pageController.page == 1) {
                         _pageController.jumpToPage(2);
                       } else if (_pageController.page == 2) {
-                        AppRoutes.pushAndRemoveUntil(context, SliderScreen());
+                        AppRoutes.pushAndRemoveUntil(
+                            context, CvTemplateScreen());
                       } else {
                         _pageController.jumpToPage(1);
                       }

@@ -178,94 +178,13 @@ class _MyHomePageState extends State<MyHomePage> {
                     color: MyColors.grey,
                   ),
                 ),
-              ),*/ /*
-              //               hourMinute15Interval(),
-//               hourMinuteSecond(),
-//               hourMinute12HCustomStyle(),
-//               new Container(
-//                 margin: EdgeInsets.symmetric(vertical: 50),
-//                 child: new Text(
-//                   _dateTime.hour.toString().padLeft(2, '0') +
-//                       ':' +
-//                       _dateTime.minute.toString().padLeft(2, '0') +
-//                       ':' +
-//                       _dateTime.second.toString().padLeft(2, '0'),
-//                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-//                 ),
-//               ),
-            ],
-          ),
-        ));
-  }
-
-  /// SAMPLE
-  Widget hourMinute12H({DateTime? date}) {
-    return TimePickerSpinner(
-      is24HourMode: false,
-      isForce2Digits: true,
-      spacing: 5,
-      alignment: Alignment.center,
-      normalTextStyle: TextStyle(color: MyColors.blue, fontSize: 23),
-      itemHeight: 55,
-      onTimeChange: (time) {
-        setState(() {
-          date = time;
-          print('TIME*************          ${time}');
-          print(
-              'TIMEDATE  *************          ${_dateTime.hour.toString().padLeft(2, '0') + ':' + _dateTime.minute.toString().padLeft(2, '0')}');
-        });
-      },
-    );
-  }
-
-  Widget hourMinuteSecond() {
-    return TimePickerSpinner(
-      isShowSeconds: true,
-      onTimeChange: (time) {
-        setState(() {
-          _dateTime = time;
-        });
-      },
-    );
-  }
-
-  Widget hourMinute15Interval() {
-    return TimePickerSpinner(
-      spacing: 40,
-      minutesInterval: 15,
-      onTimeChange: (time) {
-        setState(() {
-          _dateTime = time;
-        });
-      },
-    );
-  }
-
-  Widget hourMinute12HCustomStyle() {
-    return TimePickerSpinner(
-      is24HourMode: false,
-      normalTextStyle: TextStyle(fontSize: 24, color: Colors.deepOrange),
-      highlightedTextStyle: TextStyle(fontSize: 24, color: Colors.yellow),
-      spacing: 50,
-      itemHeight: 80,
-      isForce2Digits: true,
-      minutesInterval: 15,
-      onTimeChange: (time) {
-        setState(() {
-          _dateTime = time;
-        });
-      },
-    );
-  }
-}*/
-
+              ),*/
 import 'dart:isolate';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class TimePickerDropDown extends StatefulWidget {
   final Function(DateTime)? onTimeSelected;
@@ -476,22 +395,29 @@ class _MyHomePageState extends State<MyHomePage> {
             TextButton(
               child: Text("Start Downloading"),
               onPressed: () async {
-                final status = await Permission.storage.request();
-
-                if (status.isGranted) {
-                  final externalDir = await getExternalStorageDirectory();
-
-                  await FlutterDownloader.enqueue(
-                    url:
-                        "https://shaybani-web.ondemandservicesappinflutter.online/storage/files/64522e9faa054.pdf",
-                    savedDir: externalDir!.path,
-                    fileName: "download",
-                    showNotification: true,
-                    openFileFromNotification: true,
-                  );
-                } else {
-                  print("Permission deined");
-                }
+                // Global().openPdf(
+                //     context,
+                //     "https://shaybani-web.ondemandservicesappinflutter.online/storage/files/64522e9faa054.pdf",
+                //     "ABC");
+                // FileStorage.writeCounter(
+                //     "https://shaybani-web.ondemandservicesappinflutter.online/storage/files/64522e9faa054.pdf",
+                //     "geeksforgeeks.txt");
+                // final status = await Permission.storage.request();
+                //
+                // if (status.isGranted) {
+                final externalDir = await getExternalStorageDirectory();
+                //
+                await FlutterDownloader.enqueue(
+                  url:
+                      "https://shaybani-web.ondemandservicesappinaflutter.online/storage/files/64522e9faa054.pdf",
+                  savedDir: externalDir!.path,
+                  fileName: "download",
+                  showNotification: true,
+                  openFileFromNotification: true,
+                );
+                // } else {
+                //   print("Permission deined");
+                // }
               },
             )
           ],

@@ -16,6 +16,7 @@ import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 import 'package:insta_job/widgets/custom_cards/assign_companies_tile.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 import '../../widgets/custom_button/custom_btn.dart';
 
@@ -165,6 +166,12 @@ class _BecameAnEmployerState extends State<BecameAnEmployer> {
                                   }
                                   print("VAL  ::: $val");
                                 },
+                                onInputChanged: (PhoneNumber number) async {
+                                  context.read<AuthCubit>().countryCode =
+                                      number.dialCode ?? "";
+                                  print(
+                                      "COUNTRY CODE -->  ${context.read<AuthCubit>().countryCode}");
+                                },
                               ),
                         SizedBox(height: 20),
                         IconTextField(
@@ -189,8 +196,15 @@ class _BecameAnEmployerState extends State<BecameAnEmployer> {
                             isUpdate: widget.isUpdate ? true : false,
                             url: context.read<PickImageCubit>().imgUrl),
                         SizedBox(height: 40),
-                        BlocBuilder<AuthCubit, AuthInitialState>(
-                            builder: (context, state) {
+                        BlocConsumer<AuthCubit, AuthInitialState>(
+                            listener: (context, state) {
+                          if (state is ErrorState) {
+                            showToast(state.error);
+                          }
+                          if (state is CodeSentState) {
+                            AppRoutes.push(context, VerifyCodeScreen());
+                          }
+                        }, builder: (context, state) {
                           var authData = context.read<AuthCubit>();
                           var image = context.read<PickImageCubit>();
                           return CustomIconButton(
@@ -198,9 +212,11 @@ class _BecameAnEmployerState extends State<BecameAnEmployer> {
                             title: "Next",
                             backgroundColor: MyColors.blue,
                             fontColor: MyColors.white,
+                            loading: state is AuthLoadingState ? true : false,
                             borderColor: MyColors.blue,
                             iconColor: MyColors.blue,
                             onclick: () {
+                              print("**************************** $state");
                               if (formKey.currentState!.validate()) {
                                 if (phone.text.isEmpty ||
                                     image.imgUrl.isEmpty) {
@@ -212,10 +228,12 @@ class _BecameAnEmployerState extends State<BecameAnEmployer> {
                                       authData.companyName = companyName.text;
                                       authData.website = website.text;
                                       authData.profilePic = image.imgUrl;
+                                      // authData.countryCode = "";
                                       authData.getData();
-                                      setState(() {});
-                                      AppRoutes.push(
-                                          context, VerifyCodeScreen());
+                                      // setState(() {});
+                                      authData.verifyPhone(context);
+                                      // AppRoutes.push(
+                                      //     context, VerifyCodeScreen());
                                     } else {
                                       showToast("Please upload photo");
                                     }

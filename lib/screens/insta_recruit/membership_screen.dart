@@ -15,7 +15,9 @@ import '../../utils/app_routes.dart';
 
 class MemberShipScreen extends StatefulWidget {
   final bool isAgreement;
-  const MemberShipScreen({Key? key, this.isAgreement = false})
+  final bool isRegister;
+  const MemberShipScreen(
+      {Key? key, this.isAgreement = false, this.isRegister = false})
       : super(key: key);
 
   @override
@@ -45,15 +47,17 @@ class _MemberShipScreenState extends State<MemberShipScreen> {
                       child: Center(
                         child: Row(
                           children: [
-                            IconButton(
-                                onPressed: () {
-                                  AppRoutes.pop(context);
-                                },
-                                icon: Icon(
-                                  Icons.arrow_back_ios,
-                                  size: 18,
-                                  color: MyColors.white,
-                                )),
+                            widget.isRegister
+                                ? IconButton(
+                                    onPressed: () {
+                                      AppRoutes.pop(context);
+                                    },
+                                    icon: Icon(
+                                      Icons.arrow_back_ios,
+                                      size: 18,
+                                      color: MyColors.white,
+                                    ))
+                                : Spacer(),
                             Spacer(),
                             Column(
                               children: [

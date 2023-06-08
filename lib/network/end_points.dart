@@ -1,8 +1,7 @@
 class EndPoint {
-  static String baseUrl =
-      "https://shaybani-web.ondemandservicesappinflutter.online/api/";
-  static String imageBaseUrl =
-      "https://shaybani-web.ondemandservicesappinflutter.online";
+  static String baseUrl = "https://shaybani-web.flutterclone.com/api/";
+
+  static String imageBaseUrl = "https://shaybani-web.flutterclone.com";
 
   /// Common api's
   static String checkUser = "check_user";
@@ -51,6 +50,12 @@ class EndPoint {
   static String addResume = "resume";
   static String getResume = "list_of_resume";
   static String editResume = "edit_resume";
+
+  static String addEducation = "education";
+  static String tellUs = "tell_us_about_self";
+  static String addWorkExperience = "work_experience";
+  static String addSkills = "skill_add";
+  static String addAchievement = "achivment_add";
 
   ///search
   static String searchJob = "search_job";

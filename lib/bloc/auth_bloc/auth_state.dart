@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:insta_job/model/user_model.dart';
 
 class AuthInitialState {}
@@ -25,3 +26,12 @@ class ErrorState extends AuthInitialState {
 
   ErrorState(this.error);
 }
+
+/// PHONE AUTH STATE
+class VerificationCompletedState extends AuthInitialState {
+  final PhoneAuthCredential? credential;
+
+  VerificationCompletedState(this.credential);
+}
+
+class CodeSentState extends AuthInitialState {}

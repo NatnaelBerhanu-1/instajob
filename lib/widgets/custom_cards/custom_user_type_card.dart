@@ -4,7 +4,6 @@ import 'package:insta_job/utils/my_colors.dart';
 
 import '../../utils/my_images.dart';
 import '../custom_button/custom_img_button.dart';
-import '../custom_chip.dart';
 import 'custom_common_card.dart';
 
 class UserTypeCard extends StatelessWidget {

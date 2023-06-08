@@ -10,9 +10,11 @@ import 'package:insta_job/network/end_points.dart';
 import 'package:insta_job/screens/auth_screen/change_account_info.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/user_account/setting_pages/save_card_screen.dart';
 import 'package:insta_job/screens/insta_recruit/membership_screen.dart';
+import 'package:insta_job/screens/insta_recruit/user_type_screen.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_app_bar.dart';
 import 'package:insta_job/widgets/custom_cards/setting_tile.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../../utils/app_routes.dart';
 import '../../../../../utils/my_colors.dart';
@@ -70,7 +72,8 @@ class _SettingScreenState extends State<SettingScreen> {
               SizedBox(height: 10),
               SettingTile(
                 onTap: () {
-                  AppRoutes.push(context, MemberShipScreen(isAgreement: false));
+                  AppRoutes.push(context,
+                      MemberShipScreen(isAgreement: false, isRegister: true));
                 },
                 leadingImage: MyImages.membership,
                 title: "Membership Agreement",
@@ -126,8 +129,15 @@ class _SettingScreenState extends State<SettingScreen> {
                     buildDialog(
                         context,
                         CustomDialog(
-                          okOnTap: () {
+                          okOnTap: () async {
                             context.read<AuthCubit>().logOut();
+                            SharedPreferences pref =
+                                await SharedPreferences.getInstance();
+                            var type = pref.getString("type");
+                            userType = type ?? "";
+                            setState(() {});
+                            print("TYPEEEEEEEE  $type");
+                            print("TYPEEEEEEEE USER   $userType");
                           },
                           cancelOnTap: () {
                             Navigator.pop(context);

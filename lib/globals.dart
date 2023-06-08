@@ -80,26 +80,6 @@ Future selectDate(BuildContext context, DateTime date) async {
   }
 }
 
-Future selectYear(BuildContext context, DateTime date) async {
-  DateTime current = DateTime.now();
-  DateTime? pickedDate = await showDatePicker(
-      context: context,
-      builder: (context, child) {
-        return child!;
-      },
-      initialDatePickerMode: DatePickerMode.year,
-      firstDate: DateTime(DateTime.now().year - 70),
-      lastDate: DateTime(DateTime.now().year + 30),
-      initialDate: date,
-      currentDate: DateTime.now());
-  if (pickedDate != null) {
-    return pickedDate;
-  } else {
-    print("ERROR");
-    return current;
-  }
-}
-
 BoxShadow boxShadow = BoxShadow(
   color: Colors.grey.withOpacity(0.10),
   offset: const Offset(3, 3),
