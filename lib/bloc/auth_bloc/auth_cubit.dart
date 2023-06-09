@@ -404,9 +404,44 @@ class AuthCubit extends Cubit<AuthInitialState> {
       emit(ErrorState("Something went wrong"));
     }
     if (response.response.statusCode == 200) {
+      // if (response.response.data["statusCode"] == 200) {
       emit(SuccessState());
       navigationKey.currentState
           ?.push(MaterialPageRoute(builder: (_) => const SetPassword()));
+      // } else {
+      //   emit(ErrorState("error"));
+      // }
+    }
+    if (response.response.statusCode == 400) {
+      // showToast("Code not match");
+      emit(ErrorState("Code Not Match"));
+    }
+  }
+
+  /// RESEND CODE
+
+  reSendCodeForEmp({required String email}) async {
+    // emit(AuthLoadingState());
+    ApiResponse response = await authRepository.resendCodeForEmp(email: email);
+    if (response.response.statusCode == 500) {
+      emit(ErrorState("Something went wrong"));
+    }
+    if (response.response.statusCode == 200) {
+      emit(SuccessState());
+    }
+    if (response.response.statusCode == 400) {
+      emit(ErrorState("${response.response.data['message']}"));
+    }
+  }
+
+  reSendCodeForUser({required String email}) async {
+    // emit(AuthLoadingState());
+    ApiResponse response = await authRepository.resendCodeForUser(email: email);
+    if (response.response.statusCode == 500) {
+      emit(ErrorState("Something went wrong"));
+    }
+    if (response.response.statusCode == 200) {
+      emit(SuccessState());
     }
     if (response.response.statusCode == 400) {
       emit(ErrorState("${response.response.data['message']}"));

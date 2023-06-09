@@ -166,7 +166,7 @@ class AuthRepository {
   Future<ApiResponse> checkEmailVerificationCode(
       {required String email, required String code}) async {
     try {
-      var map = {"email": email, "code": code};
+      var map = {"email": email, "email_code": code};
       Response response =
           await dioClient.post(data: map, uri: EndPoint.checkVerificationCode);
       return ApiResponse.withSuccess(response);
@@ -176,11 +176,22 @@ class AuthRepository {
   }
 
   /// RESEND CODE
-  Future<ApiResponse> resendCode({required String email}) async {
+  Future<ApiResponse> resendCodeForEmp({required String email}) async {
     try {
       var map = {"email": email};
       Response response =
-          await dioClient.post(data: map, uri: EndPoint.reSendCode);
+          await dioClient.post(data: map, uri: EndPoint.reSendCodeForEmp);
+      return ApiResponse.withSuccess(response);
+    } on DioError catch (e) {
+      return ApiResponse.withError(e.response);
+    }
+  }
+
+  Future<ApiResponse> resendCodeForUser({required String email}) async {
+    try {
+      var map = {"email": email};
+      Response response =
+          await dioClient.post(data: map, uri: EndPoint.reSendCodeForUser);
       return ApiResponse.withSuccess(response);
     } on DioError catch (e) {
       return ApiResponse.withError(e.response);

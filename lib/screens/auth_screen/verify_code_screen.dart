@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/auth_bloc/auth_cubit.dart';
 import 'package:insta_job/bloc/auth_bloc/auth_state.dart';
+import 'package:insta_job/globals.dart';
+import 'package:insta_job/screens/insta_recruit/user_type_screen.dart';
 import 'package:insta_job/utils/my_colors.dart';
+import 'package:insta_job/widgets/custom_chip.dart';
 import 'package:pinput/pinput.dart';
 
 import '../../utils/my_images.dart';
@@ -56,7 +59,7 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
             child: Column(
               children: [
                 Text(
-                  "Please enter your code found in your number",
+                  "Please enter your code found in your ${widget.isForgotPassword ? "email" : "number"}",
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w400,
@@ -66,7 +69,7 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
                 Pinput(
                   controller: code,
                   autofocus: true,
-                  length: 6,
+                  length: widget.isForgotPassword ? 4 : 6,
                   defaultPinTheme: PinTheme(
                     width: 58,
                     height: 72,
@@ -97,29 +100,80 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
                   fontSize: 13,
                 ),
                 SizedBox(height: 15),
-                CommonText(
-                  text: "Resend",
-                  fontWeight: FontWeight.w500,
-                  fontColor: MyColors.blue,
-                  decoration: TextDecoration.underline,
-                  fontSize: 16,
-                ),
+                BlocConsumer<AuthCubit, AuthInitialState>(listener: (c, state) {
+                  if (state is SuccessState) {
+                    showToast("Send code on your email");
+                  }
+                }, builder: (context, state) {
+                  return CustomGesture(
+                    onTap: () {
+                      var authData = context.read<AuthCubit>();
+
+                      if (widget.isForgotPassword) {
+                        if (userType == "user") {
+                          context
+                              .read<AuthCubit>()
+                              .reSendCodeForUser(email: authData.email);
+                        } else {
+                          context
+                              .read<AuthCubit>()
+                              .reSendCodeForEmp(email: authData.email);
+                        }
+                      } else {
+                        /// phone resend code
+                      }
+
+                      // AppRoutes.push(context, VerifyCodeScreen());
+                    },
+                    child: Center(
+                      child: CommonText(
+                        text: "Resend",
+                        fontWeight: FontWeight.w500,
+                        fontColor: MyColors.blue,
+                        padding: true,
+                        decoration: TextDecoration.underline,
+                        fontSize: 16,
+                      ),
+                    ),
+                  );
+                }),
                 SizedBox(height: 70),
                 // Spacer(),
                 BlocBuilder<AuthCubit, AuthInitialState>(
                     builder: (context, state) {
                   return CustomIconButton(
-                    image: MyImages.arrowWhite,
-                    title: "Verify Code",
-                    loading: state is AuthLoadingState ? true : false,
-                    backgroundColor: MyColors.blue,
-                    fontColor: MyColors.white,
-                    borderColor: MyColors.blue,
-                    iconColor: MyColors.white,
-                    onclick: () {
-                      context.read<AuthCubit>().validateOTP(code.text, context);
-                    },
-                  );
+                      image: MyImages.arrowWhite,
+                      title: "Verify Code",
+                      loading: state is AuthLoadingState ? true : false,
+                      backgroundColor: MyColors.blue,
+                      fontColor: MyColors.white,
+                      borderColor: MyColors.blue,
+                      iconColor: MyColors.white,
+                      onclick: () {
+                        if (code.text.isNotEmpty) {
+                          if (widget.isForgotPassword
+                              ? code.text.length == 4
+                              : code.text.length == 6) {
+                            if (widget.isForgotPassword) {
+                              /// API NOT READY
+                              print("object");
+                              context
+                                  .read<AuthCubit>()
+                                  .checkEmailVerificationCode(
+                                      email: context.read<AuthCubit>().email,
+                                      code: code.text);
+                            } else {
+                              context
+                                  .read<AuthCubit>()
+                                  .validateOTP(code.text, context);
+                            }
+                          } else {
+                            showToast("Please enter correct code");
+                          }
+                        } else {
+                          showToast("Please enter code");
+                        }
+                      });
                 }),
                 // Spacer(),
                 // Spacer(),
