@@ -85,7 +85,6 @@ class AuthRepository {
       var map = {
         "email": email,
       };
-      print('TYPE **********************            $userType');
       Response response =
           await dioClient.post(data: map, uri: EndPoint.checkUser);
       return ApiResponse.withSuccess(response);
@@ -175,7 +174,7 @@ class AuthRepository {
     }
   }
 
-  /// RESEND CODE
+/*  /// RESEND CODE
   Future<ApiResponse> resendCodeForEmp({required String email}) async {
     try {
       var map = {"email": email};
@@ -192,6 +191,19 @@ class AuthRepository {
       var map = {"email": email};
       Response response =
           await dioClient.post(data: map, uri: EndPoint.reSendCodeForUser);
+      return ApiResponse.withSuccess(response);
+    } on DioError catch (e) {
+      return ApiResponse.withError(e.response);
+    }
+  }*/
+
+  /// CHANGE PASSWORD
+  Future<ApiResponse> changePassword(
+      {required String password, required String confirmPassword}) async {
+    try {
+      var map = {"password": password, "confirm_pass": confirmPassword};
+      Response response =
+          await dioClient.post(data: map, uri: EndPoint.changePassword);
       return ApiResponse.withSuccess(response);
     } on DioError catch (e) {
       return ApiResponse.withError(e.response);

@@ -76,7 +76,7 @@ class GlobalCubit extends Cubit<InitialState> {
 
   /// RangeSlider
 
-  RangeValues rangeValue = const RangeValues(10, 30);
+  RangeValues rangeValue = const RangeValues(0, 15);
   rangeValues(RangeValues values) {
     rangeValue = values;
     // print("@@@@@@@@@@ |||||||  $rangeValue");

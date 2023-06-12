@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/auth_bloc/auth_cubit.dart';
 import 'package:insta_job/bloc/auth_bloc/auth_state.dart';
 import 'package:insta_job/globals.dart';
-import 'package:insta_job/screens/insta_recruit/user_type_screen.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/widgets/custom_chip.dart';
 import 'package:pinput/pinput.dart';
@@ -110,15 +109,9 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
                       var authData = context.read<AuthCubit>();
 
                       if (widget.isForgotPassword) {
-                        if (userType == "user") {
-                          context
-                              .read<AuthCubit>()
-                              .reSendCodeForUser(email: authData.email);
-                        } else {
-                          context
-                              .read<AuthCubit>()
-                              .reSendCodeForEmp(email: authData.email);
-                        }
+                        context
+                            .read<AuthCubit>()
+                            .sendCodeOnEmail(email: authData.email);
                       } else {
                         /// phone resend code
                       }
@@ -156,7 +149,6 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
                               : code.text.length == 6) {
                             if (widget.isForgotPassword) {
                               /// API NOT READY
-                              print("object");
                               context
                                   .read<AuthCubit>()
                                   .checkEmailVerificationCode(

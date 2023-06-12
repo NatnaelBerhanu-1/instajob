@@ -11,6 +11,7 @@ import 'package:insta_job/bloc/global_cubit/global_state.dart';
 import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
 import 'package:insta_job/bloc/job_position/job_pos_event.dart';
 import 'package:insta_job/bloc/job_position/job_pos_state.dart';
+import 'package:insta_job/model/filter_model.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_cards/insta_job_user_cards/filter_tiles/custom_filter_tile.dart';
@@ -159,6 +160,8 @@ class _SearchJobsScreenState extends State<SearchJobsScreen> {
                           child: GestureDetector(
                             onTap: () {
                               AppRoutes.push(context, FilterScreen());
+                              context.read<CompanyBloc>().add(JobSearchEvent(
+                                  filterModel: FilterModel(filter: "filter")));
                             },
                             child: Container(
                               color: MyColors.transparent,

@@ -181,8 +181,7 @@ class AuthCubit extends Cubit<AuthInitialState> {
     });
   }
 
-  validateOTP(String code, BuildContext context,
-      {bool isForgotPassword = false}) async {
+  validateOTP(String code, BuildContext context) async {
     emit(AuthLoadingState());
     try {
       final PhoneAuthCredential credential = PhoneAuthProvider.credential(
@@ -406,8 +405,8 @@ class AuthCubit extends Cubit<AuthInitialState> {
     if (response.response.statusCode == 200) {
       // if (response.response.data["statusCode"] == 200) {
       emit(SuccessState());
-      navigationKey.currentState
-          ?.push(MaterialPageRoute(builder: (_) => const SetPassword()));
+      navigationKey.currentState?.pushReplacement(
+          MaterialPageRoute(builder: (_) => const SetPassword()));
       // } else {
       //   emit(ErrorState("error"));
       // }
@@ -418,7 +417,7 @@ class AuthCubit extends Cubit<AuthInitialState> {
     }
   }
 
-  /// RESEND CODE
+/*  /// RESEND CODE
 
   reSendCodeForEmp({required String email}) async {
     // emit(AuthLoadingState());
@@ -442,6 +441,24 @@ class AuthCubit extends Cubit<AuthInitialState> {
     }
     if (response.response.statusCode == 200) {
       emit(SuccessState());
+    }
+    if (response.response.statusCode == 400) {
+      emit(ErrorState("${response.response.data['message']}"));
+    }
+  }*/
+
+  changePassword(
+      {required String password, required String confirmPassword}) async {
+    emit(AuthLoadingState());
+    ApiResponse response = await authRepository.changePassword(
+        password: password, confirmPassword: confirmPassword);
+    if (response.response.statusCode == 500) {
+      emit(ErrorState("Something went wrong"));
+    }
+    if (response.response.statusCode == 200) {
+      emit(SuccessState());
+      navigationKey.currentState?.pushReplacement(
+          MaterialPageRoute(builder: (_) => const LoginScreen()));
     }
     if (response.response.statusCode == 400) {
       emit(ErrorState("${response.response.data['message']}"));

@@ -7,6 +7,7 @@ import 'package:insta_job/bloc/company_bloc/company_state.dart';
 import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
 import 'package:insta_job/bloc/job_position/job_pos_event.dart';
 import 'package:insta_job/globals.dart';
+import 'package:insta_job/model/filter_model.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/bottom_navigation_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/job_opening/job_opening_page.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/job_opening/job_position_screen.dart';
@@ -87,16 +88,19 @@ class _SearchCompanyState extends State<SearchCompany> {
                         onChanged: (searchList) {
                           if (Global.userModel?.type == "user") {
                             widget.index == 1
-                                ? data.add(JobSearchEvent(search: search.text))
+                                ? data.add(JobSearchEvent(
+                                    filterModel:
+                                        FilterModel(searchJobs: search.text)))
                                 : data.add(
                                     CompanySearchEvent(search: search.text));
                           } else {
                             widget.isJobSearch
-                                ? data.add(JobSearchEvent(search: search.text))
+                                ? data.add(JobSearchEvent(
+                                    filterModel:
+                                        FilterModel(searchJobs: search.text)))
                                 : data.add(
                                     CompanySearchEvent(search: search.text));
                           }
-
                           // context.read<CompanyBloc>().add(LoadCompanyListEvent());
                         },
                         onPressed: () {},

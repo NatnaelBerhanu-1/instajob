@@ -5,7 +5,6 @@ import 'package:insta_job/bloc/auth_bloc/auth_cubit.dart';
 import 'package:insta_job/bloc/auth_bloc/auth_state.dart';
 import 'package:insta_job/bloc/validation/validation_bloc.dart';
 import 'package:insta_job/globals.dart';
-import 'package:insta_job/screens/insta_recruit/user_type_screen.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 import 'package:insta_job/widgets/custom_chip.dart';
@@ -89,17 +88,10 @@ class ForgotPassword extends StatelessWidget {
                   return CustomGesture(
                     onTap: () {
                       if (formKey.currentState!.validate()) {
-                        if (userType == "user") {
-                          context
-                              .read<AuthCubit>()
-                              .reSendCodeForUser(email: email.text);
-                        } else {
-                          context
-                              .read<AuthCubit>()
-                              .reSendCodeForEmp(email: email.text);
-                        }
+                        context
+                            .read<AuthCubit>()
+                            .sendCodeOnEmail(email: email.text);
                       }
-                      // AppRoutes.push(context, VerifyCodeScreen());
                     },
                     child: Center(
                       child: CommonText(

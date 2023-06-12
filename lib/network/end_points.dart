@@ -7,7 +7,8 @@ class EndPoint {
   static String checkUser = "check_user";
   static String logout = "logout";
   static String sendCode = "forgotpassword";
-  static String checkVerificationCode = "code_verify";
+  static String checkVerificationCode = "checkcodemail";
+  static String changePassword = "";
 
   /// ---------------- EMPLOYEE INTERFACE --------------- ///
 
@@ -38,7 +39,7 @@ class EndPoint {
   /// feedBack
   static String feedbackInsert = "feedback_insert";
 
-  static String reSendCodeForEmp = "resendpassword_employe";
+  // static String reSendCodeForEmp = "resendpassword_employe";
 
   /// ----------------  USER INTERFACE ---------------  ///
 
@@ -61,5 +62,5 @@ class EndPoint {
   ///search
   static String searchJob = "search_job";
 
-  static String reSendCodeForUser = "resendpassword_user";
+  // static String reSendCodeForUser = "resendpassword_user";
 }
