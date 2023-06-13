@@ -25,4 +25,5 @@ class MyColors {
   static Color user = const Color(0xffECF6FF);
   static Color userFont = const Color(0xff8B8B8B);
   static Color blue = const Color(0xff0F89FD);
+  static Color lightBl = Colors.blue.shade50;
 }

@@ -454,7 +454,7 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                           builder: (context, state) {
                         var value = context.read<GlobalCubit>();
                         return CustomCommonCard(
-                          borderColor: MyColors.blue.withOpacity(.30),
+                          borderColor: MyColors.grey.withOpacity(.30),
                           borderRadius: BorderRadius.circular(7),
                           child: Padding(
                             padding: const EdgeInsets.all(10.0),

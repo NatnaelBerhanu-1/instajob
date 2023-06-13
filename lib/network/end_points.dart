@@ -8,7 +8,7 @@ class EndPoint {
   static String logout = "logout";
   static String sendCode = "forgotpassword";
   static String checkVerificationCode = "checkcodemail";
-  static String changePassword = "";
+  static String changePassword = "changepassword";
 
   /// ---------------- EMPLOYEE INTERFACE --------------- ///
 

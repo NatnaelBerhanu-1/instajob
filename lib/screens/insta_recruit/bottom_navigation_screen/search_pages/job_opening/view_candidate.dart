@@ -7,7 +7,7 @@ import 'package:insta_job/bloc/global_cubit/global_state.dart';
 import 'package:insta_job/model/company_model.dart';
 import 'package:insta_job/model/job_position_model.dart';
 import 'package:insta_job/utils/my_colors.dart';
-import 'package:insta_job/widgets/denied_candidate_tile.dart';
+import 'package:insta_job/widgets/candidate_tile.dart';
 
 import '../../../../../utils/app_routes.dart';
 import '../../../../../utils/my_images.dart';
@@ -84,6 +84,7 @@ class _ViewCandidatesState extends State<ViewCandidates> {
                         var tab = context.read<GlobalCubit>();
                         return TabBar(
                           labelColor: MyColors.blue,
+                          indicatorColor: MyColors.blue,
                           unselectedLabelColor: MyColors.tabClr,
                           onTap: (val) {
                             tab.changeTabValue(val);
@@ -103,7 +104,7 @@ class _ViewCandidatesState extends State<ViewCandidates> {
                               return Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 15.0, vertical: 10),
-                                child: DeniedCandidateTile(),
+                                child: CandidateTile(),
                               );
                             }),
                         ListView.builder(
@@ -112,7 +113,7 @@ class _ViewCandidatesState extends State<ViewCandidates> {
                               return Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 15.0, vertical: 10),
-                                child: DeniedCandidateTile(),
+                                child: CandidateTile(),
                               );
                             }),
                         ListView.builder(

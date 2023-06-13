@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/auth_bloc/auth_cubit.dart';
 import 'package:insta_job/bloc/auth_bloc/auth_state.dart';
 import 'package:insta_job/bloc/validation/validation_bloc.dart';
-import 'package:insta_job/globals.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 import 'package:insta_job/widgets/custom_chip.dart';
@@ -56,6 +55,7 @@ class ForgotPassword extends StatelessWidget {
                     height: 10,
                     width: 10,
                   ),
+                  keyboardType: TextInputType.emailAddress,
                   validator: (val) => emailValidation(val!),
                   onChanged: (val) {
                     if (!formKey.currentState!.validate()) {
@@ -80,11 +80,8 @@ class ForgotPassword extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 15),
-                BlocConsumer<AuthCubit, AuthInitialState>(listener: (c, state) {
-                  if (state is SuccessState) {
-                    showToast("Send code on your email");
-                  }
-                }, builder: (context, state) {
+                BlocBuilder<AuthCubit, AuthInitialState>(
+                    builder: (context, state) {
                   return CustomGesture(
                     onTap: () {
                       if (formKey.currentState!.validate()) {
@@ -105,7 +102,7 @@ class ForgotPassword extends StatelessWidget {
                     ),
                   );
                 }),
-                SizedBox(height: 55),
+                SizedBox(height: 40),
                 BlocBuilder<AuthCubit, AuthInitialState>(
                     builder: (context, state) {
                   return CustomIconButton(

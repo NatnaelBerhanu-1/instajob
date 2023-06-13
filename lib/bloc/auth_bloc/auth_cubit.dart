@@ -386,6 +386,7 @@ class AuthCubit extends Cubit<AuthInitialState> {
     }
     if (response.response.statusCode == 200) {
       emit(SuccessState());
+      showToast("Send code on your email");
       navigationKey.currentState?.push(MaterialPageRoute(
           builder: (_) => const VerifyCodeScreen(isForgotPassword: true)));
     }
@@ -447,16 +448,16 @@ class AuthCubit extends Cubit<AuthInitialState> {
     }
   }*/
 
-  changePassword(
-      {required String password, required String confirmPassword}) async {
+  changePassword({required String password, required String email}) async {
     emit(AuthLoadingState());
-    ApiResponse response = await authRepository.changePassword(
-        password: password, confirmPassword: confirmPassword);
+    ApiResponse response =
+        await authRepository.changePassword(password: password, email: email);
     if (response.response.statusCode == 500) {
       emit(ErrorState("Something went wrong"));
     }
     if (response.response.statusCode == 200) {
       emit(SuccessState());
+      showToast("Password change successfully");
       navigationKey.currentState?.pushReplacement(
           MaterialPageRoute(builder: (_) => const LoginScreen()));
     }

@@ -199,9 +199,9 @@ class AuthRepository {
 
   /// CHANGE PASSWORD
   Future<ApiResponse> changePassword(
-      {required String password, required String confirmPassword}) async {
+      {required String password, required String email}) async {
     try {
-      var map = {"password": password, "confirm_pass": confirmPassword};
+      var map = {"password": password, "email": email};
       Response response =
           await dioClient.post(data: map, uri: EndPoint.changePassword);
       return ApiResponse.withSuccess(response);

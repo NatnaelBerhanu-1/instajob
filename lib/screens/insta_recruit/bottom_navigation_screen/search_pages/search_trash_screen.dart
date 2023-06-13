@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:insta_job/widgets/denied_candidate_tile.dart';
+import 'package:insta_job/widgets/candidate_tile.dart';
 
 import '../../../../utils/my_colors.dart';
 import '../../../../utils/my_images.dart';
@@ -57,7 +57,7 @@ class _SearchTrashState extends State<SearchTrash> {
                               return Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 15.0, vertical: 10),
-                                child: DeniedCandidateTile(),
+                                child: CandidateTile(),
                               );
                             }),
                         ListView.builder(

@@ -139,6 +139,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 height: 9,
                                 width: 9,
                               ),
+                              keyboardType: TextInputType.emailAddress,
                               hint: "alexis@mygmail.com",
                               // suffixIcon: formKey.currentState!.validate()
                               //     ? SizedBox()

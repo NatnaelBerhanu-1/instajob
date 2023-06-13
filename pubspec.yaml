@@ -53,6 +53,7 @@ dependencies:
   printing: ^5.10.3
   flutter_downloader: ^1.10.2
   permission_handler: ^10.2.0
+  percent_indicator: ^4.2.3
 
   #auth
   firebase_core: ^2.8.0

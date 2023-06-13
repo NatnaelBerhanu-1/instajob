@@ -130,6 +130,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 height: 10,
                                 width: 10,
                               ),
+                              keyboardType: TextInputType.emailAddress,
                               suffixIcon: validationBloc.emailVAL
                                   ? verifyImage
                                   : SizedBox(),

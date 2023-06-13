@@ -44,7 +44,7 @@ class JobPositionRepository {
   Future<ApiResponse> applyForJob({String? jobId, String? resume}) async {
     var map = {
       "user_id": Global.userModel?.id,
-      "job_id": "2",
+      "job_id": jobId,
       "upload_resume": resume
     };
     try {

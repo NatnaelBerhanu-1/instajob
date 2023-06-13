@@ -189,7 +189,7 @@ class CustomTextField extends StatelessWidget {
           inputFormatters: inputFormatter,
           maxLength: maxLength,
           controller: controller,
-          textCapitalization: textCapitalization ?? TextCapitalization.none,
+          textCapitalization: textCapitalization ?? TextCapitalization.words,
           autofocus: autofocus!,
           obscureText: obscureText ?? false,
           cursorColor: MyColors.black,

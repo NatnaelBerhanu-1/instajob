@@ -99,15 +99,11 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
                   fontSize: 13,
                 ),
                 SizedBox(height: 15),
-                BlocConsumer<AuthCubit, AuthInitialState>(listener: (c, state) {
-                  if (state is SuccessState) {
-                    showToast("Send code on your email");
-                  }
-                }, builder: (context, state) {
+                BlocBuilder<AuthCubit, AuthInitialState>(
+                    builder: (context, state) {
                   return CustomGesture(
                     onTap: () {
                       var authData = context.read<AuthCubit>();
-
                       if (widget.isForgotPassword) {
                         context
                             .read<AuthCubit>()
@@ -115,7 +111,6 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
                       } else {
                         /// phone resend code
                       }
-
                       // AppRoutes.push(context, VerifyCodeScreen());
                     },
                     child: Center(
