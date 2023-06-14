@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/company_bloc/company_bloc.dart';
 import 'package:insta_job/bloc/company_bloc/company_state.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/add_new_company.dart';
-import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/search_company.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
@@ -16,6 +15,7 @@ import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
 
 import '../../../../bloc/bottom_bloc/bottom_bloc.dart';
+import 'search_company.dart';
 
 class AssignCompany extends StatefulWidget {
   const AssignCompany({Key? key}) : super(key: key);

@@ -32,10 +32,10 @@ class TabState extends InitialState {
   TabState(this.val);
 }
 
-class ExperienceLevelState extends InitialState {
+class DropDownState extends InitialState {
   final String val;
 
-  ExperienceLevelState(this.val);
+  DropDownState(this.val);
 }
 
 class RangeValueState extends InitialState {

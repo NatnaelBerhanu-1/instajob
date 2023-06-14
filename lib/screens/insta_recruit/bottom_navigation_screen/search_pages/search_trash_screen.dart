@@ -40,6 +40,7 @@ class _SearchTrashState extends State<SearchTrash> {
                     children: [
                       TabBar(
                         labelColor: MyColors.blue,
+                        indicatorColor: MyColors.blue,
                         // onTap: (val) {
                         //   sTab = val;
                         //   setState(() {});

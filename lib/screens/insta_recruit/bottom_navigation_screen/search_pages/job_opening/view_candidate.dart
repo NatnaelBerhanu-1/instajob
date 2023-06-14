@@ -6,6 +6,7 @@ import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
 import 'package:insta_job/bloc/global_cubit/global_state.dart';
 import 'package:insta_job/model/company_model.dart';
 import 'package:insta_job/model/job_position_model.dart';
+import 'package:insta_job/screens/insta_recruit/new_email_screen.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/widgets/candidate_tile.dart';
 
@@ -43,8 +44,9 @@ class _ViewCandidatesState extends State<ViewCandidates> {
             onTap: () {
               // AppRoutes.push(
               //     context,
-              //     JobPositionScreen(
-              //         companyModel: companyModel, jobPosModel: jobPosModel));
+              // JobPositionScreen(
+              //     companyModel: widget.companyModel,
+              //     jobPosModel: widget.jobPosModel));
               // context.read<BottomBloc>().add(SetScreenEvent(true,
               //     screenName: JobPositionScreen(
               //         companyModel: companyModel, jobPosModel: jobPosModel)));
@@ -54,6 +56,13 @@ class _ViewCandidatesState extends State<ViewCandidates> {
             title: "Search",
             actions: Row(
               children: [
+                ImageButton(
+                  image: MyImages.logout,
+                  color: MyColors.blue,
+                  onTap: () {
+                    AppRoutes.push(context, NewEmailScreen());
+                  },
+                ),
                 ImageButton(
                   image: MyImages.searchBlue,
                 ),

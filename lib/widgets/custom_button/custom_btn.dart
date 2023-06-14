@@ -132,7 +132,8 @@ class CustomIconButton extends StatelessWidget {
               padding: EdgeInsets.only(right: 10),
               image: image,
               color: iconColor ?? MyColors.white,
-              // height: 12,
+              // height: 17,
+              // width: 17,
             ),
           )),
     );

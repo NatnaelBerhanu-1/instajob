@@ -44,7 +44,6 @@ class JobOpeningScreen extends StatelessWidget {
                 // backgroundColor: MyColors.white,
                 // toolbarHeight: 70,
                 // title:
-
                 children: [
                   ImageButton(
                     image: MyImages.backArrowBorder,
@@ -54,9 +53,8 @@ class JobOpeningScreen extends StatelessWidget {
                     padding: EdgeInsets.all(9.0),
                     onTap: () {
                       context.read<CompanyBloc>().add(LoadCompanyListEvent());
-                      context.read<BottomBloc>().add(SetScreenEvent(false,
-                          screenName:
-                              JobOpeningScreen(companyModel: companyModel)));
+                      context.read<BottomBloc>().add(
+                          SetScreenEvent(false, screenName: AssignCompany()));
                       // context.read<BottomCubit>().setSelectedScreen(false,
                       //     screenName: JobOpeningScreen());
                     },

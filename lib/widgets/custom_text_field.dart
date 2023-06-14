@@ -72,6 +72,7 @@ class IconTextField extends StatelessWidget {
       maxLength: maxLength,
       controller: controller,
       autofocus: autofocus!,
+      textCapitalization: TextCapitalization.sentences,
       obscureText: obscureText ?? false,
       cursorColor: MyColors.black,
       keyboardType: keyboardType ?? TextInputType.text,

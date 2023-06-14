@@ -25,6 +25,7 @@ class MyImages {
   static String cal = "$baseUrl/date.png";
   static String email = "$baseUrl/email.png";
   static String cancel4x = "$baseUrl/cancel.png";
+  static String cancel2x = "$baseUrl/cancel_2x.png";
   static String edit = "$baseUrl/edit.png";
   static String mail = "$baseUrl/mail.png";
   static String enterprise = "$baseUrl/enterprise.png";

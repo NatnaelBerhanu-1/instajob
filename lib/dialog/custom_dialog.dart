@@ -15,8 +15,6 @@ class CustomDialog extends StatefulWidget {
   final VoidCallback? cancelOnTap;
   final String? desc;
   final String? desc1;
-  final int? selectedIndex;
-  final int? index;
   final String? title;
   final Color? cancelTxtFontClr;
   const CustomDialog({
@@ -27,8 +25,6 @@ class CustomDialog extends StatefulWidget {
     this.desc1,
     this.cancelOnTap,
     this.cancelTxtFontClr,
-    this.selectedIndex,
-    this.index,
   }) : super(key: key);
 
   @override
@@ -83,8 +79,8 @@ class _CustomDialogState extends State<CustomDialog> {
                             context.read<GlobalCubit>().changeIndex(index);
                             Navigator.pop(context);
                           },
-                      // bgColor:
-                      //     selectedIndex == 1 ? MyColors.blue : MyColors.white,
+                      bgColor:
+                          selectedIndex == 1 ? MyColors.blue : MyColors.white,
                       borderColor: MyColors.blue,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
@@ -107,8 +103,8 @@ class _CustomDialogState extends State<CustomDialog> {
                             context.read<GlobalCubit>().changeIndex(index);
                             Navigator.pop(context);
                           },
-                      // bgColor:
-                      //     selectedIndex == 2 ? MyColors.blue : MyColors.white,
+                      bgColor:
+                          selectedIndex == 2 ? MyColors.blue : MyColors.white,
                       borderColor: MyColors.blue,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(

@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/choose_image_bloc/pick_image_cubit.dart';
+import 'package:insta_job/bloc/company_bloc/company_bloc.dart';
 import 'package:insta_job/bloc/global_cubit/global_state.dart';
 import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
 import 'package:insta_job/bloc/job_position/job_pos_event.dart';
@@ -735,6 +736,8 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                           fontColor: MyColors.white,
                           borderColor: MyColors.blue,
                           onclick: () async {
+                            print(
+                                "ID ++++++++++++++ ||||||||||| ${context.read<CompanyBloc>().companyModel.id}");
                             FocusManager.instance.primaryFocus?.unfocus();
                             if (formKey.currentState!.validate()) {
                               var value = context.read<GlobalCubit>();

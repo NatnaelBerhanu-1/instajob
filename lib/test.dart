@@ -185,6 +185,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:insta_job/utils/my_colors.dart';
+import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 
 class TimePickerDropDown extends StatefulWidget {
@@ -205,135 +207,138 @@ class _TimePickerDropDownState extends State<TimePickerDropDown> {
   @override
   void initState() {
     super.initState();
-    hoursList = List.generate(12, (index) => index);
+    hoursList = List.generate(12, (index) => index + 1);
     minutesList = List.generate(60, (index) => index);
     time = List.generate(2, (index) => index.toString());
     selectedHour = DateTime.now().hour;
     selectedMinute = DateTime.now().minute;
   }
 
+  TimeOfDay timeOfDay = TimeOfDay.now();
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        DropdownButton<int>(
-          value: selectedHour,
-          onChanged: (value) {
-            setState(() {
-              selectedHour = value!;
-              widget.onTimeSelected!(DateTime(
-                  DateTime.now().year,
-                  DateTime.now().month,
-                  DateTime.now().day,
-                  selectedHour!,
-                  selectedMinute!));
-            });
-          },
-          items: hoursList.map((int hour) {
-            return DropdownMenuItem<int>(
-              value: hour,
-              child: Text(hour.toString().padLeft(2, '0')),
-            );
-          }).toList(),
-        ),
-        SizedBox(width: 8),
-        Text(':'),
-        SizedBox(width: 8),
-        Center(
-          child: DropdownButton<int>(
-            value: selectedMinute,
-            onChanged: (value) {
-              setState(() {
-                selectedMinute = value!;
-                widget.onTimeSelected!(DateTime(
-                    DateTime.now().year,
-                    DateTime.now().month,
-                    DateTime.now().day,
-                    selectedHour!,
-                    selectedMinute!));
-              });
-            },
-            items: minutesList.map((int minute) {
-              return DropdownMenuItem<int>(
-                value: minute,
-                child: Text(minute.toString().padLeft(2, '0')),
-              );
-            }).toList(),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class TimePickerDialog extends StatefulWidget {
-  @override
-  _TimePickerDialogState createState() => _TimePickerDialogState();
-}
-
-class _TimePickerDialogState extends State<TimePickerDialog> {
-  TimeOfDay _time = TimeOfDay.now();
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text('Select a time'),
-      content: DropdownButton<TimeOfDay>(
-        onChanged: (newTime) {
-          setState(() {
-            _time = newTime!;
-          });
-        },
-        items: List.generate(24, (hour) {
-          return DropdownMenuItem<TimeOfDay>(
-            value: TimeOfDay(hour: hour, minute: 0),
-            child: Text('$hour:00'),
-          );
-        }),
-      ),
-      actions: <Widget>[
-        TextButton(
-          child: Text('CANCEL'),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-        TextButton(
-          child: Text('OK'),
-          onPressed: () {
-            // Do something with the selected time
-            Navigator.of(context).pop(_time);
-          },
-        ),
-      ],
-    );
-  }
-}
-
-class MyApp1 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(title: Text('Time Picker Dialog')),
-        body: Center(
-          child: ElevatedButton(
-            child: Text('Select a time'),
-            onPressed: () {
-              showDialog<TimeOfDay>(
-                context: context,
-                builder: (BuildContext context) {
-                  return TimePickerDialog();
+    return Scaffold(
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: Column(
+            children: [
+              /*DropdownButton<int>(
+                // value: selectedHour,
+                onChanged: (value) {
+                  setState(() {
+                    selectedHour = value!;
+                    widget.onTimeSelected!(DateTime(
+                        DateTime.now().year,
+                        DateTime.now().month,
+                        DateTime.now().day,
+                        selectedHour!,
+                        selectedMinute!));
+                  });
                 },
-              ).then((selectedTime) {
-                // Do something with the selected time
-                print('Selected time: $selectedTime');
-              });
-            },
+                items: hoursList.map((int hour) {
+                  return DropdownMenuItem<int>(
+                    value: hour,
+                    child: Text(hour.toString().padLeft(2, '0')),
+                  );
+                }).toList(),
+              ),
+              SizedBox(width: 8),
+              Text(':'),
+              SizedBox(width: 8),
+              Center(
+                child: DropdownButton<int>(
+                  // value: selectedMinute,
+                  onChanged: (value) {
+                    setState(() {
+                      selectedMinute = value!;
+                      widget.onTimeSelected!(DateTime(
+                          DateTime.now().year,
+                          DateTime.now().month,
+                          DateTime.now().day,
+                          selectedHour!,
+                          selectedMinute!));
+                    });
+                  },
+                  items: minutesList.map((int minute) {
+                    return DropdownMenuItem<int>(
+                      value: minute,
+                      child: Text(minute.toString().padLeft(2, '0')),
+                    );
+                  }).toList(),
+                ),
+              ),*/
+              Container(
+                padding: EdgeInsets.all(9),
+                decoration: BoxDecoration(
+                    border: Border.all(color: MyColors.lightBlue, width: 1),
+                    borderRadius: BorderRadius.circular(5)),
+                child: Row(
+                  children: [
+                    Icon(Icons.call, color: MyColors.lightBlue),
+                    DropdownButton<int>(
+                      // value: selectedHour,
+                      onChanged: (value) {
+                        setState(() {
+                          selectedHour = value!;
+                          widget.onTimeSelected!(DateTime(
+                              DateTime.now().year,
+                              DateTime.now().month,
+                              DateTime.now().day,
+                              selectedHour!,
+                              selectedMinute!));
+                        });
+                      },
+                      items: hoursList.map((int hour) {
+                        return DropdownMenuItem<int>(
+                          value: hour,
+                          child: Text(hour.toString().padLeft(2, '0')),
+                        );
+                      }).toList(),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 20),
+              Text("${timeOfDay.hour}:${timeOfDay.minute}"),
+              SizedBox(height: 20),
+              ElevatedButton(
+                  onPressed: () async {
+                    // pickTime();
+                  },
+                  child: Text("SHOW TIME")),
+              // Material(
+              //   elevation: 3,
+              //   child: ListView.builder(
+              //     shrinkWrap: true,
+              //     itemCount: 5,
+              //     itemBuilder: (c, i) {
+              //       return Text("data");
+              //     },
+              //   ),
+              // ),
+            ],
           ),
         ),
       ),
     );
+  }
+
+  pickTime() async {
+    TimeOfDay? time = await showTimePicker(
+      context: context,
+      initialEntryMode: TimePickerEntryMode.input,
+      initialTime: timeOfDay,
+    );
+    if (time != null) {
+      timeOfDay = time;
+      setState(() {});
+    }
+    print("WWWWW $timeOfDay");
+    DateTime tempDate =
+        DateFormat("hh:mm").parse("${timeOfDay.hour}:${timeOfDay.minute}");
+    var dateFormat = DateFormat("h:mm a"); // you can change the format here
+    print(dateFormat.format(tempDate));
   }
 }
 

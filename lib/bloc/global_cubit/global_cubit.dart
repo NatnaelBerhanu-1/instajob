@@ -6,7 +6,9 @@ import 'global_state.dart';
 class GlobalCubit extends Cubit<InitialState> {
   int sIndex = 1;
   int fIndex = 0;
+
   GlobalCubit() : super(InitialState());
+
   bool pass = false;
   bool cPass = false;
   bool checkBox = false;
@@ -41,6 +43,13 @@ class GlobalCubit extends Cubit<InitialState> {
   changeFilterIndex(index) {
     fIndex = index;
     emit(FilterState(fIndex));
+  }
+
+  /// DROPDOWN VALUE
+  String dropDownValue = "abc";
+  changeDropDownValue(val) {
+    dropDownValue = val;
+    emit(DropDownState(dropDownValue));
   }
 
   /// job Type
