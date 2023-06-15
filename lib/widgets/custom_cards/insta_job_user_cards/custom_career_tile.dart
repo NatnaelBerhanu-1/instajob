@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/model/job_position_model.dart';
 import 'package:insta_job/screens/insta_job_user/bottom_nav_screen/user_account/occupation_details_screen.dart';
@@ -21,6 +23,7 @@ class CustomCareerTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        context.read<GlobalCubit>().changeIndex(0);
         AppRoutes.push(context, OccupationDetailsScreen());
       },
       child: Padding(
@@ -39,45 +42,50 @@ class CustomCareerTile extends StatelessWidget {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CustomCommonCard(
-                      bgColor: MyColors.lightBlue.withOpacity(.25),
-                      child: Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: ImageButton(
-                          image: MyImages.suitcase,
-                          color: MyColors.blue,
+                    Expanded(
+                      flex: 0,
+                      child: CustomCommonCard(
+                        bgColor: MyColors.lightBlue.withOpacity(.25),
+                        child: Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: ImageButton(
+                            image: MyImages.suitcase,
+                            color: MyColors.blue,
+                          ),
                         ),
                       ),
                     ),
                     SizedBox(width: 12),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CommonText(
-                          text: "Administrative Support",
-                          fontSize: 15,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        SizedBox(height: 7),
-                        // CommonText(text: "Company Name", fontSize: 15),
-                        Text.rich(
-                          TextSpan(
-                              text: "Code: ",
-                              style: TextStyle(color: MyColors.grey),
-                              children: [
-                                TextSpan(
-                                  text: "43-9022.00",
-                                  style: TextStyle(
-                                      color: MyColors.black,
-                                      fontWeight: FontWeight.w500),
-                                )
-                              ]),
-                        ),
-                      ],
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CommonText(
+                            text: "Administrative Support",
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          SizedBox(height: 7),
+                          // CommonText(text: "Company Name", fontSize: 15),
+                          Text.rich(
+                            TextSpan(
+                                text: "Code: ",
+                                style: TextStyle(color: MyColors.grey),
+                                children: [
+                                  TextSpan(
+                                    text: "43-9022.00",
+                                    style: TextStyle(
+                                        color: MyColors.black,
+                                        fontWeight: FontWeight.w500),
+                                  )
+                                ]),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
-                SizedBox(height: 10),
+                // SizedBox(height: 0),
                 divider(), SizedBox(height: 5),
                 CustomCommonCard(
                   bgColor: MyColors.grey.withOpacity(.30),

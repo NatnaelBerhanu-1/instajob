@@ -9,3 +9,8 @@ class InsertFeedBackEvent extends FeedBackEvent {
   @override
   List<Object?> get props => [feedBack];
 }
+
+class InertAutoMsg extends FeedBackEvent {
+  @override
+  List<Object?> get props => [];
+}

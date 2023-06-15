@@ -17,3 +17,5 @@ class ErrorState extends FeedBackState {
 
   const ErrorState(this.error);
 }
+
+class LoadAutoMsg extends FeedBackState {}

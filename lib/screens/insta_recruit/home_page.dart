@@ -37,8 +37,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int? index;
-
   @override
   Widget build(BuildContext context) {
     var selectedIndex = context.watch<GlobalCubit>().sIndex;
@@ -152,10 +150,7 @@ class _HomePageState extends State<HomePage> {
                                 padding: const EdgeInsets.only(left: 15.0),
                                 child: CustomAccDetails(
                                   onTap: () {
-                                    index = 0;
-                                    context
-                                        .read<GlobalCubit>()
-                                        .changeIndex(index);
+                                    context.read<GlobalCubit>().changeIndex(0);
                                     AppRoutes.push(context, OnBoardingScreen());
                                   },
                                   index: 0,
@@ -171,8 +166,7 @@ class _HomePageState extends State<HomePage> {
                       Expanded(
                         child: CustomAccDetails(
                           onTap: () {
-                            index = 1;
-                            context.read<GlobalCubit>().changeIndex(index);
+                            context.read<GlobalCubit>().changeIndex(1);
                             AppRoutes.push(context, FeedBackScreen());
                           },
                           index: 1,
@@ -194,10 +188,7 @@ class _HomePageState extends State<HomePage> {
                             Expanded(
                               child: CustomAccDetails(
                                 onTap: () {
-                                  index = 2;
-                                  context
-                                      .read<GlobalCubit>()
-                                      .changeIndex(index);
+                                  context.read<GlobalCubit>().changeIndex(2);
                                   if (Global.userModel?.type == "user") {
                                     AppRoutes.push(
                                         context, CareerClusterScreen());
@@ -222,10 +213,7 @@ class _HomePageState extends State<HomePage> {
                                   builder: (context, state) {
                                 return CustomAccDetails(
                                   onTap: () {
-                                    index = 3;
-                                    context
-                                        .read<GlobalCubit>()
-                                        .changeIndex(index);
+                                    context.read<GlobalCubit>().changeIndex(3);
                                     if (Global.userModel?.type == "user") {
                                       context
                                           .read<JobPositionBloc>()
@@ -253,8 +241,7 @@ class _HomePageState extends State<HomePage> {
                         SizedBox(height: 25),
                         CustomAccDetails(
                           onTap: () {
-                            index = 4;
-                            context.read<GlobalCubit>().changeIndex(index);
+                            context.read<GlobalCubit>().changeIndex(4);
                             AppRoutes.push(context, SettingScreen());
                           },
                           index: 4,

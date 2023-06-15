@@ -318,8 +318,8 @@ class _SearchJobsScreenState extends State<SearchJobsScreen> {
                                 initialCameraPosition: CameraPosition(
                                     target: LatLng(0.0, 22.90), zoom: 14),
                                 zoomControlsEnabled: true,
-                                zoomGesturesEnabled: true,
-                                scrollGesturesEnabled: true,
+                                // zoomGesturesEnabled: true,
+                                // scrollGesturesEnabled: true,
                                 padding: EdgeInsets.only(
                                     bottom: MediaQuery.of(context).size.height *
                                         0.27),

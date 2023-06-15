@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:insta_job/screens/call_screen.dart';
 import 'package:insta_job/screens/insta_recruit/recording_screens/transcription_screen.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/widgets/custom_button/custom_btn.dart';
@@ -114,6 +115,9 @@ class InterviewTile extends StatelessWidget {
                             bgColor: MyColors.blue,
                             borderRadius: BorderRadius.circular(20),
                             title: "Interview Now",
+                            onTap: () {
+                              AppRoutes.push(context, CallScreen());
+                            },
                           )),
                     ],
                   ),

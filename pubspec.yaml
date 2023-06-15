@@ -46,6 +46,7 @@ dependencies:
   flutter_time_picker_spinner: ^2.0.0
   google_maps_flutter: ^2.2.5
   syncfusion_flutter_pdfviewer: any
+  syncfusion_flutter_pdf:
   file_picker: any
   open_file_safe: any
   path_provider: ^2.0.14
@@ -54,6 +55,7 @@ dependencies:
   flutter_downloader: ^1.10.2
   permission_handler: ^10.2.0
   percent_indicator: ^4.2.3
+  http:
 
   #auth
   firebase_core: ^2.8.0

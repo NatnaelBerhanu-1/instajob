@@ -46,7 +46,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => CompanyBloc(sl()));
   sl.registerLazySingleton(() => BottomBloc(sl())..add(UserEvent()));
   sl.registerLazySingleton(() => JobPositionBloc(sl()));
-  sl.registerLazySingleton(() => FeedBackBloc(sl()));
+  sl.registerLazySingleton(() => FeedBackAndAutoMsgBloc(sl()));
   sl.registerLazySingleton(() => ResumeBloc(sl()));
 
   /// other

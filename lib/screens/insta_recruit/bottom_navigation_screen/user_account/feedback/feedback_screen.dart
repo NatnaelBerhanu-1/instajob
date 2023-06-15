@@ -37,8 +37,8 @@ class _FeedBackScreenState extends State<FeedBackScreen> {
         body: Padding(
           padding: const EdgeInsets.all(20.0),
           child: SingleChildScrollView(
-            child:
-                BlocConsumer<FeedBackBloc, FeedBackState>(listener: (c, state) {
+            child: BlocConsumer<FeedBackAndAutoMsgBloc, FeedBackState>(
+                listener: (c, state) {
               if (state is ErrorState) {
                 showToast(state.error);
               }
@@ -64,7 +64,7 @@ class _FeedBackScreenState extends State<FeedBackScreen> {
                     onclick: () {
                       if (msg.text.isNotEmpty) {
                         context
-                            .read<FeedBackBloc>()
+                            .read<FeedBackAndAutoMsgBloc>()
                             .add(InsertFeedBackEvent(msg.text));
                       } else {
                         showToast("Please enter feedback");

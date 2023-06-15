@@ -1,11 +1,13 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:io';
 import 'dart:isolate';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:http/http.dart' as http;
 import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
 import 'package:insta_job/bloc/job_position/job_pos_event.dart';
 import 'package:insta_job/bloc/job_position/job_pos_state.dart';
@@ -21,6 +23,7 @@ import 'package:insta_job/widgets/custom_app_bar.dart';
 import 'package:insta_job/widgets/custom_button/custom_btn.dart';
 import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class ApplyScreen extends StatefulWidget {
@@ -32,29 +35,92 @@ class ApplyScreen extends StatefulWidget {
 
 class _ApplyScreenState extends State<ApplyScreen> {
   final ReceivePort _port = ReceivePort();
-   void downloadCallback(String id, DownloadTaskStatus status, int progress) {
-    final SendPort? send = IsolateNameServer.lookupPortByName('downloader_send_port');
+  void downloadCallback(String id, DownloadTaskStatus status, int progress) {
+    final SendPort? send =
+        IsolateNameServer.lookupPortByName('downloader_send_port');
     send?.send([id, status, progress]);
   }
+
+  Future<void> loadPdfFromUrl() async {
+    //Load an image from website/webspace
+    var url = "${EndPoint.imageBaseUrl}${Global.userModel?.cv}";
+    var response = await http.get(Uri.parse(url));
+    var data = response.bodyBytes;
+    //Create a new PDF document
+    PdfDocument document = PdfDocument(inputBytes: data);
+    // print('###### $data');
+    //Save and launch the document
+    final List<int> bytes = await document.save();
+
+    //Dispose the document.
+    final PdfPage page = document.pages[0];
+    page.graphics.drawString(
+        'Hello World!', PdfStandardFont(PdfFontFamily.helvetica, 12),
+        brush: PdfSolidBrush(PdfColor(0, 0, 0)),
+        bounds: const Rect.fromLTWH(0, 0, 150, 20));
+    final Directory directory = await getApplicationDocumentsDirectory();
+    final String path = directory.path;
+    final File file = File('$path/dummy.pdf');
+    file.writeAsBytes(bytes);
+    await document.save();
+    document.dispose();
+    // Opent he fine.
+    // OpenFile.open('$path/Flutter_Succinctly.pdf');
+  }
+
+  edit() async {
+/*    // Create a PDF document
+    final pdf = pw.Document();
+
+    // Add a page to the document
+
+    pdf.addPage(
+      pw.Page(
+        build: (pw.Context context) {
+          return pw.Center(
+            child: pw.Text('Hello, PDF!', style: pw.TextStyle(fontSize: 40)),
+          );
+        },
+      ),
+    );
+
+    // Save the PDF to a file
+    final output = await getTemporaryDirectory();
+    final file = File('${output.path}/edited_pdf.pdf');
+    await file.writeAsBytes(await pdf.save());
+
+    print('Edited PDF saved to: ${file.path}');*/
+
+    final PdfDocument document =
+        PdfDocument(inputBytes: File("input.pdf").readAsBytesSync());
+    final PdfPage page = document.pages[0];
+    page.graphics.drawString(
+        'Hello World!', PdfStandardFont(PdfFontFamily.helvetica, 12),
+        brush: PdfSolidBrush(PdfColor(0, 0, 0)),
+        bounds: const Rect.fromLTWH(0, 0, 150, 20));
+    File('output.pdf').writeAsBytes(await document.save());
+    document.dispose();
+  }
+
   @override
   void initState() {
     super.initState();
 
-    IsolateNameServer.registerPortWithName(_port.sendPort, 'downloader_send_port');
-    _port.listen((dynamic data) {
-      String id = data[0];
-      DownloadTaskStatus status = DownloadTaskStatus(data[1]);
-      int progress = data[2];
-      print("QQQWWWW-->  $data");
-      setState((){ });
-    });
+    // IsolateNameServer.registerPortWithName(_port.sendPort, 'downloader_send_port');
+    // _port.listen((dynamic data) {
+    //   String id = data[0];
+    //   DownloadTaskStatus status = DownloadTaskStatus(data[1]);
+    //   int progress = data[2];
+    //   print("QQQWWWW-->  $data");
+    //   setState((){ });
+    // });
 
-    FlutterDownloader.registerCallback(downloadCallback);
+    // FlutterDownloader.registerCallback(downloadCallback);
   }
 
   @override
   void dispose() {
-    IsolateNameServer.removePortNameMapping('downloader_send_port');
+    // IsolateNameServer.removePortNameMapping('downloader_send_port');
     super.dispose();
   }
 
@@ -68,8 +134,15 @@ class _ApplyScreenState extends State<ApplyScreen> {
               image: MyImages.download,
               color: MyColors.blue,
               onTap: () async {
-                final pdfStorage = await getApplicationDocumentsDirectory();
-
+                // final pdfStorage = await getExternalStorageDirectory();
+                // File file = File("${pdfStorage?.path}/edited_pdf.pdf");
+                // var exist = await file.exists();
+                // print('EXIST ==>  $exist');
+                // print('PATH ==>  ${pdfStorage?.path}');
+                // final PdfDocument document=PdfDocument(inputBytes: File("").readAsBytesSync());
+                edit();
+                // loadPdfFromUrl();
+                // print("${EndPoint.imageBaseUrl}${Global.userModel?.cv}");
                 /*await FlutterDownloader.enqueue(
                   url: "${EndPoint.imageBaseUrl}${Global.userModel?.cv}",
                   headers: {}, // optional: header send with url (auth token etc)

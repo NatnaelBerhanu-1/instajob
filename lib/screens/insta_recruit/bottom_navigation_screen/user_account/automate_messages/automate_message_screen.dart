@@ -1,6 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:insta_job/bloc/feedback_bloc/feedback_bloc.dart';
+import 'package:insta_job/bloc/feedback_bloc/feedback_state.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
@@ -171,18 +174,22 @@ class _AutomateMsgScreenState extends State<AutomateMsgScreen> {
                     fontColor: MyColors.grey,
                   ),
                   SizedBox(height: 25),
-                  CustomIconButton(
-                    image: isEnable ? MyImages.arrowWhite : MyImages.cancel2x,
-                    iconColor: isEnable ? MyColors.white : MyColors.blue,
-                    title: isEnable ? "Enable" : "Disable",
-                    backgroundColor: isEnable ? MyColors.blue : MyColors.white,
-                    fontColor: isEnable ? MyColors.white : MyColors.blue,
-                    borderColor: MyColors.blue,
-                    onclick: () {
-                      isEnable = !isEnable;
-                      setState(() {});
-                    },
-                  ),
+                  BlocBuilder<FeedBackAndAutoMsgBloc, FeedBackState>(
+                      builder: (context, snapshot) {
+                    return CustomIconButton(
+                      image: isEnable ? MyImages.arrowWhite : MyImages.cancel2x,
+                      iconColor: isEnable ? MyColors.white : MyColors.blue,
+                      title: isEnable ? "Enable" : "Disable",
+                      backgroundColor:
+                          isEnable ? MyColors.blue : MyColors.white,
+                      fontColor: isEnable ? MyColors.white : MyColors.blue,
+                      borderColor: MyColors.blue,
+                      onclick: () {
+                        isEnable = !isEnable;
+                        setState(() {});
+                      },
+                    );
+                  }),
                 ],
               ),
             ),

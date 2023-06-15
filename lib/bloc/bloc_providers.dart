@@ -20,6 +20,6 @@ final List<SingleChildWidget> blocProviders = [
   BlocProvider(create: (_) => di.sl<CompanyBloc>()),
   BlocProvider(create: (_) => di.sl<PickImageCubit>()),
   BlocProvider(create: (_) => di.sl<JobPositionBloc>()),
-  BlocProvider(create: (_) => di.sl<FeedBackBloc>()),
+  BlocProvider(create: (_) => di.sl<FeedBackAndAutoMsgBloc>()),
   BlocProvider(create: (_) => di.sl<ResumeBloc>()),
 ];

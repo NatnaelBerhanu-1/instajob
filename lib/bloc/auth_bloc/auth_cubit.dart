@@ -193,6 +193,8 @@ class AuthCubit extends Cubit<AuthInitialState> {
     }
   }
 
+  resendCode() {}
+
   /// ======================================================== ///
 
   /// UPDATE USER
