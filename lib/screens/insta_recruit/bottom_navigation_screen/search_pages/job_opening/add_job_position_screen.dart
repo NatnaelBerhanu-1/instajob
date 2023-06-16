@@ -477,7 +477,7 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                                     value.rangeVal(val);
                                   },
                                   max: 100,
-                                  min: 10,
+                                  min: 0,
                                 )
                               ],
                             ),

@@ -54,6 +54,7 @@ class BottomBloc extends Bloc<BottomEvent, BottomInitialState> {
         UserModel userModel = UserModel.fromJson(user);
         Global.userModel = userModel;
         print('USERMODEL ---------------        $user');
+        // print(' ******  ${jsonEncode(user)}');
         emit(UserState(userModel));
         companyBloc.add(LoadCompanyListEvent());
         Timer(

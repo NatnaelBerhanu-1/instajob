@@ -2,8 +2,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/company_bloc/company_event.dart';
 import 'package:insta_job/bloc/company_bloc/company_state.dart';
 import 'package:insta_job/model/company_model.dart';
-import 'package:insta_job/model/filter_model.dart';
-import 'package:insta_job/model/job_position_model.dart';
 import 'package:insta_job/network/api_response.dart';
 import 'package:insta_job/repository/company_repo.dart';
 
@@ -48,17 +46,12 @@ class CompanyBloc extends Bloc<CompanyEvent, CompanyState> {
       emit(CompanyLoading());
       var list = await _getSearchCompany(emit, search: event.search);
       emit(SearchCompanyLoaded(list));
-      if (list.isEmpty) {
-        emit(const ErrorState("Data not found"));
-      }
-    });
-    on<JobSearchEvent>((event, emit) async {
-      emit(CompanyLoading());
-      var jobList = await _getSearchJobs(emit, event.filterModel);
-      emit(SearchJobLoaded(jobList));
-      if (jobList.isEmpty) {
-        emit(const ErrorState("Data not found"));
-      }
+      // if (list.isEmpty) {
+      //   emit(const ErrorState("Data not found"));
+      // }
+      // else {
+      //   emit(Initial());
+      // }
     });
   }
 
@@ -77,26 +70,7 @@ class CompanyBloc extends Bloc<CompanyEvent, CompanyState> {
       print('LISTTT ------------            $list');
       return list;
     } else if (response.response.statusCode == 400) {
-      emit(ErrorState(response.response.data['message']));
-    }
-  }
-
-  _getSearchJobs(Emitter emit, FilterModel filterModel) async {
-    ApiResponse response = await companyRepository.searchJobs(filterModel);
-    if (response.response.statusCode == 500) {
-      emit(const ErrorState('Something went wrong'));
-    }
-    if (response.response.statusCode == 200) {
-      List<JobPosModel> list = (response.response.data['data'] as List)
-          .map((e) => JobPosModel.fromJson(e))
-          .toList();
-      emit(SearchJobLoaded(list));
-      print('LISTTT ------------            $list');
-      return list;
-    } else if (response.response.statusCode == 400) {
-      emit(ErrorState(response.response.data['message']));
-    } else {
-      emit(const ErrorState('Something went wrong'));
+      emit(const ErrorState("Data Not Found"));
     }
   }
 }

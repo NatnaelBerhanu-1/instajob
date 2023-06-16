@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:insta_job/model/filter_model.dart';
 
 abstract class JobPosEvent extends Equatable {}
 
@@ -80,6 +81,14 @@ class ApplyJobEvent extends JobPosEvent {
 }
 
 class SavedJobPositionListEvent extends JobPosEvent {
+  @override
+  List<Object?> get props => [];
+}
+
+class JobSearchEvent extends JobPosEvent {
+  final FilterModel filterModel;
+
+  JobSearchEvent({required this.filterModel});
   @override
   List<Object?> get props => [];
 }

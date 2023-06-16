@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/job_position/job_pos_event.dart';
 import 'package:insta_job/bloc/job_position/job_pos_state.dart';
+import 'package:insta_job/model/filter_model.dart';
 import 'package:insta_job/model/job_position_model.dart';
 import 'package:insta_job/network/api_response.dart';
 import 'package:insta_job/repository/job_position_repo.dart';
@@ -37,6 +38,25 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
       return jobPosList;
     } else {
       emit(const JobErrorState("Data not found"));
+    }
+  }
+
+  _getSearchJobs(Emitter emit, FilterModel filterModel) async {
+    ApiResponse response = await jobPositionRepository.searchJobs(filterModel);
+    if (response.response.statusCode == 500) {
+      emit(const JobErrorState('Something went wrong'));
+    }
+    if (response.response.statusCode == 200) {
+      List<JobPosModel> list = (response.response.data['data'] as List)
+          .map((e) => JobPosModel.fromJson(e))
+          .toList();
+      emit(JobPosLoaded(list));
+      print('LISTTT ------------            $list');
+      return list;
+    } else if (response.response.statusCode == 400) {
+      emit(const JobErrorState("Data Not Found"));
+    } else {
+      emit(const JobErrorState('Something went wrong'));
     }
   }
 
@@ -158,6 +178,15 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
         print("DELETE SUCCESSFULLY");
       } else if (response.response.statusCode == 400) {
         emit(JobErrorState(response.response.data['message']));
+      }
+    });
+
+    on<JobSearchEvent>((event, emit) async {
+      emit(JobPosLoading());
+      var jobList = await _getSearchJobs(emit, event.filterModel);
+      emit(JobPosLoaded(jobList));
+      if (jobList.isEmpty) {
+        emit(const JobErrorState("Data not found"));
       }
     });
   }

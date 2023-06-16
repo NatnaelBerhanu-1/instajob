@@ -54,7 +54,7 @@ class AuthRepository {
           data: map,
           uri: isUser ? EndPoint.registerUser : EndPoint.registerEmp);
       return ApiResponse.withSuccess(response);
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       return ApiResponse.withError(e.response);
     }
   }
@@ -73,7 +73,7 @@ class AuthRepository {
       Response response = await dioClient.post(
           data: map, uri: isUser ? EndPoint.loginUser : EndPoint.loginEmp);
       return ApiResponse.withSuccess(response);
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       print(" RESPONCE 99999999999999999990 ${e.response}");
       return ApiResponse.withError(e.response);
     }
@@ -88,7 +88,7 @@ class AuthRepository {
       Response response =
           await dioClient.post(data: map, uri: EndPoint.checkUser);
       return ApiResponse.withSuccess(response);
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       return ApiResponse.withError(e.response);
     }
   }
@@ -112,7 +112,7 @@ class AuthRepository {
       Response response =
           await dioClient.post(data: map, uri: EndPoint.updateUser);
       return ApiResponse.withSuccess(response);
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       return ApiResponse.withError(e.response);
     }
   }
@@ -134,7 +134,7 @@ class AuthRepository {
       Response response =
           await dioClient.post(data: map, uri: EndPoint.employeeUpdate);
       return ApiResponse.withSuccess(response);
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       return ApiResponse.withError(e.response);
     }
   }
@@ -145,7 +145,7 @@ class AuthRepository {
       var map = {"id": Global.userModel?.id};
       Response response = await dioClient.post(data: map, uri: EndPoint.logout);
       return ApiResponse.withSuccess(response);
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       return ApiResponse.withError(e.response);
     }
   }
@@ -157,7 +157,7 @@ class AuthRepository {
       Response response =
           await dioClient.post(data: map, uri: EndPoint.sendCode);
       return ApiResponse.withSuccess(response);
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       return ApiResponse.withError(e.response);
     }
   }
@@ -169,7 +169,7 @@ class AuthRepository {
       Response response =
           await dioClient.post(data: map, uri: EndPoint.checkVerificationCode);
       return ApiResponse.withSuccess(response);
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       return ApiResponse.withError(e.response);
     }
   }
@@ -181,7 +181,7 @@ class AuthRepository {
       Response response =
           await dioClient.post(data: map, uri: EndPoint.reSendCodeForEmp);
       return ApiResponse.withSuccess(response);
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       return ApiResponse.withError(e.response);
     }
   }
@@ -192,7 +192,7 @@ class AuthRepository {
       Response response =
           await dioClient.post(data: map, uri: EndPoint.reSendCodeForUser);
       return ApiResponse.withSuccess(response);
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       return ApiResponse.withError(e.response);
     }
   }*/
@@ -205,7 +205,7 @@ class AuthRepository {
       Response response =
           await dioClient.post(data: map, uri: EndPoint.changePassword);
       return ApiResponse.withSuccess(response);
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       return ApiResponse.withError(e.response);
     }
   }

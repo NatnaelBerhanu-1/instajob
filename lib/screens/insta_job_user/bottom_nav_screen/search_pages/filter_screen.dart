@@ -2,13 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:insta_job/bloc/company_bloc/company_bloc.dart';
-import 'package:insta_job/bloc/company_bloc/company_event.dart';
 import 'package:insta_job/bloc/company_bloc/company_state.dart';
 import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
 import 'package:insta_job/bloc/global_cubit/global_state.dart';
 import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
 import 'package:insta_job/bloc/job_position/job_pos_event.dart';
+import 'package:insta_job/bloc/job_position/job_pos_state.dart';
 import 'package:insta_job/model/filter_model.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
@@ -42,6 +41,7 @@ class _FilterScreenState extends State<FilterScreen> {
                   child: CustomCommonCard(
                     onTap: () {
                       Navigator.of(context).pop();
+                      context.read<GlobalCubit>().clearValue();
                     },
                     borderColor: MyColors.blue,
                     borderRadius: BorderRadius.circular(20),
@@ -112,48 +112,53 @@ class _FilterScreenState extends State<FilterScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              jobTypeTile(
-                                title: "All Jobs",
-                                value: value.durationValue,
-                                selectedValue: "All Jobs",
-                                onTap: () {
-                                  value.duration("All Jobs");
-                                },
-                              ),
-                              divider(color: MyColors.grey.withOpacity(.40)),
+                              // jobTypeTile(
+                              //   title: "All Jobs",
+                              //   value: 1.toString(),
+                              //   selectedValue: value.durationIndex.toString(),
+                              //   onTap: () {
+                              //     value.duration("All Jobs");
+                              //     value.durationIndexChange(1);
+                              //   },
+                              // ),
+                              // divider(color: MyColors.grey.withOpacity(.40)),
                               jobTypeTile(
                                 title: "Last 24 Hours",
-                                value: value.durationValue,
-                                selectedValue: "Last 24 Hours",
+                                value: 1.toString(),
+                                selectedValue: value.durationIndex.toString(),
                                 onTap: () {
-                                  value.duration("Last 24 Hours");
+                                  value.last24Duration("Last 24 Hours");
+                                  value.durationIndexChange(1);
                                 },
                               ),
                               divider(color: MyColors.grey.withOpacity(.40)),
                               jobTypeTile(
                                 title: "Last 3 Days",
-                                value: value.durationValue,
-                                selectedValue: "Last 3 Days",
+                                value: 2.toString(),
+                                selectedValue: value.durationIndex.toString(),
                                 onTap: () {
-                                  value.duration("Last 3 Days");
+                                  value.last3Duration("Last 3 Days");
+                                  value.durationIndexChange(2);
                                 },
                               ),
                               divider(color: MyColors.grey.withOpacity(.40)),
                               jobTypeTile(
                                 title: "Last 7 Days",
-                                value: value.durationValue,
-                                selectedValue: "Last 7 Days",
+                                value: 3.toString(),
+                                selectedValue: value.durationIndex.toString(),
                                 onTap: () {
-                                  value.duration("Last 7 Days");
+                                  value.last7Duration("Last 7 Days");
+                                  value.durationIndexChange(3);
                                 },
                               ),
                               divider(color: MyColors.grey.withOpacity(.40)),
                               jobTypeTile(
                                 title: "Last 14 Days",
-                                value: value.durationValue,
-                                selectedValue: "Last 14 Days",
+                                value: 4.toString(),
+                                selectedValue: value.durationIndex.toString(),
                                 onTap: () {
-                                  value.duration("Last 14 Days");
+                                  value.last14Duration("Last 14 Days");
+                                  value.durationIndexChange(4);
                                 },
                               ),
                             ],
@@ -231,7 +236,7 @@ class _FilterScreenState extends State<FilterScreen> {
                             values.rangeVal(val);
                           },
                           max: 100,
-                          min: 10,
+                          min: 0,
                         )
                       ],
                     ),
@@ -296,36 +301,36 @@ class _FilterScreenState extends State<FilterScreen> {
                             jobTypeTile(
                               title: "Full Time",
                               value: value.jobTypeValue,
-                              selectedValue: "Full Time",
+                              selectedValue: "fulltime",
                               onTap: () {
-                                value.jobType("Full Time");
+                                value.jobType("fulltime");
                               },
                             ),
                             divider(color: MyColors.grey.withOpacity(.40)),
                             jobTypeTile(
                               title: "Part Time",
                               value: value.jobTypeValue,
-                              selectedValue: "Part Time",
+                              selectedValue: "parttime",
                               onTap: () {
-                                value.jobType("Part Time");
+                                value.jobType("parttime");
                               },
                             ),
                             divider(color: MyColors.grey.withOpacity(.40)),
                             jobTypeTile(
                               title: "Contact",
                               value: value.jobTypeValue,
-                              selectedValue: "Contact",
+                              selectedValue: "contact",
                               onTap: () {
-                                value.jobType("Contact");
+                                value.jobType("contact");
                               },
                             ),
                             divider(color: MyColors.grey.withOpacity(.40)),
                             jobTypeTile(
                               title: "Temporary",
                               value: value.jobTypeValue,
-                              selectedValue: "Temporary",
+                              selectedValue: "temporary",
                               onTap: () {
-                                value.jobType("Temporary");
+                                value.jobType("temporary");
                               },
                             ),
                           ],
@@ -343,39 +348,39 @@ class _FilterScreenState extends State<FilterScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            jobTypeTile(
-                              title: "All Experience Level",
-                              value: value.experienceLevelVal,
-                              selectedValue: "All Experience Level",
-                              onTap: () {
-                                value.experienceLevel("All Experience Level");
-                              },
-                            ),
-                            divider(color: MyColors.grey.withOpacity(.40)),
+                            // jobTypeTile(
+                            //   title: "All Experience Level",
+                            //   value: value.experienceLevelVal,
+                            //   selectedValue: "All Experience Level",
+                            //   onTap: () {
+                            //     value.experienceLevel("All Experience Level");
+                            //   },
+                            // ),
+                            // divider(color: MyColors.grey.withOpacity(.40)),
                             jobTypeTile(
                               title: "Entry Level",
                               value: value.experienceLevelVal,
-                              selectedValue: "Entry Level",
+                              selectedValue: "entrylevel",
                               onTap: () {
-                                value.experienceLevel("Entry Level");
+                                value.experienceLevel("entrylevel");
                               },
                             ),
                             divider(color: MyColors.grey.withOpacity(.40)),
                             jobTypeTile(
                               title: "Mid Level",
                               value: value.experienceLevelVal,
-                              selectedValue: "Mid Level",
+                              selectedValue: "midlevel",
                               onTap: () {
-                                value.experienceLevel("Mid Level");
+                                value.experienceLevel("midlevel");
                               },
                             ),
                             divider(color: MyColors.grey.withOpacity(.40)),
                             jobTypeTile(
                               title: "Senior Level",
                               value: value.experienceLevelVal,
-                              selectedValue: "Senior Level",
+                              selectedValue: "seniorlevel",
                               onTap: () {
-                                value.experienceLevel("Senior Level");
+                                value.experienceLevel("seniorlevel");
                               },
                             ),
                           ],
@@ -386,8 +391,9 @@ class _FilterScreenState extends State<FilterScreen> {
                 );
               }),
               SizedBox(height: 40),
-              BlocBuilder<CompanyBloc, CompanyState>(builder: (context, state) {
-                var data = context.read<CompanyBloc>();
+              BlocBuilder<JobPositionBloc, JobPosState>(
+                  builder: (context, state) {
+                var data = context.read<JobPositionBloc>();
                 return CustomIconButton(
                   image: MyImages.arrowWhite,
                   loading: state is CompanyLoading ? true : false,
@@ -395,24 +401,27 @@ class _FilterScreenState extends State<FilterScreen> {
                   onclick: () {
                     var value = context.read<GlobalCubit>();
                     FilterModel filterModel = FilterModel(
-                      last24: value.durationValue,
-                      last14: value.durationValue,
-                      last7: value.durationValue,
-                      last3: value.durationValue,
-                      startSalary: value.rangeValue.start.toStringAsFixed(0),
-                      endSalary: value.rangeValue.end.toStringAsFixed(0),
-                      areaDistance: value.range.toStringAsFixed(0),
-                      temporary: value.jobTypeValue,
-                      parttime: value.jobTypeValue,
-                      contract: value.jobTypeValue,
-                      seniorlevel: value.experienceLevelVal,
-                      midlevel: value.experienceLevelVal,
+                      last24: value.last_24,
+                      last14: value.last_14,
+                      last7: value.last_7,
+                      last3: value.last_3,
+                      startSalary: value.rangeValue.start == 0
+                          ? ""
+                          : value.rangeValue.start.toStringAsFixed(0),
+                      endSalary: value.rangeValue.end == 0
+                          ? ""
+                          : value.rangeValue.end.toStringAsFixed(0),
+                      areaDistance: value.range == 0
+                          ? ""
+                          : value.range.toStringAsFixed(0),
+                      jobsType: value.jobTypeValue,
+                      sortbydate: value.sortByValue,
                       experienceLevel: value.experienceLevelVal,
-                      entrylevel: value.experienceLevelVal,
                     );
                     data.add(JobSearchEvent(filterModel: filterModel));
-                    context.read<JobPositionBloc>().add(LoadJobPosListEvent());
+                    // context.read<JobPositionBloc>().add(LoadJobPosListEvent());
                     Navigator.pop(context);
+                    value.clearValue();
                   },
                 );
               }),

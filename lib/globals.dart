@@ -36,7 +36,7 @@ class Global {
       exe.writeFromSync(response.data);
       await exe.close();
       return pdf;
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       loading(value: false);
       print("@@@ Error ${e.type}");
       showToast("Something went wrong");

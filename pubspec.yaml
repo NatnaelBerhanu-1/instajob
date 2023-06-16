@@ -52,7 +52,7 @@ dependencies:
   path_provider: ^2.0.14
   pdf: ^3.10.1
   printing: ^5.10.3
-  flutter_downloader: ^1.10.2
+#  flutter_downloader:
   permission_handler: ^10.2.0
   percent_indicator: ^4.2.3
   http:

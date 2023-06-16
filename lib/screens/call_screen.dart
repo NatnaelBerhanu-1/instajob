@@ -58,7 +58,9 @@ class CallScreen extends StatelessWidget {
                   Expanded(
                     child: FloatingActionButton(
                       backgroundColor: MyColors.red,
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
                       child: Icon(Icons.call_end),
                     ),
                   ),

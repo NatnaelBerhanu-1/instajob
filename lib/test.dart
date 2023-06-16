@@ -142,292 +142,93 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
             children: <Widget>[
               hourMinute12H(date: _dateTime),
-              */ /*DropdownButtonHideUnderline(
-                child: DropdownButton(
-                  items: joinUser == 1
-                      ? []
-                      : controller.getCompanyList.isEmpty
-                          ? ['No company Found']
-                              .map((e) => DropdownMenuItem(child: Text('$e')))
-                              .toList()
-                          : List
-                              .map((items) => DropdownMenuItem(
-                                    value: "$_dateTime",
-                                    child: Text(items.name.toString()),
-                                  ))
-                              .toList(),
-                  onChanged: (newVal) {
-                    setState(() {
-                      dropdownValue = newVal;
-                      print("$dropdownValue");
-                    });
-                  },
-                  value: dropdownValue,
-                  hint: Text(
-                    "Select Company",
-                    style: TextStyle(color: MyColors.black, fontSize: 16),
-                  ),
-                  style: TextStyle(
-                    color: MyColors.black,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 17,
-                  ),
-                  dropdownColor: MyColors.white,
-                  icon: Icon(
-                    Icons.keyboard_arrow_down,
-                    color: MyColors.grey,
-                  ),
-                ),
-              ),*/
-
-import 'dart:isolate';
-import 'dart:ui';
-
+              */
 import 'package:flutter/material.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
-import 'package:insta_job/utils/my_colors.dart';
-import 'package:intl/intl.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:flutter/services.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:printing/printing.dart';
 
-class TimePickerDropDown extends StatefulWidget {
-  final Function(DateTime)? onTimeSelected;
-
-  TimePickerDropDown({this.onTimeSelected});
+class CreatePdfScreen extends StatefulWidget {
+  const CreatePdfScreen({Key? key}) : super(key: key);
 
   @override
-  _TimePickerDropDownState createState() => _TimePickerDropDownState();
+  State<CreatePdfScreen> createState() => _CreatePdfScreenState();
 }
 
-class _TimePickerDropDownState extends State<TimePickerDropDown> {
-  late List<int> hoursList;
-  late List<int> minutesList;
-  late List<String> time;
-  int? selectedHour;
-  int? selectedMinute;
-  @override
-  void initState() {
-    super.initState();
-    hoursList = List.generate(12, (index) => index + 1);
-    minutesList = List.generate(60, (index) => index);
-    time = List.generate(2, (index) => index.toString());
-    selectedHour = DateTime.now().hour;
-    selectedMinute = DateTime.now().minute;
-  }
-
-  TimeOfDay timeOfDay = TimeOfDay.now();
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Column(
-            children: [
-              /*DropdownButton<int>(
-                // value: selectedHour,
-                onChanged: (value) {
-                  setState(() {
-                    selectedHour = value!;
-                    widget.onTimeSelected!(DateTime(
-                        DateTime.now().year,
-                        DateTime.now().month,
-                        DateTime.now().day,
-                        selectedHour!,
-                        selectedMinute!));
-                  });
-                },
-                items: hoursList.map((int hour) {
-                  return DropdownMenuItem<int>(
-                    value: hour,
-                    child: Text(hour.toString().padLeft(2, '0')),
-                  );
-                }).toList(),
-              ),
-              SizedBox(width: 8),
-              Text(':'),
-              SizedBox(width: 8),
-              Center(
-                child: DropdownButton<int>(
-                  // value: selectedMinute,
-                  onChanged: (value) {
-                    setState(() {
-                      selectedMinute = value!;
-                      widget.onTimeSelected!(DateTime(
-                          DateTime.now().year,
-                          DateTime.now().month,
-                          DateTime.now().day,
-                          selectedHour!,
-                          selectedMinute!));
-                    });
-                  },
-                  items: minutesList.map((int minute) {
-                    return DropdownMenuItem<int>(
-                      value: minute,
-                      child: Text(minute.toString().padLeft(2, '0')),
-                    );
-                  }).toList(),
+class _CreatePdfScreenState extends State<CreatePdfScreen> {
+  Future<Uint8List> makePdf() {
+    final pdf = pw.Document();
+    pdf.addPage(pw.Page(build: (context) {
+      return pw.Row(
+        children: [
+          pw.Container(
+            width: 230,
+            decoration: pw.BoxDecoration(
+                // color: PdfColor.fromHex("#0FBCFD"),
                 ),
-              ),*/
-              Container(
-                padding: EdgeInsets.all(9),
-                decoration: BoxDecoration(
-                    border: Border.all(color: MyColors.lightBlue, width: 1),
-                    borderRadius: BorderRadius.circular(5)),
-                child: Row(
-                  children: [
-                    Icon(Icons.call, color: MyColors.lightBlue),
-                    DropdownButton<int>(
-                      // value: selectedHour,
-                      onChanged: (value) {
-                        setState(() {
-                          selectedHour = value!;
-                          widget.onTimeSelected!(DateTime(
-                              DateTime.now().year,
-                              DateTime.now().month,
-                              DateTime.now().day,
-                              selectedHour!,
-                              selectedMinute!));
-                        });
-                      },
-                      items: hoursList.map((int hour) {
-                        return DropdownMenuItem<int>(
-                          value: hour,
-                          child: Text(hour.toString().padLeft(2, '0')),
-                        );
-                      }).toList(),
-                    ),
-                  ],
-                ),
+            child: pw.Stack(children: [
+              pw.Column(
+                children: [
+                  pw.Container(
+                      // constraints: pw.BoxConstraints(maxHeight: double.infinity),
+                      height: 725,
+                      width: 210,
+                      decoration: pw.BoxDecoration(
+                        color: PdfColor.fromHex("#CAFFC8"),
+                      ),
+                      child: pw.Padding(
+                        padding: pw.EdgeInsets.all(15),
+                        child: pw.Column(
+                          crossAxisAlignment: pw.CrossAxisAlignment.start,
+                          children: [
+                            pw.Padding(
+                              padding: pw.EdgeInsets.only(top: 60, left: 14),
+                              // top: 30,
+                              // left: ,
+                              child: pw.Container(
+                                height: 150,
+                                width: 150,
+                                // alignment: pw.Alignment.center,
+                                decoration: pw.BoxDecoration(
+                                    color: PdfColor.fromHex("#0FBCFD"),
+                                    shape: pw.BoxShape.circle),
+                              ),
+                            ),
+                            pw.SizedBox(height: 30),
+                            pw.Text("Name",
+                                style: pw.TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: pw.FontWeight.bold)),
+                            pw.Text("Designation",
+                                style: pw.TextStyle(fontSize: 17)),
+                            pw.SizedBox(height: 30),
+                            pw.Text(" About Me",
+                                style: pw.TextStyle(fontSize: 15)),
+                            pw.Divider(),
+                            pw.Text("fdngnnnnnnnnnnnnnnnnnn eune erjeimalkf ",
+                                style: pw.TextStyle(fontSize: 15)),
+                          ],
+                        ),
+                      )),
+                ],
               ),
-              SizedBox(height: 20),
-              Text("${timeOfDay.hour}:${timeOfDay.minute}"),
-              SizedBox(height: 20),
-              ElevatedButton(
-                  onPressed: () async {
-                    // pickTime();
-                  },
-                  child: Text("SHOW TIME")),
-              // Material(
-              //   elevation: 3,
-              //   child: ListView.builder(
-              //     shrinkWrap: true,
-              //     itemCount: 5,
-              //     itemBuilder: (c, i) {
-              //       return Text("data");
-              //     },
-              //   ),
-              // ),
-            ],
+            ]),
           ),
-        ),
-      ),
-    );
-  }
-
-  pickTime() async {
-    TimeOfDay? time = await showTimePicker(
-      context: context,
-      initialEntryMode: TimePickerEntryMode.input,
-      initialTime: timeOfDay,
-    );
-    if (time != null) {
-      timeOfDay = time;
-      setState(() {});
-    }
-    print("WWWWW $timeOfDay");
-    DateTime tempDate =
-        DateFormat("hh:mm").parse("${timeOfDay.hour}:${timeOfDay.minute}");
-    var dateFormat = DateFormat("h:mm a"); // you can change the format here
-    print(dateFormat.format(tempDate));
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key}) : super(key: key);
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int progress = 0;
-
-  final ReceivePort _receivePort = ReceivePort();
-
-  static downloadingCallback(id, status, progress) {
-    ///Looking up for a send port
-    SendPort? sendPort = IsolateNameServer.lookupPortByName("downloading");
-
-    ///ssending the data
-    sendPort?.send([id, status, progress]);
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-
-    ///register a send port for the other isolates
-    IsolateNameServer.registerPortWithName(
-        _receivePort.sendPort, "downloading");
-
-    ///Listening for the data is comming other isolataes
-    _receivePort.listen((message) {
-      setState(() {
-        progress = message[2];
-      });
-
-      print(progress);
-    });
-
-    FlutterDownloader.registerCallback(downloadingCallback);
+          pw.Column(
+            children: [],
+          ),
+        ],
+      );
+    }));
+    return pdf.save();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              "$progress",
-              style: TextStyle(fontSize: 40),
-            ),
-            SizedBox(
-              height: 60,
-            ),
-            TextButton(
-              child: Text("Start Downloading"),
-              onPressed: () async {
-                // Global().openPdf(
-                //     context,
-                //     "https://shaybani-web.ondemandservicesappinflutter.online/storage/files/64522e9faa054.pdf",
-                //     "ABC");
-                // FileStorage.writeCounter(
-                //     "https://shaybani-web.ondemandservicesappinflutter.online/storage/files/64522e9faa054.pdf",
-                //     "geeksforgeeks.txt");
-                // final status = await Permission.storage.request();
-                //
-                // if (status.isGranted) {
-                final externalDir = await getExternalStorageDirectory();
-                //
-                await FlutterDownloader.enqueue(
-                  url:
-                      "https://shaybani-web.ondemandservicesappinaflutter.online/storage/files/64522e9faa054.pdf",
-                  savedDir: externalDir!.path,
-                  fileName: "download",
-                  showNotification: true,
-                  openFileFromNotification: true,
-                );
-                // } else {
-                //   print("Permission deined");
-                // }
-              },
-            )
-          ],
-        ),
+      body: PdfPreview(
+        build: (context) => makePdf(),
       ),
     );
   }

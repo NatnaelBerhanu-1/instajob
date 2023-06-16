@@ -23,12 +23,24 @@ class FeedBackAndAutoMsgBloc extends Bloc<FeedBackEvent, FeedBackState> {
     });
 
     on<InertAutoMsg>((event, emit) async {
-      ApiResponse response = await feedBackRepository.autoMessage();
+      ApiResponse response = await feedBackRepository.autoMessage(
+        applicationReceivedSubject: event.applicationReceivedSubject,
+        applicationReceivedContent: event.applicationReceivedContent,
+        disqualifiedReviewSubject: event.disqualifiedReviewSubject,
+        disqualifiedReviewContent: event.disqualifiedReviewContent,
+        shortlistedReviewSubject: event.shortlistedReviewSubject,
+        shortlistedReviewContent: event.shortlistedReviewContent,
+        autoButton: event.autoButton,
+        // empId: event.empId,
+      );
       if (response.response.statusCode == 500) {
         emit(const ErrorState("Something went wrong"));
       }
       if (response.response.statusCode == 200) {
-      } else if (response.response.statusCode == 400) {}
+        emit(AutoMsgState());
+      } else if (response.response.statusCode == 400) {
+        emit(const ErrorState("Not Found"));
+      }
     });
   }
 }

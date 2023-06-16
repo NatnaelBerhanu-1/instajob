@@ -69,6 +69,7 @@ class _SearchCompanyState extends State<SearchCompany> {
               child: BlocBuilder<CompanyBloc, CompanyState>(
                   builder: (context, state) {
                 var data = context.read<CompanyBloc>();
+                var jobData = context.read<JobPositionBloc>();
                 return Column(
                   children: [
                     Expanded(
@@ -88,14 +89,14 @@ class _SearchCompanyState extends State<SearchCompany> {
                         onChanged: (searchList) {
                           if (Global.userModel?.type == "user") {
                             widget.index == 1
-                                ? data.add(JobSearchEvent(
+                                ? jobData.add(JobSearchEvent(
                                     filterModel:
                                         FilterModel(searchJobs: search.text)))
                                 : data.add(
                                     CompanySearchEvent(search: search.text));
                           } else {
                             widget.isJobSearch
-                                ? data.add(JobSearchEvent(
+                                ? jobData.add(JobSearchEvent(
                                     filterModel:
                                         FilterModel(searchJobs: search.text)))
                                 : data.add(

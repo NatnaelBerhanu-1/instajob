@@ -38,7 +38,7 @@ class EndPoint {
 
   /// feedBack
   static String feedbackInsert = "feedback_insert";
-  static String autoMsg = "";
+  static String autoMsg = "automate_msg_enable_disable";
 
   // static String reSendCodeForEmp = "resendpassword_employe";
 

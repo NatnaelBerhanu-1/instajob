@@ -68,11 +68,39 @@ class GlobalCubit extends Cubit<InitialState> {
     emit(JobTypeState(sortByValue));
   }
 
-  String durationValue = '';
-  duration(String val) {
-    durationValue = val;
-    print("DURATION $durationValue");
-    emit(JobTypeState(durationValue));
+  String last_24 = '';
+  String last_14 = '';
+  String last_7 = '';
+  String last_3 = '';
+
+  last24Duration(String val) {
+    last_24 = val;
+    print("24 $last_24");
+    emit(JobTypeState(last_24));
+  }
+
+  last14Duration(String val) {
+    last_14 = val;
+    print("14 $last_14");
+    emit(JobTypeState(last_14));
+  }
+
+  last7Duration(String val) {
+    last_7 = val;
+    print("7 $last_7");
+    emit(JobTypeState(last_7));
+  }
+
+  last3Duration(String val) {
+    last_3 = val;
+    print("3 $last_3");
+    emit(JobTypeState(last_3));
+  }
+
+  int durationIndex = 0;
+  durationIndexChange(val) {
+    durationIndex = val;
+    emit(IndexState(durationIndex));
   }
 
   /// Experience level
@@ -83,9 +111,19 @@ class GlobalCubit extends Cubit<InitialState> {
     emit(JobTypeState(experienceLevelVal));
   }
 
+  clearValue() {
+    durationIndex = 0;
+    sortByValue = "";
+    jobTypeValue = "";
+    experienceLevelVal = "";
+    range = 0;
+    rangeValue = const RangeValues(0, 0);
+    emit(InitialState());
+  }
+
   /// RangeSlider
 
-  RangeValues rangeValue = const RangeValues(0, 15);
+  RangeValues rangeValue = const RangeValues(0, 0);
   rangeValues(RangeValues values) {
     rangeValue = values;
     // print("@@@@@@@@@@ |||||||  $rangeValue");
@@ -108,7 +146,7 @@ class GlobalCubit extends Cubit<InitialState> {
   // changeMonth() {}
 
   /// SLIDER
-  double range = 10;
+  double range = 0;
   rangeVal(double val) {
     range = val;
     print("RANGE: ${range.toStringAsFixed(0)}");

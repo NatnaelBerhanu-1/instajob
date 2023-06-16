@@ -30,7 +30,7 @@ class ResumeRepository {
       Response response =
           await dioClient.post(data: data, uri: EndPoint.addResume);
       return ApiResponse.withSuccess(response);
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       return ApiResponse.withError(e.response);
     }
   }
@@ -40,7 +40,7 @@ class ResumeRepository {
       var map = {"id": id};
       var response = await dioClient.post(data: map, uri: EndPoint.getResume);
       return ApiResponse.withSuccess(response);
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       return ApiResponse.withError(e.response);
     }
   }
@@ -58,7 +58,7 @@ class ResumeRepository {
       Response response =
           await dioClient.post(data: data, uri: EndPoint.tellUs);
       return ApiResponse.withSuccess(response);
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       return ApiResponse.withError(e.response);
     }
   }
@@ -82,7 +82,7 @@ class ResumeRepository {
       Response response =
           await dioClient.post(data: data, uri: EndPoint.addEducation);
       return ApiResponse.withSuccess(response);
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       return ApiResponse.withError(e.response);
     }
   }
@@ -106,7 +106,7 @@ class ResumeRepository {
       Response response =
           await dioClient.post(data: data, uri: EndPoint.addWorkExperience);
       return ApiResponse.withSuccess(response);
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       return ApiResponse.withError(e.response);
     }
   }
@@ -122,7 +122,7 @@ class ResumeRepository {
       Response response =
           await dioClient.post(data: data, uri: EndPoint.addSkills);
       return ApiResponse.withSuccess(response);
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       return ApiResponse.withError(e.response);
     }
   }
