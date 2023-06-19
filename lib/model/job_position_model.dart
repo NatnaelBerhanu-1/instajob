@@ -1,9 +1,13 @@
 class JobPosModel {
   int? id;
-  String? jobdetails;
+  int? companyId;
+  String? designation;
+  String? companyName;
+  int? jobStatus;
+  String? jobDetails;
   String? requirements;
-  String? responsilibites;
-  List<String>? topskills;
+  String? responsibilities;
+  List<String>? topSkills;
   String? salaries;
   String? areaDistance;
   String? jobsType;
@@ -20,10 +24,14 @@ class JobPosModel {
 
   JobPosModel(
       {this.id,
-      this.jobdetails,
+      this.companyId,
+      this.designation,
+      this.jobDetails,
+      this.companyName,
+      this.jobStatus,
       this.requirements,
-      this.responsilibites,
-      this.topskills,
+      this.responsibilities,
+      this.topSkills,
       this.salaries,
       this.areaDistance,
       this.jobsType,
@@ -40,10 +48,14 @@ class JobPosModel {
 
   JobPosModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    jobdetails = json['jobdetails'];
+    companyId = json['company_id'];
+    designation = json['designation'];
+    companyName = json['companyname'];
+    jobStatus = json['job_status'];
+    jobDetails = json['jobdetails'];
     requirements = json['Requirements'];
-    responsilibites = json['Responsilibites'];
-    topskills = json['Topskills'].cast<String>();
+    responsibilities = json['Responsilibites'];
+    topSkills = json['Topskills'].cast<String>();
     salaries = json['salaries'];
     areaDistance = json['Area_Distance'];
     jobsType = json['jobs_Type'];
@@ -60,12 +72,16 @@ class JobPosModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
-    data['jobdetails'] = jobdetails;
+    data['company_id'] = companyId;
+    data['designation'] = designation;
+    data['companyname'] = companyName;
+    data['job_status'] = jobStatus;
+    data['jobdetails'] = jobDetails;
     data['Requirements'] = requirements;
-    data['Responsilibites'] = responsilibites;
-    data['Topskills'] = topskills;
+    data['Responsilibites'] = responsibilities;
+    data['Topskills'] = topSkills;
     data['salaries'] = salaries;
     data['Area_Distance'] = areaDistance;
     data['jobs_Type'] = jobsType;

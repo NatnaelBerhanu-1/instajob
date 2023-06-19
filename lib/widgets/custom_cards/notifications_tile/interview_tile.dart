@@ -1,20 +1,24 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:insta_job/screens/call_screen.dart';
+import 'package:insta_job/screens/insta_recruit/recording_screens/transcription_screen.dart';
+import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/widgets/custom_button/custom_btn.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 
 import '../../../utils/my_colors.dart';
 
 class InterviewTile extends StatelessWidget {
-  const InterviewTile({Key? key}) : super(key: key);
+  final bool isRecording;
+  const InterviewTile({Key? key, this.isRecording = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: MyColors.grey.withOpacity(.30), width: 1.2),
+          border: Border.all(color: MyColors.lightgrey, width: 1.2),
           color: MyColors.white,
           boxShadow: [
             BoxShadow(
@@ -63,6 +67,7 @@ class InterviewTile extends StatelessWidget {
                     CommonText(
                       text: "Software engineer",
                       fontWeight: FontWeight.w400,
+                      fontColor: MyColors.grey,
                       fontSize: 13,
                     ),
                   ],
@@ -72,33 +77,50 @@ class InterviewTile extends StatelessWidget {
                   text: "Today",
                   fontWeight: FontWeight.w400,
                   fontSize: 13,
+                  fontColor: MyColors.grey,
                 ),
               ],
             ),
             SizedBox(height: 12),
-            Row(
-              children: [
-                Expanded(
-                    flex: 1,
+            isRecording
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 50.0),
                     child: CustomButton(
-                      height: MediaQuery.of(context).size.height * 0.052,
-                      borderColor: MyColors.lightRed,
-                      bgColor: MyColors.white,
-                      borderRadius: BorderRadius.circular(20),
-                      title: "Cancel",
-                      fontColor: MyColors.lightRed,
-                    )),
-                SizedBox(width: 10),
-                Expanded(
-                    flex: 2,
-                    child: CustomButton(
-                      height: MediaQuery.of(context).size.height * 0.052,
+                      height: MediaQuery.of(context).size.height * 0.048,
                       bgColor: MyColors.blue,
                       borderRadius: BorderRadius.circular(20),
-                      title: "Interview Now",
-                    )),
-              ],
-            )
+                      title: "Recordings",
+                      onTap: () {
+                        AppRoutes.push(context, TranscriptionScreen());
+                      },
+                    ),
+                  )
+                : Row(
+                    children: [
+                      Expanded(
+                          flex: 1,
+                          child: CustomButton(
+                            height: MediaQuery.of(context).size.height * 0.048,
+                            borderColor: MyColors.lightRed,
+                            bgColor: MyColors.white,
+                            borderRadius: BorderRadius.circular(20),
+                            title: "Cancel",
+                            fontColor: MyColors.lightRed,
+                          )),
+                      SizedBox(width: 10),
+                      Expanded(
+                          flex: 2,
+                          child: CustomButton(
+                            height: MediaQuery.of(context).size.height * 0.048,
+                            bgColor: MyColors.blue,
+                            borderRadius: BorderRadius.circular(20),
+                            title: "Interview Now",
+                            onTap: () {
+                              AppRoutes.push(context, CallScreen());
+                            },
+                          )),
+                    ],
+                  ),
           ],
         ),
       ),

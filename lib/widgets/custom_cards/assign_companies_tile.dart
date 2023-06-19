@@ -1,17 +1,21 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:insta_job/bloc/bottom_bloc/bottom_bloc.dart';
+import 'package:insta_job/bloc/choose_image_bloc/pick_image_cubit.dart';
+import 'package:insta_job/bloc/choose_image_bloc/pick_image_state.dart';
 import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
 import 'package:insta_job/bloc/job_position/job_pos_event.dart';
 import 'package:insta_job/bottom_sheet/bottom_sheet.dart';
+import 'package:insta_job/globals.dart';
 import 'package:insta_job/model/company_model.dart';
+import 'package:insta_job/network/end_points.dart';
+import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/job_opening/job_opening_page.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
-import 'package:provider/provider.dart';
 
-import '../../bloc/bottom_bloc/bottom_bloc.dart';
-import '../../screens/insta_recruit/bottom_navigation_screen/search_pages/job_opening/job_opening_page.dart';
 import '../custom_button/custom_img_button.dart';
 
 class AssignCompaniesTile extends StatelessWidget {
@@ -35,10 +39,13 @@ class AssignCompaniesTile extends StatelessWidget {
           ]),
       child: ListTile(
         onTap: () {
-          context.read<JobPositionBloc>().add(LoadJobPosListEvent());
+          // AppRoutes.push(context, TranscriptionScreen());
+          print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& ${companyModel?.id}");
           context
-              .read<BottomBloc>()
-              .add(SetScreenEvent(true, screenName: JobOpeningScreen()));
+              .read<JobPositionBloc>()
+              .add(LoadJobPosListEvent(companyId: companyModel!.id.toString()));
+          context.read<BottomBloc>().add(SetScreenEvent(true,
+              screenName: JobOpeningScreen(companyModel: companyModel)));
         },
         shape: RoundedRectangleBorder(
             side: BorderSide(color: MyColors.grey),
@@ -69,28 +76,54 @@ class AssignCompaniesTile extends StatelessWidget {
   }
 }
 
-Widget uploadPhotoCard(BuildContext context) {
-  return CustomCommonCard(
-    onTap: () {
-      choosePhoto(context);
-    },
-    bgColor: MyColors.blue.withOpacity(.10),
-    borderRadius: BorderRadius.circular(10),
-    borderColor: MyColors.lightBlue,
-    child: Padding(
-      padding: const EdgeInsets.symmetric(vertical: 45),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          ImageButton(
-            image: MyImages.upload,
-          ),
-          CommonText(
-            text: "Upload Photo",
-            fontColor: MyColors.blue,
-          )
-        ],
+Widget uploadPhotoCard(BuildContext context,
+    {bool isUpdate = false, String? url}) {
+  return BlocConsumer<PickImageCubit, InitialImage>(buildWhen: (c, state) {
+    if (state is PickImageState) {
+      return true;
+    }
+    return false;
+  }, listener: (c, state) {
+    if (state is ImageErrorState) {
+      showToast(state.imageError);
+    }
+  }, builder: (context, state) {
+    // if (state is PickImageState) {
+    //   return Image.network("${EndPoint.imageBaseUrl}${state.url}");
+    // }
+    return CustomCommonCard(
+      onTap: () {
+        choosePhoto(context);
+      },
+      bgColor: MyColors.blue.withOpacity(.10),
+      borderRadius: BorderRadius.circular(10),
+      borderColor: MyColors.lightBlue,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 45),
+        child: isUpdate
+            ? state is PickImageState
+                ? Image.network("${EndPoint.imageBaseUrl}${state.url}",
+                    fit: BoxFit.cover)
+                : Image.network("${EndPoint.imageBaseUrl}$url",
+                    fit: BoxFit.cover)
+            : state is PickImageState
+                ? Image.network("${EndPoint.imageBaseUrl}${state.url}",
+                    fit: BoxFit.cover)
+                : state is LoadingImageState
+                    ? Center(child: CircularProgressIndicator())
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ImageButton(
+                            image: MyImages.upload,
+                          ),
+                          CommonText(
+                            text: "Upload Photo",
+                            fontColor: MyColors.blue,
+                          )
+                        ],
+                      ),
       ),
-    ),
-  );
+    );
+  });
 }

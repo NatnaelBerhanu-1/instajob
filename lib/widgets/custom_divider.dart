@@ -26,5 +26,5 @@ class CustomDivider extends StatelessWidget {
 }
 
 Divider divider({Color? color}) {
-  return Divider(color: color ?? MyColors.grey);
+  return Divider(color: color ?? MyColors.lightGrey);
 }

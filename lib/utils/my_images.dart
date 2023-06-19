@@ -12,7 +12,7 @@ class MyImages {
   static String apple = "$baseUrl/apple.png";
   static String automateMsg = "$baseUrl/automate_msg.png";
   static String backArrow = "$baseUrl/back_arrow.png";
-  static String backArrowBorder = "$baseUrl/back_arrow_border.png";
+  static String backArrowBorder = "$baseUrl/back_arr.png";
   static String businessAndTrade = "$baseUrl/business_and_trade.png";
   static String business = "$baseUrl/business.png";
   static String camera = "$baseUrl/camera.png";
@@ -24,6 +24,9 @@ class MyImages {
   static String component = "$baseUrl/component.png";
   static String cal = "$baseUrl/date.png";
   static String email = "$baseUrl/email.png";
+  static String cancel4x = "$baseUrl/cancel.png";
+  static String cancel2x = "$baseUrl/cancel_2x.png";
+  static String edit = "$baseUrl/edit.png";
   static String mail = "$baseUrl/mail.png";
   static String enterprise = "$baseUrl/enterprise.png";
   static String enterprise1 = "$baseUrl/enterprise1.png";
@@ -70,6 +73,7 @@ class MyImages {
   static String instaLogo_ = "$baseUrl/insta_logo_.png";
   static String bg = "$baseUrl/BG.png";
   static String startArrow = "$baseUrl/start arrow.png";
+  static String arrowDown = "$baseUrl/arrow_down.png";
   static String staffMeeting = "$baseUrl/staff-meeting.png";
   static String jobUser = "$baseUrl/job_user.png";
   static String bag = "$baseUrl/bag.png";
@@ -77,7 +81,8 @@ class MyImages {
   static String filter = "$baseUrl/filter.png";
   static String locationBlue = "$baseUrl/location_blue.png";
   static String notifyBg = "$baseUrl/notifyBg.png";
-  static String resume1 = "$baseUrl/resume1.png";
   static String resumeImg = "$baseUrl/resume_img.png";
   static String welcomeLogo = "$baseUrl/welcom_logo.png";
+  static String sCurve = "$baseUrl/s_curve.png";
+  static String download = "$baseUrl/download.png";
 }

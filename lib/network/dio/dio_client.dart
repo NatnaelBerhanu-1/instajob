@@ -41,7 +41,7 @@ class DioClient {
     try {
       Response response = await dio!.get(uri);
       return response;
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       showToast(e.message);
       throw const FormatException("Unable to load");
     } catch (e) {

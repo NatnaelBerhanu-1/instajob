@@ -1,7 +1,12 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
 import 'package:insta_job/dialog/applied_successful_dialog.dart';
 import 'package:insta_job/dialog/custom_dialog.dart';
+import 'package:insta_job/globals.dart';
+import 'package:insta_job/model/resume_model.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 
@@ -9,7 +14,9 @@ import '../../widgets/custom_app_bar.dart';
 import '../../widgets/custom_button/custom_btn.dart';
 
 class CoverLetterScreen extends StatelessWidget {
-  const CoverLetterScreen({Key? key}) : super(key: key);
+  final ResumeModel resumeModel;
+  const CoverLetterScreen({Key? key, required this.resumeModel})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +26,13 @@ class CoverLetterScreen extends StatelessWidget {
           child: CustomAppBar(
             title: "Cover Letter",
             actions: IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  String text =
+                      "Dear Hiring Manager,\nJob Title: ${context.read<JobPositionBloc>().jobModel.designation}\n${resumeModel.previousWork}\n${resumeModel.yourPassion}\nPlease take a moment to review my attached resume and credentials.\nSincerely\n${resumeModel.yourName}";
+                  Clipboard.setData(ClipboardData(text: text)).then((value) {
+                    showToast("Copied");
+                  });
+                },
                 icon: Icon(
                   Icons.copy,
                   color: MyColors.blue,
@@ -40,13 +53,16 @@ class CoverLetterScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     // mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Row(),
-                      Text(""),
-                      Text(""),
-                      Text(""),
-                      Text(""),
-                      Text(""),
-                      Text(""),
+                      Text("Dear Hiring Manager,\n"),
+                      Text(
+                          "Job Title: ${context.read<JobPositionBloc>().jobModel.designation}\n"),
+                      Text("${resumeModel.previousWork}\n"),
+                      Text("${resumeModel.yourPassion}\n"),
+                      Text(
+                          "Please take a moment to review my attached resume and credentials.\n"),
+                      Text("Thank you for your consideration\n"),
+                      Text("Sincerely"),
+                      Text("${resumeModel.yourName}"),
                     ],
                   ),
                 ),
@@ -56,6 +72,9 @@ class CoverLetterScreen extends StatelessWidget {
                 title: "Re-Generate",
                 fontColor: MyColors.white,
                 borderColor: MyColors.blue,
+                onTap: () {
+                  Navigator.pop(context);
+                },
               ),
               SizedBox(height: 30),
               CustomButton(

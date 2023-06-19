@@ -39,49 +39,63 @@ class CustomSearchChip extends StatelessWidget {
               )
             ]),
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(6.0),
           child: Container(
             decoration: BoxDecoration(
               image: DecorationImage(
                   image: AssetImage(image ?? MyImages.businessAndTrade),
-                  fit: BoxFit.contain,
+                  // fit: BoxFit.contain,
                   opacity: index == selectedIndex ? 0.5 : 10,
                   alignment: Alignment.topLeft),
             ),
-            child: Padding(
-              padding: const EdgeInsets.all(0),
-              child: Column(
-                children: [
-                  // Image.asset(
-                  //   MyImages.suitcase,
-                  //   // height: 30,
-                  //   // width: 30,
-                  //   // color: MyColors.lightBlue,
-                  // ),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      ImageButton(
-                        image: MyImages.searchGrey,
-                        color: index == selectedIndex
-                            ? MyColors.white
-                            : MyColors.blue,
-                      ),
-                      CommonText(
-                        text: title,
-                        fontSize: 13,
-                        fontColor: index == selectedIndex
-                            ? MyColors.white
-                            : MyColors.black,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+            child: Column(
+              children: [
+                // Image.asset(
+                //   MyImages.suitcase,
+                //   // height: 30,
+                //   // width: 30,
+                //   // color: MyColors.lightBlue,
+                // ),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ImageButton(
+                      image: MyImages.searchGrey,
+                      color: index == selectedIndex
+                          ? MyColors.white
+                          : MyColors.blue,
+                    ),
+                    CommonText(
+                      text: title,
+                      fontSize: 13,
+                      fontColor: index == selectedIndex
+                          ? MyColors.white
+                          : MyColors.black,
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
         ),
       ),
+    );
+  }
+}
+
+class CustomGesture extends StatelessWidget {
+  final Widget child;
+  final VoidCallback onTap;
+  const CustomGesture({Key? key, required this.child, required this.onTap})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ActionChip(
+      onPressed: onTap,
+      label: child,
+      pressElevation: 0,
+      backgroundColor: MyColors.white,
     );
   }
 }

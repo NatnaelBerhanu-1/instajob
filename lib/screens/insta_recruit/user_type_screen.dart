@@ -2,13 +2,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
-import 'package:insta_job/model/user_model.dart';
 import 'package:insta_job/screens/insta_recruit/welcome_screen.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:insta_job/widgets/custom_cards/custom_user_type_card.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../bloc/global_cubit/global_state.dart';
 
@@ -58,34 +58,38 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                   children: [
                     Expanded(
                         child: UserTypeCard(
-                      onTap: () {
-                        index = 1;
+                      onTap: () async {
+                        SharedPreferences pref =
+                            await SharedPreferences.getInstance();
+                        pref.setString("type", "recruiters");
+                        index = 2;
                         context.read<GlobalCubit>().changeIndex(index);
-                        UserModel userModel = UserModel();
-                        userModel.type = "recruiters";
-                        userType = userModel.type!;
+
+                        userType = "recruiters";
                         print("TYPE2-> $userType");
                         AppRoutes.push(context, WelcomeScreen());
                       },
                       image: MyImages.businessAndTrade,
                       title: "Recruiters",
-                      index: 1,
+                      index: 2,
                       selectedIndex: selectedIndex,
                     )),
                     Expanded(
                         child: UserTypeCard(
-                      onTap: () {
-                        index = 2;
+                      onTap: () async {
+                        SharedPreferences pref =
+                            await SharedPreferences.getInstance();
+                        pref.setString("type", "user");
+                        index = 3;
                         context.read<GlobalCubit>().changeIndex(index);
-                        UserModel userModel = UserModel();
-                        userModel.type = "user";
-                        userType = userModel.type!;
+
+                        userType = "user";
                         print("TYPE2-> $userType");
                         setState(() {});
                         AppRoutes.push(context, WelcomeScreen());
                       },
                       image: MyImages.suitcase,
-                      index: 2,
+                      index: 3,
                       selectedIndex: selectedIndex,
                       title: "Job Search",
                     )),
@@ -100,7 +104,7 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                     Image.asset(MyImages.instaLogo_),
                     SizedBox(height: 5),
                     CommonText(
-                      text: "Employee instantly",
+                      text: "Employ instantly",
                       // fontWeight: FontWeight.bold,
                       fontColor: MyColors.grey,
                       fontSize: 13,

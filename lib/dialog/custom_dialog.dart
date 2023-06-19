@@ -15,8 +15,6 @@ class CustomDialog extends StatefulWidget {
   final VoidCallback? cancelOnTap;
   final String? desc;
   final String? desc1;
-  final int? selectedIndex;
-  final int? index;
   final String? title;
   final Color? cancelTxtFontClr;
   const CustomDialog({
@@ -27,8 +25,6 @@ class CustomDialog extends StatefulWidget {
     this.desc1,
     this.cancelOnTap,
     this.cancelTxtFontClr,
-    this.selectedIndex,
-    this.index,
   }) : super(key: key);
 
   @override
@@ -40,7 +36,7 @@ class _CustomDialogState extends State<CustomDialog> {
   int? index;
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
+    // var size = MediaQuery.of(context).size;
     var selectedIndex = context.watch<GlobalCubit>().sIndex;
     return Dialog(
       insetPadding: EdgeInsets.all(55),
@@ -76,16 +72,16 @@ class _CustomDialogState extends State<CustomDialog> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     CustomCommonCard(
-                      onTap: () {
-                        index = 1;
-                        print('INDEX1 ------  $selectedIndex');
-                        context.read<GlobalCubit>().changeIndex(index);
-                        Navigator.pop(context);
-                      },
+                      onTap: widget.cancelOnTap ??
+                          () {
+                            index = 1;
+                            print('INDEX1 ------  $selectedIndex');
+                            context.read<GlobalCubit>().changeIndex(index);
+                            Navigator.pop(context);
+                          },
                       bgColor:
                           selectedIndex == 1 ? MyColors.blue : MyColors.white,
-                      borderColor:
-                          selectedIndex == 1 ? MyColors.white : MyColors.blue,
+                      borderColor: MyColors.blue,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                             vertical: 12.0, horizontal: 30),
@@ -100,16 +96,16 @@ class _CustomDialogState extends State<CustomDialog> {
                     ),
                     SizedBox(width: 40),
                     CustomCommonCard(
-                      onTap: () {
-                        index = 2;
-                        print('INDEX2 ------  $selectedIndex');
-                        context.read<GlobalCubit>().changeIndex(index);
-                        Navigator.pop(context);
-                      },
+                      onTap: widget.okOnTap ??
+                          () {
+                            index = 2;
+                            print('INDEX2 ------  $selectedIndex');
+                            context.read<GlobalCubit>().changeIndex(index);
+                            Navigator.pop(context);
+                          },
                       bgColor:
                           selectedIndex == 2 ? MyColors.blue : MyColors.white,
-                      borderColor:
-                          selectedIndex == 2 ? MyColors.white : MyColors.blue,
+                      borderColor: MyColors.blue,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                             vertical: 12.0, horizontal: 30),
@@ -133,11 +129,34 @@ class _CustomDialogState extends State<CustomDialog> {
   }
 }
 
-buildDialog(context, Widget widget) {
+buildDialog(context, Widget widget, {bool barrierDismissible = false}) {
   return showDialog(
-      barrierDismissible: false,
+      barrierDismissible: barrierDismissible,
       context: context,
       builder: (BuildContext context) {
         return widget;
       });
+}
+
+class YearPickerDialog extends StatelessWidget {
+  final ValueChanged<DateTime> onChange;
+  const YearPickerDialog({Key? key, required this.onChange}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text("Select Year"),
+      content: SizedBox(
+        width: 300,
+        height: 300,
+        child: YearPicker(
+          firstDate: DateTime(DateTime.now().year - 100, 1),
+          lastDate: DateTime(DateTime.now().year),
+          initialDate: DateTime.now(),
+          selectedDate: DateTime.now(),
+          onChanged: onChange,
+        ),
+      ),
+    );
+  }
 }

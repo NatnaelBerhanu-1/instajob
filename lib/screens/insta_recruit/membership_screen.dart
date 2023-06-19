@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:insta_job/bloc/choose_image_bloc/pick_image_cubit.dart';
 import 'package:insta_job/screens/insta_job_user/turn_on_notification_page.dart';
 import 'package:insta_job/widgets/custom_button/custom_all_small_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,7 +15,9 @@ import '../../utils/app_routes.dart';
 
 class MemberShipScreen extends StatefulWidget {
   final bool isAgreement;
-  const MemberShipScreen({Key? key, this.isAgreement = false})
+  final bool isRegister;
+  const MemberShipScreen(
+      {Key? key, this.isAgreement = false, this.isRegister = false})
       : super(key: key);
 
   @override
@@ -41,16 +45,34 @@ class _MemberShipScreenState extends State<MemberShipScreen> {
                     Padding(
                       padding: const EdgeInsets.only(top: 40),
                       child: Center(
-                        child: Column(
+                        child: Row(
                           children: [
-                            Image.asset(
-                              MyImages.instaLogo_,
-                              color: MyColors.white,
+                            widget.isRegister
+                                ? IconButton(
+                                    onPressed: () {
+                                      AppRoutes.pop(context);
+                                    },
+                                    icon: Icon(
+                                      Icons.arrow_back_ios,
+                                      size: 18,
+                                      color: MyColors.white,
+                                    ))
+                                : Spacer(),
+                            Spacer(),
+                            Column(
+                              children: [
+                                Image.asset(
+                                  MyImages.instaLogo_,
+                                  color: MyColors.white,
+                                ),
+                                CommonText(
+                                  text: "Employ instantly",
+                                  fontColor: MyColors.white,
+                                ),
+                              ],
                             ),
-                            CommonText(
-                              text: "Employee instantly",
-                              fontColor: MyColors.white,
-                            ),
+                            Spacer(),
+                            Spacer(),
                           ],
                         ),
                       ),
@@ -120,6 +142,7 @@ class _MemberShipScreenState extends State<MemberShipScreen> {
                                 fontColor: MyColors.white,
                                 iconColor: MyColors.white,
                                 onclick: () async {
+                                  context.read<PickImageCubit>().clearImgUrl();
                                   SharedPreferences pref =
                                       await SharedPreferences.getInstance();
                                   if (isCheck) {

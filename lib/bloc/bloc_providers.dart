@@ -5,6 +5,7 @@ import 'package:insta_job/bloc/company_bloc/company_bloc.dart';
 import 'package:insta_job/bloc/feedback_bloc/feedback_bloc.dart';
 import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
 import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
+import 'package:insta_job/bloc/resume_bloc/resume_bloc.dart';
 import 'package:insta_job/bloc/validation/validation_bloc.dart';
 import 'package:insta_job/di_container.dart' as di;
 import 'package:provider/single_child_widget.dart';
@@ -19,5 +20,6 @@ final List<SingleChildWidget> blocProviders = [
   BlocProvider(create: (_) => di.sl<CompanyBloc>()),
   BlocProvider(create: (_) => di.sl<PickImageCubit>()),
   BlocProvider(create: (_) => di.sl<JobPositionBloc>()),
-  BlocProvider(create: (_) => di.sl<FeedBackBloc>()),
+  BlocProvider(create: (_) => di.sl<FeedBackAndAutoMsgBloc>()),
+  BlocProvider(create: (_) => di.sl<ResumeBloc>()),
 ];

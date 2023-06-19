@@ -1,10 +1,12 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:insta_job/screens/auth_screen/login_screen.dart';
-import 'package:insta_job/screens/auth_screen/set_password.dart';
-import 'package:insta_job/utils/app_routes.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:insta_job/bloc/auth_bloc/auth_cubit.dart';
+import 'package:insta_job/bloc/auth_bloc/auth_state.dart';
+import 'package:insta_job/globals.dart';
 import 'package:insta_job/utils/my_colors.dart';
+import 'package:insta_job/widgets/custom_chip.dart';
 import 'package:pinput/pinput.dart';
 
 import '../../utils/my_images.dart';
@@ -13,25 +15,8 @@ import '../../widgets/custom_button/custom_btn.dart';
 import '../../widgets/custom_cards/custom_common_card.dart';
 
 class VerifyCodeScreen extends StatefulWidget {
-  final String? verificationId;
-  final String? phone;
-  final String? email;
-  final bool? isLogin;
-  final bool? isEmail;
-  final String? userType;
-  final String? id;
-  final String? dialCode;
-  const VerifyCodeScreen({
-    Key? key,
-    this.verificationId,
-    this.phone,
-    this.isLogin,
-    this.isEmail,
-    this.email,
-    this.userType,
-    this.id,
-    this.dialCode,
-  }) : super(key: key);
+  final bool isForgotPassword;
+  const VerifyCodeScreen({super.key, this.isForgotPassword = false});
 
   @override
   State<VerifyCodeScreen> createState() => _VerifyCodeScreenState();
@@ -73,7 +58,7 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
             child: Column(
               children: [
                 Text(
-                  "Please enter your code found in your email",
+                  "Please enter your code found in your ${widget.isForgotPassword ? "email" : "number"}",
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w400,
@@ -83,7 +68,7 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
                 Pinput(
                   controller: code,
                   autofocus: true,
-                  length: 4,
+                  length: widget.isForgotPassword ? 4 : 6,
                   defaultPinTheme: PinTheme(
                     width: 58,
                     height: 72,
@@ -114,26 +99,69 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
                   fontSize: 13,
                 ),
                 SizedBox(height: 15),
-                CommonText(
-                  text: "Resend",
-                  fontWeight: FontWeight.w500,
-                  fontColor: MyColors.blue,
-                  decoration: TextDecoration.underline,
-                  fontSize: 16,
-                ),
+                BlocBuilder<AuthCubit, AuthInitialState>(
+                    builder: (context, state) {
+                  return CustomGesture(
+                    onTap: () {
+                      var authData = context.read<AuthCubit>();
+                      if (widget.isForgotPassword) {
+                        context
+                            .read<AuthCubit>()
+                            .sendCodeOnEmail(email: authData.email);
+                      } else {
+                        /// phone resend code
+                      }
+                      // AppRoutes.push(context, VerifyCodeScreen());
+                    },
+                    child: Center(
+                      child: CommonText(
+                        text: "Resend",
+                        fontWeight: FontWeight.w500,
+                        fontColor: MyColors.blue,
+                        padding: true,
+                        decoration: TextDecoration.underline,
+                        fontSize: 16,
+                      ),
+                    ),
+                  );
+                }),
                 SizedBox(height: 70),
                 // Spacer(),
-                CustomIconButton(
-                  image: MyImages.arrowWhite,
-                  title: "Enter Code",
-                  backgroundColor: MyColors.blue,
-                  fontColor: MyColors.white,
-                  borderColor: MyColors.blue,
-                  iconColor: MyColors.white,
-                  onclick: () {
-                    AppRoutes.pushAndRemoveUntil(context, SetPassword());
-                  },
-                ),
+                BlocBuilder<AuthCubit, AuthInitialState>(
+                    builder: (context, state) {
+                  return CustomIconButton(
+                      image: MyImages.arrowWhite,
+                      title: "Verify Code",
+                      loading: state is AuthLoadingState ? true : false,
+                      backgroundColor: MyColors.blue,
+                      fontColor: MyColors.white,
+                      borderColor: MyColors.blue,
+                      iconColor: MyColors.white,
+                      onclick: () {
+                        if (code.text.isNotEmpty) {
+                          if (widget.isForgotPassword
+                              ? code.text.length == 4
+                              : code.text.length == 6) {
+                            if (widget.isForgotPassword) {
+                              /// API NOT READY
+                              context
+                                  .read<AuthCubit>()
+                                  .checkEmailVerificationCode(
+                                      email: context.read<AuthCubit>().email,
+                                      code: code.text);
+                            } else {
+                              context
+                                  .read<AuthCubit>()
+                                  .validateOTP(code.text, context);
+                            }
+                          } else {
+                            showToast("Please enter correct code");
+                          }
+                        } else {
+                          showToast("Please enter code");
+                        }
+                      });
+                }),
                 // Spacer(),
                 // Spacer(),
               ],

@@ -72,6 +72,7 @@ class IconTextField extends StatelessWidget {
       maxLength: maxLength,
       controller: controller,
       autofocus: autofocus!,
+      textCapitalization: TextCapitalization.sentences,
       obscureText: obscureText ?? false,
       cursorColor: MyColors.black,
       keyboardType: keyboardType ?? TextInputType.text,
@@ -96,6 +97,7 @@ class IconTextField extends StatelessWidget {
           fontWeight: FontWeight.w400,
           fontSize: 15,
         ),
+
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(borderRadius ?? 12)),
           borderSide: BorderSide(color: color ?? MyColors.blue, width: 1),
@@ -127,6 +129,7 @@ class CustomTextField extends StatelessWidget {
   final int? maxLength;
   final TextEditingController? controller;
   final bool? autofocus;
+  final TextCapitalization? textCapitalization;
   final FormFieldValidator<String>? validator;
   final List<TextInputFormatter>? inputFormatter;
   final ValueChanged? onChanged;
@@ -153,17 +156,16 @@ class CustomTextField extends StatelessWidget {
     this.readOnly,
     this.lblColor,
     this.maxLength,
-    List? inputFormatters,
     this.suffixIcon,
     this.borderRadius,
+    this.textCapitalization,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     OutlineInputBorder border = OutlineInputBorder(
       borderRadius: BorderRadius.all(Radius.circular(borderRadius ?? 12)),
-      borderSide:
-          BorderSide(color: color ?? MyColors.grey.withOpacity(.40), width: 1),
+      borderSide: BorderSide(color: color ?? MyColors.lightgrey, width: 1),
     );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -177,11 +179,9 @@ class CustomTextField extends StatelessWidget {
                     fontSize: 13.5,
                     fontWeight: FontWeight.w400),
               ),
-        SizedBox(height: 9),
+        SizedBox(height: 5),
         TextFormField(
-          style: TextStyle(
-            color: MyColors.black,
-          ),
+          style: TextStyle(color: MyColors.black, fontSize: 14),
           onChanged: onChanged,
           onTap: onPressed,
           maxLines: maxLine,
@@ -190,6 +190,7 @@ class CustomTextField extends StatelessWidget {
           inputFormatters: inputFormatter,
           maxLength: maxLength,
           controller: controller,
+          textCapitalization: textCapitalization ?? TextCapitalization.words,
           autofocus: autofocus!,
           obscureText: obscureText ?? false,
           cursorColor: MyColors.black,
@@ -202,14 +203,15 @@ class CustomTextField extends StatelessWidget {
             filled: true,
             isDense: true,
             border: border,
+            // errorStyle: TextStyle(height: 0),
             // prefixText: "+973",
-
             hintText: "$hint",
             hintStyle: TextStyle(
               color: hintColor ?? MyColors.grey,
               fontWeight: FontWeight.w400,
               fontSize: 15,
             ),
+            focusedErrorBorder: border,
             enabledBorder: border,
             focusedBorder: border,
             errorBorder: border,
@@ -223,10 +225,19 @@ class CustomTextField extends StatelessWidget {
 class CustomPhonePickerTextField extends StatelessWidget {
   final String? label;
   final TextEditingController? controller;
-  CustomPhonePickerTextField({Key? key, this.controller, this.label})
+  final String? Function(String?)? validator;
+  final ValueChanged<bool>? onInputValidated;
+  final ValueChanged<PhoneNumber>? onInputChanged;
+  CustomPhonePickerTextField(
+      {Key? key,
+      this.controller,
+      this.label,
+      this.validator,
+      this.onInputValidated,
+      this.onInputChanged})
       : super(key: key);
   InputBorder border = OutlineInputBorder(
-      borderSide: BorderSide(color: MyColors.grey.withOpacity(.50), width: 1),
+      borderSide: BorderSide(color: MyColors.lightgrey, width: 1),
       borderRadius: BorderRadius.circular(10));
   @override
   Widget build(BuildContext context) {
@@ -244,29 +255,13 @@ class CustomPhonePickerTextField extends StatelessWidget {
               ),
         SizedBox(height: 9),
         InternationalPhoneNumberInput(
-          onInputChanged: (PhoneNumber number) async {
-            print(number);
-            // setState(() {
-            //   isoCode = number.isoCode!;
-            //   dialCode = number.dialCode!;
-            //   print("CONRTY COSDDFDDDF   $dialCode");
-            // });
-          },
-          onInputValidated: (val) {
-            if (val == true) {
-              FocusManager.instance.primaryFocus?.unfocus();
-            }
-            // setState(() {
-            //   isValid = val;
-            // });
-            print("VAL  ::: $val");
-            // print("ISVALID ::: $isValid");
-          },
+          onInputChanged: onInputChanged,
+          onInputValidated: onInputValidated,
           errorMessage: "",
-
-          autoValidateMode: AutovalidateMode.always,
+          validator: validator,
+          // autoValidateMode: AutovalidateMode.always,
           selectorConfig: const SelectorConfig(
-              selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
+              selectorType: PhoneInputSelectorType.DIALOG,
               leadingPadding: 10,
               setSelectorButtonAsPrefixIcon: true,
               showFlags: false),
@@ -276,9 +271,14 @@ class CustomPhonePickerTextField extends StatelessWidget {
               ? TextInputType.numberWithOptions(signed: true, decimal: true)
               : TextInputType.number,
           formatInput: false,
-          initialValue: PhoneNumber(isoCode: "IN"),
+          // initialValue: PhoneNumber(isoCode: "IN"),
           textFieldController: controller,
           inputDecoration: InputDecoration(
+            // prefixIcon:
+            // ImageButton(
+            //   image: MyImages.phone,
+            //   padding: EdgeInsets.zero,
+            // ),
             isDense: true,
             fillColor: MyColors.white,
             filled: true,
@@ -288,6 +288,7 @@ class CustomPhonePickerTextField extends StatelessWidget {
             border: border,
             enabledBorder: border,
             errorBorder: border,
+            disabledBorder: border,
             focusedErrorBorder: border,
             focusedBorder: border,
           ),

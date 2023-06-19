@@ -17,6 +17,8 @@ class CustomButton extends StatelessWidget {
   final double? fontSize;
   final double? width;
   final VoidCallback? onTap;
+  final bool loading;
+
   final BorderRadius? borderRadius;
   const CustomButton(
       {Key? key,
@@ -29,13 +31,14 @@ class CustomButton extends StatelessWidget {
       this.fontSize,
       this.bgColor,
       this.fontColor,
-      this.borderColor})
+      this.borderColor,
+      this.loading = false})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: loading ? null : onTap,
       child: Container(
         height: height ?? MediaQuery.of(context).size.height * 0.075,
         width: width ?? MediaQuery.of(context).size.width,
@@ -45,14 +48,21 @@ class CustomButton extends StatelessWidget {
             border: Border.all(
                 color: borderColor ?? MyColors.transparent, width: 1.2)),
         child: Center(
-          child: Text(
-            "$title",
-            style: TextStyle(
-              fontSize: fontSize ?? 16,
-              fontWeight: fontWeight ?? FontWeight.w500,
-              color: fontColor ?? MyColors.white,
-            ),
-          ),
+          child: loading
+              ? Center(
+                  heightFactor: 0,
+                  widthFactor: 0,
+                  child: CircularProgressIndicator(
+                      color: MyColors.white, strokeWidth: 2),
+                )
+              : Text(
+                  "$title",
+                  style: TextStyle(
+                    fontSize: fontSize ?? 16,
+                    fontWeight: fontWeight ?? FontWeight.w500,
+                    color: fontColor ?? MyColors.white,
+                  ),
+                ),
         ),
       ),
     );
@@ -122,7 +132,8 @@ class CustomIconButton extends StatelessWidget {
               padding: EdgeInsets.only(right: 10),
               image: image,
               color: iconColor ?? MyColors.white,
-              // height: 12,
+              // height: 17,
+              // width: 17,
             ),
           )),
     );
@@ -131,7 +142,10 @@ class CustomIconButton extends StatelessWidget {
 
 class DottedButton extends StatelessWidget {
   final VoidCallback? onTap;
-  const DottedButton({Key? key, this.onTap}) : super(key: key);
+  final String? title;
+  final Color? bgColor;
+  const DottedButton({Key? key, this.onTap, this.title, this.bgColor})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -142,18 +156,18 @@ class DottedButton extends StatelessWidget {
         radius: Radius.circular(5),
         strokeWidth: 1,
         strokeCap: StrokeCap.round,
-        dashPattern: [8, 4],
+        dashPattern: const [8, 4],
         color: MyColors.blue.withOpacity(0.70),
         child: Container(
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
-              color: Colors.blue.shade50,
+              color: bgColor ?? Colors.blue.shade50,
               borderRadius: BorderRadius.circular(5)),
           child: Padding(
             padding: const EdgeInsets.all(18.0),
             child: Center(
               child: CommonText(
-                text: "Add New Card",
+                text: title ?? "Add New Card",
                 fontColor: MyColors.blue,
               ),
             ),

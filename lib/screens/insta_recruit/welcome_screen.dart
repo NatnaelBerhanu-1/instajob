@@ -30,7 +30,7 @@ class WelcomeScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
+              SizedBox(
                 height: 340,
                 // color: MyColors.blue,
                 child: Stack(
@@ -64,7 +64,7 @@ class WelcomeScreen extends StatelessWidget {
                   children: [
                     Center(
                       child: CommonText(
-                        text: "Employee instantly",
+                        text: "Employ instantly",
                         fontColor: MyColors.grey,
                         fontSize: 14,
                       ),

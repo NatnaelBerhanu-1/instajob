@@ -6,6 +6,7 @@ import 'package:insta_job/bloc/company_bloc/company_bloc.dart';
 import 'package:insta_job/bloc/feedback_bloc/feedback_bloc.dart';
 import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
 import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
+import 'package:insta_job/bloc/resume_bloc/resume_bloc.dart';
 import 'package:insta_job/bloc/validation/validation_bloc.dart';
 import 'package:insta_job/network/dio/dio_client.dart';
 import 'package:insta_job/network/end_points.dart';
@@ -13,6 +14,7 @@ import 'package:insta_job/repository/auth_repository.dart';
 import 'package:insta_job/repository/company_repo.dart';
 import 'package:insta_job/repository/feed_back.dart';
 import 'package:insta_job/repository/job_position_repo.dart';
+import 'package:insta_job/repository/resume_repo.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -31,6 +33,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => CompanyRepository(dioClient: sl()));
   sl.registerLazySingleton(() => JobPositionRepository(dioClient: sl()));
   sl.registerLazySingleton(() => FeedBackRepository(dioClient: sl()));
+  sl.registerLazySingleton(() => ResumeRepository(dioClient: sl()));
 
   /// cubit
   sl.registerLazySingleton(() => GlobalCubit());
@@ -38,12 +41,13 @@ Future<void> init() async {
   sl.registerLazySingleton(() => PickImageCubit(sl()));
 
   ///   bloc
-  sl.registerLazySingleton(
-      () => AuthCubit(authRepository: sl(), sharedPreferences: sl()));
+  sl.registerLazySingleton(() =>
+      AuthCubit(sl(), sl(), authRepository: sl(), sharedPreferences: sl()));
   sl.registerLazySingleton(() => CompanyBloc(sl()));
-  sl.registerLazySingleton(() => BottomBloc(sl()));
+  sl.registerLazySingleton(() => BottomBloc(sl())..add(UserEvent()));
   sl.registerLazySingleton(() => JobPositionBloc(sl()));
-  sl.registerLazySingleton(() => FeedBackBloc(sl()));
+  sl.registerLazySingleton(() => FeedBackAndAutoMsgBloc(sl()));
+  sl.registerLazySingleton(() => ResumeBloc(sl()));
 
   /// other
   final SharedPreferences preferences = await SharedPreferences.getInstance();

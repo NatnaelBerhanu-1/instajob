@@ -37,11 +37,14 @@ class _FeedBackScreenState extends State<FeedBackScreen> {
         body: Padding(
           padding: const EdgeInsets.all(20.0),
           child: SingleChildScrollView(
-            child:
-                BlocConsumer<FeedBackBloc, FeedBackState>(listener: (c, state) {
+            child: BlocConsumer<FeedBackAndAutoMsgBloc, FeedBackState>(
+                listener: (c, state) {
               if (state is ErrorState) {
                 showToast(state.error);
               }
+              // if (state is FeedBackLoaded) {
+              //   AppRoutes.pop(context);
+              // }
             }, builder: (context, state) {
               return Column(
                 children: [
@@ -56,15 +59,18 @@ class _FeedBackScreenState extends State<FeedBackScreen> {
                     title: "Leave Feedback",
                     backgroundColor: MyColors.blue,
                     fontColor: MyColors.white,
+                    loading: state is FeedBackLoading ? true : false,
                     iconColor: MyColors.blue,
                     onclick: () {
                       if (msg.text.isNotEmpty) {
-                        context.read<FeedBackBloc>().add(
-                              InsertFeedBackEvent(msg.text),
-                            );
+                        context
+                            .read<FeedBackAndAutoMsgBloc>()
+                            .add(InsertFeedBackEvent(msg.text));
+                      } else {
+                        showToast("Please enter feedback");
                       }
                       msg.clear();
-                      print('ADDDDD ****************         ');
+                      print('ADDDDD ****************');
                     },
                   ),
                 ],

@@ -13,7 +13,7 @@ class MapTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 235,
+      // height: 230,
       width: MediaQuery.of(context).size.width * 0.8,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
@@ -29,7 +29,7 @@ class MapTile extends StatelessWidget {
       child: Stack(
         children: [
           Container(
-            height: 150,
+            height: 120,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
               color: MyColors.white,
@@ -53,20 +53,25 @@ class MapTile extends StatelessWidget {
           ),
           Positioned(
             right: 10,
-            top: MediaQuery.of(context).size.height * 0.157,
-            child: CustomCommonCard(
-              bgColor: MyColors.blue,
-              borderRadius: BorderRadius.circular(10),
-              child: ImageButton(
-                image: MyImages.fav,
-                color: MyColors.white,
-                padding: EdgeInsets.all(7),
+            top: MediaQuery.of(context).size.height * 0.12,
+            child: Container(
+              decoration: BoxDecoration(
+                color: MyColors.blue,
+                borderRadius: BorderRadius.circular(10),
               ),
+              child: IconButton(
+                  // padding: EdgeInsets.zero,
+                  visualDensity: VisualDensity.comfortable,
+                  onPressed: () {},
+                  icon: Icon(
+                    Icons.favorite_border,
+                    color: MyColors.white,
+                  )),
             ),
           ),
           Positioned(
             left: 0,
-            top: MediaQuery.of(context).size.height * 0.18,
+            top: MediaQuery.of(context).size.height * 0.14,
             child: Row(
               children: [
                 ImageButton(

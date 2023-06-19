@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:insta_job/globals.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 
@@ -50,7 +51,7 @@ class AboutUsScreen extends StatelessWidget {
                                   color: MyColors.white,
                                 ),
                                 CommonText(
-                                  text: "Employee instantly",
+                                  text: "Employed instantly",
                                   fontColor: MyColors.white,
                                 ),
                               ],
@@ -85,6 +86,9 @@ class AboutUsScreen extends StatelessWidget {
                         icon: ImageButton(
                           padding: EdgeInsets.zero,
                           image: MyImages.phone,
+                          // padding: EdgeInsets.all(14),
+                          height: 16,
+                          width: 16,
                         ),
                         label: Text(
                           '+91 9344321876',
@@ -102,11 +106,13 @@ class AboutUsScreen extends StatelessWidget {
                         })),
                         onPressed: () {},
                         icon: ImageButton(
-                          image: MyImages.phone,
+                          image: MyImages.email,
                           padding: EdgeInsets.zero,
+                          height: 18,
+                          width: 18,
                         ),
                         label: Text(
-                          'lweeway@protonmail.com',
+                          '${Global.userModel?.email}',
                           style: TextStyle(
                               color: MyColors.black,
                               fontWeight: FontWeight.w400),

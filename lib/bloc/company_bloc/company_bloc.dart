@@ -7,6 +7,7 @@ import 'package:insta_job/repository/company_repo.dart';
 
 class CompanyBloc extends Bloc<CompanyEvent, CompanyState> {
   final CompanyRepository companyRepository;
+  CompanyModel companyModel = CompanyModel();
   _getList(Emitter emit) async {
     ApiResponse response = await companyRepository.getCompanies();
     if (response.response.statusCode == 500) {
@@ -42,8 +43,15 @@ class CompanyBloc extends Bloc<CompanyEvent, CompanyState> {
     });
 
     on<CompanySearchEvent>((event, emit) async {
+      emit(CompanyLoading());
       var list = await _getSearchCompany(emit, search: event.search);
       emit(SearchCompanyLoaded(list));
+      // if (list.isEmpty) {
+      //   emit(const ErrorState("Data not found"));
+      // }
+      // else {
+      //   emit(Initial());
+      // }
     });
   }
 
@@ -62,7 +70,7 @@ class CompanyBloc extends Bloc<CompanyEvent, CompanyState> {
       print('LISTTT ------------            $list');
       return list;
     } else if (response.response.statusCode == 400) {
-      emit(ErrorState(response.response.message));
+      emit(const ErrorState("Data Not Found"));
     }
   }
 }

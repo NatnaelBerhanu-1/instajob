@@ -10,15 +10,16 @@ class CompanyRepository {
   CompanyRepository({required this.dioClient});
 
   getCompanies() async {
-    print(
-        'USERMODEL -------      ----           ---        ${Global.userModel?.id}');
     try {
-      var map = {"employe_id": Global.userModel?.id};
-
+      var map = {
+        "employe_id":
+            Global.userModel?.type == "user" ? "" : Global.userModel?.id
+      };
+      print("TYPE *********** !!!!!!!!!!!!  ${Global.userModel?.type}");
       var response =
           await dioClient.post(data: map, uri: EndPoint.getCompanies);
       return ApiResponse.withSuccess(response);
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       return ApiResponse.withError(e.response);
     }
   }
@@ -32,7 +33,7 @@ class CompanyRepository {
       };
       var response = await dioClient.post(data: map, uri: EndPoint.addCompany);
       return ApiResponse.withSuccess(response);
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       return ApiResponse.withError(e.response);
     }
   }
@@ -41,22 +42,23 @@ class CompanyRepository {
     try {
       var map = {
         "search": search,
-        "employe_id": Global.userModel?.type == "user" ? "" : "2",
+        "employe_id":
+            Global.userModel?.type == "user" ? "" : Global.userModel?.id,
       };
       var response =
           await dioClient.post(data: map, uri: EndPoint.searchCompany);
       return ApiResponse.withSuccess(response);
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       return ApiResponse.withError(e.response);
     }
   }
 
-  base64ImgApi(value) async {
+  base64ImgApi(value, extension) async {
     try {
-      var map = {"file": value};
+      var map = {"file": value, "extension": extension};
       var response = await dioClient.post(data: map, uri: EndPoint.base64);
       return ApiResponse.withSuccess(response);
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       return ApiResponse.withError(e.response);
     }
   }

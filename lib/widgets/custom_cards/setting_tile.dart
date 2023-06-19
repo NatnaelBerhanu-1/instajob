@@ -24,8 +24,14 @@ class SettingTile extends StatelessWidget {
     return Column(
       children: [
         ListTile(
+          contentPadding: EdgeInsets.zero,
           onTap: onTap,
-          leading: ImageButton(image: leadingImage),
+          leading: ImageButton(
+            image: leadingImage,
+            // padding: EdgeInsets.all(14),
+            height: 28,
+            width: 28,
+          ),
           title: Text(
             "$title",
             style: TextStyle(
@@ -43,7 +49,7 @@ class SettingTile extends StatelessWidget {
           ),
         ),
         Divider(
-          color: MyColors.grey,
+          color: MyColors.dividerClr,
         ),
       ],
     );

@@ -1,14 +1,14 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:insta_job/bloc/auth_bloc/auth_cubit.dart';
+import 'package:insta_job/bloc/auth_bloc/auth_state.dart';
 import 'package:insta_job/bloc/validation/validation_bloc.dart';
 import 'package:insta_job/bloc/validation/validation_state.dart';
 import 'package:insta_job/globals.dart';
-import 'package:insta_job/screens/auth_screen/login_screen.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 
-import '../../utils/app_routes.dart';
 import '../../utils/my_images.dart';
 import '../../widgets/custom_app_bar.dart';
 import '../../widgets/custom_button/custom_btn.dart';
@@ -61,10 +61,15 @@ class _SetPasswordState extends State<SetPassword> {
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
                   ),
-                  SizedBox(height: 80),
+                  SizedBox(height: 40),
                   IconTextField(
                     controller: password,
-                    prefixIcon: ImageButton(image: MyImages.lock),
+                    prefixIcon: ImageButton(
+                      image: MyImages.lock,
+                      padding: EdgeInsets.all(13),
+                      height: 10,
+                      width: 10,
+                    ),
                     suffixIcon: GestureDetector(
                       onTap: () {
                         validationBloc.visiblePass();
@@ -78,12 +83,22 @@ class _SetPasswordState extends State<SetPassword> {
                     obscureText: validationBloc.pass,
                     hint: "**********",
                     maxLine: 1,
-                    validator: (val) => validationBloc.passwordValidation(val!),
+                    validator: (val) => passwordValidation(val!),
+                    onChanged: (val) {
+                      if (!formKey.currentState!.validate()) {
+                        passwordValidation(val!);
+                      }
+                    },
                   ),
                   SizedBox(height: 30),
                   IconTextField(
                     controller: cPassword,
-                    prefixIcon: ImageButton(image: MyImages.lock),
+                    prefixIcon: ImageButton(
+                      image: MyImages.lock,
+                      padding: EdgeInsets.all(13),
+                      height: 10,
+                      width: 10,
+                    ),
                     suffixIcon: GestureDetector(
                       onTap: () {
                         validationBloc.visibleCPass();
@@ -97,23 +112,34 @@ class _SetPasswordState extends State<SetPassword> {
                     obscureText: validationBloc.cPass,
                     hint: "Confirm password",
                     maxLine: 1,
-                    validator: (val) => validationBloc.confirmPassValidation(
-                        val!, password.text),
-                  ),
-                  SizedBox(height: 70),
-                  CustomIconButton(
-                    image: MyImages.arrowWhite,
-                    title: "Change Password",
-                    backgroundColor: MyColors.blue,
-                    fontColor: MyColors.white,
-                    borderColor: MyColors.blue,
-                    iconColor: MyColors.white,
-                    onclick: () {
-                      if (formKey.currentState!.validate()) {
-                        AppRoutes.pushAndRemoveUntil(context, LoginScreen());
+                    validator: (val) =>
+                        confirmPassValidation(val!, password.text),
+                    onChanged: (val) {
+                      if (!formKey.currentState!.validate()) {
+                        confirmPassValidation(val!, password.text);
                       }
                     },
                   ),
+                  SizedBox(height: 70),
+                  BlocBuilder<AuthCubit, AuthInitialState>(
+                      builder: (context, snapshot) {
+                    return CustomIconButton(
+                      image: MyImages.arrowWhite,
+                      title: "Change Password",
+                      backgroundColor: MyColors.blue,
+                      fontColor: MyColors.white,
+                      borderColor: MyColors.blue,
+                      loading: state is AuthLoadingState ? true : false,
+                      iconColor: MyColors.white,
+                      onclick: () {
+                        var data = context.read<AuthCubit>();
+                        if (formKey.currentState!.validate()) {
+                          data.changePassword(
+                              password: password.text, email: data.email);
+                        }
+                      },
+                    );
+                  }),
                 ],
               );
             }),

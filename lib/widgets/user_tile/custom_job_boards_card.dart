@@ -9,10 +9,26 @@ import '../custom_cards/custom_common_card.dart';
 class CustomJobBoardsCard extends StatelessWidget {
   final VoidCallback? onTap;
   final String? image;
+  final String? price;
+  final String? desc;
+  final String? heading;
   final Color? color;
-  final Color? desc;
+  final Color? descColor;
+  final Color? priceColor;
+  final int? index;
+  final int? sIndex;
   const CustomJobBoardsCard(
-      {Key? key, this.image, this.color, this.desc, this.onTap})
+      {Key? key,
+      this.image,
+      this.color,
+      this.descColor,
+      this.onTap,
+      this.price,
+      this.desc,
+      this.priceColor,
+      this.heading,
+      this.index,
+      this.sIndex})
       : super(key: key);
 
   @override
@@ -38,49 +54,74 @@ class CustomJobBoardsCard extends StatelessWidget {
               Expanded(
                   flex: 0,
                   child: Container(
-                      decoration: BoxDecoration(
-                        color: MyColors.white,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(3.0),
-                        child: Image.asset(MyImages.verified),
-                      ))),
+                    decoration: BoxDecoration(
+                      color: MyColors.white,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(2.0),
+                      child: sIndex == index
+                          ? Image.asset(
+                              MyImages.verified,
+                              height: 20,
+                              width: 20,
+                            )
+                          : Container(
+                              // height: 15,
+                              // width: 15,
+                              decoration: BoxDecoration(
+                                color: MyColors.blue.withOpacity(.20),
+                                shape: BoxShape.circle,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(9.0),
+                                child: SizedBox(),
+                              ),
+                            ),
+                    ),
+                  )),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.only(top: 8.0),
                   child: Column(
                     children: [
                       CommonText(
-                        text: "Enterprise",
+                        text: heading ?? "Enterprise",
                         fontColor: color ?? MyColors.black,
                         fontSize: 20,
                         fontWeight: FontWeight.w800,
                       ),
                       SizedBox(height: 10),
-                      CustomCommonCard(
-                        borderRadius: BorderRadius.circular(5),
-                        bgColor: MyColors.white.withOpacity(.20),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: priceColor ?? MyColors.white.withOpacity(.20),
+                        ),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: CommonText(
-                            fontSize: 14,
-                            text: "Contact Us",
-                            fontColor: color ?? MyColors.black,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              CommonText(
+                                fontSize: 14,
+                                text: price ?? "Contact Us",
+                                fontColor: color ?? MyColors.black,
+                              ),
+                            ],
                           ),
                         ),
                       ),
-                      SizedBox(height: 10),
+                      SizedBox(height: 15),
                       CommonText(
                         fontSize: 12,
-                        text: "Unlimited job parts",
-                        fontColor: desc ?? MyColors.grey,
+                        text: desc ?? "Unlimited job parts",
+                        fontColor: descColor ?? MyColors.grey,
                       ),
                     ],
                   ),
                 ),
               ),
-              Image.asset(MyImages.rateYellow)
+              // Image.asset(MyImages.rateYellow)
             ],
           ),
         ),

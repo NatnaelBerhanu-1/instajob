@@ -2,6 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
+import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
+import 'package:insta_job/bloc/job_position/job_pos_event.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/screens/insta_job_user/bottom_nav_screen/search_pages/search_jobs_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/notification_pages/interviews_screen.dart';
@@ -10,6 +13,8 @@ import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
 
 import '../../../bloc/bottom_bloc/bottom_bloc.dart';
+import '../../../bloc/company_bloc/company_bloc.dart';
+import '../../../bloc/company_bloc/company_event.dart';
 import '../home_page.dart';
 
 class BottomNavScreen extends StatefulWidget {
@@ -45,8 +50,11 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
               children: [
                 buildColumn(
                   onTap: () {
+                    context.read<GlobalCubit>().changeIndex(1);
                     bottomBloc.add(SetScreenEvent(false));
                     bottomBloc.add(GetIndexEvent(0));
+                    context.read<CompanyBloc>().add(LoadCompanyListEvent());
+                    context.read<JobPositionBloc>().add(LoadJobPosListEvent());
                   },
                   index: 0,
                   selectedIndex: bottomBloc.currentIndex,
@@ -86,7 +94,10 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
   }
 
   Widget buildColumn(
-      {int? index, int? selectedIndex, String? image, VoidCallback? onTap}) {
+      {int? index,
+      int? selectedIndex,
+      String? image,
+      required VoidCallback onTap}) {
     return GestureDetector(
       onTap: onTap,
       child: Column(
@@ -101,7 +112,7 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
                       color: MyColors.blue),
                 )
               : SizedBox(),
-          SizedBox(height: 10),
+          SizedBox(height: 8),
           Row(
             children: [
               Container(
@@ -113,6 +124,8 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: Image.asset(
+                      height: 22,
+                      width: 22,
                       image.toString(),
                       color: index == selectedIndex
                           ? MyColors.blue

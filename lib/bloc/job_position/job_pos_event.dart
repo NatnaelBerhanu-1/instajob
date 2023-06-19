@@ -1,17 +1,24 @@
 import 'package:equatable/equatable.dart';
+import 'package:insta_job/model/filter_model.dart';
 
 abstract class JobPosEvent extends Equatable {}
 
 class LoadJobPosListEvent extends JobPosEvent {
+  final String? companyId;
+  LoadJobPosListEvent({this.companyId});
   @override
   List<Object?> get props => [];
 }
 
 class AddJobPositionEvent extends JobPosEvent {
+  final String? companyId;
+  final String? id;
+  final bool? isUpdate;
+  final String? designation;
   final String? jobDetails;
   final String? requirements;
   final String? responsibility;
-  final String? topSkills;
+  final List<String>? topSkills;
   final String? salaries;
   final String? areaDistance;
   final String? jobsType;
@@ -25,10 +32,14 @@ class AddJobPositionEvent extends JobPosEvent {
   final String? shortlistedReviewContent;
 
   AddJobPositionEvent(
-      {this.jobDetails,
+      {this.companyId,
+      this.jobDetails,
       this.requirements,
+      this.designation,
       this.responsibility,
       this.topSkills,
+      this.id,
+      this.isUpdate,
       this.salaries,
       this.areaDistance,
       this.jobsType,
@@ -40,6 +51,44 @@ class AddJobPositionEvent extends JobPosEvent {
       this.disqualifiedReviewContent,
       this.shortlistedReviewSubject,
       this.shortlistedReviewContent});
+  @override
+  List<Object?> get props => [];
+}
+
+class SaveJobPositionEvent extends JobPosEvent {
+  final String jobId;
+
+  SaveJobPositionEvent({required this.jobId});
+  @override
+  List<Object?> get props => [];
+}
+
+class DeleteJobPositionEvent extends JobPosEvent {
+  final String jobId;
+
+  DeleteJobPositionEvent({required this.jobId});
+  @override
+  List<Object?> get props => [];
+}
+
+class ApplyJobEvent extends JobPosEvent {
+  final String jobId;
+  final String resume;
+
+  ApplyJobEvent(this.resume, {required this.jobId});
+  @override
+  List<Object?> get props => [];
+}
+
+class SavedJobPositionListEvent extends JobPosEvent {
+  @override
+  List<Object?> get props => [];
+}
+
+class JobSearchEvent extends JobPosEvent {
+  final FilterModel filterModel;
+
+  JobSearchEvent({required this.filterModel});
   @override
   List<Object?> get props => [];
 }

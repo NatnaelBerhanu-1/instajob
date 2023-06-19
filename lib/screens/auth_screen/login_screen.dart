@@ -11,6 +11,7 @@ import 'package:insta_job/screens/insta_recruit/user_type_screen.dart';
 import 'package:insta_job/screens/insta_recruit/welcome_screen.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
+import 'package:insta_job/widgets/custom_chip.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
 
 import '../../bloc/auth_bloc/auth_cubit.dart';
@@ -36,149 +37,161 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController password = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: MyColors.white,
-      body: SafeArea(
-        child: Form(
-          key: formKey,
-          child: Column(
-            children: [
-              Expanded(
-                flex: 0,
-                child: Column(
-                  children: [
-                    Stack(
-                      children: [
-                        Image.asset(
-                          MyImages.bgCurve,
-                          color: MyColors.grey.withOpacity(.10),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 5.0, top: 5),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              ImageButton(
-                                image: MyImages.backArrow,
-                                height: 30,
-                                width: 30,
-                                onTap: () {
-                                  AppRoutes.pushAndRemoveUntil(
-                                      context, WelcomeScreen());
-                                },
-                              ),
-                              SizedBox(width: 50),
-                              Column(
-                                children: [
-                                  Image.asset(MyImages.instaLogo_),
-                                  CommonText(
-                                    text: "Employee instantly",
-                                    fontColor: MyColors.grey,
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
-                    )
-                  ],
-                ),
-              ),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.all(15),
-                    child: BlocBuilder<ValidationCubit, InitialValidation>(
-                        builder: (context, state) {
-                      var validationBloc = context.read<ValidationCubit>();
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+    return WillPopScope(
+      onWillPop: () async {
+        FocusManager.instance.primaryFocus?.unfocus();
+        return true;
+      },
+      child: Scaffold(
+        backgroundColor: MyColors.white,
+        body: SafeArea(
+          child: Form(
+            key: formKey,
+            child: Column(
+              children: [
+                Expanded(
+                  flex: 0,
+                  child: Column(
+                    children: [
+                      Stack(
                         children: [
-                          Text(
-                            "Welcome,",
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 24,
+                          Image.asset(
+                            MyImages.bgCurve,
+                            color: MyColors.grey.withOpacity(.10),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 5.0, top: 5),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ImageButton(
+                                  image: MyImages.backArrow,
+                                  height: 30,
+                                  width: 30,
+                                  onTap: () {
+                                    FocusManager.instance.primaryFocus
+                                        ?.unfocus();
+                                    AppRoutes.pushAndRemoveUntil(
+                                        context, WelcomeScreen());
+                                  },
+                                ),
+                                SizedBox(width: 50),
+                                Column(
+                                  children: [
+                                    Image.asset(MyImages.instaLogo_),
+                                    CommonText(
+                                      text: "Employ instantly",
+                                      fontColor: MyColors.grey,
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
-                          ),
-                          SizedBox(height: 5),
-                          Text(
-                            "Enter your login details to access your account",
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              color: MyColors.grey,
-                              fontSize: 14,
-                            ),
-                          ),
-                          SizedBox(height: 30),
-                          IconTextField(
-                            controller: email,
-                            prefixIcon: ImageButton(image: MyImages.email),
-                            // suffixIcon: validationBloc.valid
-                            //     ? ImageButton(image: MyImages.verified)
-                            //     : Icon(Icons.close, color: MyColors.lightRed),
-                            validator: (val) =>
-                                validationBloc.emailValidation(val!),
-                            onChanged: (val) {
-                              // validationBloc.emailValidation(val!);
-                            },
-                            hint: "alexis@mygmail.com",
-                          ),
-                          SizedBox(height: 15),
-                          IconTextField(
-                            controller: password,
-                            prefixIcon: ImageButton(image: MyImages.lock),
-                            suffixIcon: GestureDetector(
-                              onTap: () {
-                                validationBloc.visiblePass();
-                              },
-                              child: Icon(
-                                validationBloc.pass
-                                    ? Icons.visibility_off
-                                    : Icons.visibility,
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.all(15),
+                      child: BlocBuilder<ValidationCubit, InitialValidation>(
+                          builder: (context, state) {
+                        var validationBloc = context.read<ValidationCubit>();
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Welcome,",
+                              textAlign: TextAlign.start,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 24,
                               ),
                             ),
-                            obscureText: validationBloc.pass,
-                            hint: "password",
-                            maxLine: 1,
-                            validator: (val) =>
-                                validationBloc.passwordValidation(val!),
-                          ),
-                          SizedBox(height: 20),
-                          GestureDetector(
-                            onTap: () {
-                              AppRoutes.push(context, ForgotPassword());
-                            },
-                            child: Align(
-                              alignment: Alignment.topRight,
-                              child: Text(
-                                "Forgot Password?",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  color: MyColors.blue,
-                                  fontSize: 15,
+                            SizedBox(height: 5),
+                            Text(
+                              "Enter your login details to access your account",
+                              textAlign: TextAlign.start,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                color: MyColors.grey,
+                                fontSize: 14,
+                              ),
+                            ),
+                            SizedBox(height: 30),
+                            IconTextField(
+                              controller: email,
+                              prefixIcon: ImageButton(
+                                image: MyImages.email,
+                                padding: EdgeInsets.all(13),
+                                height: 10,
+                                width: 10,
+                              ),
+                              keyboardType: TextInputType.emailAddress,
+                              suffixIcon: validationBloc.emailVAL
+                                  ? verifyImage
+                                  : SizedBox(),
+                              validator: (val) => emailValidation(val!),
+                              onChanged: (val) {
+                                if (!formKey.currentState!.validate()) {
+                                  emailValidation(val!);
+                                  // validationBloc.emailCheck(
+                                  //     formKey.currentState?.validate());
+                                }
+                              },
+                              hint: "alexis@mygmail.com",
+                            ),
+                            SizedBox(height: 15),
+                            IconTextField(
+                              controller: password,
+                              prefixIcon: ImageButton(
+                                image: MyImages.lock,
+                                padding: EdgeInsets.all(13),
+                                height: 10,
+                                width: 10,
+                              ),
+                              suffixIcon: GestureDetector(
+                                onTap: () {
+                                  validationBloc.visiblePass();
+                                },
+                                child: Icon(
+                                  validationBloc.pass
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
+                                ),
+                              ),
+                              obscureText: validationBloc.pass,
+                              hint: "password",
+                              maxLine: 1,
+                              validator: (val) => passwordValidation(val!),
+                              onChanged: (val) {
+                                if (!formKey.currentState!.validate()) {
+                                  passwordValidation(val!);
+                                }
+                              },
+                            ),
+                            SizedBox(height: 20),
+                            CustomGesture(
+                              onTap: () {
+                                AppRoutes.push(context, ForgotPassword());
+                              },
+                              child: Align(
+                                alignment: Alignment.topRight,
+                                child: Text(
+                                  "Forgot Password?",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    color: MyColors.blue,
+                                    fontSize: 15,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          SizedBox(height: 40),
-                          BlocConsumer<ValidationCubit, InitialValidation>(
-                              listener: (context, state) {
-                            if (state is InvalidEmailState) {
-                              showToast(state.email);
-                            }
-                            if (state is InvalidPasswordState) {
-                              showToast(state.pass);
-                            }
-                            if (state is RequiredValidation) {
-                              showToast(state.require);
-                            }
-                          }, builder: (context, state) {
-                            // var authCubit = context.read<AuthCubit>();
-                            return BlocConsumer<AuthCubit, AuthInitialState>(
+                            SizedBox(height: 40),
+                            BlocConsumer<AuthCubit, AuthInitialState>(
                                 listener: (context, state) {
                               if (state is ErrorState) {
                                 showToast(state.error);
@@ -194,6 +207,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 borderColor: MyColors.blue,
                                 iconColor: MyColors.white,
                                 onclick: () {
+                                  FocusManager.instance.primaryFocus?.unfocus();
                                   if (formKey.currentState!.validate()) {
                                     if (userType == "user") {
                                       SocialAuth.loginWithEmail(context,
@@ -206,7 +220,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                           password: password.text);
                                     }
                                   }
-
                                   // if (Global.type == "user") {
                                   //   AppRoutes.pushAndRemoveUntil(
                                   //       context, MemberShipScreen());
@@ -216,53 +229,55 @@ class _LoginScreenState extends State<LoginScreen> {
                                   // }
                                 },
                               );
-                            });
-                          }),
-                          SizedBox(height: 20),
-                          CustomIconButton(
-                            image: MyImages.arrowWhite,
-                            title: "Register Now",
-                            backgroundColor: MyColors.white,
-                            fontColor: MyColors.black,
-                            borderColor: MyColors.blue,
-                            iconColor: MyColors.blue,
-                            onclick: () {
-                              AppRoutes.push(context, RegisterScreen());
-                            },
-                          ),
-                          SizedBox(height: 30),
-                          CustomDivider(),
-                          SizedBox(height: 30),
-                          BlocConsumer<AuthCubit, AuthInitialState>(
-                              listener: (context, state) {
-                            if (state is ErrorState) {
-                              showToast(state.error);
-                            }
-                          }, builder: (context, state) {
-                            var auth = context.read<AuthCubit>();
-                            return Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                CustomSocialButton(
-                                  image: MyImages.google,
-                                  onTap: () {
-                                    auth.googleAuth(
-                                        isUser:
-                                            userType == "user" ? true : false);
-                                  },
-                                ),
-                                CustomSocialButton(image: MyImages.twitter),
-                                CustomSocialButton(image: MyImages.facebook),
-                              ],
-                            );
-                          })
-                        ],
-                      );
-                    }),
+                            }),
+                            SizedBox(height: 20),
+                            CustomIconButton(
+                              image: MyImages.arrowWhite,
+                              title: "Register Now",
+                              backgroundColor: MyColors.white,
+                              fontColor: MyColors.black,
+                              borderColor: MyColors.blue,
+                              iconColor: MyColors.blue,
+                              onclick: () {
+                                AppRoutes.push(context, RegisterScreen());
+                              },
+                            ),
+                            SizedBox(height: 30),
+                            CustomDivider(),
+                            SizedBox(height: 30),
+                            BlocConsumer<AuthCubit, AuthInitialState>(
+                                listener: (context, state) {
+                              if (state is ErrorState) {
+                                showToast(state.error);
+                              }
+                            }, builder: (context, state) {
+                              var auth = context.read<AuthCubit>();
+                              return Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  CustomSocialButton(
+                                    image: MyImages.google,
+                                    onTap: () async {
+                                      await auth.googleAuth(
+                                          isUser: userType == "user"
+                                              ? true
+                                              : false);
+                                    },
+                                  ),
+                                  CustomSocialButton(image: MyImages.twitter),
+                                  CustomSocialButton(image: MyImages.facebook),
+                                ],
+                              );
+                            })
+                          ],
+                        );
+                      }),
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

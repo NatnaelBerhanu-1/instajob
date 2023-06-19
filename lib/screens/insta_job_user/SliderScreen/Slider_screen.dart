@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, sort_child_properties_last
 
 import 'package:flutter/material.dart';
+import 'package:insta_job/screens/insta_job_user/SliderScreen/education_screen.dart';
+import 'package:insta_job/screens/insta_job_user/SliderScreen/skills_screen.dart';
 import 'package:insta_job/screens/insta_job_user/SliderScreen/tellus_about_yslf_page.dart';
 import 'package:insta_job/screens/insta_job_user/SliderScreen/work_experience_screen.dart';
 import 'package:insta_job/utils/my_colors.dart';
@@ -15,7 +17,7 @@ class SliderScreen extends StatefulWidget {
 class _SliderScreenState extends State<SliderScreen> {
   int sIndex = 0;
   PageController pageController = PageController(initialPage: 0);
-  PageController c = PageController(initialPage: 1);
+  // PageController c = PageController(initialPage: 1);
   @override
   Widget build(BuildContext context) {
     // var selectedIndex = context.watch<IndexBloc>().sIndex;
@@ -56,50 +58,37 @@ class _SliderScreenState extends State<SliderScreen> {
                 child: PageView(
                   allowImplicitScrolling: true,
                   scrollDirection: Axis.horizontal,
-                  // physics: NeverScrollableScrollPhysics(),
+                  physics: NeverScrollableScrollPhysics(),
                   children: [
-                    TellUsAboutYSlfPage(
-                      onTap: () {
+                    TellUsAboutYSlfPage(pageController: pageController),
+                    EducationScreen(
+                      pageController: pageController,
+                      onSkipTap: () {
                         sIndex = 1;
-                        // context.read<IndexBloc>().changeIndex(sIndex);
-                        pageController.animateToPage(1,
-                            duration: Duration(seconds: 1), curve: Curves.ease);
                       },
                     ),
-                    PageView(
-                      allowImplicitScrolling: true,
-                      scrollDirection: Axis.horizontal,
-                      // physics: NeverScrollableScrollPhysics(),
-                      controller: c,
-                      onPageChanged: (val) {
-                        sIndex = val;
-                        print("WWWW => $val");
-                        setState(() {});
+                    WorkExpScreen(
+                      pageController: pageController,
+                      onSkipTap: () {
+                        sIndex = 1;
                       },
-                      children: [
-                        EducationScreen(
-                          pageController: pageController,
-                          onSkipTap: () {
-                            sIndex = 1;
-                          },
-                        ),
-                        EducationScreen(
-                          // isWork: true,
-                          pageController: pageController,
-                          onSkipTap: () {
-                            sIndex = 1;
-                          },
-                        ),
-                      ],
                     ),
-                    // EducationScreen(
-                    //   pageController: pageController,
-                    //   onSkipTap: () {
-                    //     sIndex = 1;
+                    // PageView(
+                    //   allowImplicitScrolling: true,
+                    //   scrollDirection: Axis.horizontal,
+                    //   // physics: NeverScrollableScrollPhysics(),
+                    //   controller: c,
+                    //   onPageChanged: (val) {
+                    //     sIndex = val;
+                    //     print("WWWW => $val");
+                    //     setState(() {});
                     //   },
+                    //   children: [
+                    //
+                    //   ],
                     // ),
-                    Container(),
-                    Container(),
+
+                    SkillsScreen(pageController: pageController)
                   ],
                   controller: pageController,
                   onPageChanged: (val) {

@@ -64,6 +64,7 @@ class DropTile extends StatelessWidget {
           CommonText(
             text: "Data vmdflksfdsgioun nfokdslmlk",
             fontSize: 14,
+            fontColor: MyColors.blue,
           ),
           SizedBox(height: 5),
           CommonText(

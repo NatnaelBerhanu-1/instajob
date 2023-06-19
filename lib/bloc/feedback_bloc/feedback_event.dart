@@ -9,3 +9,27 @@ class InsertFeedBackEvent extends FeedBackEvent {
   @override
   List<Object?> get props => [feedBack];
 }
+
+class InertAutoMsg extends FeedBackEvent {
+  final String? applicationReceivedSubject;
+  final String? applicationReceivedContent;
+  final String? disqualifiedReviewSubject;
+  final String? disqualifiedReviewContent;
+  final String? shortlistedReviewSubject;
+  final String? shortlistedReviewContent;
+  final String? autoButton;
+  // final String? empId;
+
+  InertAutoMsg({
+    this.applicationReceivedSubject,
+    this.applicationReceivedContent,
+    this.disqualifiedReviewSubject,
+    this.disqualifiedReviewContent,
+    this.shortlistedReviewSubject,
+    this.shortlistedReviewContent,
+    this.autoButton,
+    // this.empId,
+  });
+  @override
+  List<Object?> get props => [];
+}

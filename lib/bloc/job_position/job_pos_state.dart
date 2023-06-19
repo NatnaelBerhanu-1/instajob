@@ -18,10 +18,16 @@ class JobPosLoaded extends JobPosState {
   const JobPosLoaded(this.jobPosList);
 }
 
-class ErrorState extends JobPosState {
+class JobErrorState extends JobPosState {
   final String error;
 
-  const ErrorState(this.error);
+  const JobErrorState(this.error);
+  @override
+  List<Object?> get props => [];
+}
+
+class JobAppliedSuccessState extends JobPosState {
+  const JobAppliedSuccessState();
   @override
   List<Object?> get props => [];
 }
