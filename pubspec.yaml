@@ -55,7 +55,7 @@ dependencies:
 #  flutter_downloader:
   permission_handler: ^10.2.0
   percent_indicator: ^4.2.3
-  http:
+  http: ^1.0.0
 
   #auth
   firebase_core: ^2.8.0
