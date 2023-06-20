@@ -40,22 +40,21 @@ dependencies:
   flutter_bloc: ^8.1.1
   equatable: ^2.0.3
   dio: ^5.1.1
-  intl:
+  intl: ^0.17.0
   intl_phone_number_input: ^0.7.3+1
   image_picker: ^0.8.7+1
   flutter_time_picker_spinner: ^2.0.0
   google_maps_flutter: ^2.2.5
   syncfusion_flutter_pdfviewer: any
-  syncfusion_flutter_pdf:
   file_picker: any
   open_file_safe: any
   path_provider: ^2.0.14
   pdf: ^3.10.1
   printing: ^5.10.3
-#  flutter_downloader:
+  flutter_downloader: ^1.10.2
   permission_handler: ^10.2.0
   percent_indicator: ^4.2.3
-  http: ^1.0.0
+
 
   #auth
   firebase_core: ^2.8.0
