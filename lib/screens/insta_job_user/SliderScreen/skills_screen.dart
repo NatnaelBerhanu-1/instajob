@@ -10,6 +10,7 @@ import 'package:insta_job/bloc/resume_bloc/resume_state.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
+import 'package:insta_job/widgets/custom_cards/insta_job_user_cards/skill_tile.dart';
 import 'package:insta_job/widgets/custom_divider.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
 
@@ -76,60 +77,7 @@ class SkillsScreen extends StatelessWidget {
             fit: BoxFit.cover,
           )),
           SizedBox(height: 15),
-          context.read<GlobalCubit>().skills.isEmpty
-              ? SizedBox()
-              : CustomDivider(
-                  title: "Added",
-                  color: MyColors.black,
-                ),
-          SizedBox(height: 15),
-          BlocBuilder<GlobalCubit, InitialState>(builder: (context, state) {
-            var skillList = context.read<GlobalCubit>();
-            return skillList.skills.isEmpty
-                ? SizedBox()
-                : GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      childAspectRatio: 4 / 1,
-                      mainAxisSpacing: 10,
-                      crossAxisSpacing: 10,
-                    ),
-                    // primary: false,
-                    shrinkWrap: true,
-                    itemCount: skillList.skills.length,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        decoration: BoxDecoration(
-                          color: MyColors.lightBlue.withOpacity(.20),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(5),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              CommonText(
-                                text: skillList.skills[index],
-                                fontColor: MyColors.blue,
-                                fontSize: 13,
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  skillList.removeSkill(index);
-                                },
-                                child: Icon(
-                                  Icons.close,
-                                  color: MyColors.red,
-                                  size: 15,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    });
-          }),
-          SizedBox(height: 15),
+
           BlocBuilder<GlobalCubit, InitialState>(builder: (context, state) {
             var skillList = context.read<GlobalCubit>();
             return Column(
@@ -206,6 +154,66 @@ class SkillsScreen extends StatelessWidget {
             icon: Icons.remove,
             color: MyColors.lightRed,
           ),*/
+          SizedBox(height: 15),
+          context.read<GlobalCubit>().skills.isEmpty
+              ? SizedBox()
+              : CustomDivider(
+                  title: "Added",
+                  color: MyColors.black,
+                ),
+          SizedBox(height: 15),
+          BlocBuilder<GlobalCubit, InitialState>(builder: (context, state) {
+            var skillList = context.read<GlobalCubit>();
+            return skillList.skills.isEmpty
+                ? SizedBox()
+                : GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      childAspectRatio: 4 / 1.4,
+                      mainAxisSpacing: 10,
+                      crossAxisSpacing: 10,
+                    ),
+                    primary: false,
+                    shrinkWrap: true,
+                    itemCount: skillList.skills.length,
+                    itemBuilder: (context, index) {
+                      return AddSkillTile(
+                        title: skillList.skills[index],
+                        onTap: () {
+                          skillList.removeSkill(index);
+                        },
+                      );
+                      /*return Container(
+                        decoration: BoxDecoration(
+                          color: MyColors.lightBlue.withOpacity(.20),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(5),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              CommonText(
+                                text: skillList.skills[index],
+                                fontColor: MyColors.blue,
+                                fontSize: 13,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  skillList.removeSkill(index);
+                                },
+                                child: Icon(
+                                  Icons.close,
+                                  color: MyColors.red,
+                                  size: 15,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );*/
+                    });
+          }),
           SizedBox(height: 15),
           /*  GridView.builder(
             itemCount: 7,

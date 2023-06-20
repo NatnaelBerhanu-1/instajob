@@ -197,12 +197,12 @@ class _AutomateMsgScreenState extends State<AutomateMsgScreen> {
                         builder: (context, snapshot) {
                       return CustomIconButton(
                         image:
-                            isEnable ? MyImages.arrowWhite : MyImages.cancel2x,
-                        iconColor: isEnable ? MyColors.white : MyColors.blue,
-                        title: isEnable ? "Enable" : "Disable",
+                            !isEnable ? MyImages.arrowWhite : MyImages.cancel2x,
+                        iconColor: !isEnable ? MyColors.white : MyColors.blue,
+                        title: !isEnable ? "Enable" : "Disable",
                         backgroundColor:
-                            isEnable ? MyColors.blue : MyColors.white,
-                        fontColor: isEnable ? MyColors.white : MyColors.blue,
+                            !isEnable ? MyColors.blue : MyColors.white,
+                        fontColor: !isEnable ? MyColors.white : MyColors.blue,
                         borderColor: MyColors.blue,
                         onclick: () {
                           if (formKey.currentState!.validate()) {

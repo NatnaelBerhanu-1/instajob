@@ -6,7 +6,7 @@ import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
 import 'package:insta_job/dialog/applied_successful_dialog.dart';
 import 'package:insta_job/dialog/custom_dialog.dart';
 import 'package:insta_job/globals.dart';
-import 'package:insta_job/model/resume_model.dart';
+import 'package:insta_job/model/cover_letter_model.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 
@@ -14,8 +14,8 @@ import '../../widgets/custom_app_bar.dart';
 import '../../widgets/custom_button/custom_btn.dart';
 
 class CoverLetterScreen extends StatelessWidget {
-  final ResumeModel resumeModel;
-  const CoverLetterScreen({Key? key, required this.resumeModel})
+  final CoverLetterModel coverLetterModel;
+  const CoverLetterScreen({Key? key, required this.coverLetterModel})
       : super(key: key);
 
   @override
@@ -28,7 +28,7 @@ class CoverLetterScreen extends StatelessWidget {
             actions: IconButton(
                 onPressed: () {
                   String text =
-                      "Dear Hiring Manager,\nJob Title: ${context.read<JobPositionBloc>().jobModel.designation}\n${resumeModel.previousWork}\n${resumeModel.yourPassion}\nPlease take a moment to review my attached resume and credentials.\nSincerely\n${resumeModel.yourName}";
+                      "Dear Hiring Manager,\nJob Title: ${context.read<JobPositionBloc>().jobModel.designation}\n${coverLetterModel.previousWork}\n${coverLetterModel.yourPassion}\nPlease take a moment to review my attached resume and credentials.\nSincerely\n${coverLetterModel.yourName}";
                   Clipboard.setData(ClipboardData(text: text)).then((value) {
                     showToast("Copied");
                   });
@@ -56,13 +56,13 @@ class CoverLetterScreen extends StatelessWidget {
                       Text("Dear Hiring Manager,\n"),
                       Text(
                           "Job Title: ${context.read<JobPositionBloc>().jobModel.designation}\n"),
-                      Text("${resumeModel.previousWork}\n"),
-                      Text("${resumeModel.yourPassion}\n"),
+                      Text("${coverLetterModel.previousWork}\n"),
+                      Text("${coverLetterModel.yourPassion}\n"),
                       Text(
                           "Please take a moment to review my attached resume and credentials.\n"),
                       Text("Thank you for your consideration\n"),
                       Text("Sincerely"),
-                      Text("${resumeModel.yourName}"),
+                      Text("${coverLetterModel.yourName}"),
                     ],
                   ),
                 ),

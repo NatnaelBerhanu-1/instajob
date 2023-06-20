@@ -5,7 +5,7 @@ import 'package:insta_job/bloc/resume_bloc/resume_bloc.dart';
 import 'package:insta_job/bloc/resume_bloc/resume_event.dart';
 import 'package:insta_job/bloc/resume_bloc/resume_state.dart';
 import 'package:insta_job/globals.dart';
-import 'package:insta_job/model/resume_model.dart';
+import 'package:insta_job/model/cover_letter_model.dart';
 import 'package:insta_job/screens/insta_job_user/cover_letter_screen.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_colors.dart';
@@ -136,7 +136,7 @@ class _ConfirmDetailsScreenState extends State<ConfirmDetailsScreen> {
                   fontColor: MyColors.white,
                   borderColor: MyColors.blue,
                   onTap: () {
-                    ResumeModel resumeModel = ResumeModel(
+                    CoverLetterModel coverLetterModel = CoverLetterModel(
                         phoneNumber:
                             int.parse(phone.isEmpty ? phoneNumber.text : phone),
                         yourName: nameVal.isEmpty ? name.text : nameVal,
@@ -145,9 +145,9 @@ class _ConfirmDetailsScreenState extends State<ConfirmDetailsScreen> {
                             passionVal.isEmpty ? passion.text : passionVal,
                         yourTop5Skills:
                             skillVal.isEmpty ? skills.text : skillVal);
-                    resumeData.add(AddResumeEvent(resumeModel));
-                    AppRoutes.push(
-                        context, CoverLetterScreen(resumeModel: resumeModel));
+                    resumeData.add(AddResumeEvent(coverLetterModel));
+                    AppRoutes.push(context,
+                        CoverLetterScreen(coverLetterModel: coverLetterModel));
                   },
                 ),
               ],

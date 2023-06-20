@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -18,11 +18,13 @@ import 'package:insta_job/screens/insta_job_user/career_cluster_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/user_account/automate_messages/automate_message_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/user_account/setting_pages/setting_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/user_account/subscribe_pages/job_board_screen.dart';
+import 'package:insta_job/screens/resume_edit_screens/cv_template_screen.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:insta_job/widgets/user_tile/custom_acc_details.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../bloc/global_cubit/global_state.dart';
 import 'bottom_navigation_screen/user_account/feedback/feedback_screen.dart';
@@ -149,9 +151,21 @@ class _HomePageState extends State<HomePage> {
                               child: Padding(
                                 padding: const EdgeInsets.only(left: 15.0),
                                 child: CustomAccDetails(
-                                  onTap: () {
-                                    context.read<GlobalCubit>().changeIndex(0);
-                                    AppRoutes.push(context, OnBoardingScreen());
+                                  onTap: () async {
+                                    var pref =
+                                        await SharedPreferences.getInstance();
+                                    var isGetStarted =
+                                        pref.getBool("isGetStarted");
+                                    if (isGetStarted == true) {
+                                      AppRoutes.push(
+                                          context, CvTemplateScreen());
+                                    } else {
+                                      context
+                                          .read<GlobalCubit>()
+                                          .changeIndex(0);
+                                      AppRoutes.push(
+                                          context, OnBoardingScreen());
+                                    }
                                   },
                                   index: 0,
                                   selectedIndex: selectedIndex,

@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:insta_job/model/resume_model.dart';
+import 'package:insta_job/model/cover_letter_model.dart';
 
 abstract class ResumeState extends Equatable {
   const ResumeState();
@@ -8,6 +8,10 @@ abstract class ResumeState extends Equatable {
 }
 
 class ResumeInitial extends ResumeState {}
+
+class ResumeAddSuccess extends ResumeState {}
+
+class ResumeDeleted extends ResumeState {}
 
 // class CheckReadOnly extends ResumeState {
 //   final bool readOnly;
@@ -28,7 +32,7 @@ class ResumeInitial extends ResumeState {}
 // class PWorkState extends ResumeState {}
 
 class ResumeLoaded extends ResumeState {
-  final ResumeModel resumeModel;
+  final CoverLetterModel resumeModel;
 
   const ResumeLoaded({required this.resumeModel});
 }

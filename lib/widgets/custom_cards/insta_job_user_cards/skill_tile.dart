@@ -57,10 +57,12 @@ class SkillsTile extends StatelessWidget {
 class AddSkillTile extends StatelessWidget {
   final String? title;
   final Color? color;
+  final VoidCallback? onTap;
   const AddSkillTile({
     Key? key,
     this.title,
     this.color,
+    this.onTap,
   }) : super(key: key);
 
   @override
@@ -68,7 +70,8 @@ class AddSkillTile extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(10),
       decoration: BoxDecoration(
-        border: Border.all(color: MyColors.grey.withOpacity(.50)),
+        // color: Colors.primaries[Random().nextInt(Colors.primaries.length)],
+        border: Border.all(color: MyColors.lightgrey),
         borderRadius: BorderRadius.circular(5),
       ),
       child: Row(
@@ -76,7 +79,7 @@ class AddSkillTile extends StatelessWidget {
         children: [
           Expanded(
             child: Text("$title",
-                softWrap: true,
+                // softWrap: true,
                 style: TextStyle(
                   fontSize: 13,
                 )),
@@ -84,13 +87,16 @@ class AddSkillTile extends StatelessWidget {
           SizedBox(width: 5),
           Expanded(
             flex: 0,
-            child: Container(
-              // padding: EdgeInsets.all(0),
-              decoration: BoxDecoration(color: color, shape: BoxShape.circle),
-              child: Icon(
-                Icons.cancel_outlined,
-                color: color ?? MyColors.blue,
-                size: 15,
+            child: GestureDetector(
+              onTap: onTap,
+              child: Container(
+                // padding: EdgeInsets.all(0),
+                decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+                child: Icon(
+                  Icons.cancel_outlined,
+                  color: color ?? MyColors.blue,
+                  size: 15,
+                ),
               ),
             ),
           ),

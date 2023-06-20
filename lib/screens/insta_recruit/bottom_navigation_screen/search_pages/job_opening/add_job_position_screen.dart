@@ -56,10 +56,10 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   updateData() {
-    var model = widget.jobPosModel!;
     var value = context.read<GlobalCubit>();
     var uploadPhoto = context.read<PickImageCubit>();
     if (widget.isUpdate) {
+      var model = widget.jobPosModel!;
       designation.text = model.designation!;
       jobDetails.text = model.jobDetails!;
       requirements.text = model.requirements!;
@@ -75,14 +75,24 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
       value.experienceLevelVal = model.experienceLevel!;
       uploadPhoto.imgUrl = model.uploadPhoto!;
       print('UPLOAD hudfgfhin ***************  ${uploadPhoto.imgUrl}');
+    } else {
+      if (Global.userModel?.automateMsgBtn == 1) {
+        var model = Global.userModel!;
+        applicationReceivedSubject.text = model.applicationReceivedSubject!;
+        applicationReceivedContent.text = model.applicationReceivedContent!;
+        disqualifiedReviewSubject.text = model.disqualifiedReviewSubject!;
+        disqualifiedReviewContent.text = model.disqualifiedReviewContent!;
+        shortlistedReviewSubject.text = model.shortlistedReviewSubject!;
+        shortlistedReviewContent.text = model.shortlistedReviewContent!;
+      }
     }
   }
 
   @override
   void initState() {
-    if (widget.isUpdate) {
-      updateData();
-    }
+    // if (widget.isUpdate) {
+    updateData();
+    // }
     super.initState();
   }
 
@@ -611,106 +621,126 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                           isUpdate: widget.isUpdate,
                           url: widget.jobPosModel?.uploadPhoto),
                       SizedBox(height: 20),
-                      CommonText(
-                        text: "Application Received",
-                        fontSize: 16,
-                      ),
-                      SizedBox(height: 10),
-                      CommonText(
-                        text: "Automated reply sent when candidate apply",
-                        fontSize: 13,
-                        fontColor: MyColors.grey,
-                      ),
-                      SizedBox(height: 10),
-                      CommonText(
-                        text: "Ask screening questions to speed up process",
-                        fontSize: 13,
-                        fontColor: MyColors.grey,
-                      ),
+                      Global.userModel?.automateMsgBtn == 0
+                          ? CommonText(
+                              text:
+                                  "Kindly enable automate message for better experience",
+                              fontSize: 12,
+                              fontColor: MyColors.blue,
+                            )
+                          : Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                CommonText(
+                                  text: "Application Received",
+                                  fontSize: 16,
+                                ),
+                                SizedBox(height: 10),
+                                CommonText(
+                                  text:
+                                      "Automated reply sent when candidate apply",
+                                  fontSize: 13,
+                                  fontColor: MyColors.grey,
+                                ),
+                                SizedBox(height: 10),
+                                CommonText(
+                                  text:
+                                      "Ask screening questions to speed up process",
+                                  fontSize: 13,
+                                  fontColor: MyColors.grey,
+                                ),
+                                SizedBox(height: 20),
+                                CustomTextField(
+                                  controller: applicationReceivedSubject,
+                                  label: "Subject",
+                                  hint: "Your application at [Company Name]",
+                                  validator: (val) =>
+                                      requiredValidation(val!, "Subject"),
+                                ),
+                                SizedBox(height: 20),
+                                CustomTextField(
+                                  controller: applicationReceivedContent,
+                                  hint: "",
+                                  label: "Content",
+                                  maxLine: 5,
+                                  validator: (val) =>
+                                      requiredValidation(val!, "Content"),
+                                ),
+                                SizedBox(height: 20),
+                                CommonText(
+                                  text:
+                                      "To insert dynamic information,you can use [firstName],[lastName],[companyName] or [jobTitle]",
+                                  fontSize: 13,
+                                  fontColor: MyColors.grey,
+                                ),
+                                SizedBox(height: 25),
+                                CommonText(
+                                  text: "Disqualified after review",
+                                  fontSize: 16,
+                                ),
+                                SizedBox(height: 10),
+                                CommonText(
+                                  text:
+                                      "This will be sent the morning after rejecting a candidate",
+                                  fontSize: 13,
+                                  fontColor: MyColors.grey,
+                                ),
+                                SizedBox(height: 20),
+                                CustomTextField(
+                                  controller: disqualifiedReviewSubject,
+                                  label: "Subject",
+                                  hint: "Your application at [Company Name]",
+                                  validator: (val) =>
+                                      requiredValidation(val!, "Subject"),
+                                ),
+                                SizedBox(height: 20),
+                                CustomTextField(
+                                  controller: disqualifiedReviewContent,
+                                  hint: "",
+                                  label: "Content",
+                                  maxLine: 5,
+                                  validator: (val) =>
+                                      requiredValidation(val!, "Content"),
+                                ),
+                                SizedBox(height: 20),
+                                CommonText(
+                                  text:
+                                      "To insert dynamic information,you can use [firstName],[lastName],[companyName] or [jobTitle]",
+                                  fontSize: 13,
+                                  fontColor: MyColors.grey,
+                                ),
+                                SizedBox(height: 25),
+                                CommonText(
+                                  text: "Shortlisted after review",
+                                  fontSize: 16,
+                                ),
+                                SizedBox(height: 10),
+                                CustomTextField(
+                                  controller: shortlistedReviewSubject,
+                                  label: "Subject",
+                                  hint: "Your application at [Company Name]",
+                                  validator: (val) =>
+                                      requiredValidation(val!, "Subject"),
+                                ),
+                                SizedBox(height: 20),
+                                CustomTextField(
+                                  controller: shortlistedReviewContent,
+                                  hint: "",
+                                  label: "Content",
+                                  maxLine: 5,
+                                  validator: (val) =>
+                                      requiredValidation(val!, "Content"),
+                                ),
+                                SizedBox(height: 20),
+                                CommonText(
+                                  text:
+                                      "To insert dynamic information,you can use [firstName],[lastName],[companyName] or [jobTitle]",
+                                  fontSize: 13,
+                                  fontColor: MyColors.grey,
+                                ),
+                              ],
+                            ),
                       SizedBox(height: 20),
-                      CustomTextField(
-                        controller: applicationReceivedSubject,
-                        label: "Subject",
-                        hint: "Your application at [Company Name]",
-                        validator: (val) => requiredValidation(val!, "Subject"),
-                      ),
-                      SizedBox(height: 20),
-                      CustomTextField(
-                        controller: applicationReceivedContent,
-                        hint: "",
-                        label: "Content",
-                        maxLine: 5,
-                        validator: (val) => requiredValidation(val!, "Content"),
-                      ),
-                      SizedBox(height: 20),
-                      CommonText(
-                        text:
-                            "To insert dynamic information,you can use [firstName],[lastName],[companyName] or [jobTitle]",
-                        fontSize: 13,
-                        fontColor: MyColors.grey,
-                      ),
-                      SizedBox(height: 25),
-                      CommonText(
-                        text: "Disqualified after review",
-                        fontSize: 16,
-                      ),
-                      SizedBox(height: 10),
-                      CommonText(
-                        text:
-                            "This will be sent the morning after rejecting a candidate",
-                        fontSize: 13,
-                        fontColor: MyColors.grey,
-                      ),
-                      SizedBox(height: 20),
-                      CustomTextField(
-                        controller: disqualifiedReviewSubject,
-                        label: "Subject",
-                        hint: "Your application at [Company Name]",
-                        validator: (val) => requiredValidation(val!, "Subject"),
-                      ),
-                      SizedBox(height: 20),
-                      CustomTextField(
-                        controller: disqualifiedReviewContent,
-                        hint: "",
-                        label: "Content",
-                        maxLine: 5,
-                        validator: (val) => requiredValidation(val!, "Content"),
-                      ),
-                      SizedBox(height: 20),
-                      CommonText(
-                        text:
-                            "To insert dynamic information,you can use [firstName],[lastName],[companyName] or [jobTitle]",
-                        fontSize: 13,
-                        fontColor: MyColors.grey,
-                      ),
-                      SizedBox(height: 25),
-                      CommonText(
-                        text: "Shortlisted after review",
-                        fontSize: 16,
-                      ),
-                      SizedBox(height: 10),
-                      CustomTextField(
-                        controller: shortlistedReviewSubject,
-                        label: "Subject",
-                        hint: "Your application at [Company Name]",
-                        validator: (val) => requiredValidation(val!, "Subject"),
-                      ),
-                      SizedBox(height: 20),
-                      CustomTextField(
-                        controller: shortlistedReviewContent,
-                        hint: "",
-                        label: "Content",
-                        maxLine: 5,
-                        validator: (val) => requiredValidation(val!, "Content"),
-                      ),
-                      SizedBox(height: 20),
-                      CommonText(
-                        text:
-                            "To insert dynamic information,you can use [firstName],[lastName],[companyName] or [jobTitle]",
-                        fontSize: 13,
-                        fontColor: MyColors.grey,
-                      ),
-                      SizedBox(height: 25),
                       BlocConsumer<JobPositionBloc, JobPosState>(
                           listener: (context, state) {
                         var bottomNav = context.read<BottomBloc>();

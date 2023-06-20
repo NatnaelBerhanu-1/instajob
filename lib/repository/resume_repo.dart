@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:insta_job/globals.dart';
-import 'package:insta_job/model/education_model.dart';
+import 'package:insta_job/model/resume_model.dart';
 import 'package:insta_job/network/api_response.dart';
 import 'package:insta_job/network/dio/dio_client.dart';
 import 'package:insta_job/network/end_points.dart';
@@ -64,19 +64,19 @@ class ResumeRepository {
   }
 
   Future<ApiResponse> addEducation({
-    required EducationModel educationModel,
+    required ResumeModel resumeModel,
   }) async {
     var data = {
       "user_id": Global.userModel?.id,
-      "institution_name": educationModel.institutionName ?? "",
-      "field_of_study": educationModel.fieldOfStudy ?? "",
-      "state": educationModel.state ?? "",
-      "city": educationModel.city ?? "",
-      "school_history": educationModel.schoolHistory ?? "",
-      "start_month": educationModel.startMonth ?? "",
-      "end_month": educationModel.endMonth ?? "",
-      "start_year": educationModel.startYear ?? "",
-      "end_year": educationModel.endYear ?? "",
+      "institution_name": resumeModel.institutionName ?? "",
+      "field_of_study": resumeModel.fieldOfStudy ?? "",
+      "state": resumeModel.state ?? "",
+      "city": resumeModel.city ?? "",
+      "school_history": resumeModel.schoolHistory ?? "",
+      "start_month": resumeModel.startMonth ?? "",
+      "end_month": resumeModel.endMonth ?? "",
+      "start_year": resumeModel.startYear ?? "",
+      "end_year": resumeModel.endYear ?? "",
     };
     try {
       Response response =
@@ -88,19 +88,19 @@ class ResumeRepository {
   }
 
   Future<ApiResponse> addWorkExperience({
-    required EducationModel educationModel,
+    required ResumeModel resumeModel,
   }) async {
     var data = {
       "user_id": Global.userModel?.id,
-      "job_title": educationModel.jobTitle ?? "",
-      "employer": educationModel.employer ?? "",
-      "state": educationModel.state ?? "",
-      "city": educationModel.city ?? "",
-      "work_history": educationModel.workHistory ?? "",
-      "start_month": educationModel.startMonth ?? "",
-      "end_month": educationModel.endMonth ?? "",
-      "start_year": educationModel.startYear ?? "",
-      "end_year": educationModel.endYear ?? "",
+      "job_title": resumeModel.jobTitle ?? "",
+      "employer": resumeModel.employer ?? "",
+      "state": resumeModel.state ?? "",
+      "city": resumeModel.city ?? "",
+      "work_history": resumeModel.workHistory ?? "",
+      "start_month": resumeModel.startMonth ?? "",
+      "end_month": resumeModel.endMonth ?? "",
+      "start_year": resumeModel.startYear ?? "",
+      "end_year": resumeModel.endYear ?? "",
     };
     try {
       Response response =

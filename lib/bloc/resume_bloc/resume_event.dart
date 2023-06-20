@@ -1,13 +1,13 @@
 import 'package:equatable/equatable.dart';
-import 'package:insta_job/model/education_model.dart';
+import 'package:insta_job/model/cover_letter_model.dart';
 import 'package:insta_job/model/resume_model.dart';
 
 abstract class ResumeEvent extends Equatable {}
 
 class AddResumeEvent extends ResumeEvent {
-  final ResumeModel resumeModel;
+  final CoverLetterModel coverLetterModel;
 
-  AddResumeEvent(this.resumeModel);
+  AddResumeEvent(this.coverLetterModel);
   @override
   List<Object?> get props => [];
 }
@@ -29,19 +29,21 @@ class TellMeAbtYourSelfEvent extends ResumeEvent {
 }
 
 class AddEducationEvent extends ResumeEvent {
-  final EducationModel educationModel;
+  final ResumeModel resumeModel;
+  final bool isNew;
 
-  AddEducationEvent(this.educationModel);
+  AddEducationEvent(this.resumeModel, {this.isNew = false});
   @override
-  List<Object?> get props => [educationModel];
+  List<Object?> get props => [resumeModel, isNew];
 }
 
 class AddWorkExpEvent extends ResumeEvent {
-  final EducationModel educationModel;
+  final ResumeModel resumeModel;
+  final bool isNew;
 
-  AddWorkExpEvent(this.educationModel);
+  AddWorkExpEvent(this.resumeModel, {this.isNew = false});
   @override
-  List<Object?> get props => [educationModel];
+  List<Object?> get props => [resumeModel];
 }
 
 class AddSkillsEvent extends ResumeEvent {
@@ -50,6 +52,22 @@ class AddSkillsEvent extends ResumeEvent {
   AddSkillsEvent(this.skills);
   @override
   List<Object?> get props => [skills];
+}
+
+class DeleteEducation extends ResumeEvent {
+  final int index;
+
+  DeleteEducation(this.index);
+  @override
+  List<Object?> get props => [];
+}
+
+class DeleteWorkExp extends ResumeEvent {
+  final int index;
+
+  DeleteWorkExp(this.index);
+  @override
+  List<Object?> get props => [];
 }
 
 /*class CheckReadOnlyEvent extends ResumeEvent {

@@ -162,7 +162,8 @@ class _CreatePdfScreenState extends State<CreatePdfScreen> {
     pdf.addPage(pw.Page(build: (context) {
       return pw.Row(
         children: [
-          pw.Container(
+          pw.Expanded(
+              child: pw.Container(
             width: 230,
             decoration: pw.BoxDecoration(
                 // color: PdfColor.fromHex("#0FBCFD"),
@@ -183,7 +184,7 @@ class _CreatePdfScreenState extends State<CreatePdfScreen> {
                           crossAxisAlignment: pw.CrossAxisAlignment.start,
                           children: [
                             pw.Padding(
-                              padding: pw.EdgeInsets.only(top: 60, left: 14),
+                              padding: pw.EdgeInsets.only(top: 40, left: 14),
                               // top: 30,
                               // left: ,
                               child: pw.Container(
@@ -203,8 +204,10 @@ class _CreatePdfScreenState extends State<CreatePdfScreen> {
                             pw.Text("Designation",
                                 style: pw.TextStyle(fontSize: 17)),
                             pw.SizedBox(height: 30),
-                            pw.Text(" About Me",
-                                style: pw.TextStyle(fontSize: 15)),
+                            pw.Text("ABOUT ME",
+                                style: pw.TextStyle(
+                                    fontSize: 17,
+                                    fontWeight: pw.FontWeight.bold)),
                             pw.Divider(),
                             pw.Text("fdngnnnnnnnnnnnnnnnnnn eune erjeimalkf ",
                                 style: pw.TextStyle(fontSize: 15)),
@@ -214,10 +217,29 @@ class _CreatePdfScreenState extends State<CreatePdfScreen> {
                 ],
               ),
             ]),
-          ),
-          pw.Column(
-            children: [],
-          ),
+          )),
+          pw.SizedBox(width: 10),
+          pw.Expanded(
+            child: pw.Column(
+              crossAxisAlignment: pw.CrossAxisAlignment.start,
+              children: [
+                pw.SizedBox(height: 20),
+                pw.Text("WORK EXPERIENCE",
+                    style: pw.TextStyle(
+                        fontSize: 17, fontWeight: pw.FontWeight.bold)),
+                pw.Divider(),
+                pw.Text("fdngnnnnnnnnkkkkkkkkkkkknnnnnnnnnn eune erjeimalkf ",
+                    style: pw.TextStyle(fontSize: 15)),
+                pw.SizedBox(height: 50),
+                pw.Text("EDUCATION",
+                    style: pw.TextStyle(
+                        fontSize: 17, fontWeight: pw.FontWeight.bold)),
+                pw.Divider(),
+                pw.Text("fdngnnnnnnnnkkkkkkkkkkkknnnnnnnnnn eune erjeimalkf ",
+                    style: pw.TextStyle(fontSize: 15)),
+              ],
+            ),
+          )
         ],
       );
     }));

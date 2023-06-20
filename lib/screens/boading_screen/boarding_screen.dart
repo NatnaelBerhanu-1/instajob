@@ -6,6 +6,7 @@ import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_button/custom_btn.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen({super.key});
@@ -120,7 +121,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   ),
                   SizedBox(height: 30),
                   CustomButton(
-                    onTap: () {
+                    onTap: () async {
                       // _pageController.animateToPage(currentIndex,
                       //     duration: Duration(seconds: 0),
                       //     curve: Curves.bounceIn);
@@ -132,6 +133,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                       } else if (_pageController.page == 2) {
                         AppRoutes.pushAndRemoveUntil(
                             context, CvTemplateScreen());
+                        var pref = await SharedPreferences.getInstance();
+                        pref.setBool("isGetStarted", true);
                       } else {
                         _pageController.jumpToPage(1);
                       }
