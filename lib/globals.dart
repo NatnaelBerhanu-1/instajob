@@ -1,11 +1,16 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:open_file_safe/open_file_safe.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
 
 import 'model/user_model.dart';
 import 'utils/my_images.dart';
@@ -53,6 +58,14 @@ class Global {
   }
 }
 
+List<Color> colors = [
+  Color(0xDDB2E3FF),
+  Color(0xe5aba7ff),
+  // Color(0x56b7b0ff),
+  // Colors.
+  Colors.teal.shade200,
+];
+
 Widget verifyImage = ImageButton(
   image: MyImages.verified,
   padding: const EdgeInsets.all(14),
@@ -99,6 +112,99 @@ BoxShadow normalBoxShadow = BoxShadow(
   spreadRadius: 2,
   blurRadius: 7,
 );
+
+Future<Uint8List> makePdf() {
+  final pdf = pw.Document();
+
+  pdf.addPage(pw.Page(build: (context) {
+    return pw.Row(
+      children: [
+        pw.Expanded(
+            child: pw.Container(
+          width: 230,
+          decoration: pw.BoxDecoration(
+              // color: PdfColor.fromHex("#0FBCFD"),
+              ),
+          child: pw.Stack(children: [
+            pw.Column(
+              children: [
+                pw.Container(
+                    // constraints: pw.BoxConstraints(maxHeight: double.infinity),
+                    height: 725,
+                    width: 210,
+                    decoration: pw.BoxDecoration(
+                      color: PdfColor.fromHex("#eef3f1"),
+                    ),
+                    child: pw.Padding(
+                      padding: pw.EdgeInsets.all(15),
+                      child: pw.Column(
+                        crossAxisAlignment: pw.CrossAxisAlignment.start,
+                        children: [
+                          pw.Padding(
+                            padding: pw.EdgeInsets.only(top: 40, left: 14),
+                            // top: 30,
+                            // left: ,
+                            child: pw.Container(
+                              height: 150,
+                              width: 150,
+                              // alignment: pw.Alignment.center,
+                              decoration: pw.BoxDecoration(
+                                  color: PdfColor.fromHex("#b9ccc8"),
+                                  shape: pw.BoxShape.circle),
+                            ),
+                          ),
+                          pw.SizedBox(height: 30),
+                          pw.Text("Name",
+                              style: pw.TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: pw.FontWeight.bold)),
+                          pw.Text("Designation",
+                              style: pw.TextStyle(fontSize: 17)),
+                          pw.SizedBox(height: 30),
+                          pw.Text("ABOUT ME",
+                              style: pw.TextStyle(
+                                  fontSize: 17,
+                                  fontWeight: pw.FontWeight.bold)),
+                          pw.Divider(),
+                          pw.Text("fdngnnnnnnnnnnnnnnnnnn eune erjeimalkf ",
+                              style: pw.TextStyle(fontSize: 15)),
+                        ],
+                      ),
+                    )),
+              ],
+            ),
+          ]),
+        )),
+        pw.SizedBox(width: 10),
+        pw.Expanded(
+          child: pw.Column(
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
+            children: [
+              pw.SizedBox(height: 20),
+              pw.Text("WORK EXPERIENCE",
+                  style: pw.TextStyle(
+                      fontSize: 17, fontWeight: pw.FontWeight.bold)),
+              pw.Divider(),
+              pw.Text("fdngnnnnnnnnkkkkkkkkkkkknnnnnnnnnn eune erjeimalkf ",
+                  style: pw.TextStyle(fontSize: 15)),
+              pw.SizedBox(height: 50),
+              pw.Text("EDUCATION",
+                  style: pw.TextStyle(
+                      fontSize: 17, fontWeight: pw.FontWeight.bold)),
+              pw.Divider(),
+              pw.Text("fdngnnnnnnnnkkkkkkkkkkkknnnnnnnnnn eune erjeimalkf ",
+                  style: pw.TextStyle(fontSize: 15)),
+            ],
+          ),
+        )
+      ],
+    );
+  }));
+  /* pdf.editPage(0, pw.Page(build: (context) {
+      return pw.Row();
+    }));*/
+  return pdf.save();
+}
 
 showToast(message, {color, textColor, bool isError = false}) {
   EasyLoading.instance

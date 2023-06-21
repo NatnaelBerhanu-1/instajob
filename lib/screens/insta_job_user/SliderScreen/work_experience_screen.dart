@@ -7,6 +7,7 @@ import 'package:insta_job/bloc/resume_bloc/resume_event.dart';
 import 'package:insta_job/bloc/resume_bloc/resume_state.dart';
 import 'package:insta_job/bloc/validation/validation_bloc.dart';
 import 'package:insta_job/bottom_sheet/bottom_sheet.dart';
+import 'package:insta_job/dialog/custom_dialog.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/model/resume_model.dart';
 import 'package:insta_job/utils/my_colors.dart';
@@ -15,6 +16,7 @@ import 'package:insta_job/widgets/custom_button/custom_btn.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:insta_job/widgets/custom_cards/insta_job_user_cards/custom_resume_card.dart';
 import 'package:insta_job/widgets/custom_drop_down.dart';
+import 'package:insta_job/widgets/custom_text_field.dart';
 
 class WorkExpScreen extends StatefulWidget {
   final VoidCallback? onSkipTap;
@@ -103,19 +105,21 @@ class _WorkExpScreenState extends State<WorkExpScreen> {
                   child: TextButton.icon(
                       onPressed: () {
                         print("object");
-                        ResumeModel resumeModel = ResumeModel(
-                            jobTitle: jobTitle.text,
-                            city: city.text,
-                            state: state.text,
-                            employer: employee.text,
-                            workHistory: isWorkHere,
-                            startMonth: startMonth,
-                            endMonth: isWorkHere ? "" : endMonth,
-                            startYear: startYear.toString(),
-                            endYear: isWorkHere ? "" : endYear.toString());
+                        WorkExperiences workExpModel = WorkExperiences(
+                          jobTitle: jobTitle.text,
+                          workCity: city.text,
+                          workState: state.text,
+                          employer: employee.text,
+                          workHistory: isWorkHere ? 1 : 0,
+                          workStartMonth: startMonth,
+                          workEndMonth: isWorkHere ? "" : endMonth,
+                          workStartYear: startYear.toString(),
+                          workEndYear: isWorkHere ? "" : endYear.toString(),
+                          workCustomMessage: "",
+                        );
                         context
                             .read<ResumeBloc>()
-                            .add(AddWorkExpEvent(resumeModel, isNew: true));
+                            .add(AddWorkExpEvent(workExpModel, isNew: true));
                         // instituteName.clear();
                       },
                       icon: Icon(Icons.add, size: 18),
@@ -160,9 +164,54 @@ class _WorkExpScreenState extends State<WorkExpScreen> {
                       city: city,
                       fieldOfStudy: jobTitle,
                       instituteName: employee,
+                      message: message,
                       state: state,
-                      endYear: endYear,
-                      startYear: startYear,
+                      endYear: CustomTextField(
+                        onPressed: isWorkHere
+                            ? null
+                            : () {
+                                buildDialog(context, barrierDismissible: true,
+                                    YearPickerDialog(
+                                        onChange: (DateTime dateTime) {
+                                  Navigator.pop(context);
+                                  endYear = dateTime.year;
+                                  setState(() {});
+                                }));
+                              },
+                        // validator: (val) => requiredValidationn(val!),
+                        readOnly: true,
+                        hint: isWorkHere
+                            ? "Year"
+                            : "${endYear == 0 ? "Year" : endYear}",
+                        hintColor: isWorkHere
+                            ? MyColors.grey
+                            : endYear == 0
+                                ? MyColors.grey
+                                : MyColors.black,
+                        suffixIcon: Icon(
+                          Icons.arrow_drop_down_sharp,
+                          size: 30,
+                        ),
+                      ),
+                      startYear: CustomTextField(
+                        readOnly: true,
+                        hint: "${startYear == 0 ? "Year" : startYear}",
+                        hintColor:
+                            startYear == 0 ? MyColors.grey : MyColors.black,
+                        suffixIcon: Icon(
+                          Icons.arrow_drop_down_sharp,
+                          size: 30,
+                        ),
+                        // validator: (val) => requiredValidationn(val!),
+                        onPressed: () {
+                          buildDialog(context, barrierDismissible: true,
+                              YearPickerDialog(onChange: (DateTime dateTime) {
+                            Navigator.pop(context);
+                            startYear = dateTime.year;
+                            setState(() {});
+                          }));
+                        },
+                      ),
                       onChange: (val) {
                         isWorkHere = !isWorkHere;
                         setState(() {});
@@ -219,8 +268,50 @@ class _WorkExpScreenState extends State<WorkExpScreen> {
               fieldOfStudy: employee,
               instituteName: jobTitle,
               state: state,
-              endYear: endYear,
-              startYear: startYear,
+              endYear: CustomTextField(
+                onPressed: isWorkHere
+                    ? null
+                    : () {
+                        buildDialog(context, barrierDismissible: true,
+                            YearPickerDialog(onChange: (DateTime dateTime) {
+                          Navigator.pop(context);
+                          endYear = dateTime.year;
+                          setState(() {});
+                        }));
+                      },
+                // validator: (val) => requiredValidationn(val!),
+                readOnly: true,
+                hint:
+                    isWorkHere ? "Year" : "${endYear == 0 ? "Year" : endYear}",
+                hintColor: isWorkHere
+                    ? MyColors.grey
+                    : endYear == 0
+                        ? MyColors.grey
+                        : MyColors.black,
+                suffixIcon: Icon(
+                  Icons.arrow_drop_down_sharp,
+                  size: 30,
+                ),
+              ),
+              startYear: CustomTextField(
+                readOnly: true,
+                hint: "${startYear == 0 ? "Year" : startYear}",
+                hintColor: startYear == 0 ? MyColors.grey : MyColors.black,
+                suffixIcon: Icon(
+                  Icons.arrow_drop_down_sharp,
+                  size: 30,
+                ),
+                // validator: (val) => requiredValidationn(val!),
+                onPressed: () {
+                  buildDialog(context, barrierDismissible: true,
+                      YearPickerDialog(onChange: (DateTime dateTime) {
+                    Navigator.pop(context);
+                    startYear = dateTime.year;
+                    setState(() {});
+                  }));
+                },
+              ),
+              message: message,
               onChange: (val) {
                 isWorkHere = !isWorkHere;
                 setState(() {});
@@ -450,23 +541,25 @@ class _WorkExpScreenState extends State<WorkExpScreen> {
                 borderColor: MyColors.blue,
                 image: MyImages.arrowWhite,
                 onclick: () {
-                  ResumeModel resumeModel = ResumeModel(
-                      jobTitle: jobTitle.text,
-                      city: city.text,
-                      state: state.text,
-                      employer: employee.text,
-                      workHistory: isWorkHere,
-                      startMonth: startMonth,
-                      endMonth: isWorkHere ? "" : endMonth,
-                      startYear: startYear.toString(),
-                      endYear: isWorkHere ? "" : endYear.toString());
+                  WorkExperiences workExpModel = WorkExperiences(
+                    jobTitle: jobTitle.text,
+                    workCity: city.text,
+                    workState: state.text,
+                    employer: employee.text,
+                    workHistory: isWorkHere ? 1 : 0,
+                    workStartMonth: startMonth,
+                    workEndMonth: isWorkHere ? "" : endMonth,
+                    workStartYear: startYear.toString(),
+                    workEndYear: isWorkHere ? "" : endYear.toString(),
+                    workCustomMessage: "",
+                  );
                   if (formKey.currentState!.validate()) {
                     if (startYear == 0 || endYear == 0) {
                       showToast("Please select year");
                     } else {
                       context
                           .read<ResumeBloc>()
-                          .add(AddWorkExpEvent(resumeModel));
+                          .add(AddWorkExpEvent(workExpModel));
                       widget.pageController?.jumpToPage(3);
                     }
                   } else {

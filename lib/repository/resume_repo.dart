@@ -64,19 +64,20 @@ class ResumeRepository {
   }
 
   Future<ApiResponse> addEducation({
-    required ResumeModel resumeModel,
+    required Educations education,
   }) async {
     var data = {
       "user_id": Global.userModel?.id,
-      "institution_name": resumeModel.institutionName ?? "",
-      "field_of_study": resumeModel.fieldOfStudy ?? "",
-      "state": resumeModel.state ?? "",
-      "city": resumeModel.city ?? "",
-      "school_history": resumeModel.schoolHistory ?? "",
-      "start_month": resumeModel.startMonth ?? "",
-      "end_month": resumeModel.endMonth ?? "",
-      "start_year": resumeModel.startYear ?? "",
-      "end_year": resumeModel.endYear ?? "",
+      "institution_name": education.institutionName ?? "",
+      "field_of_study": education.fieldOfStudy ?? "",
+      "state": education.educationState ?? "",
+      "city": education.educationCity ?? "",
+      "school_history": education.schoolHistory ?? "",
+      "start_month": education.educationStartMonth ?? "",
+      "end_month": education.educationEndMonth ?? "",
+      "start_year": education.educationStartYear ?? "",
+      "end_year": education.educationEndYear ?? "",
+      "education_custom_message": education.educationCustomMessage ?? "",
     };
     try {
       Response response =
@@ -88,19 +89,20 @@ class ResumeRepository {
   }
 
   Future<ApiResponse> addWorkExperience({
-    required ResumeModel resumeModel,
+    required WorkExperiences workExpModel,
   }) async {
     var data = {
       "user_id": Global.userModel?.id,
-      "job_title": resumeModel.jobTitle ?? "",
-      "employer": resumeModel.employer ?? "",
-      "state": resumeModel.state ?? "",
-      "city": resumeModel.city ?? "",
-      "work_history": resumeModel.workHistory ?? "",
-      "start_month": resumeModel.startMonth ?? "",
-      "end_month": resumeModel.endMonth ?? "",
-      "start_year": resumeModel.startYear ?? "",
-      "end_year": resumeModel.endYear ?? "",
+      "job_title": workExpModel.jobTitle ?? "",
+      "employer": workExpModel.employer ?? "",
+      "state": workExpModel.workState ?? "",
+      "city": workExpModel.workCity ?? "",
+      "work_history": workExpModel.workHistory ?? "",
+      "start_month": workExpModel.workStartMonth ?? "",
+      "end_month": workExpModel.workEndMonth ?? "",
+      "start_year": workExpModel.workStartYear ?? "",
+      "end_year": workExpModel.workEndYear ?? "",
+      "work_custom_message": workExpModel.workCustomMessage ?? "",
     };
     try {
       Response response =
@@ -121,6 +123,19 @@ class ResumeRepository {
     try {
       Response response =
           await dioClient.post(data: data, uri: EndPoint.addSkills);
+      return ApiResponse.withSuccess(response);
+    } on DioException catch (e) {
+      return ApiResponse.withError(e.response);
+    }
+  }
+
+  Future<ApiResponse> showCreatedResumes() async {
+    var data = {
+      "user_id": Global.userModel?.id,
+    };
+    try {
+      Response response =
+          await dioClient.post(data: data, uri: EndPoint.showCreatedResumes);
       return ApiResponse.withSuccess(response);
     } on DioException catch (e) {
       return ApiResponse.withError(e.response);

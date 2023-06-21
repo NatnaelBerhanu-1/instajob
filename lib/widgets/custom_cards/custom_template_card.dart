@@ -9,7 +9,9 @@ class CustomTemplateCard extends StatelessWidget {
   final String? image;
   final String? label;
   final String? label2;
-  const CustomTemplateCard({Key? key, this.image, this.label, this.label2})
+  final VoidCallback? onTap;
+  const CustomTemplateCard(
+      {Key? key, this.image, this.label, this.label2, this.onTap})
       : super(key: key);
 
   @override
@@ -17,16 +19,19 @@ class CustomTemplateCard extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Container(
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10), color: MyColors.blue),
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Image.asset(
-              MyImages.automateMsg,
-              height: 30,
-              width: 30,
+        GestureDetector(
+          onTap: onTap,
+          child: Container(
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10), color: MyColors.blue),
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Image.asset(
+                MyImages.automateMsg,
+                height: 30,
+                width: 30,
+              ),
             ),
           ),
         ),

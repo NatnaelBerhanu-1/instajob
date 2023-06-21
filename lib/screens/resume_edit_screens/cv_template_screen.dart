@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/bottom_bloc/bottom_bloc.dart';
+import 'package:insta_job/globals.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/bottom_navigation_screen.dart';
 import 'package:insta_job/screens/insta_recruit/home_page.dart';
 import 'package:insta_job/screens/resume_edit_screens/edit_template_screen.dart';
@@ -10,6 +11,7 @@ import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/widgets/custom_app_bar.dart';
 import 'package:insta_job/widgets/custom_button/custom_btn.dart';
+import 'package:printing/printing.dart';
 
 class CvTemplateScreen extends StatelessWidget {
   const CvTemplateScreen({Key? key}) : super(key: key);
@@ -32,6 +34,35 @@ class CvTemplateScreen extends StatelessWidget {
         padding: const EdgeInsets.all(12.0),
         child: ListView(
           children: [
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.64,
+              child: PdfPreview(
+                scrollViewDecoration: BoxDecoration(color: MyColors.white),
+                onPageFormatChanged: (val) {
+                  print('####### $val');
+                },
+                onError: (context, val) {
+                  print('####### $val');
+                  return CircularProgressIndicator();
+                },
+                pdfPreviewPageDecoration: BoxDecoration(
+                    color: MyColors.white,
+                    boxShadow: [
+                      BoxShadow(
+                          color: MyColors.lightgrey,
+                          spreadRadius: 4,
+                          blurRadius: 7)
+                    ]),
+                allowPrinting: false,
+                canChangePageFormat: false,
+                canChangeOrientation: false,
+                allowSharing: false,
+                dynamicLayout: false,
+                // pdfFileName: "Resume",
+                build: (context) => makePdf(),
+              ),
+            ),
+            SizedBox(height: 20),
             CustomButton(
               title: "Upload your Existing CV",
               bgColor: MyColors.white,

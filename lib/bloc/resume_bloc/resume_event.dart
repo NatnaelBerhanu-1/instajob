@@ -29,21 +29,21 @@ class TellMeAbtYourSelfEvent extends ResumeEvent {
 }
 
 class AddEducationEvent extends ResumeEvent {
-  final ResumeModel resumeModel;
+  final Educations educationModel;
   final bool isNew;
 
-  AddEducationEvent(this.resumeModel, {this.isNew = false});
+  AddEducationEvent(this.educationModel, {this.isNew = false});
   @override
-  List<Object?> get props => [resumeModel, isNew];
+  List<Object?> get props => [educationModel, isNew];
 }
 
 class AddWorkExpEvent extends ResumeEvent {
-  final ResumeModel resumeModel;
+  final WorkExperiences workExpModel;
   final bool isNew;
 
-  AddWorkExpEvent(this.resumeModel, {this.isNew = false});
+  AddWorkExpEvent(this.workExpModel, {this.isNew = false});
   @override
-  List<Object?> get props => [resumeModel];
+  List<Object?> get props => [workExpModel];
 }
 
 class AddSkillsEvent extends ResumeEvent {
@@ -52,6 +52,14 @@ class AddSkillsEvent extends ResumeEvent {
   AddSkillsEvent(this.skills);
   @override
   List<Object?> get props => [skills];
+}
+
+class UserResumeLoadedEvent extends ResumeEvent {
+  final ResumeModel resumeModel;
+
+  UserResumeLoadedEvent(this.resumeModel);
+  @override
+  List<Object?> get props => [resumeModel];
 }
 
 class DeleteEducation extends ResumeEvent {

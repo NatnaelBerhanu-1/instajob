@@ -6,12 +6,14 @@ import 'package:insta_job/bloc/resume_bloc/resume_bloc.dart';
 import 'package:insta_job/bloc/resume_bloc/resume_event.dart';
 import 'package:insta_job/bloc/resume_bloc/resume_state.dart';
 import 'package:insta_job/bloc/validation/validation_bloc.dart';
+import 'package:insta_job/dialog/custom_dialog.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/model/resume_model.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_cards/insta_job_user_cards/custom_resume_card.dart';
 import 'package:insta_job/widgets/custom_drop_down.dart';
+import 'package:insta_job/widgets/custom_text_field.dart';
 
 import '../../../widgets/custom_button/custom_btn.dart';
 import '../../../widgets/custom_cards/custom_common_card.dart';
@@ -106,19 +108,21 @@ class _EducationScreenState extends State<EducationScreen> {
                 flex: 0,
                 child: TextButton.icon(
                     onPressed: () {
-                      ResumeModel resumeModel = ResumeModel(
-                          institutionName: instituteName.text,
-                          city: city.text,
-                          state: state.text,
-                          fieldOfStudy: fieldOfStudy.text,
-                          schoolHistory: isStudyHere,
-                          startMonth: startMonth,
-                          endMonth: isStudyHere ? "" : endMonth,
-                          startYear: startYear.toString(),
-                          endYear: isStudyHere ? "" : endYear.toString());
+                      Educations educations = Educations(
+                        institutionName: instituteName.text,
+                        educationCity: city.text,
+                        educationState: state.text,
+                        fieldOfStudy: fieldOfStudy.text,
+                        schoolHistory: isStudyHere ? 1 : 0,
+                        educationStartMonth: startMonth,
+                        educationEndMonth: isStudyHere ? "" : endMonth,
+                        educationStartYear: startYear.toString(),
+                        educationEndYear: isStudyHere ? "" : endYear.toString(),
+                        educationCustomMessage: message.text,
+                      );
                       context
                           .read<ResumeBloc>()
-                          .add(AddEducationEvent(resumeModel, isNew: true));
+                          .add(AddEducationEvent(educations, isNew: true));
                       // instituteName.clear();
                     },
                     icon: Icon(Icons.add, size: 18),
@@ -152,7 +156,7 @@ class _EducationScreenState extends State<EducationScreen> {
             var data = context.read<ResumeBloc>();
             return ListView.builder(
                 shrinkWrap: true,
-                itemCount: data.addNewEducation.length,
+                itemCount: data.resumeModel.educations?.length,
                 itemBuilder: (c, index) {
                   return CustomResumeCard(
                     inNew: true,
@@ -161,8 +165,53 @@ class _EducationScreenState extends State<EducationScreen> {
                     fieldOfStudy: fieldOfStudy,
                     instituteName: instituteName,
                     state: state,
-                    endYear: endYear,
-                    startYear: startYear,
+                    endYear: CustomTextField(
+                      onPressed: isStudyHere
+                          ? null
+                          : () {
+                              buildDialog(context, barrierDismissible: true,
+                                  YearPickerDialog(
+                                      onChange: (DateTime dateTime) {
+                                Navigator.pop(context);
+                                endYear = dateTime.year;
+                                setState(() {});
+                              }));
+                            },
+                      // validator: (val) => requiredValidationn(val!),
+                      readOnly: true,
+                      hint: isStudyHere
+                          ? "Year"
+                          : "${endYear == 0 ? "Year" : endYear}",
+                      hintColor: isStudyHere
+                          ? MyColors.grey
+                          : endYear == 0
+                              ? MyColors.grey
+                              : MyColors.black,
+                      suffixIcon: Icon(
+                        Icons.arrow_drop_down_sharp,
+                        size: 30,
+                      ),
+                    ),
+                    startYear: CustomTextField(
+                      readOnly: true,
+                      hint: "${startYear == 0 ? "Year" : startYear}",
+                      hintColor:
+                          startYear == 0 ? MyColors.grey : MyColors.black,
+                      suffixIcon: Icon(
+                        Icons.arrow_drop_down_sharp,
+                        size: 30,
+                      ),
+                      // validator: (val) => requiredValidationn(val!),
+                      onPressed: () {
+                        buildDialog(context, barrierDismissible: true,
+                            YearPickerDialog(onChange: (DateTime dateTime) {
+                          Navigator.pop(context);
+                          startYear = dateTime.year;
+                          setState(() {});
+                        }));
+                      },
+                    ),
+                    message: message,
                     onChange: (val) {
                       isStudyHere = !isStudyHere;
                       setState(() {});
@@ -218,8 +267,49 @@ class _EducationScreenState extends State<EducationScreen> {
             fieldOfStudy: fieldOfStudy,
             instituteName: instituteName,
             state: state,
-            endYear: endYear,
-            startYear: startYear,
+            endYear: CustomTextField(
+              onPressed: isStudyHere
+                  ? null
+                  : () {
+                      buildDialog(context, barrierDismissible: true,
+                          YearPickerDialog(onChange: (DateTime dateTime) {
+                        Navigator.pop(context);
+                        endYear = dateTime.year;
+                        setState(() {});
+                      }));
+                    },
+              // validator: (val) => requiredValidationn(val!),
+              readOnly: true,
+              hint: isStudyHere ? "Year" : "${endYear == 0 ? "Year" : endYear}",
+              hintColor: isStudyHere
+                  ? MyColors.grey
+                  : endYear == 0
+                      ? MyColors.grey
+                      : MyColors.black,
+              suffixIcon: Icon(
+                Icons.arrow_drop_down_sharp,
+                size: 30,
+              ),
+            ),
+            startYear: CustomTextField(
+              readOnly: true,
+              hint: "${startYear == 0 ? "Year" : startYear}",
+              hintColor: startYear == 0 ? MyColors.grey : MyColors.black,
+              suffixIcon: Icon(
+                Icons.arrow_drop_down_sharp,
+                size: 30,
+              ),
+              // validator: (val) => requiredValidationn(val!),
+              onPressed: () {
+                buildDialog(context, barrierDismissible: true,
+                    YearPickerDialog(onChange: (DateTime dateTime) {
+                  Navigator.pop(context);
+                  startYear = dateTime.year;
+                  setState(() {});
+                }));
+              },
+            ),
+            message: message,
             onChange: (val) {
               isStudyHere = !isStudyHere;
               setState(() {});
@@ -315,23 +405,31 @@ class _EducationScreenState extends State<EducationScreen> {
               borderColor: MyColors.blue,
               image: MyImages.arrowWhite,
               onclick: () {
-                ResumeModel resumeModel = ResumeModel(
-                    institutionName: instituteName.text,
-                    city: city.text,
-                    state: state.text,
-                    fieldOfStudy: fieldOfStudy.text,
-                    schoolHistory: isStudyHere,
-                    startMonth: startMonth,
-                    endMonth: isStudyHere ? "" : endMonth,
-                    startYear: startYear.toString(),
-                    endYear: isStudyHere ? "" : endYear.toString());
+                Educations educations = Educations(
+                  institutionName: instituteName.text,
+                  educationCity: city.text,
+                  educationState: state.text,
+                  fieldOfStudy: fieldOfStudy.text,
+                  schoolHistory: isStudyHere ? 1 : 0,
+                  educationStartMonth: startMonth,
+                  educationEndMonth: isStudyHere ? "" : endMonth,
+                  educationStartYear: startYear.toString(),
+                  educationEndYear: isStudyHere ? "" : endYear.toString(),
+                  educationCustomMessage: "",
+                );
                 if (formKey.currentState!.validate()) {
                   if (startYear == 0 || endYear == 0) {
                     showToast("Please select year");
                   } else {
-                    context
+                    if (context
                         .read<ResumeBloc>()
-                        .add(AddEducationEvent(resumeModel));
+                        .resumeModel
+                        .educations!
+                        .isEmpty) {
+                      context
+                          .read<ResumeBloc>()
+                          .add(AddEducationEvent(educations));
+                    }
                     widget.pageController?.jumpToPage(2);
                   }
                 } else {

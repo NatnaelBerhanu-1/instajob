@@ -136,6 +136,7 @@ class _ConfirmDetailsScreenState extends State<ConfirmDetailsScreen> {
                   fontColor: MyColors.white,
                   borderColor: MyColors.blue,
                   onTap: () {
+                    // upload_resume
                     CoverLetterModel coverLetterModel = CoverLetterModel(
                         phoneNumber:
                             int.parse(phone.isEmpty ? phoneNumber.text : phone),

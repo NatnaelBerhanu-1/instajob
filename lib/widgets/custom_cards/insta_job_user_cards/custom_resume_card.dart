@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:insta_job/bloc/validation/validation_bloc.dart';
-import 'package:insta_job/dialog/custom_dialog.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
@@ -18,14 +17,15 @@ class CustomResumeCard extends StatefulWidget {
   final TextEditingController? fieldOfStudy;
   final TextEditingController? state;
   final TextEditingController? city;
+  final TextEditingController? message;
   final ValueChanged? onChange;
   final Widget? startMonthDp;
   final Widget? endMonthDp;
   final bool? value;
   final bool isWorkExp;
   final bool inNew;
-  int? startYear;
-  int? endYear;
+  final Widget? startYear;
+  final Widget? endYear;
   CustomResumeCard(
       {Key? key,
       this.onTap,
@@ -40,7 +40,8 @@ class CustomResumeCard extends StatefulWidget {
       this.startMonthDp,
       this.endMonthDp,
       this.inNew = false,
-      this.isWorkExp = false})
+      this.isWorkExp = false,
+      this.message})
       : super(key: key);
 
   @override
@@ -142,26 +143,7 @@ class _CustomResumeCardState extends State<CustomResumeCard> {
                     color: MyColors.grey,
                   ),
                 ),
-                Expanded(
-                    child: CustomTextField(
-                  readOnly: true,
-                  hint: "${widget.startYear == 0 ? "Year" : widget.startYear}",
-                  hintColor:
-                      widget.startYear == 0 ? MyColors.grey : MyColors.black,
-                  suffixIcon: Icon(
-                    Icons.arrow_drop_down_sharp,
-                    size: 30,
-                  ),
-                  // validator: (val) => requiredValidationn(val!),
-                  onPressed: () {
-                    buildDialog(context, barrierDismissible: true,
-                        YearPickerDialog(onChange: (DateTime dateTime) {
-                      Navigator.pop(context);
-                      widget.startYear = dateTime.year;
-                      setState(() {});
-                    }));
-                  },
-                )),
+                Expanded(child: widget.startYear ?? SizedBox()),
               ],
             ),
             SizedBox(height: 10),
@@ -183,34 +165,13 @@ class _CustomResumeCardState extends State<CustomResumeCard> {
                     color: MyColors.grey,
                   ),
                 ),
-                Expanded(
-                    child: CustomTextField(
-                  onPressed: widget.value == true
-                      ? null
-                      : () {
-                          buildDialog(context, barrierDismissible: true,
-                              YearPickerDialog(onChange: (DateTime dateTime) {
-                            Navigator.pop(context);
-                            widget.endYear = dateTime.year;
-                            setState(() {});
-                          }));
-                        },
-                  // validator: (val) => requiredValidationn(val!),
-                  readOnly: true,
-                  hint: widget.value == true
-                      ? "Year"
-                      : "${widget.endYear == 0 ? "Year" : widget.endYear}",
-                  hintColor: widget.value == true
-                      ? MyColors.grey
-                      : widget.endYear == 0
-                          ? MyColors.grey
-                          : MyColors.black,
-                  suffixIcon: Icon(
-                    Icons.arrow_drop_down_sharp,
-                    size: 30,
-                  ),
-                )),
+                Expanded(child: widget.endYear ?? SizedBox()),
               ],
+            ),
+            SizedBox(height: 5),
+            CustomTextField(
+              controller: widget.message,
+              hint: "Message...",
             ),
           ],
         ),

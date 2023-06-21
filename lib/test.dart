@@ -159,6 +159,7 @@ class CreatePdfScreen extends StatefulWidget {
 class _CreatePdfScreenState extends State<CreatePdfScreen> {
   Future<Uint8List> makePdf() {
     final pdf = pw.Document();
+
     pdf.addPage(pw.Page(build: (context) {
       return pw.Row(
         children: [
@@ -243,6 +244,9 @@ class _CreatePdfScreenState extends State<CreatePdfScreen> {
         ],
       );
     }));
+    /* pdf.editPage(0, pw.Page(build: (context) {
+      return pw.Row();
+    }));*/
     return pdf.save();
   }
 
@@ -250,6 +254,12 @@ class _CreatePdfScreenState extends State<CreatePdfScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: PdfPreview(
+        allowPrinting: false,
+        canChangePageFormat: false,
+        canChangeOrientation: false,
+        allowSharing: false,
+        dynamicLayout: false,
+        // pdfFileName: "Resume",
         build: (context) => makePdf(),
       ),
     );

@@ -59,6 +59,7 @@ class EndPoint {
   static String addWorkExperience = "work_experience";
   static String addSkills = "skill_add";
   static String addAchievement = "achivment_add";
+  static String showCreatedResumes = "show_created_resumes";
 
   ///search
   static String searchJob = "search_job";
