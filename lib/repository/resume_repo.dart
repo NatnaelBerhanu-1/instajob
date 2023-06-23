@@ -129,6 +129,22 @@ class ResumeRepository {
     }
   }
 
+  Future<ApiResponse> addAchievement({
+    List<String>? ach,
+  }) async {
+    var data = {
+      "user_id": Global.userModel?.id,
+      "achivments_skill": ach ?? [],
+    };
+    try {
+      Response response =
+          await dioClient.post(data: data, uri: EndPoint.addAchievement);
+      return ApiResponse.withSuccess(response);
+    } on DioException catch (e) {
+      return ApiResponse.withError(e.response);
+    }
+  }
+
   Future<ApiResponse> showCreatedResumes() async {
     var data = {
       "user_id": Global.userModel?.id,
@@ -136,6 +152,28 @@ class ResumeRepository {
     try {
       Response response =
           await dioClient.post(data: data, uri: EndPoint.showCreatedResumes);
+      return ApiResponse.withSuccess(response);
+    } on DioException catch (e) {
+      return ApiResponse.withError(e.response);
+    }
+  }
+
+  deleteWorkExp({String? id}) async {
+    try {
+      var map = {"id": id};
+      var response =
+          await dioClient.post(data: map, uri: EndPoint.deleteWorkingExp);
+      return ApiResponse.withSuccess(response);
+    } on DioException catch (e) {
+      return ApiResponse.withError(e.response);
+    }
+  }
+
+  deleteEducation({String? id}) async {
+    try {
+      var map = {"id": id};
+      var response =
+          await dioClient.post(data: map, uri: EndPoint.deleteEducation);
       return ApiResponse.withSuccess(response);
     } on DioException catch (e) {
       return ApiResponse.withError(e.response);

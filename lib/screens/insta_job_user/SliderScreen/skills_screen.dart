@@ -8,6 +8,8 @@ import 'package:insta_job/bloc/resume_bloc/resume_bloc.dart';
 import 'package:insta_job/bloc/resume_bloc/resume_event.dart';
 import 'package:insta_job/bloc/resume_bloc/resume_state.dart';
 import 'package:insta_job/globals.dart';
+import 'package:insta_job/screens/resume_edit_screens/edit_template_screen.dart';
+import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_cards/insta_job_user_cards/skill_tile.dart';
@@ -17,27 +19,25 @@ import 'package:insta_job/widgets/custom_text_field.dart';
 import '../../../widgets/custom_button/custom_btn.dart';
 import '../../../widgets/custom_cards/custom_common_card.dart';
 
-class SkillsScreen extends StatelessWidget {
+class SkillsScreen extends StatefulWidget {
   final PageController? pageController;
 
   SkillsScreen({
     Key? key,
     this.pageController,
   }) : super(key: key);
-  TextEditingController topSkills = TextEditingController();
 
   @override
+  State<SkillsScreen> createState() => _SkillsScreenState();
+}
+
+class _SkillsScreenState extends State<SkillsScreen> {
+  TextEditingController topSkills = TextEditingController();
+  bool isAchievement = false;
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        // appBar: PreferredSize(
-        //     preferredSize: Size(double.infinity, kToolbarHeight),
-        //     child: CustomAppBar(
-        //       title: "",
-        //       leadingImage: MyImages.arrowBlueLeft,
-        //       height: 15,
-        //       width: 15,
-        //     )),
-        body: SingleChildScrollView(
+    var data = context.read<GlobalCubit>();
+    return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -45,7 +45,18 @@ class SkillsScreen extends StatelessWidget {
             children: [
               GestureDetector(
                 onTap: () {
-                  pageController?.jumpToPage(2);
+                  if (isAchievement) {
+                    isAchievement = false;
+                    setState(() {});
+                  } else {
+                    widget.pageController?.jumpToPage(2);
+                  }
+                  context.read<GlobalCubit>().skills = context
+                          .read<ResumeBloc>()
+                          .resumeModel
+                          .skills?[0]
+                          .addSkill ??
+                      [];
                 },
                 child: Container(
                   color: MyColors.white,
@@ -62,7 +73,7 @@ class SkillsScreen extends StatelessWidget {
               ),
               SizedBox(width: 15),
               CommonText(
-                text: "Skills",
+                text: isAchievement ? "Achievements" : "Skills",
                 fontWeight: FontWeight.w500,
                 fontSize: 20,
               ),
@@ -77,14 +88,13 @@ class SkillsScreen extends StatelessWidget {
             fit: BoxFit.cover,
           )),
           SizedBox(height: 15),
-
           BlocBuilder<GlobalCubit, InitialState>(builder: (context, state) {
             var skillList = context.read<GlobalCubit>();
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Add Skills",
+                  "Add ${isAchievement ? "Achievement" : "Skills"}",
                   style: TextStyle(
                       color: MyColors.black,
                       fontSize: 13.5,
@@ -109,7 +119,9 @@ class SkillsScreen extends StatelessWidget {
                       GestureDetector(
                         onTap: () {
                           if (topSkills.text.isNotEmpty) {
-                            skillList.topSkills(topSkills.text);
+                            isAchievement
+                                ? skillList.addAchievement(topSkills.text)
+                                : skillList.topSkills(topSkills.text);
                             topSkills.clear();
                           } else {
                             showToast('Please fill the text');
@@ -117,7 +129,7 @@ class SkillsScreen extends StatelessWidget {
                         },
                         child: Padding(
                           padding: const EdgeInsets.only(
-                              right: 10.0, left: 10, top: 15),
+                              right: 10.0, left: 10, top: 9),
                           child: Container(
                             decoration: BoxDecoration(
                                 color: MyColors.blue, shape: BoxShape.circle),
@@ -155,35 +167,50 @@ class SkillsScreen extends StatelessWidget {
             color: MyColors.lightRed,
           ),*/
           SizedBox(height: 15),
-          context.read<GlobalCubit>().skills.isEmpty
-              ? SizedBox()
-              : CustomDivider(
-                  title: "Added",
-                  color: MyColors.black,
-                ),
+          if (isAchievement) ...[
+            data.achievementList.isEmpty
+                ? SizedBox()
+                : CustomDivider(
+                    title: "Added",
+                    color: MyColors.black,
+                  ),
+          ] else ...[
+            data.skills.isEmpty
+                ? SizedBox()
+                : CustomDivider(
+                    title: "Added",
+                    color: MyColors.black,
+                  ),
+          ],
           SizedBox(height: 15),
           BlocBuilder<GlobalCubit, InitialState>(builder: (context, state) {
             var skillList = context.read<GlobalCubit>();
-            return skillList.skills.isEmpty
-                ? SizedBox()
-                : GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      childAspectRatio: 4 / 1.4,
-                      mainAxisSpacing: 10,
-                      crossAxisSpacing: 10,
-                    ),
-                    primary: false,
-                    shrinkWrap: true,
-                    itemCount: skillList.skills.length,
-                    itemBuilder: (context, index) {
-                      return AddSkillTile(
-                        title: skillList.skills[index],
-                        onTap: () {
-                          skillList.removeSkill(index);
-                        },
-                      );
-                      /*return Container(
+            return GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  childAspectRatio: 4 / 1.4,
+                  mainAxisSpacing: 10,
+                  crossAxisSpacing: 10,
+                ),
+                primary: false,
+                shrinkWrap: true,
+                itemCount: isAchievement
+                    ? skillList.achievementList.length
+                    : skillList.skills.length,
+                itemBuilder: (context, index) {
+                  return AddSkillTile(
+                    title: isAchievement
+                        ? skillList.achievementList[index]
+                        : skillList.skills[index],
+                    onTap: () {
+                      if (isAchievement) {
+                        skillList.removeAchievement(index);
+                      } else {
+                        skillList.removeSkill(index);
+                      }
+                    },
+                  );
+                  /*return Container(
                         decoration: BoxDecoration(
                           color: MyColors.lightBlue.withOpacity(.20),
                           borderRadius: BorderRadius.circular(5),
@@ -212,7 +239,7 @@ class SkillsScreen extends StatelessWidget {
                           ),
                         ),
                       );*/
-                    });
+                });
           }),
           SizedBox(height: 15),
           /*  GridView.builder(
@@ -228,11 +255,24 @@ class SkillsScreen extends StatelessWidget {
                 childAspectRatio: 15 / 5),
           ),*/
           // SizedBox(height: 100),
-          CustomButton(
-            title: "Skip",
-            bgColor: MyColors.white,
-            fontColor: MyColors.black,
-          ),
+          isAchievement
+              ? CustomButton(
+                  title: "Skip",
+                  bgColor: MyColors.white,
+                  fontColor: MyColors.black,
+                  onTap: () {
+                    AppRoutes.push(context, EditTemplateScreen());
+                  },
+                )
+              : CustomButton(
+                  title: "Skip",
+                  bgColor: MyColors.white,
+                  fontColor: MyColors.black,
+                  onTap: () {
+                    isAchievement = true;
+                    setState(() {});
+                  },
+                ),
           BlocBuilder<ResumeBloc, ResumeState>(builder: (context, state) {
             return CustomIconButton(
               title: "Continue",
@@ -240,17 +280,33 @@ class SkillsScreen extends StatelessWidget {
               borderColor: MyColors.blue,
               image: MyImages.arrowWhite,
               onclick: () {
-                if (context.read<GlobalCubit>().skills.isNotEmpty) {
-                  context
-                      .read<ResumeBloc>()
-                      .add(AddSkillsEvent(context.read<GlobalCubit>().skills));
+                if (isAchievement) {
+                  if (data.skills.isNotEmpty) {
+                    context.read<ResumeBloc>().add(AddAchievementEvent(
+                        context.read<GlobalCubit>().achievementList));
+                    context.read<ResumeBloc>().add(UserResumeLoadedEvent());
+                    AppRoutes.push(context, EditTemplateScreen());
+                  }
+                } else {
+                  if (data.skills.isNotEmpty) {
+                    context.read<ResumeBloc>().add(
+                        AddSkillsEvent(context.read<GlobalCubit>().skills));
+                  }
                 }
+                context.read<GlobalCubit>().achievementList = context
+                        .read<ResumeBloc>()
+                        .resumeModel
+                        .achievements?[0]
+                        .achievements ??
+                    [];
+                isAchievement = true;
+                setState(() {});
               },
               // onclick: onContinueTap,
             );
           }),
         ],
       ),
-    ));
+    );
   }
 }

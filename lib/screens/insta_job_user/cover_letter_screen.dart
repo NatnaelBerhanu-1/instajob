@@ -30,7 +30,7 @@ class CoverLetterScreen extends StatelessWidget {
                   String text =
                       "Dear Hiring Manager,\nJob Title: ${context.read<JobPositionBloc>().jobModel.designation}\n${coverLetterModel.previousWork}\n${coverLetterModel.yourPassion}\nPlease take a moment to review my attached resume and credentials.\nSincerely\n${coverLetterModel.yourName}";
                   Clipboard.setData(ClipboardData(text: text)).then((value) {
-                    showToast("Copied");
+                    showToast("Copied", isError: false);
                   });
                 },
                 icon: Icon(

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
 import 'package:insta_job/bloc/job_position/job_pos_state.dart';
+import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/job_opening/job_position_screen.dart';
+import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/widgets/custom_cards/insta_job_user_cards/custom_career_tile.dart';
 
@@ -56,12 +58,24 @@ class _SaveJobsScreenState extends State<SaveJobsScreen> {
                               child: GridView.builder(
                                 itemCount: state.jobPosList.length,
                                 itemBuilder: (c, i) {
-                                  return Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 5, vertical: 8),
-                                    child: AppliedTile(
-                                        isFav: true,
-                                        jobPosModel: state.jobPosList[i]),
+                                  return GestureDetector(
+                                    onTap: () {
+                                      AppRoutes.push(
+                                          context,
+                                          JobPositionScreen(
+                                            jobPosModel: state.jobPosList[i],
+                                            // companyModel: context
+                                            //     .read<CompanyBloc>()
+                                            //     .companyModel,
+                                          ));
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 5, vertical: 8),
+                                      child: AppliedTile(
+                                          isFav: true,
+                                          jobPosModel: state.jobPosList[i]),
+                                    ),
                                   );
                                 },
                                 gridDelegate:

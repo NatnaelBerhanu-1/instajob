@@ -60,6 +60,8 @@ class EndPoint {
   static String addSkills = "skill_add";
   static String addAchievement = "achivment_add";
   static String showCreatedResumes = "show_created_resumes";
+  static String deleteWorkingExp = "working_exp_delete";
+  static String deleteEducation = "eduction_delete";
 
   ///search
   static String searchJob = "search_job";

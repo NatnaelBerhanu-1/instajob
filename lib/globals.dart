@@ -5,12 +5,15 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:insta_job/bloc/resume_bloc/resume_bloc.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:open_file_safe/open_file_safe.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
+import 'package:printing/printing.dart';
 
 import 'model/user_model.dart';
 import 'utils/my_images.dart';
@@ -113,8 +116,11 @@ BoxShadow normalBoxShadow = BoxShadow(
   blurRadius: 7,
 );
 
-Future<Uint8List> makePdf() {
+Future<Uint8List> makePdf(BuildContext context,
+    {int? color, font, String? image}) async {
   final pdf = pw.Document();
+  var data = context.read<ResumeBloc>();
+  final netImage = await networkImage(image ?? "https://www.nfet.net/nfet.jpg");
 
   pdf.addPage(pw.Page(build: (context) {
     return pw.Row(
@@ -133,7 +139,7 @@ Future<Uint8List> makePdf() {
                     height: 725,
                     width: 210,
                     decoration: pw.BoxDecoration(
-                      color: PdfColor.fromHex("#eef3f1"),
+                      color: PdfColor.fromInt(color ?? 0xffEEF3F1),
                     ),
                     child: pw.Padding(
                       padding: pw.EdgeInsets.all(15),
@@ -145,29 +151,38 @@ Future<Uint8List> makePdf() {
                             // top: 30,
                             // left: ,
                             child: pw.Container(
-                              height: 150,
-                              width: 150,
-                              // alignment: pw.Alignment.center,
-                              decoration: pw.BoxDecoration(
+                                height: 150,
+                                width: 150,
+                                // alignment: pw.Alignment.center,
+                                decoration: pw.BoxDecoration(
                                   color: PdfColor.fromHex("#b9ccc8"),
-                                  shape: pw.BoxShape.circle),
-                            ),
+                                  shape: pw.BoxShape.circle,
+                                  image: pw.DecorationImage(image: netImage),
+                                ),
+                                child: image == null
+                                    ? pw.SizedBox()
+                                    : pw.Image(netImage)),
                           ),
                           pw.SizedBox(height: 30),
-                          pw.Text("Name",
+                          pw.Text("${Global.userModel?.name}",
                               style: pw.TextStyle(
                                   fontSize: 20,
+                                  font: font,
                                   fontWeight: pw.FontWeight.bold)),
                           pw.Text("Designation",
-                              style: pw.TextStyle(fontSize: 17)),
+                              style: pw.TextStyle(fontSize: 17, font: font)),
                           pw.SizedBox(height: 30),
                           pw.Text("ABOUT ME",
                               style: pw.TextStyle(
                                   fontSize: 17,
+                                  font: font,
                                   fontWeight: pw.FontWeight.bold)),
                           pw.Divider(),
-                          pw.Text("fdngnnnnnnnnnnnnnnnnnn eune erjeimalkf ",
-                              style: pw.TextStyle(fontSize: 15)),
+                          pw.Text(
+                              data.resumeModel.tellUss == null
+                                  ? "nfdskgndkjgoir mfkngjknrtgsk edfjo"
+                                  : "${data.resumeModel.tellUss?[0].tellUs}",
+                              style: pw.TextStyle(fontSize: 15, font: font)),
                         ],
                       ),
                     )),
@@ -183,17 +198,83 @@ Future<Uint8List> makePdf() {
               pw.SizedBox(height: 20),
               pw.Text("WORK EXPERIENCE",
                   style: pw.TextStyle(
-                      fontSize: 17, fontWeight: pw.FontWeight.bold)),
+                      fontSize: 17,
+                      fontWeight: pw.FontWeight.bold,
+                      font: font)),
               pw.Divider(),
-              pw.Text("fdngnnnnnnnnkkkkkkkkkkkknnnnnnnnnn eune erjeimalkf ",
-                  style: pw.TextStyle(fontSize: 15)),
+              pw.SizedBox(height: 20),
+              data.resumeModel.workExperiences == null
+                  ? pw.Text("Test",
+                      style: pw.TextStyle(fontSize: 15, font: font))
+                  : pw.ListView.builder(
+                      itemCount: data.resumeModel.workExperiences!.length,
+                      itemBuilder: (c, i) {
+                        return pw.Column(
+                            crossAxisAlignment: pw.CrossAxisAlignment.start,
+                            children: [
+                              pw.Text(
+                                  "${data.resumeModel.workExperiences?[i].jobTitle}",
+                                  style: pw.TextStyle(
+                                      fontSize: 15,
+                                      font: font,
+                                      fontWeight: pw.FontWeight.bold)),
+                              pw.SizedBox(height: 5),
+                              pw.Row(children: [
+                                pw.Text(
+                                    "${data.resumeModel.workExperiences?[i].employer}",
+                                    style:
+                                        pw.TextStyle(fontSize: 15, font: font)),
+                                pw.Spacer(),
+                                pw.Text(
+                                    "${data.resumeModel.workExperiences?[i].workStartYear} - ${data.resumeModel.workExperiences?[i].workEndYear == "" ? "Currently Working" : data.resumeModel.workExperiences?[i].workEndYear}",
+                                    style:
+                                        pw.TextStyle(fontSize: 11, font: font)),
+                              ]),
+                              pw.SizedBox(height: 20),
+                            ]);
+                      },
+                    ),
               pw.SizedBox(height: 50),
               pw.Text("EDUCATION",
                   style: pw.TextStyle(
-                      fontSize: 17, fontWeight: pw.FontWeight.bold)),
+                      fontSize: 17,
+                      fontWeight: pw.FontWeight.bold,
+                      font: font)),
               pw.Divider(),
-              pw.Text("fdngnnnnnnnnkkkkkkkkkkkknnnnnnnnnn eune erjeimalkf ",
-                  style: pw.TextStyle(fontSize: 15)),
+              pw.SizedBox(height: 20),
+              data.resumeModel.educations == null
+                  ? pw.Text("Test",
+                      style: pw.TextStyle(fontSize: 15, font: font))
+                  : pw.ListView.builder(
+                      itemCount: data.resumeModel.educations!.length,
+                      itemBuilder: (c, i) {
+                        return pw.Column(
+                            crossAxisAlignment: pw.CrossAxisAlignment.start,
+                            children: [
+                              pw.Text(
+                                  "${data.resumeModel.educations?[i].fieldOfStudy}",
+                                  style: pw.TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: pw.FontWeight.bold,
+                                      font: font)),
+                              pw.SizedBox(height: 2),
+                              pw.Row(children: [
+                                pw.Text(
+                                    "${data.resumeModel.educations?[i].institutionName}",
+                                    style: pw.TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: pw.FontWeight.bold,
+                                        font: font)),
+                                pw.Spacer(),
+                                pw.Text(
+                                    "${data.resumeModel.educations?[i].educationStartYear} - ${data.resumeModel.educations?[i].educationEndYear == "" ? "Currently Studying" : data.resumeModel.educations?[i].educationEndYear}",
+                                    style:
+                                        pw.TextStyle(fontSize: 12, font: font)),
+                              ]),
+                              pw.SizedBox(height: 25),
+                            ]);
+                      },
+                    ),
             ],
           ),
         )
@@ -206,7 +287,7 @@ Future<Uint8List> makePdf() {
   return pdf.save();
 }
 
-showToast(message, {color, textColor, bool isError = false}) {
+showToast(message, {color, textColor, bool isError = true}) {
   EasyLoading.instance
     ..toastPosition = EasyLoadingToastPosition.top
     ..textColor = textColor ?? MyColors.white
@@ -241,3 +322,14 @@ dynamic loading(
 }
 
 final navigationKey = GlobalKey<NavigatorState>();
+
+List<String> fontName = [
+  "Courier",
+  "Helvetica",
+  "Open sans",
+];
+List<pw.Font> fontStyle = [
+  pw.Font.courier(),
+  pw.Font.helvetica(),
+  pw.Font.times(),
+];

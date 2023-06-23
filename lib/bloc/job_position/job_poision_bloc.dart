@@ -50,7 +50,7 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
       List<JobPosModel> list = (response.response.data['data'] as List)
           .map((e) => JobPosModel.fromJson(e))
           .toList();
-      emit(JobPosLoaded(list));
+      emit(JobSearchLoaded(list));
       print('LISTTT ------------            $list');
       return list;
     } else if (response.response.statusCode == 400) {
@@ -149,8 +149,8 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
 
     on<SaveJobPositionEvent>((event, emit) async {
       emit(JobPosLoading());
-      ApiResponse response =
-          await jobPositionRepository.saveJob(jobId: event.jobId);
+      ApiResponse response = await jobPositionRepository.saveJob(
+          jobId: event.jobId, jobStatus: event.jobStatus);
       if (response.response.statusCode == 500) {
         emit(const JobErrorState("Something went wrong"));
       }
@@ -184,7 +184,7 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
     on<JobSearchEvent>((event, emit) async {
       emit(JobPosLoading());
       var jobList = await _getSearchJobs(emit, event.filterModel);
-      emit(JobPosLoaded(jobList));
+      emit(JobSearchLoaded(jobList));
       if (jobList.isEmpty) {
         emit(const JobErrorState("Data not found"));
       }

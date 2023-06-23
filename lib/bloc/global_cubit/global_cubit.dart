@@ -132,13 +132,24 @@ class GlobalCubit extends Cubit<InitialState> {
 
   /// SKILLS
   List<String> skills = [];
+  List<String> achievementList = [];
   topSkills(skillVal) {
     skills.add(skillVal);
     emit(AddTopSkillsState(skillVal));
   }
 
+  addAchievement(val) {
+    achievementList.add(val);
+    emit(AddAchievementState(val));
+  }
+
   removeSkill(index) {
     skills.removeAt(index);
+    emit(InitialState());
+  }
+
+  removeAchievement(index) {
+    achievementList.removeAt(index);
     emit(InitialState());
   }
 

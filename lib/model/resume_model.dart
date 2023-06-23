@@ -119,6 +119,7 @@ class Achievement {
 }
 
 class Educations {
+  int? id;
   String? institutionName;
   String? fieldOfStudy;
   String? educationState;
@@ -131,7 +132,8 @@ class Educations {
   String? educationCustomMessage;
 
   Educations(
-      {this.institutionName,
+      {this.id,
+      this.institutionName,
       this.fieldOfStudy,
       this.educationState,
       this.educationCity,
@@ -143,6 +145,7 @@ class Educations {
       this.educationCustomMessage});
 
   Educations.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
     institutionName = json['institution_name'];
     fieldOfStudy = json['field_of_study'];
     educationState = json['education_state'];
@@ -157,6 +160,7 @@ class Educations {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
     data['institution_name'] = institutionName;
     data['field_of_study'] = fieldOfStudy;
     data['education_state'] = educationState;
@@ -172,6 +176,7 @@ class Educations {
 }
 
 class WorkExperiences {
+  int? id;
   String? jobTitle;
   String? employer;
   String? workState;
@@ -184,7 +189,8 @@ class WorkExperiences {
   String? workCustomMessage;
 
   WorkExperiences(
-      {this.jobTitle,
+      {this.id,
+      this.jobTitle,
       this.employer,
       this.workState,
       this.workCity,
@@ -196,6 +202,7 @@ class WorkExperiences {
       this.workCustomMessage});
 
   WorkExperiences.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
     jobTitle = json['job_title'];
     employer = json['employer'];
     workState = json['work_state'];
@@ -210,6 +217,7 @@ class WorkExperiences {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
     data['job_title'] = jobTitle;
     data['employer'] = employer;
     data['work_state'] = workState;

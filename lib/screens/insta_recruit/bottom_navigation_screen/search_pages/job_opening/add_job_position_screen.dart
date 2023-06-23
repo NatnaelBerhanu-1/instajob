@@ -300,6 +300,7 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                                       mainAxisSpacing: 10,
                                       crossAxisSpacing: 10,
                                     ),
+                                    // scrollDirection: Axis.horizontal,
                                     // primary: false,
                                     shrinkWrap: true,
                                     itemCount: skillList.skills.length,
@@ -320,10 +321,13 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                                                   MainAxisAlignment
                                                       .spaceBetween,
                                               children: [
-                                                CommonText(
-                                                  text: skillList.skills[index],
-                                                  fontColor: MyColors.blue,
-                                                  fontSize: 13,
+                                                Expanded(
+                                                  child: CommonText(
+                                                    text:
+                                                        skillList.skills[index],
+                                                    fontColor: MyColors.blue,
+                                                    fontSize: 13,
+                                                  ),
                                                 ),
                                                 GestureDetector(
                                                   onTap: () {
@@ -654,8 +658,6 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                                   controller: applicationReceivedSubject,
                                   label: "Subject",
                                   hint: "Your application at [Company Name]",
-                                  validator: (val) =>
-                                      requiredValidation(val!, "Subject"),
                                 ),
                                 SizedBox(height: 20),
                                 CustomTextField(
@@ -663,8 +665,6 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                                   hint: "",
                                   label: "Content",
                                   maxLine: 5,
-                                  validator: (val) =>
-                                      requiredValidation(val!, "Content"),
                                 ),
                                 SizedBox(height: 20),
                                 CommonText(
@@ -690,8 +690,6 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                                   controller: disqualifiedReviewSubject,
                                   label: "Subject",
                                   hint: "Your application at [Company Name]",
-                                  validator: (val) =>
-                                      requiredValidation(val!, "Subject"),
                                 ),
                                 SizedBox(height: 20),
                                 CustomTextField(
@@ -699,8 +697,6 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                                   hint: "",
                                   label: "Content",
                                   maxLine: 5,
-                                  validator: (val) =>
-                                      requiredValidation(val!, "Content"),
                                 ),
                                 SizedBox(height: 20),
                                 CommonText(
@@ -719,8 +715,6 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                                   controller: shortlistedReviewSubject,
                                   label: "Subject",
                                   hint: "Your application at [Company Name]",
-                                  validator: (val) =>
-                                      requiredValidation(val!, "Subject"),
                                 ),
                                 SizedBox(height: 20),
                                 CustomTextField(
@@ -728,8 +722,6 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                                   hint: "",
                                   label: "Content",
                                   maxLine: 5,
-                                  validator: (val) =>
-                                      requiredValidation(val!, "Content"),
                                 ),
                                 SizedBox(height: 20),
                                 CommonText(

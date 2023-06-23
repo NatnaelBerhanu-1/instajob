@@ -22,7 +22,7 @@ class ResumeBloc extends Bloc<ResumeEvent, ResumeState> {
     }
   }
 
-  // List<Educations> addNewEducation = [];
+  List<Educations> addNewEducation = [];
   List<WorkExperiences> addNewWorkExp = [];
   ResumeModel resumeModel = ResumeModel();
 
@@ -49,14 +49,14 @@ class ResumeBloc extends Bloc<ResumeEvent, ResumeState> {
       //   addNewEducation.add(event.educationModel);
       //   emit(ResumeAddSuccess());
       // } else {
-
       ApiResponse response =
           await resumeRepository.addEducation(education: event.educationModel);
       if (response.response.statusCode == 500) {
         emit(const ErrorState("Something went wrong"));
       }
       if (response.response.statusCode == 200) {
-        emit(ResumeInitial());
+        addNewEducation.add(event.educationModel);
+        emit(ResumeAddSuccess());
       }
       if (response.response.statusCode == 400) {
         emit(const ErrorState("Data Not Found"));
@@ -79,23 +79,24 @@ class ResumeBloc extends Bloc<ResumeEvent, ResumeState> {
     });
 
     on<AddWorkExpEvent>((event, emit) async {
-      if (event.isNew) {
+      // if (event.isNew) {
+      //   addNewWorkExp.add(event.workExpModel);
+      //   emit(ResumeAddSuccess());
+      // } else {
+      ApiResponse response = await resumeRepository.addWorkExperience(
+          workExpModel: event.workExpModel);
+      if (response.response.statusCode == 500) {
+        emit(const ErrorState("Something went wrong"));
+      }
+      if (response.response.statusCode == 200) {
+        // showToast("Success");
         addNewWorkExp.add(event.workExpModel);
         emit(ResumeAddSuccess());
-      } else {
-        ApiResponse response = await resumeRepository.addWorkExperience(
-            workExpModel: event.workExpModel);
-        if (response.response.statusCode == 500) {
-          emit(const ErrorState("Something went wrong"));
-        }
-        if (response.response.statusCode == 200) {
-          // showToast("Success");
-          emit(ResumeInitial());
-        }
-        if (response.response.statusCode == 400) {
-          emit(const ErrorState("Data Not Found"));
-        }
       }
+      if (response.response.statusCode == 400) {
+        emit(const ErrorState("Data Not Found"));
+      }
+      // }
     });
 
     on<AddSkillsEvent>((event, emit) async {
@@ -105,13 +106,27 @@ class ResumeBloc extends Bloc<ResumeEvent, ResumeState> {
         emit(const ErrorState("Something went wrong"));
       }
       if (response.response.statusCode == 200) {
-        // showToast("Success");
         emit(ResumeInitial());
       }
       if (response.response.statusCode == 400) {
         emit(const ErrorState("Data Not Found"));
       }
     });
+
+    on<AddAchievementEvent>((event, emit) async {
+      ApiResponse response =
+          await resumeRepository.addAchievement(ach: event.ach);
+      if (response.response.statusCode == 500) {
+        emit(const ErrorState("Something went wrong"));
+      }
+      if (response.response.statusCode == 200) {
+        emit(ResumeInitial());
+      }
+      if (response.response.statusCode == 400) {
+        emit(const ErrorState("Data Not Found"));
+      }
+    });
+
     on<UserResumeLoadedEvent>((event, emit) async {
       ApiResponse response = await resumeRepository.showCreatedResumes();
       if (response.response.statusCode == 500) {
@@ -126,14 +141,33 @@ class ResumeBloc extends Bloc<ResumeEvent, ResumeState> {
       }
     });
 
-    on<DeleteEducation>((event, emit) {
-      // addNewEducation.removeAt(event.index);
-      // emit(ResumeDeleted());
+    on<DeleteEducation>((event, emit) async {
+      ApiResponse response =
+          await resumeRepository.deleteEducation(id: event.id);
+      if (response.response.statusCode == 500) {
+        emit(const ErrorState("Something went wrong"));
+      }
+      if (response.response.statusCode == 200) {
+        addNewEducation.removeAt(event.index!);
+        emit(ResumeDeleted());
+      }
+      if (response.response.statusCode == 400) {
+        emit(const ErrorState("Data Not Found"));
+      }
     });
 
-    on<DeleteWorkExp>((event, emit) {
-      addNewWorkExp.removeAt(event.index);
-      emit(ResumeDeleted());
+    on<DeleteWorkExp>((event, emit) async {
+      ApiResponse response = await resumeRepository.deleteWorkExp(id: event.id);
+      if (response.response.statusCode == 500) {
+        emit(const ErrorState("Something went wrong"));
+      }
+      if (response.response.statusCode == 200) {
+        addNewWorkExp.removeAt(event.index!);
+        emit(ResumeDeleted());
+      }
+      if (response.response.statusCode == 400) {
+        emit(const ErrorState("Data Not Found"));
+      }
     });
   }
 /*

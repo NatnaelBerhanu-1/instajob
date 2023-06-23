@@ -21,11 +21,13 @@ class JobPositionRepository {
     }
   }
 
-  Future<ApiResponse> saveJob({String? jobId}) async {
+  Future<ApiResponse> saveJob({String? jobId, String? jobStatus}) async {
     try {
-      Response response = await dioClient.post(
-          data: {"job_id": jobId, "user_id": Global.userModel?.id.toString()},
-          uri: EndPoint.insertSaveJob);
+      Response response = await dioClient.post(data: {
+        "job_id": jobId,
+        "user_id": Global.userModel?.id.toString(),
+        "job_status": jobStatus
+      }, uri: EndPoint.insertSaveJob);
       return ApiResponse.withSuccess(response);
     } on DioException catch (e) {
       return ApiResponse.withError(e.response);

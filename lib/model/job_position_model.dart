@@ -51,7 +51,7 @@ class JobPosModel {
     companyId = json['company_id'];
     designation = json['designation'];
     companyName = json['companyname'];
-    jobStatus = json['job_status'];
+    jobStatus = json['job_saved'];
     jobDetails = json['jobdetails'];
     requirements = json['Requirements'];
     responsibilities = json['Responsilibites'];
@@ -77,7 +77,7 @@ class JobPosModel {
     data['company_id'] = companyId;
     data['designation'] = designation;
     data['companyname'] = companyName;
-    data['job_status'] = jobStatus;
+    data['job_saved'] = jobStatus;
     data['jobdetails'] = jobDetails;
     data['Requirements'] = requirements;
     data['Responsilibites'] = responsibilities;

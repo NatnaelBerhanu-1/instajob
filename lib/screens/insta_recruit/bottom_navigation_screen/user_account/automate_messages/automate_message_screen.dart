@@ -36,6 +36,31 @@ class _AutomateMsgScreenState extends State<AutomateMsgScreen> {
 
   final formKey = GlobalKey<FormState>();
 
+  getData() {
+    if (Global.userModel!.automateMsgBtn == 1) {
+      applicationReceivedContent.text =
+          "${Global.userModel!.applicationReceivedContent}";
+      applicationReceivedSubject.text =
+          "${Global.userModel!.applicationReceivedSubject}";
+      disqualifiedReviewSubject.text =
+          "${Global.userModel!.disqualifiedReviewSubject}";
+      disqualifiedReviewContent.text =
+          "${Global.userModel!.disqualifiedReviewContent}";
+      shortlistedReviewSubject.text =
+          "${Global.userModel!.shortlistedReviewSubject}";
+      shortlistedReviewContent.text =
+          "${Global.userModel!.shortlistedReviewContent}";
+    }
+    isEnable = Global.userModel!.automateMsgBtn == 1 ? true : false;
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

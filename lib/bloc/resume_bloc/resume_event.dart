@@ -30,18 +30,16 @@ class TellMeAbtYourSelfEvent extends ResumeEvent {
 
 class AddEducationEvent extends ResumeEvent {
   final Educations educationModel;
-  final bool isNew;
 
-  AddEducationEvent(this.educationModel, {this.isNew = false});
+  AddEducationEvent(this.educationModel);
   @override
-  List<Object?> get props => [educationModel, isNew];
+  List<Object?> get props => [educationModel];
 }
 
 class AddWorkExpEvent extends ResumeEvent {
   final WorkExperiences workExpModel;
-  final bool isNew;
 
-  AddWorkExpEvent(this.workExpModel, {this.isNew = false});
+  AddWorkExpEvent(this.workExpModel);
   @override
   List<Object?> get props => [workExpModel];
 }
@@ -54,26 +52,32 @@ class AddSkillsEvent extends ResumeEvent {
   List<Object?> get props => [skills];
 }
 
-class UserResumeLoadedEvent extends ResumeEvent {
-  final ResumeModel resumeModel;
+class AddAchievementEvent extends ResumeEvent {
+  final List<String> ach;
 
-  UserResumeLoadedEvent(this.resumeModel);
+  AddAchievementEvent(this.ach);
   @override
-  List<Object?> get props => [resumeModel];
+  List<Object?> get props => [ach];
+}
+
+class UserResumeLoadedEvent extends ResumeEvent {
+  @override
+  List<Object?> get props => [];
 }
 
 class DeleteEducation extends ResumeEvent {
-  final int index;
+  final int? index;
+  final String? id;
 
-  DeleteEducation(this.index);
+  DeleteEducation({this.id, this.index});
   @override
   List<Object?> get props => [];
 }
 
 class DeleteWorkExp extends ResumeEvent {
-  final int index;
-
-  DeleteWorkExp(this.index);
+  final int? index;
+  final String? id;
+  DeleteWorkExp({this.id, this.index});
   @override
   List<Object?> get props => [];
 }

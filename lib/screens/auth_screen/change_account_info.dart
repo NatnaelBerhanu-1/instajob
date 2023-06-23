@@ -289,6 +289,7 @@ class _ChangeAccInfoScreenState extends State<ChangeAccInfoScreen> {
                                           profilePhoto: image.imgUrl,
                                           name: name.text);
                                     }
+                                    image.clearImgUrl();
                                     // if (widget.isUpdate) {
                                     //
                                     // } else {

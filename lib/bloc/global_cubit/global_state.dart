@@ -55,3 +55,9 @@ class AddTopSkillsState extends InitialState {
 
   AddTopSkillsState(this.skills);
 }
+
+class AddAchievementState extends InitialState {
+  final String val;
+
+  AddAchievementState(this.val);
+}

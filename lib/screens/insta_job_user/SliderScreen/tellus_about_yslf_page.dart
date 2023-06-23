@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
 import 'package:insta_job/bloc/resume_bloc/resume_bloc.dart';
 import 'package:insta_job/bloc/resume_bloc/resume_event.dart';
 import 'package:insta_job/bloc/resume_bloc/resume_state.dart';
@@ -14,11 +15,23 @@ import '../../../globals.dart';
 import '../../../widgets/custom_button/custom_btn.dart';
 import '../../../widgets/custom_button/custom_img_button.dart';
 
-class TellUsAboutYSlfPage extends StatelessWidget {
+class TellUsAboutYSlfPage extends StatefulWidget {
   final PageController? pageController;
-  TellUsAboutYSlfPage({Key? key, this.pageController}) : super(key: key);
+  const TellUsAboutYSlfPage({Key? key, this.pageController}) : super(key: key);
 
+  @override
+  State<TellUsAboutYSlfPage> createState() => _TellUsAboutYSlfPageState();
+}
+
+class _TellUsAboutYSlfPageState extends State<TellUsAboutYSlfPage> {
   TextEditingController msg = TextEditingController();
+
+  @override
+  void initState() {
+    msg.text = "${context.read<ResumeBloc>().resumeModel.tellUss?[0].tellUs}";
+    setState(() {});
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,10 +89,31 @@ class TellUsAboutYSlfPage extends StatelessWidget {
                   if (msg.text.isEmpty) {
                     showToast("Please Write something");
                   } else {
-                    pageController?.jumpToPage(1);
+                    widget.pageController?.jumpToPage(1);
                     context
                         .read<ResumeBloc>()
                         .add(TellMeAbtYourSelfEvent(msg.text));
+                    context.read<ResumeBloc>().addNewEducation =
+                        context.read<ResumeBloc>().resumeModel.educations ?? [];
+                    context.read<ResumeBloc>().addNewWorkExp = context
+                            .read<ResumeBloc>()
+                            .resumeModel
+                            .workExperiences ??
+                        [];
+                    context.read<GlobalCubit>().skills = context
+                            .read<ResumeBloc>()
+                            .resumeModel
+                            .skills?[0]
+                            .addSkill ??
+                        [];
+                    context.read<GlobalCubit>().achievementList = context
+                            .read<ResumeBloc>()
+                            .resumeModel
+                            .achievements?[0]
+                            .achievements ??
+                        [];
+                    print(
+                        "************** ${context.read<ResumeBloc>().addNewWorkExp}");
                   }
                 });
           }),

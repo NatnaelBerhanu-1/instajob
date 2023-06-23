@@ -18,6 +18,12 @@ class JobPosLoaded extends JobPosState {
   const JobPosLoaded(this.jobPosList);
 }
 
+class JobSearchLoaded extends JobPosState {
+  final List<JobPosModel> searchJobPosList;
+
+  const JobSearchLoaded(this.searchJobPosList);
+}
+
 class JobErrorState extends JobPosState {
   final String error;
 

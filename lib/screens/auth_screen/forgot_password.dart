@@ -6,7 +6,6 @@ import 'package:insta_job/bloc/auth_bloc/auth_state.dart';
 import 'package:insta_job/bloc/validation/validation_bloc.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
-import 'package:insta_job/widgets/custom_chip.dart';
 
 import '../../utils/my_images.dart';
 import '../../widgets/custom_app_bar.dart';
@@ -79,7 +78,7 @@ class ForgotPassword extends StatelessWidget {
                     fontSize: 13,
                   ),
                 ),
-                SizedBox(height: 15),
+                /*SizedBox(height: 15),
                 BlocBuilder<AuthCubit, AuthInitialState>(
                     builder: (context, state) {
                   return CustomGesture(
@@ -101,7 +100,7 @@ class ForgotPassword extends StatelessWidget {
                       ),
                     ),
                   );
-                }),
+                }),*/
                 SizedBox(height: 40),
                 BlocBuilder<AuthCubit, AuthInitialState>(
                     builder: (context, state) {

@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
 import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
 import 'package:insta_job/bloc/job_position/job_pos_event.dart';
 import 'package:insta_job/bloc/job_position/job_pos_state.dart';
@@ -37,6 +38,13 @@ class JobPositionScreen extends StatefulWidget {
 class _JobPositionScreenState extends State<JobPositionScreen> {
   bool isSaved = false;
   @override
+  void initState() {
+    isSaved = widget.jobPosModel?.jobStatus == 1 ? true : false;
+    setState(() {});
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
@@ -63,8 +71,10 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                 return ImageButton(
                   onTap: () {
                     if (Global.userModel?.type == "user") {
+                      print("##########");
                       context.read<BottomBloc>().add(
                           SetScreenEvent(true, screenName: SearchJobsScreen()));
+                      context.read<GlobalCubit>().changeIndex(1);
                     } else {
                       context.read<JobPositionBloc>().add(LoadJobPosListEvent(
                           companyId: widget.jobPosModel!.companyId.toString()));
@@ -227,9 +237,12 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                         onTap: () {
                           isSaved = !isSaved;
                           setState(() {});
-                          context.read<JobPositionBloc>().add(
-                              SaveJobPositionEvent(
-                                  jobId: widget.jobPosModel!.id.toString()));
+                          context
+                              .read<JobPositionBloc>()
+                              .add(SaveJobPositionEvent(
+                                jobId: widget.jobPosModel!.id.toString(),
+                                jobStatus: isSaved ? "1" : "0",
+                              ));
                         },
                         bgColor: MyColors.blue,
                         borderRadius: BorderRadius.circular(10),

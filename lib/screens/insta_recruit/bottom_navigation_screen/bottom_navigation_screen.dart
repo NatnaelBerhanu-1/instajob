@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
 import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
 import 'package:insta_job/bloc/job_position/job_pos_event.dart';
+import 'package:insta_job/bloc/resume_bloc/resume_bloc.dart';
+import 'package:insta_job/bloc/resume_bloc/resume_event.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/screens/insta_job_user/bottom_nav_screen/search_pages/search_jobs_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/notification_pages/interviews_screen.dart';
@@ -73,6 +75,7 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
                 ),
                 buildColumn(
                   onTap: () {
+                    context.read<ResumeBloc>().add(UserResumeLoadedEvent());
                     bottomBloc.add(SetScreenEvent(false));
                     bottomBloc.add(GetIndexEvent(2));
                     // bottomBloc.setSelectedScreen(false);

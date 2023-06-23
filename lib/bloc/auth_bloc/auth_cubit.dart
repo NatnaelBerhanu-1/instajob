@@ -459,7 +459,7 @@ class AuthCubit extends Cubit<AuthInitialState> {
     }
     if (response.response.statusCode == 200) {
       emit(SuccessState());
-      showToast("Password change successfully");
+      showToast("Password change successfully", isError: false);
       navigationKey.currentState?.pushReplacement(
           MaterialPageRoute(builder: (_) => const LoginScreen()));
     }

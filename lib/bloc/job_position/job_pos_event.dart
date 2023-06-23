@@ -57,8 +57,9 @@ class AddJobPositionEvent extends JobPosEvent {
 
 class SaveJobPositionEvent extends JobPosEvent {
   final String jobId;
+  final String jobStatus;
 
-  SaveJobPositionEvent({required this.jobId});
+  SaveJobPositionEvent({required this.jobId, required this.jobStatus});
   @override
   List<Object?> get props => [];
 }
