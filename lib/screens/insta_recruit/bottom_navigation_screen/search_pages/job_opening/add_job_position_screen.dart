@@ -33,9 +33,12 @@ class AddJobPositionScreen extends StatefulWidget {
   final bool isUpdate;
   final JobPosModel? jobPosModel;
   final CompanyModel? companyModel;
-  const AddJobPositionScreen(
-      {Key? key, this.isUpdate = false, this.jobPosModel, this.companyModel})
-      : super(key: key);
+  const AddJobPositionScreen({
+    Key? key,
+    this.isUpdate = false,
+    this.jobPosModel,
+    this.companyModel,
+  }) : super(key: key);
 
   @override
   State<AddJobPositionScreen> createState() => _AddJobPositionScreenState();
@@ -765,7 +768,7 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                               var value = context.read<GlobalCubit>();
                               var uploadPhoto = context.read<PickImageCubit>();
                               String salary =
-                                  "${value.rangeValue.start.toStringAsFixed(0)}k - ${value.rangeValue.end.toStringAsFixed(0)}k";
+                                  value.rangeValue.end.toStringAsFixed(0);
                               jobPosition.add(AddJobPositionEvent(
                                 companyId: widget.companyModel?.id.toString(),
                                 isUpdate: widget.isUpdate ? true : false,
@@ -777,8 +780,7 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                                     applicationReceivedContent.text,
                                 applicationReceivedSubject:
                                     applicationReceivedSubject.text,
-                                areaDistance:
-                                    "${value.range.toStringAsFixed(0)} miles",
+                                areaDistance: value.range.toStringAsFixed(0),
                                 disqualifiedReviewContent:
                                     disqualifiedReviewContent.text,
                                 disqualifiedReviewSubject:
@@ -796,6 +798,11 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                                 topSkills: value.skills,
                                 uploadPhoto: uploadPhoto.imgUrl,
                               ));
+                              AppRoutes.push(
+                                  context,
+                                  JobOpeningScreen(
+                                      companyModel: widget.companyModel));
+
                               // jobPosition.add(LoadJobPosListEvent());
                             } else {
                               print('@@@@  ||||||||||||||  @@@@');

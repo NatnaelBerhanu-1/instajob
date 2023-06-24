@@ -124,7 +124,13 @@ class WelcomeScreen extends StatelessWidget {
                             },
                           ),
                           CustomSocialButton(image: MyImages.twitter),
-                          CustomSocialButton(image: MyImages.facebook),
+                          CustomSocialButton(
+                            image: MyImages.facebook,
+                            onTap: () {
+                              auth.faceBookAuth(
+                                  isUser: userType == "user" ? true : false);
+                            },
+                          ),
                         ],
                       );
                     })

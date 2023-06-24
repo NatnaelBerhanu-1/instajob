@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
+import 'package:insta_job/bloc/job_position/job_pos_event.dart';
+import 'package:insta_job/bloc/job_position/job_pos_state.dart';
 import 'package:insta_job/dialog/applied_successful_dialog.dart';
 import 'package:insta_job/dialog/custom_dialog.dart';
 import 'package:insta_job/globals.dart';
@@ -77,15 +79,25 @@ class CoverLetterScreen extends StatelessWidget {
                 },
               ),
               SizedBox(height: 30),
-              CustomButton(
-                title: "Confirm & Apply",
-                bgColor: MyColors.white,
-                fontColor: MyColors.blue,
-                borderColor: MyColors.blue,
-                onTap: () {
-                  buildDialog(context, AppliedSuccessDialog());
-                },
-              ),
+              BlocConsumer<JobPositionBloc, JobPosState>(
+                  listener: (context, state) {
+                if (state is JobErrorState) {
+                  showToast(state.error);
+                }
+                if (state is JobAppliedSuccessState) {
+                  buildDialog(
+                      context, AppliedSuccessDialog(isCoverLetter: true));
+                }
+              }, builder: (context, state) {
+                return CustomButton(
+                  title: "Confirm & Apply",
+                  onTap: () {
+                    var applyData = context.read<JobPositionBloc>();
+                    applyData.add(ApplyJobEvent(Global.userModel!.cv.toString(),
+                        jobId: applyData.jobModel.id.toString()));
+                  },
+                );
+              }),
             ],
           ),
         ),

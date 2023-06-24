@@ -10,7 +10,6 @@ import 'package:insta_job/bloc/company_bloc/company_state.dart';
 import 'package:insta_job/bloc/validation/validation_bloc.dart';
 import 'package:insta_job/bloc/validation/validation_state.dart';
 import 'package:insta_job/globals.dart';
-import 'package:insta_job/network/end_points.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_app_bar.dart';
@@ -108,14 +107,7 @@ class _AddNewCompanyState extends State<AddNewCompany> {
                     );
                   }),
                   SizedBox(height: 30),
-                  BlocBuilder<PickImageCubit, InitialImage>(
-                      builder: (context, state) {
-                    if (state is PickImageState) {
-                      return Image.network(
-                          "${EndPoint.imageBaseUrl}${state.url}");
-                    }
-                    return uploadPhotoCard(context);
-                  }),
+                  uploadPhotoCard(context),
                   SizedBox(height: 30),
                   BlocConsumer<PickImageCubit, InitialImage>(
                       listener: (c, state) {

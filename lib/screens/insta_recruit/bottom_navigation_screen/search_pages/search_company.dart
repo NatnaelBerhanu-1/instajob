@@ -231,9 +231,9 @@ class _SearchCompanyState extends State<SearchCompany> {
                               if (companyState is ErrorState) ...[
                                 Center(child: Text(companyState.error)),
                               ],
-                              if (jobState is JobErrorState) ...[
-                                Center(child: Text(jobState.error)),
-                              ],
+                              // if (jobState is JobErrorState) ...[
+                              //   Center(child: Text(jobState.error)),
+                              // ],
                               if (companyState is CompanyLoading) ...[
                                 Center(child: CircularProgressIndicator())
                               ]

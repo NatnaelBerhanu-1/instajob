@@ -14,9 +14,28 @@ import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/widgets/custom_app_bar.dart';
 import 'package:insta_job/widgets/custom_button/custom_btn.dart';
 import 'package:printing/printing.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class CvTemplateScreen extends StatelessWidget {
+class CvTemplateScreen extends StatefulWidget {
   const CvTemplateScreen({Key? key}) : super(key: key);
+
+  @override
+  State<CvTemplateScreen> createState() => _CvTemplateScreenState();
+}
+
+class _CvTemplateScreenState extends State<CvTemplateScreen> {
+  getImage() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var img = pref.getString("resumeImg");
+    profileImage = img ?? "";
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    getImage();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +80,8 @@ class CvTemplateScreen extends StatelessWidget {
                 allowSharing: false,
                 dynamicLayout: false,
                 // pdfFileName: "Resume",
-                build: (c) => makePdf(context),
+                build: (c) => makePdf(context,
+                    image: profileImage, color: color, font: pdfFont),
               ),
             ),
             SizedBox(height: 20),

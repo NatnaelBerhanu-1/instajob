@@ -103,6 +103,13 @@ class GlobalCubit extends Cubit<InitialState> {
     emit(IndexState(durationIndex));
   }
 
+  /// Resume Index
+  int rIndex = 0;
+  changeRIndex(val) {
+    rIndex = val;
+    emit(IndexState(rIndex));
+  }
+
   /// Experience level
   String experienceLevelVal = "";
   experienceLevel(String val) {

@@ -116,7 +116,7 @@ class _ApplicantsState extends State<Applicants> {
                               child: CustomButton(
                               height:
                                   MediaQuery.of(context).size.height * 0.055,
-                              title: "Shortlisted",
+                              title: "Shortlist",
                               bgColor: MyColors.cyan,
                             )),
                       tab.selectedTab == 4 ? SizedBox() : SizedBox(width: 15),

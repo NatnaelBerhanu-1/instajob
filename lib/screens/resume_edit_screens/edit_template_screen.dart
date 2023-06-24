@@ -1,8 +1,10 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/choose_image_bloc/pick_image_cubit.dart';
+import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
+import 'package:insta_job/bloc/global_cubit/global_state.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/network/end_points.dart';
 import 'package:insta_job/screens/insta_job_user/SliderScreen/Slider_screen.dart';
@@ -14,6 +16,12 @@ import 'package:insta_job/widgets/custom_button/custom_btn.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:insta_job/widgets/custom_cards/custom_template_card.dart';
 import 'package:printing/printing.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+String profileImage =
+    "https://p7.hiclipart.com/preview/340/956/944/computer-icons-user-profile-head-ico-download.jpg";
+int color = 0xffEEF3F1;
+var pdfFont;
 
 class EditTemplateScreen extends StatefulWidget {
   const EditTemplateScreen({Key? key}) : super(key: key);
@@ -23,13 +31,25 @@ class EditTemplateScreen extends StatefulWidget {
 }
 
 class _EditTemplateScreenState extends State<EditTemplateScreen> {
-  int index = 0;
+  // int index = 0;
   int? fontIndex;
-  int color = 0xffEEF3F1;
-  var pdfFont;
-  String profileImage = "https://www.nfet.net/nfet.jpg";
+
+  getImage() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var img = pref.getString("resumeImg");
+    profileImage = img ?? "";
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    getImage();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    var index = context.watch<GlobalCubit>().rIndex;
     return Scaffold(
       appBar: PreferredSize(
           preferredSize: Size(double.infinity, kToolbarHeight),
@@ -111,13 +131,15 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
                     children: [
                       Row(
                         children: [
-                          IconButton(
-                              onPressed: () {
-                                index = 0;
-                                setState(() {});
-                              },
-                              icon: Icon(Icons.arrow_back_sharp,
-                                  color: MyColors.blue)),
+                          BlocBuilder<GlobalCubit, InitialState>(
+                              builder: (context, state) {
+                            return IconButton(
+                                onPressed: () {
+                                  context.read<GlobalCubit>().changeRIndex(0);
+                                },
+                                icon: Icon(Icons.arrow_back_sharp,
+                                    color: MyColors.blue));
+                          }),
                           CommonText(text: "Color"),
                         ],
                       ),
@@ -165,13 +187,15 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
                     children: [
                       Row(
                         children: [
-                          IconButton(
-                              onPressed: () {
-                                index = 0;
-                                setState(() {});
-                              },
-                              icon: Icon(Icons.arrow_back_sharp,
-                                  color: MyColors.blue)),
+                          BlocBuilder<GlobalCubit, InitialState>(
+                              builder: (context, state) {
+                            return IconButton(
+                                onPressed: () {
+                                  context.read<GlobalCubit>().changeRIndex(0);
+                                },
+                                icon: Icon(Icons.arrow_back_sharp,
+                                    color: MyColors.blue));
+                          }),
                           CommonText(text: "Fonts"),
                         ],
                       ),
@@ -256,13 +280,15 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
                   children: [
                     Row(
                       children: [
-                        IconButton(
-                            onPressed: () {
-                              index = 0;
-                              setState(() {});
-                            },
-                            icon: Icon(Icons.arrow_back_sharp,
-                                color: MyColors.blue)),
+                        BlocBuilder<GlobalCubit, InitialState>(
+                            builder: (context, state) {
+                          return IconButton(
+                              onPressed: () {
+                                context.read<GlobalCubit>().changeRIndex(0);
+                              },
+                              icon: Icon(Icons.arrow_back_sharp,
+                                  color: MyColors.blue));
+                        }),
                         CommonText(text: "Change Photo"),
                       ],
                     ),
@@ -275,14 +301,15 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
                         borderColor: MyColors.blue,
                         fontColor: MyColors.blue,
                         onTap: () async {
+                          SharedPreferences pref =
+                              await SharedPreferences.getInstance();
                           var imageBloc = context.read<PickImageCubit>();
                           imageBloc.isCamera = true;
                           await imageBloc.getImage();
                           profileImage =
                               "${EndPoint.imageBaseUrl}${imageBloc.imgUrl}";
+                          pref.setString("resumeImg", profileImage);
                           setState(() {});
-                          print("+++++++++++ $profileImage");
-                          // image.getCvImage();
                         },
                       ),
                     ),
@@ -293,14 +320,16 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
                         title: "Upload From Gallery",
                         borderColor: MyColors.blue,
                         onTap: () async {
+                          SharedPreferences pref =
+                              await SharedPreferences.getInstance();
+
                           var imageBloc = context.read<PickImageCubit>();
                           imageBloc.isCamera = false;
                           await imageBloc.getImage();
                           profileImage =
                               "${EndPoint.imageBaseUrl}${imageBloc.imgUrl}";
+                          pref.setString("resumeImg", profileImage);
                           setState(() {});
-                          print("+++++++++++ $profileImage");
-                          // AppRoutes.push(context, EditTemplateScreen());
                         },
                       ),
                     ),
@@ -312,52 +341,51 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
                 padding: const EdgeInsets.only(left: 8.0, right: 8),
                 child: Column(
                   children: [
-                    Row(
-                      children: [
-                        Expanded(
-                            child: CustomTemplateCard(
-                          label: "Change",
-                          label2: "Templates",
-                          onTap: () {
-                            // index = 1;
-                            setState(() {});
-                          },
-                        )),
-                        // Spacer(),
-                        SizedBox(width: 20),
-                        Expanded(
-                            child: CustomTemplateCard(
-                          label: "Change",
-                          label2: "Colors",
-                          onTap: () {
-                            index = 2;
-                            setState(() {});
-                          },
-                        )),
-                        // Spacer(),
-                        SizedBox(width: 20),
-                        Expanded(
-                            child: CustomTemplateCard(
-                          label: "Change",
-                          label2: "Fonts",
-                          onTap: () {
-                            index = 3;
-                            setState(() {});
-                          },
-                        )),
-                        // Spacer(),
-                        SizedBox(width: 20),
-                        Expanded(
-                            child: CustomTemplateCard(
-                          label: "Change",
-                          label2: "Photo",
-                          onTap: () {
-                            index = 4;
-                            setState(() {});
-                          },
-                        )),
-                      ],
-                    ),
+                    BlocBuilder<GlobalCubit, InitialState>(
+                        builder: (context, state) {
+                      return Row(
+                        children: [
+                          Expanded(
+                              child: CustomTemplateCard(
+                            label: "Change",
+                            label2: "Templates",
+                            onTap: () {
+                              context.read<GlobalCubit>().changeRIndex(1);
+                            },
+                          )),
+                          // Spacer(),
+                          SizedBox(width: 20),
+                          Expanded(
+                              child: CustomTemplateCard(
+                            label: "Change",
+                            label2: "Colors",
+                            onTap: () {
+                              context.read<GlobalCubit>().changeRIndex(2);
+                            },
+                          )),
+                          // Spacer(),
+                          SizedBox(width: 20),
+                          Expanded(
+                              child: CustomTemplateCard(
+                            label: "Change",
+                            label2: "Fonts",
+                            onTap: () {
+                              context.read<GlobalCubit>().changeRIndex(3);
+                            },
+                          )),
+                          // Spacer(),
+                          SizedBox(width: 20),
+                          Expanded(
+                              child: CustomTemplateCard(
+                            label: "Change",
+                            label2: "Photo",
+                            onTap: () {
+                              context.read<GlobalCubit>().changeRIndex(4);
+                            },
+                          )),
+                        ],
+                      );
+                    }),
                     SizedBox(height: 10),
                     Align(
                       alignment: FractionalOffset.bottomCenter,

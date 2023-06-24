@@ -59,6 +59,32 @@ class JobPositionRepository {
     }
   }
 
+  Future<ApiResponse> getAppliedJob() async {
+    var map = {
+      "user_id": Global.userModel?.id,
+    };
+    try {
+      Response response =
+          await dioClient.post(data: map, uri: EndPoint.getAppliedJob);
+      return ApiResponse.withSuccess(response);
+    } on DioException catch (e) {
+      return ApiResponse.withError(e.response);
+    }
+  }
+
+  Future<ApiResponse> shortlistOrDenied({required String id}) async {
+    var map = {
+      "id": id,
+    };
+    try {
+      Response response =
+          await dioClient.post(data: map, uri: EndPoint.shortlistOrDenied);
+      return ApiResponse.withSuccess(response);
+    } on DioException catch (e) {
+      return ApiResponse.withError(e.response);
+    }
+  }
+
   Future<ApiResponse> deleteJobPosition({String? jobId}) async {
     try {
       Response response = await dioClient

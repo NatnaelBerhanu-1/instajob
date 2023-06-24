@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/auth_bloc/auth_cubit.dart';
@@ -70,14 +70,14 @@ class ForgotPassword extends StatelessWidget {
                   hint: "alexis@mygmail.com",
                 ),
                 SizedBox(height: 40),
-                Center(
+                /* Center(
                   child: CommonText(
                     text: "I didn't receive the code",
                     fontWeight: FontWeight.w400,
                     fontColor: MyColors.grey,
                     fontSize: 13,
                   ),
-                ),
+                ),*/
                 /*SizedBox(height: 15),
                 BlocBuilder<AuthCubit, AuthInitialState>(
                     builder: (context, state) {
@@ -112,7 +112,7 @@ class ForgotPassword extends StatelessWidget {
                     fontColor: MyColors.white,
                     borderColor: MyColors.blue,
                     iconColor: MyColors.white,
-                    onclick: () {
+                    onclick: () async {
                       if (formKey.currentState!.validate()) {
                         context.read<AuthCubit>().email = email.text;
                         context

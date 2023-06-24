@@ -81,6 +81,11 @@ class ApplyJobEvent extends JobPosEvent {
   List<Object?> get props => [];
 }
 
+class AppliedJobListEvent extends JobPosEvent {
+  @override
+  List<Object?> get props => [];
+}
+
 class SavedJobPositionListEvent extends JobPosEvent {
   @override
   List<Object?> get props => [];
@@ -90,6 +95,14 @@ class JobSearchEvent extends JobPosEvent {
   final FilterModel filterModel;
 
   JobSearchEvent({required this.filterModel});
+  @override
+  List<Object?> get props => [];
+}
+
+class SortListOrDenyEvent extends JobPosEvent {
+  final String id;
+
+  SortListOrDenyEvent({required this.id});
   @override
   List<Object?> get props => [];
 }

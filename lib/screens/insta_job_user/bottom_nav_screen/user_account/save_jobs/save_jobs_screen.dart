@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
+import 'package:insta_job/bloc/job_position/job_pos_event.dart';
 import 'package:insta_job/bloc/job_position/job_pos_state.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/job_opening/job_position_screen.dart';
 import 'package:insta_job/utils/app_routes.dart';
@@ -42,6 +43,17 @@ class _SaveJobsScreenState extends State<SaveJobsScreen> {
                             unselectedLabelColor: MyColors.tabClr,
                             labelColor: MyColors.blue,
                             indicatorColor: MyColors.blue,
+                            onTap: (val) {
+                              if (val == 0) {
+                                context
+                                    .read<JobPositionBloc>()
+                                    .add(SavedJobPositionListEvent());
+                              } else {
+                                context
+                                    .read<JobPositionBloc>()
+                                    .add(AppliedJobListEvent());
+                              }
+                            },
                             tabs: [
                               Tab(text: "Saved"),
                               Tab(text: "Applied"),
@@ -93,24 +105,49 @@ class _SaveJobsScreenState extends State<SaveJobsScreen> {
                           if (state is JobPosLoading) ...[
                             Center(child: CircularProgressIndicator()),
                           ],
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: GridView.builder(
-                              itemCount: 10,
-                              itemBuilder: (c, i) {
-                                return Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 5, vertical: 8),
-                                  child: AppliedTile(),
-                                );
-                              },
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2,
-                                      crossAxisSpacing: 0,
-                                      mainAxisSpacing: 0),
-                            ),
-                          ),
+                          if (state is AppliedJobLoaded) ...[
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: GridView.builder(
+                                itemCount: state.appliedJobList.length,
+                                itemBuilder: (c, i) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      // AppRoutes.push(
+                                      //     context,
+                                      //     JobPositionScreen(
+                                      //       jobPosModel:
+                                      //           state.appliedJobList[i],
+                                      //       // companyModel: context
+                                      //       //     .read<CompanyBloc>()
+                                      //       //     .companyModel,
+                                      //     ));
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 5, vertical: 8),
+                                      child: AppliedTile(
+                                          isAppliedTab: true,
+                                          appliedJobModel:
+                                              state.appliedJobList[i]),
+                                    ),
+                                  );
+                                },
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 2,
+                                        crossAxisSpacing: 0,
+                                        mainAxisSpacing: 0,
+                                        childAspectRatio: 5.5 / 5),
+                              ),
+                            )
+                          ],
+                          if (state is ApplyErrorState) ...[
+                            Center(child: Text(state.error))
+                          ],
+                          if (state is ApplyLoading) ...[
+                            Center(child: CircularProgressIndicator()),
+                          ],
                         ]);
                       }),
                     )
@@ -122,3 +159,5 @@ class _SaveJobsScreenState extends State<SaveJobsScreen> {
         ));
   }
 }
+
+/**/

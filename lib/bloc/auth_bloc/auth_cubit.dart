@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -322,8 +324,18 @@ class AuthCubit extends Cubit<AuthInitialState> {
     }
   }
 
+  /// CHECK USER
+  Future<bool> checkUser(String email, BuildContext context) async {
+    ApiResponse response = await authRepository.checkUser(email);
+    if (response.response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   /// facebook
-  faceBookAuth() async {
+  faceBookAuth({bool isUser = false}) async {
     final LoginResult loginResult =
         await FacebookAuth.instance.login(permissions: ['email']);
 
@@ -334,12 +346,44 @@ class AuthCubit extends Cubit<AuthInitialState> {
             FacebookAuthProvider.credential(accessToken.token);
         FirebaseAuth.instance
             .signInWithCredential(facebookCredential)
-            .then((value) {
+            .then((value) async {
           print('THENN ');
           if (value.user != null) {
-            navigationKey.currentState?.pushAndRemoveUntil(
-                MaterialPageRoute(builder: (_) => const BottomNavScreen()),
-                (route) => false);
+            ApiResponse response =
+                await authRepository.checkUser(value.user!.email.toString());
+            if (response.response.statusCode == 200) {
+              login(
+                  email: value.user!.email,
+                  isUser: isUser,
+                  password: value.user!.uid);
+              // navigationKey.currentState?.pushAndRemoveUntil(
+              //     MaterialPageRoute(builder: (_) => const BottomNavScreen()),
+              //     (route) => false);
+            } else {
+              userName = value.user!.displayName!;
+              email = value.user!.email!;
+              password = value.user!.uid;
+              getData();
+              navigationKey.currentState?.pushAndRemoveUntil(
+                  MaterialPageRoute(
+                      builder: (_) => isUser
+                          ? const RegMoreInfoScreen()
+                          : const BecameAnEmployer()),
+                  (route) => false);
+            }
+            // registerEmp(
+            // email: value.user!.email,
+            // isUser: isUser,
+            // password: value.user!.uid,
+            // name: value.user!.displayName,
+            // );
+            // var userModel = UserModel.fromJson(response.response.data['data']);
+            // Global.userModel = userModel;
+            // await sharedPreferences.setString(
+            //     "user", jsonEncode(response.response.data['data']));
+            // emit(AuthState(userModel: userModel));
+
+            print('USERRRR ------------------           ${value.user}');
           }
         });
       } else {
@@ -393,7 +437,7 @@ class AuthCubit extends Cubit<AuthInitialState> {
           builder: (_) => const VerifyCodeScreen(isForgotPassword: true)));
     }
     if (response.response.statusCode == 400) {
-      emit(ErrorState("${response.response.data['message']}"));
+      emit(ErrorState("Email not register yet"));
     }
   }
 

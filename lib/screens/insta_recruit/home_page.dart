@@ -57,218 +57,231 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.only(right: 15.0, top: 15),
             child: BlocBuilder<GlobalCubit, InitialState>(
                 builder: (context, state) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: Column(
-                          children: [
-                            Stack(
-                              children: [
-                                Image.asset(
-                                  MyImages.user_4x,
-                                  fit: BoxFit.cover,
-                                  color: MyColors.user,
-                                  // height: 100,
-                                  width: 90,
-                                ),
-                                Positioned(
-                                  bottom: 0,
-                                  right: 0,
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      AppRoutes.push(
-                                          context, ChangeAccInfoScreen());
-                                    },
-                                    child: Container(
-                                      padding: EdgeInsets.all(4),
-                                      decoration: BoxDecoration(
-                                          color: MyColors.blue,
-                                          shape: BoxShape.circle),
-                                      child: Image.asset(MyImages.edit,
-                                          fit: BoxFit.cover,
-                                          color: MyColors.white,
-                                          // height: 100,
-                                          width: 22),
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                            SizedBox(height: 19),
-                            CommonText(
-                              text: Global.userModel?.type == "user"
-                                  ? "${Global.userModel?.name?[0].toUpperCase()}${Global.userModel?.name?.substring(1)}"
-                                  : "${Global.userModel?.companyName?[0].toUpperCase()}${Global.userModel?.companyName?.substring(1)}",
-                              fontSize: 21,
-                              fontWeight: FontWeight.w500,
-                              fontColor: MyColors.blue,
-                            )
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: Global.userModel?.uploadPhoto == null
-                            ? SizedBox()
-                            : Container(
-                                height: 150,
-                                color: MyColors.transparent,
-                                child: CachedNetworkImage(
-                                  imageUrl:
-                                      "${EndPoint.imageBaseUrl}${Global.userModel?.uploadPhoto}",
-                                  fit: BoxFit.cover,
-                                  placeholder: (val, _) {
-                                    return Center(
-                                        child: CircularProgressIndicator());
-                                  },
-                                )
-                                // Image.network(
-                                //   "${EndPoint.imageBaseUrl}${Global.userModel?.uploadPhoto}",
-                                //   fit: BoxFit.fitHeight,
-                                // ),
-                                ),
-                      )
-                    ],
-                  ),
-                  SizedBox(height: 15),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 15.0),
-                    child: CommonText(
-                      text: "Account Details",
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      fontColor: MyColors.userFont,
-                    ),
-                  ),
-                  SizedBox(height: 25),
-                  Row(
-                    children: [
-                      Global.userModel?.type == "user"
-                          ? Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.only(left: 15.0),
-                                child: CustomAccDetails(
-                                  onTap: () async {
-                                    var pref =
-                                        await SharedPreferences.getInstance();
-                                    var isGetStarted =
-                                        pref.getBool("isGetStarted");
-                                    if (isGetStarted == true) {
-                                      AppRoutes.push(
-                                          context, CvTemplateScreen());
-                                    } else {
-                                      context
-                                          .read<GlobalCubit>()
-                                          .changeIndex(0);
-                                      AppRoutes.push(
-                                          context, OnBoardingScreen());
-                                    }
-                                  },
-                                  index: 0,
-                                  selectedIndex: selectedIndex,
-                                  width: double.infinity,
-                                  img: MyImages.automateMsg,
-                                  title: "Edit Resume/Bio",
-                                ),
-                              ),
-                            )
-                          : SizedBox(),
-                      SizedBox(width: 15),
-                      Expanded(
-                        child: CustomAccDetails(
-                          onTap: () {
-                            context.read<GlobalCubit>().changeIndex(1);
-                            AppRoutes.push(context, FeedBackScreen());
-                          },
-                          index: 1,
-                          selectedIndex: selectedIndex,
-                          width: double.infinity,
-                          img: MyImages.rate,
-                          title: "Feedbacks",
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 25),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 15.0),
-                    child: Column(
+              return SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              child: CustomAccDetails(
-                                onTap: () {
-                                  context.read<GlobalCubit>().changeIndex(2);
-                                  if (Global.userModel?.type == "user") {
-                                    AppRoutes.push(
-                                        context, CareerClusterScreen());
-                                  } else {
-                                    AppRoutes.push(context, JobBoardsScreen());
-                                  }
-                                },
-                                index: 2,
-                                selectedIndex: selectedIndex,
-                                width: double.infinity,
-                                img: Global.userModel?.type == "user"
-                                    ? MyImages.mail
-                                    : MyImages.subscribe,
-                                title: Global.userModel?.type == "user"
-                                    ? "Career Learning"
-                                    : "Subscribe",
+                        Expanded(
+                          child: Column(
+                            children: [
+                              Stack(
+                                children: [
+                                  Image.asset(
+                                    MyImages.user_4x,
+                                    fit: BoxFit.cover,
+                                    color: MyColors.user,
+                                    // height: 100,
+                                    width: 90,
+                                  ),
+                                  Positioned(
+                                    bottom: 0,
+                                    right: 0,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        AppRoutes.push(
+                                            context, ChangeAccInfoScreen());
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.all(4),
+                                        decoration: BoxDecoration(
+                                            color: MyColors.blue,
+                                            shape: BoxShape.circle),
+                                        child: Image.asset(MyImages.edit,
+                                            fit: BoxFit.cover,
+                                            color: MyColors.white,
+                                            // height: 100,
+                                            width: 22),
+                                      ),
+                                    ),
+                                  )
+                                ],
                               ),
-                            ),
-                            SizedBox(width: 15),
-                            Expanded(
-                              child: BlocBuilder<JobPositionBloc, JobPosState>(
-                                  builder: (context, state) {
-                                return CustomAccDetails(
+                              SizedBox(height: 19),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 5.0),
+                                child: CommonText(
+                                  text: Global.userModel?.type == "user"
+                                      ? "${Global.userModel?.name?[0].toUpperCase()}${Global.userModel?.name?.substring(1)}"
+                                      : "${Global.userModel?.companyName?[0].toUpperCase()}${Global.userModel?.companyName?.substring(1)}",
+                                  fontSize: 21,
+                                  fontWeight: FontWeight.w500,
+                                  fontColor: MyColors.blue,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: Global.userModel?.uploadPhoto == null
+                              ? SizedBox()
+                              : Container(
+                                  height: 150,
+                                  color: MyColors.transparent,
+                                  child: CachedNetworkImage(
+                                    imageUrl:
+                                        "${EndPoint.imageBaseUrl}${Global.userModel?.uploadPhoto}",
+                                    fit: BoxFit.cover,
+                                    placeholder: (val, _) {
+                                      return Center(
+                                          child: CircularProgressIndicator());
+                                    },
+                                  )
+                                  // Image.network(
+                                  //   "${EndPoint.imageBaseUrl}${Global.userModel?.uploadPhoto}",
+                                  //   fit: BoxFit.fitHeight,
+                                  // ),
+                                  ),
+                        )
+                      ],
+                    ),
+                    SizedBox(height: 15),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 15.0),
+                      child: CommonText(
+                        text: "Account Details",
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        fontColor: MyColors.userFont,
+                      ),
+                    ),
+                    SizedBox(height: 25),
+                    Row(
+                      children: [
+                        Global.userModel?.type == "user"
+                            ? Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 15.0),
+                                  child: CustomAccDetails(
+                                    onTap: () async {
+                                      var pref =
+                                          await SharedPreferences.getInstance();
+                                      var isGetStarted =
+                                          pref.getBool("isGetStarted");
+                                      if (isGetStarted == true) {
+                                        AppRoutes.push(
+                                            context, CvTemplateScreen());
+                                      } else {
+                                        context
+                                            .read<GlobalCubit>()
+                                            .changeIndex(0);
+                                        AppRoutes.push(
+                                            context, OnBoardingScreen());
+                                      }
+                                    },
+                                    index: 0,
+                                    selectedIndex: selectedIndex,
+                                    width: double.infinity,
+                                    img: MyImages.automateMsg,
+                                    title: "Edit Resume/Bio",
+                                  ),
+                                ),
+                              )
+                            : SizedBox(),
+                        SizedBox(width: 15),
+                        Expanded(
+                          child: CustomAccDetails(
+                            onTap: () {
+                              context.read<GlobalCubit>().changeIndex(1);
+                              AppRoutes.push(context, FeedBackScreen());
+                            },
+                            index: 1,
+                            selectedIndex: selectedIndex,
+                            width: double.infinity,
+                            img: MyImages.rate,
+                            title: "Feedbacks",
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 25),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 15.0),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                child: CustomAccDetails(
                                   onTap: () {
-                                    context.read<GlobalCubit>().changeIndex(3);
+                                    context.read<GlobalCubit>().changeIndex(2);
                                     if (Global.userModel?.type == "user") {
-                                      context
-                                          .read<JobPositionBloc>()
-                                          .add(SavedJobPositionListEvent());
-                                      AppRoutes.push(context, SaveJobsScreen());
+                                      AppRoutes.push(
+                                          context, CareerClusterScreen());
                                     } else {
                                       AppRoutes.push(
-                                          context, AutomateMsgScreen());
+                                          context, JobBoardsScreen());
                                     }
                                   },
-                                  index: 3,
+                                  index: 2,
                                   selectedIndex: selectedIndex,
                                   width: double.infinity,
                                   img: Global.userModel?.type == "user"
-                                      ? MyImages.suitcase
-                                      : MyImages.automateMsg,
+                                      ? MyImages.mail
+                                      : MyImages.subscribe,
                                   title: Global.userModel?.type == "user"
-                                      ? "Saved Jobs"
-                                      : "Automate Message",
-                                );
-                              }),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 25),
-                        CustomAccDetails(
-                          onTap: () {
-                            context.read<GlobalCubit>().changeIndex(4);
-                            AppRoutes.push(context, SettingScreen());
-                          },
-                          index: 4,
-                          selectedIndex: selectedIndex,
-                          width: double.infinity,
-                          img: MyImages.settings,
-                          title: "Settings",
-                        ),
-                        SizedBox(height: 25),
-                      ],
+                                      ? "Career Learning"
+                                      : "Subscribe",
+                                ),
+                              ),
+                              SizedBox(width: 15),
+                              Expanded(
+                                child:
+                                    BlocBuilder<JobPositionBloc, JobPosState>(
+                                        builder: (context, state) {
+                                  return CustomAccDetails(
+                                    onTap: () {
+                                      context
+                                          .read<GlobalCubit>()
+                                          .changeIndex(3);
+                                      if (Global.userModel?.type == "user") {
+                                        context
+                                            .read<JobPositionBloc>()
+                                            .add(SavedJobPositionListEvent());
+                                        // context
+                                        //     .read<JobPositionBloc>()
+                                        //     .add(AppliedJobListEvent());
+                                        AppRoutes.push(
+                                            context, SaveJobsScreen());
+                                      } else {
+                                        AppRoutes.push(
+                                            context, AutomateMsgScreen());
+                                      }
+                                    },
+                                    index: 3,
+                                    selectedIndex: selectedIndex,
+                                    width: double.infinity,
+                                    img: Global.userModel?.type == "user"
+                                        ? MyImages.suitcase
+                                        : MyImages.automateMsg,
+                                    title: Global.userModel?.type == "user"
+                                        ? "Saved Jobs"
+                                        : "Automate Message",
+                                  );
+                                }),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 25),
+                          CustomAccDetails(
+                            onTap: () {
+                              context.read<GlobalCubit>().changeIndex(4);
+                              AppRoutes.push(context, SettingScreen());
+                            },
+                            index: 4,
+                            selectedIndex: selectedIndex,
+                            width: double.infinity,
+                            img: MyImages.settings,
+                            title: "Settings",
+                          ),
+                          SizedBox(height: 25),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               );
             }),
           ),

@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +11,6 @@ import 'package:insta_job/screens/auth_screen/login_screen.dart';
 import 'package:insta_job/screens/auth_screen/reg_more_information.dart';
 import 'package:insta_job/screens/insta_recruit/became_an_employeer.dart';
 import 'package:insta_job/screens/insta_recruit/membership_screen.dart';
-import 'package:insta_job/screens/insta_recruit/user_type_screen.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/widgets/custom_button/custom_all_small_button.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
@@ -23,6 +22,7 @@ import '../../widgets/custom_button/custom_btn.dart';
 import '../../widgets/custom_button/custom_img_button.dart';
 import '../../widgets/custom_cards/custom_common_card.dart';
 import '../../widgets/custom_divider.dart';
+import '../insta_recruit/user_type_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -270,7 +270,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 iconColor: MyColors.white,
                                 loading:
                                     state is AuthLoadingState ? true : false,
-                                onclick: () {
+                                onclick: () async {
                                   FocusManager.instance.primaryFocus?.unfocus();
                                   if (formKey.currentState!.validate()) {
                                     if (validationBloc.checkBox) {
@@ -278,12 +278,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       authData.email = email.text;
                                       authData.password = password.text;
                                       setState(() {});
-                                      if (userType == "user") {
-                                        AppRoutes.push(
-                                            context, RegMoreInfoScreen());
+                                      var checkEmail = await authData.checkUser(
+                                          authData.email, context);
+                                      if (!checkEmail) {
+                                        if (userType == "user") {
+                                          AppRoutes.push(
+                                              context, RegMoreInfoScreen());
+                                        } else {
+                                          AppRoutes.push(
+                                              context, BecameAnEmployer());
+                                        }
                                       } else {
-                                        AppRoutes.push(
-                                            context, BecameAnEmployer());
+                                        showToast(
+                                            "The account already exists for this email");
                                       }
                                       authData.getData();
                                       // context

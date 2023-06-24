@@ -25,7 +25,8 @@ class ConfirmDetailsScreen extends StatefulWidget {
 class _ConfirmDetailsScreenState extends State<ConfirmDetailsScreen> {
   TextEditingController name =
       TextEditingController(text: Global.userModel?.name);
-  TextEditingController phoneNumber = TextEditingController(text: "9876542923");
+  TextEditingController phoneNumber =
+      TextEditingController(text: "${Global.userModel?.phoneNumber}");
   TextEditingController previousWork = TextEditingController(
       text: "Work with software company for 2 years, Freelancing on fiverr");
   TextEditingController passion = TextEditingController(

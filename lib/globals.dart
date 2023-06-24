@@ -120,7 +120,8 @@ Future<Uint8List> makePdf(BuildContext context,
     {int? color, font, String? image}) async {
   final pdf = pw.Document();
   var data = context.read<ResumeBloc>();
-  final netImage = await networkImage(image ?? "https://www.nfet.net/nfet.jpg");
+  final netImage = await networkImage(image ??
+      "https://p7.hiclipart.com/preview/340/956/944/computer-icons-user-profile-head-ico-download.jpg");
 
   pdf.addPage(pw.Page(build: (context) {
     return pw.Row(
@@ -151,17 +152,19 @@ Future<Uint8List> makePdf(BuildContext context,
                             // top: 30,
                             // left: ,
                             child: pw.Container(
-                                height: 150,
-                                width: 150,
-                                // alignment: pw.Alignment.center,
-                                decoration: pw.BoxDecoration(
-                                  color: PdfColor.fromHex("#b9ccc8"),
-                                  shape: pw.BoxShape.circle,
-                                  image: pw.DecorationImage(image: netImage),
-                                ),
-                                child: image == null
-                                    ? pw.SizedBox()
-                                    : pw.Image(netImage)),
+                              height: 150,
+                              width: 150,
+                              // alignment: pw.Alignment.center,
+                              decoration: pw.BoxDecoration(
+                                color: PdfColor.fromHex("#b9ccc8"),
+                                shape: pw.BoxShape.circle,
+                                image: pw.DecorationImage(
+                                    image: netImage, fit: pw.BoxFit.cover),
+                              ),
+                              // child: image == null
+                              //     ? pw.SizedBox()
+                              //     : pw.Image(netImage)
+                            ),
                           ),
                           pw.SizedBox(height: 30),
                           pw.Text("${Global.userModel?.name}",

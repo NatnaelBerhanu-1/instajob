@@ -8,7 +8,9 @@ import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import '../utils/my_images.dart';
 
 class AppliedSuccessDialog extends StatelessWidget {
-  const AppliedSuccessDialog({Key? key}) : super(key: key);
+  final bool isCoverLetter;
+  const AppliedSuccessDialog({Key? key, this.isCoverLetter = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +34,11 @@ class AppliedSuccessDialog extends StatelessWidget {
             CustomButton(
               title: "Thanks!",
               onTap: () {
+                if (isCoverLetter) {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                } else {}
                 Navigator.of(context).pop();
                 Navigator.of(context).pop();
                 // AppRoutes.pushReplacement(

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
 import 'package:insta_job/globals.dart';
+import 'package:insta_job/model/applied_job_model.dart';
 import 'package:insta_job/model/job_position_model.dart';
 import 'package:insta_job/screens/insta_job_user/bottom_nav_screen/user_account/occupation_details_screen.dart';
 import 'package:insta_job/utils/app_routes.dart';
@@ -125,11 +126,15 @@ class CustomCareerTile extends StatelessWidget {
 
 class AppliedTile extends StatelessWidget {
   final JobPosModel? jobPosModel;
+  final AppliedJobModel? appliedJobModel;
   final bool isFav;
+  final bool isAppliedTab;
   const AppliedTile({
     Key? key,
     this.isFav = false,
     this.jobPosModel,
+    this.appliedJobModel,
+    this.isAppliedTab = false,
   }) : super(key: key);
 
   @override
@@ -171,20 +176,24 @@ class AppliedTile extends StatelessWidget {
             Expanded(
               flex: 0,
               child: CommonText(
-                  text: jobPosModel?.designation.toString(),
+                  text: isAppliedTab
+                      ? appliedJobModel?.designation
+                      : jobPosModel?.designation.toString(),
                   fontColor: MyColors.blue,
                   fontSize: 13),
             ),
             SizedBox(height: 5),
-            Expanded(
+            /* Expanded(
                 flex: 0,
                 child:
                     CommonText(text: jobPosModel?.companyName, fontSize: 15)),
-            SizedBox(height: 5),
+            SizedBox(height: 5),*/
             Expanded(
               flex: 0,
               child: CommonText(
-                  text: jobPosModel?.jobDetails,
+                  text: isAppliedTab
+                      ? appliedJobModel?.jobdetails
+                      : jobPosModel?.jobDetails,
                   fontSize: 12,
                   overflow: TextOverflow.ellipsis,
                   fontColor: MyColors.greyTxt),
