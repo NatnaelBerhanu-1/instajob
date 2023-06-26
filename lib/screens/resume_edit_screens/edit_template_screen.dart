@@ -37,7 +37,7 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
   getImage() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var img = pref.getString("resumeImg");
-    profileImage = img ?? "";
+    profileImage = img ?? profileImage;
     setState(() {});
   }
 
@@ -73,7 +73,13 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
                 ),
               ),
             ),
-            onTap: () {
+            onTap: () async {
+              // AppRoutes.pushReplacement(context, CvTemplateScreen());
+              SharedPreferences pref = await SharedPreferences.getInstance();
+              var img = pref.getString("resumeImg");
+              profileImage = img ?? profileImage;
+              setState(() {});
+              print("IMAGE 1--- $profileImage");
               Navigator.of(context).pop();
             },
           )),

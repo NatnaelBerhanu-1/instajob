@@ -315,7 +315,7 @@ class _SearchJobsScreenState extends State<SearchJobsScreen> {
                               color: MyColors.grey,
                               child: GoogleMap(
                                 initialCameraPosition: CameraPosition(
-                                    target: LatLng(0.0, 22.90), zoom: 14),
+                                    target: LatLng(0.0, 22.90), zoom: 10),
                                 zoomControlsEnabled: true,
                                 // zoomGesturesEnabled: true,
                                 // scrollGesturesEnabled: true,

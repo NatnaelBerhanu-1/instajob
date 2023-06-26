@@ -69,14 +69,15 @@ class _ConfirmDetailsScreenState extends State<ConfirmDetailsScreen> {
                 CustomTextField(
                   controller: name, lblColor: MyColors.black,
                   label: "Your Name",
-                  // suffixIcon: buildSuffix(edit: () {
-                  //   resumeData.add(CheckReadOnlyEvent(false));
-                  // }),
+                  suffixIcon: buildSuffix(confirm: () {
+                    FocusManager.instance.primaryFocus?.unfocus();
+                  }),
                   hint: "",
                   onChanged: (val) {
                     nameVal = val;
                     setState(() {});
                   },
+
                   // hint: "${Global.userModel?.name}",
                 ),
                 SizedBox(height: 20),
@@ -85,7 +86,9 @@ class _ConfirmDetailsScreenState extends State<ConfirmDetailsScreen> {
                   lblColor: MyColors.black,
                   label: "Phone Number",
                   maxLength: 10,
-                  suffixIcon: buildSuffix(),
+                  suffixIcon: buildSuffix(confirm: () {
+                    FocusManager.instance.primaryFocus?.unfocus();
+                  }),
                   keyboardType: TextInputType.number,
                   hint: "9729864329",
                   onChanged: (val) {
@@ -98,7 +101,9 @@ class _ConfirmDetailsScreenState extends State<ConfirmDetailsScreen> {
                   controller: skills,
                   label: "Your top 5 skills",
                   lblColor: MyColors.black,
-                  suffixIcon: buildSuffix(),
+                  suffixIcon: buildSuffix(confirm: () {
+                    FocusManager.instance.primaryFocus?.unfocus();
+                  }),
                   hint: "",
                   keyboardType: TextInputType.multiline,
                   onChanged: (val) {
@@ -111,7 +116,9 @@ class _ConfirmDetailsScreenState extends State<ConfirmDetailsScreen> {
                   label: "Previous Work",
                   lblColor: MyColors.black,
                   controller: previousWork,
-                  suffixIcon: buildSuffix(),
+                  suffixIcon: buildSuffix(confirm: () {
+                    FocusManager.instance.primaryFocus?.unfocus();
+                  }),
                   // heading: "Previous Work",
                   hint: "",
                   maxLine: 2,
@@ -125,7 +132,9 @@ class _ConfirmDetailsScreenState extends State<ConfirmDetailsScreen> {
                   controller: passion,
                   label: "Your Passion",
                   hint: "",
-                  suffixIcon: buildSuffix(),
+                  suffixIcon: buildSuffix(confirm: () {
+                    FocusManager.instance.primaryFocus?.unfocus();
+                  }),
                   onChanged: (val) {
                     passionVal = val;
                     setState(() {});

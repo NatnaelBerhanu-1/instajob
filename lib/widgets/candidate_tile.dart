@@ -15,7 +15,9 @@ import 'custom_button/custom_img_button.dart';
 import 'custom_cards/custom_common_card.dart';
 
 class CandidateTile extends StatelessWidget {
-  const CandidateTile({Key? key}) : super(key: key);
+  final ValueChanged? onchange;
+  final bool? value;
+  const CandidateTile({Key? key, this.onchange, this.value}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -50,10 +52,10 @@ class CandidateTile extends StatelessWidget {
                     child: Checkbox(
                       visualDensity: VisualDensity.comfortable,
                       fillColor: MaterialStateProperty.all(MyColors.blue),
-                      onChanged: (val) {},
+                      onChanged: onchange,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5)),
-                      value: false,
+                      value: value,
                       // activeColor: MyColors.green,
                       // checkColor: MyColors.white,
                       side: BorderSide(color: MyColors.blue, width: 2),

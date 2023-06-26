@@ -63,20 +63,20 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
     var uploadPhoto = context.read<PickImageCubit>();
     if (widget.isUpdate) {
       var model = widget.jobPosModel!;
-      designation.text = model.designation!;
-      jobDetails.text = model.jobDetails!;
-      requirements.text = model.requirements!;
-      responsibility.text = model.responsibilities!;
-      applicationReceivedSubject.text = model.applicationReceivedSubject!;
-      applicationReceivedContent.text = model.applicationReceivedContent!;
-      disqualifiedReviewSubject.text = model.disqualifiedReviewSubject!;
-      disqualifiedReviewContent.text = model.disqualifiedReviewContent!;
-      shortlistedReviewSubject.text = model.shortlistedReviewSubject!;
-      shortlistedReviewContent.text = model.shortlistedReviewContent!;
+      designation.text = model.designation ?? "";
+      jobDetails.text = model.jobDetails ?? "";
+      requirements.text = model.requirements ?? "";
+      responsibility.text = model.responsibilities ?? "";
+      applicationReceivedSubject.text = model.applicationReceivedSubject ?? "";
+      applicationReceivedContent.text = model.applicationReceivedContent ?? "";
+      disqualifiedReviewSubject.text = model.disqualifiedReviewSubject ?? "";
+      disqualifiedReviewContent.text = model.disqualifiedReviewContent ?? "";
+      shortlistedReviewSubject.text = model.shortlistedReviewSubject ?? "";
+      shortlistedReviewContent.text = model.shortlistedReviewContent ?? "";
       value.skills = model.topSkills ?? [];
-      value.jobTypeValue = model.jobsType!;
-      value.experienceLevelVal = model.experienceLevel!;
-      uploadPhoto.imgUrl = model.uploadPhoto!;
+      value.jobTypeValue = model.jobsType ?? "";
+      value.experienceLevelVal = model.experienceLevel ?? "";
+      uploadPhoto.imgUrl = model.uploadPhoto ?? "";
       print('UPLOAD hudfgfhin ***************  ${uploadPhoto.imgUrl}');
     } else {
       if (Global.userModel?.automateMsgBtn == 1) {

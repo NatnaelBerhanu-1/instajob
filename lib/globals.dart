@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:insta_job/bloc/resume_bloc/resume_bloc.dart';
+import 'package:insta_job/screens/resume_edit_screens/edit_template_screen.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:open_file_safe/open_file_safe.dart';
 import 'package:path_provider/path_provider.dart';
@@ -120,8 +121,7 @@ Future<Uint8List> makePdf(BuildContext context,
     {int? color, font, String? image}) async {
   final pdf = pw.Document();
   var data = context.read<ResumeBloc>();
-  final netImage = await networkImage(image ??
-      "https://p7.hiclipart.com/preview/340/956/944/computer-icons-user-profile-head-ico-download.jpg");
+  final netImage = await networkImage(image ?? profileImage);
 
   pdf.addPage(pw.Page(build: (context) {
     return pw.Row(

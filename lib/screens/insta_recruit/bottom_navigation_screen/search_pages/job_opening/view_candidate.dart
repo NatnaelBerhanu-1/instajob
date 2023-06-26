@@ -33,6 +33,7 @@ class ViewCandidates extends StatefulWidget {
 
 class _ViewCandidatesState extends State<ViewCandidates> {
   int selectedTab = 0;
+  bool isCheck = false;
 
   @override
   Widget build(BuildContext context) {
@@ -42,15 +43,16 @@ class _ViewCandidatesState extends State<ViewCandidates> {
           child: CustomAppBar(
             leadingImage: MyImages.backArrow,
             onTap: () {
-              // AppRoutes.push(
+              // AppRoutes.pushAndRemoveUntil(
               //     context,
-              // JobPositionScreen(
-              //     companyModel: widget.companyModel,
-              //     jobPosModel: widget.jobPosModel));
+              //     JobPositionScreen(
+              //         companyModel: widget.companyModel,
+              //         jobPosModel: widget.jobPosModel));
               // context.read<BottomBloc>().add(SetScreenEvent(true,
               //     screenName: JobPositionScreen(
               //         companyModel: companyModel, jobPosModel: jobPosModel)));
-              AppRoutes.pop(context);
+              // AppRoutes.pop(context);
+              Navigator.of(context).pop();
             },
             centerTitle: false,
             title: "Search",
@@ -113,7 +115,21 @@ class _ViewCandidatesState extends State<ViewCandidates> {
                               return Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 15.0, vertical: 10),
-                                child: CandidateTile(),
+                                child: BlocBuilder<GlobalCubit, InitialState>(
+                                    builder: (context, state) {
+                                  return CandidateTile(
+                                    onchange: (val) {
+                                      context
+                                          .read<GlobalCubit>()
+                                          .onSelected(val, i);
+                                      setState(() {});
+                                    },
+                                    value: context
+                                        .read<GlobalCubit>()
+                                        .list
+                                        .contains(i),
+                                  );
+                                }),
                               );
                             }),
                         ListView.builder(
@@ -122,7 +138,18 @@ class _ViewCandidatesState extends State<ViewCandidates> {
                               return Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 15.0, vertical: 10),
-                                child: CandidateTile(),
+                                child: CandidateTile(
+                                  onchange: (val) {
+                                    context
+                                        .read<GlobalCubit>()
+                                        .onSelected(val, i);
+                                    setState(() {});
+                                  },
+                                  value: context
+                                      .read<GlobalCubit>()
+                                      .list
+                                      .contains(i),
+                                ),
                               );
                             }),
                         ListView.builder(

@@ -14,6 +14,7 @@ import 'package:insta_job/screens/insta_job_user/apply_screen.dart';
 import 'package:insta_job/screens/insta_job_user/bottom_nav_screen/search_pages/search_jobs_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/bottom_navigation_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/job_opening/add_job_position_screen.dart';
+import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/job_opening/job_opening_page.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_button/custom_btn.dart';
@@ -78,10 +79,10 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                     } else {
                       context.read<JobPositionBloc>().add(LoadJobPosListEvent(
                           companyId: widget.jobPosModel!.companyId.toString()));
-                      Navigator.of(context).pop();
-                      // context.read<BottomBloc>().add(SetScreenEvent(true,
-                      //     screenName: JobOpeningScreen(
-                      //         companyModel: widget.companyModel)));
+                      // Navigator.of(context).pop();
+                      context.read<BottomBloc>().add(SetScreenEvent(true,
+                          screenName: JobOpeningScreen(
+                              companyModel: widget.companyModel)));
                     }
                     AppRoutes.pushAndRemoveUntil(context, BottomNavScreen());
                   },

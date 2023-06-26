@@ -32,6 +32,12 @@ class TabState extends InitialState {
   TabState(this.val);
 }
 
+class SelectedCheckBoxState extends InitialState {
+  final bool val;
+
+  SelectedCheckBoxState(this.val);
+}
+
 class DropDownState extends InitialState {
   final String val;
 

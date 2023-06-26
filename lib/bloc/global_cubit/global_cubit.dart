@@ -170,4 +170,16 @@ class GlobalCubit extends Cubit<InitialState> {
     print("RANGE: ${range.toStringAsFixed(0)}");
     emit(RangeState(range));
   }
+
+  List list = [];
+
+  onSelected(bool selected, value) {
+    if (selected == true) {
+      list.add(value);
+      SelectedCheckBoxState(selected);
+    } else {
+      list.remove(value);
+      emit(InitialState());
+    }
+  }
 }

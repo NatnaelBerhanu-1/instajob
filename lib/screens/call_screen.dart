@@ -53,8 +53,11 @@ class CallScreen extends StatelessWidget {
               padding: const EdgeInsets.all(12.0),
               child: Row(
                 children: [
-                  Expanded(child: CustomCallButtons()),
-                  Expanded(child: CustomCallButtons()),
+                  Expanded(child: CustomCallButtons(image: Icons.mic)),
+                  Expanded(
+                      child: CustomCallButtons(
+                    image: Icons.videocam_outlined,
+                  )),
                   Expanded(
                     child: FloatingActionButton(
                       backgroundColor: MyColors.red,
@@ -64,7 +67,7 @@ class CallScreen extends StatelessWidget {
                       child: Icon(Icons.call_end),
                     ),
                   ),
-                  Expanded(child: CustomCallButtons()),
+                  Expanded(child: CustomCallButtons(image: Icons.chat)),
                   Expanded(child: CustomCallButtons()),
                 ],
               ),
@@ -77,7 +80,7 @@ class CallScreen extends StatelessWidget {
 }
 
 class CustomCallButtons extends StatelessWidget {
-  final String? image;
+  final IconData? image;
   final VoidCallback? onTap;
   const CustomCallButtons({
     super.key,
@@ -96,7 +99,7 @@ class CustomCallButtons extends StatelessWidget {
         ),
         child: Padding(
           padding: const EdgeInsets.all(10.0),
-          child: Icon(Icons.class_),
+          child: Icon(image ?? Icons.class_outlined),
         ),
       ),
     );

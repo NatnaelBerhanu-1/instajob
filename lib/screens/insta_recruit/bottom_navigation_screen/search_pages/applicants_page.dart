@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
+import 'package:insta_job/screens/chat_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/bottom_navigation_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/job_opening/view_candidate.dart';
 import 'package:insta_job/utils/app_routes.dart';
@@ -108,6 +109,9 @@ class _ApplicantsState extends State<Applicants> {
                           child: CustomButton(
                         height: MediaQuery.of(context).size.height * 0.055,
                         title: "Contact",
+                        onTap: () {
+                          AppRoutes.push(context, ChatScreen());
+                        },
                       )),
                       tab.selectedTab == 1 ? SizedBox() : SizedBox(width: 15),
                       tab.selectedTab == 1

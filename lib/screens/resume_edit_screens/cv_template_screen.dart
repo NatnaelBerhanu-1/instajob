@@ -27,7 +27,7 @@ class _CvTemplateScreenState extends State<CvTemplateScreen> {
   getImage() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var img = pref.getString("resumeImg");
-    profileImage = img ?? "";
+    profileImage = img ?? profileImage;
     setState(() {});
   }
 
@@ -59,11 +59,8 @@ class _CvTemplateScreenState extends State<CvTemplateScreen> {
               height: MediaQuery.of(context).size.height * 0.64,
               child: PdfPreview(
                 scrollViewDecoration: BoxDecoration(color: MyColors.white),
-                onPageFormatChanged: (val) {
-                  print('####### $val');
-                },
+                onPageFormatChanged: (val) {},
                 onError: (context, val) {
-                  print('####### $val');
                   return CircularProgressIndicator();
                 },
                 pdfPreviewPageDecoration: BoxDecoration(
