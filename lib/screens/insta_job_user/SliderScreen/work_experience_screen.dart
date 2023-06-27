@@ -10,7 +10,6 @@ import 'package:insta_job/bottom_sheet/bottom_sheet.dart';
 import 'package:insta_job/dialog/custom_dialog.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/model/resume_model.dart';
-import 'package:insta_job/test.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_button/custom_btn.dart';
@@ -18,6 +17,7 @@ import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:insta_job/widgets/custom_cards/insta_job_user_cards/custom_resume_card.dart';
 import 'package:insta_job/widgets/custom_drop_down.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
+import 'package:insta_job/widgets/resume_tile.dart';
 
 class WorkExpScreen extends StatefulWidget {
   final VoidCallback? onSkipTap;
@@ -179,7 +179,7 @@ class _WorkExpScreenState extends State<WorkExpScreen> {
                   itemBuilder: (c, index) {
                     return Padding(
                       padding: const EdgeInsets.symmetric(vertical: 7.0),
-                      child: Test(
+                      child: ResumeTile(
                         isWorkExp: true,
                         onTap: () {
                           data.add(DeleteWorkExp(

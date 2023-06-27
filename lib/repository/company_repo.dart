@@ -24,12 +24,21 @@ class CompanyRepository {
     }
   }
 
-  addCompany({required String name, required String photo}) async {
+  addCompany({
+    required String name,
+    required String photo,
+    String? address,
+    String? lat,
+    String? lang,
+  }) async {
     try {
       var map = {
         "employe_id": Global.userModel?.id.toString(),
         "companyname": name,
-        "upload_photo": photo
+        "upload_photo": photo,
+        "c_address": address,
+        "c_lat": lat,
+        "c_log": lang,
       };
       var response = await dioClient.post(data: map, uri: EndPoint.addCompany);
       return ApiResponse.withSuccess(response);

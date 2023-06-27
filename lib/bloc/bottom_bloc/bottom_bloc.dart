@@ -8,9 +8,9 @@ import 'package:insta_job/bloc/company_bloc/company_bloc.dart';
 import 'package:insta_job/bloc/company_bloc/company_event.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/model/user_model.dart';
-import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/bottom_navigation_screen.dart';
 import 'package:insta_job/screens/insta_recruit/user_type_screen.dart';
 import 'package:insta_job/screens/insta_recruit/welcome_screen.dart';
+import 'package:insta_job/test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class BottomBloc extends Bloc<BottomEvent, BottomInitialState> {
@@ -60,7 +60,7 @@ class BottomBloc extends Bloc<BottomEvent, BottomInitialState> {
         Timer(
             const Duration(seconds: 1),
             () => navigationKey.currentState?.pushAndRemoveUntil(
-                MaterialPageRoute(builder: (_) => const BottomNavScreen()),
+                MaterialPageRoute(builder: (_) => SearchAdd()),
                 (route) => false));
       } else {
         var type = pref.getString("type");

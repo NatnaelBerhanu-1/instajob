@@ -38,7 +38,11 @@ class CompanyBloc extends Bloc<CompanyEvent, CompanyState> {
 
     on<AddCompanyEvent>((event, emit) async {
       await companyRepository.addCompany(
-          name: event.companyName, photo: event.photo);
+          name: event.companyName,
+          photo: event.photo,
+          address: event.address,
+          lang: event.lang,
+          lat: event.lat);
       await _getList(emit);
     });
 
@@ -49,6 +53,7 @@ class CompanyBloc extends Bloc<CompanyEvent, CompanyState> {
       // if (list.isEmpty) {
       //   emit(const ErrorState("Data not found"));
       // }
+      // emit(Initial());
       // else {
       //   emit(Initial());
       // }

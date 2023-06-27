@@ -242,6 +242,29 @@ class _SearchJobsScreenState extends State<SearchJobsScreen> {
                                                       jobPosModel: data));
                                             });
                                       }
+                                      if (state is JobSearchLoaded) {
+                                        return ListView.builder(
+                                            shrinkWrap: true,
+                                            itemCount:
+                                                state.searchJobPosList.length,
+                                            itemBuilder: (c, i) {
+                                              var data =
+                                                  state.searchJobPosList[i];
+                                              context
+                                                  .read<JobPositionBloc>()
+                                                  .jobModel = data;
+                                              return Padding(
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
+                                                      vertical: 7,
+                                                      horizontal: 5),
+                                                  child: SearchJobTile(
+                                                      companyModel: context
+                                                          .read<CompanyBloc>()
+                                                          .companyModel,
+                                                      jobPosModel: data));
+                                            });
+                                      }
                                       if (state is JobPosLoading) {
                                         return Center(
                                             child: CircularProgressIndicator());

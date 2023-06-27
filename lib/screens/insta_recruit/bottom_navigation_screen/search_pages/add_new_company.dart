@@ -7,6 +7,8 @@ import 'package:insta_job/bloc/choose_image_bloc/pick_image_state.dart';
 import 'package:insta_job/bloc/company_bloc/company_bloc.dart';
 import 'package:insta_job/bloc/company_bloc/company_event.dart';
 import 'package:insta_job/bloc/company_bloc/company_state.dart';
+import 'package:insta_job/bloc/location_cubit/location_cubit.dart';
+import 'package:insta_job/bloc/location_cubit/location_state.dart';
 import 'package:insta_job/bloc/validation/validation_bloc.dart';
 import 'package:insta_job/bloc/validation/validation_state.dart';
 import 'package:insta_job/globals.dart';
@@ -31,7 +33,13 @@ class AddNewCompany extends StatefulWidget {
 
 class _AddNewCompanyState extends State<AddNewCompany> {
   TextEditingController name = TextEditingController();
+  TextEditingController address = TextEditingController();
   final formKey = GlobalKey<FormState>();
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   // void dispose() {
   //   var image = context.read<PickImageCubit>();
@@ -78,35 +86,61 @@ class _AddNewCompanyState extends State<AddNewCompany> {
                   CommonText(
                     text: "Add Clients Information",
                     fontWeight: FontWeight.w500,
+                    fontSize: 16,
                   ),
                   SizedBox(height: 30),
-                  BlocConsumer<ValidationCubit, InitialValidation>(
-                      listener: (c, state) {
-                    if (state is RequiredValidation) {
-                      showToast(state.require);
+                  IconTextField(
+                    controller: name,
+                    validator: (val) =>
+                        requiredValidation(val!, "Company name"),
+                    prefixIcon: ImageButton(
+                      image: MyImages.userFilled,
+                      padding: EdgeInsets.all(14),
+                      height: 10,
+                      width: 10,
+                    ),
+                    // suffixIcon: ImageButton(image: MyImages.verified),
+                    hint: "Company Name",
+                    onChanged: (val) {
+                      if (!formKey.currentState!.validate()) {
+                        requiredValidation(val!, "Company name");
+                      }
+                    },
+                  ),
+                  SizedBox(height: 15),
+                  IconTextField(
+                    controller: address,
+                    validator: (val) =>
+                        requiredValidation(val!, "Company name"),
+                    prefixIcon: ImageButton(
+                      image: MyImages.locationBlue,
+                      padding: EdgeInsets.all(14),
+                      height: 10,
+                      width: 10,
+                    ),
+                    // suffixIcon: ImageButton(image: MyImages.verified),
+                    hint: "Company Address",
+                    onChanged: (val) {
+                      if (!formKey.currentState!.validate()) {
+                        requiredValidation(val!, "Company name");
+                      }
+                      context.read<LocationCubit>().getLocation(val);
+                    },
+                  ),
+                  SizedBox(height: 15),
+                  BlocBuilder<LocationCubit, LocationInitial>(
+                      builder: (context, state) {
+                    if (state is AddressLoaded) {
+                      return ListView.builder(
+                          itemCount: state.list.length,
+                          shrinkWrap: true,
+                          itemBuilder: (c, i) {
+                            return Text("${state.list[i].description}");
+                          });
                     }
-                  }, builder: (context, state) {
-                    var validate = context.read<ValidationCubit>();
-                    return IconTextField(
-                      controller: name,
-                      validator: (val) =>
-                          requiredValidation(val!, "Company name"),
-                      prefixIcon: ImageButton(
-                        image: MyImages.userFilled,
-                        padding: EdgeInsets.all(14),
-                        height: 10,
-                        width: 10,
-                      ),
-                      // suffixIcon: ImageButton(image: MyImages.verified),
-                      hint: "Company Name",
-                      onChanged: (val) {
-                        if (!formKey.currentState!.validate()) {
-                          requiredValidation(val!, "Company name");
-                        }
-                      },
-                    );
+                    return Text("data");
                   }),
-                  SizedBox(height: 30),
+                  SizedBox(height: 15),
                   uploadPhotoCard(context),
                   SizedBox(height: 30),
                   BlocConsumer<PickImageCubit, InitialImage>(
@@ -134,8 +168,12 @@ class _AddNewCompanyState extends State<AddNewCompany> {
                             if (formKey.currentState!.validate()) {
                               if (image.imgUrl.isNotEmpty) {
                                 context.read<CompanyBloc>().add(AddCompanyEvent(
-                                    companyName: name.text,
-                                    photo: image.imgUrl));
+                                      companyName: name.text,
+                                      photo: image.imgUrl,
+                                      address: "",
+                                      lat: "",
+                                      lang: "",
+                                    ));
                                 context.read<BottomBloc>().add(SetScreenEvent(
                                     false,
                                     screenName: BottomNavScreen()));

@@ -1,6 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
+import 'package:insta_job/bloc/job_position/job_pos_event.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/widgets/custom_button/custom_btn.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
@@ -38,9 +41,15 @@ class AppliedSuccessDialog extends StatelessWidget {
                   Navigator.of(context).pop();
                   Navigator.of(context).pop();
                   Navigator.of(context).pop();
-                } else {}
-                Navigator.of(context).pop();
-                Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                } else {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                }
+                context.read<JobPositionBloc>().add(LoadJobPosListEvent());
                 // AppRoutes.pushReplacement(
                 //     context,
                 //     JobPositionScreen(

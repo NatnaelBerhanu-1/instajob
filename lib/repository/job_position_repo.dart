@@ -211,4 +211,16 @@ class JobPositionRepository {
       return ApiResponse.withError(e.response);
     }
   }
+
+  Future<ApiResponse> getLocation(String input) async {
+    try {
+      final response = await dioClient.get(
+          data: {},
+          uri:
+              "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&key=AIzaSyAwEmv3whQry4abe7SnIuPS4ttniNdkLuI&type=address");
+      return ApiResponse.withSuccess(response);
+    } on DioException catch (e) {
+      return ApiResponse.withError(e.response);
+    }
+  }
 }

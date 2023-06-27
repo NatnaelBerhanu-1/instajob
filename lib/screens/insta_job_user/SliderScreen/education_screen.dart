@@ -9,13 +9,13 @@ import 'package:insta_job/bloc/validation/validation_bloc.dart';
 import 'package:insta_job/dialog/custom_dialog.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/model/resume_model.dart';
-import 'package:insta_job/test.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_button/custom_btn.dart';
 import 'package:insta_job/widgets/custom_cards/insta_job_user_cards/custom_resume_card.dart';
 import 'package:insta_job/widgets/custom_drop_down.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
+import 'package:insta_job/widgets/resume_tile.dart';
 
 import '../../../widgets/custom_cards/custom_common_card.dart';
 
@@ -209,7 +209,7 @@ class _EducationScreenState extends State<EducationScreen> {
                         //     "${educationData?.educationEndYear ?? 0}");
                         return Padding(
                           padding: const EdgeInsets.symmetric(vertical: 5.0),
-                          child: Test(
+                          child: ResumeTile(
                             educations: educationData,
                             onTap: () {
                               data.add(DeleteEducation(

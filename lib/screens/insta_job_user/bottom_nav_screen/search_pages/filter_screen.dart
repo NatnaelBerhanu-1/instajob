@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:insta_job/bloc/company_bloc/company_state.dart';
 import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
 import 'package:insta_job/bloc/global_cubit/global_state.dart';
 import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
@@ -301,36 +300,36 @@ class _FilterScreenState extends State<FilterScreen> {
                             jobTypeTile(
                               title: "Full Time",
                               value: value.jobTypeValue,
-                              selectedValue: "fulltime",
+                              selectedValue: "Full Time",
                               onTap: () {
-                                value.jobType("fulltime");
+                                value.jobType("Full Time");
                               },
                             ),
                             divider(color: MyColors.grey.withOpacity(.40)),
                             jobTypeTile(
                               title: "Part Time",
                               value: value.jobTypeValue,
-                              selectedValue: "parttime",
+                              selectedValue: "Part Time",
                               onTap: () {
-                                value.jobType("parttime");
+                                value.jobType("Part Time");
                               },
                             ),
                             divider(color: MyColors.grey.withOpacity(.40)),
                             jobTypeTile(
                               title: "Contact",
                               value: value.jobTypeValue,
-                              selectedValue: "contact",
+                              selectedValue: "Contact",
                               onTap: () {
-                                value.jobType("contact");
+                                value.jobType("Contact");
                               },
                             ),
                             divider(color: MyColors.grey.withOpacity(.40)),
                             jobTypeTile(
                               title: "Temporary",
                               value: value.jobTypeValue,
-                              selectedValue: "temporary",
+                              selectedValue: "Temporary",
                               onTap: () {
-                                value.jobType("temporary");
+                                value.jobType("Temporary");
                               },
                             ),
                           ],
@@ -360,27 +359,27 @@ class _FilterScreenState extends State<FilterScreen> {
                             jobTypeTile(
                               title: "Entry Level",
                               value: value.experienceLevelVal,
-                              selectedValue: "entrylevel",
+                              selectedValue: "Entry Level",
                               onTap: () {
-                                value.experienceLevel("entrylevel");
+                                value.experienceLevel("Entry Level");
                               },
                             ),
                             divider(color: MyColors.grey.withOpacity(.40)),
                             jobTypeTile(
                               title: "Mid Level",
                               value: value.experienceLevelVal,
-                              selectedValue: "midlevel",
+                              selectedValue: "Mid Level",
                               onTap: () {
-                                value.experienceLevel("midlevel");
+                                value.experienceLevel("Mid Level");
                               },
                             ),
                             divider(color: MyColors.grey.withOpacity(.40)),
                             jobTypeTile(
                               title: "Senior Level",
                               value: value.experienceLevelVal,
-                              selectedValue: "seniorlevel",
+                              selectedValue: "Senior Level",
                               onTap: () {
-                                value.experienceLevel("seniorlevel");
+                                value.experienceLevel("Senior Level");
                               },
                             ),
                           ],
@@ -396,7 +395,7 @@ class _FilterScreenState extends State<FilterScreen> {
                 var data = context.read<JobPositionBloc>();
                 return CustomIconButton(
                   image: MyImages.arrowWhite,
-                  loading: state is CompanyLoading ? true : false,
+                  loading: state is JobPosLoading ? true : false,
                   title: "Update Now",
                   onclick: () {
                     var value = context.read<GlobalCubit>();

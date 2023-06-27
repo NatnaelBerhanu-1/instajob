@@ -151,15 +151,20 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                                 widget.isUpdate
                                     ? "Edit Listing"
                                     : "Add Job Positions",
-                                style: TextStyle(color: MyColors.black),
+                                style: TextStyle(
+                                    color: MyColors.black,
+                                    fontSize: 16.5,
+                                    fontWeight: FontWeight.w600),
                               ),
                               SizedBox(height: 5),
                               Text(
                                 widget.isUpdate
                                     ? "Update job details"
-                                    : "Add new details for new opening",
+                                    : "Add job details for new opening",
                                 style: TextStyle(
-                                    color: MyColors.grey, fontSize: 14),
+                                    color: MyColors.grey,
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w600),
                               ),
                             ],
                           ),
@@ -239,7 +244,7 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                     children: [
                       CustomTextField(
                           controller: designation,
-                          label: "Enter designation",
+                          label: "Enter Job Title",
                           lblColor: MyColors.black,
                           hint: "Front end developer",
                           // validator: (val) {
@@ -247,7 +252,7 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                           //   return null;
                           // },
                           validator: (val) =>
-                              requiredValidation(val!, 'Designation')),
+                              requiredValidation(val!, 'Job Title')),
                       SizedBox(height: 15),
                       CustomTextField(
                         controller: jobDetails,

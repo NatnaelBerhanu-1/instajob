@@ -10,8 +10,15 @@ class LoadCompanyListEvent extends CompanyEvent {
 class AddCompanyEvent extends CompanyEvent {
   final String companyName;
   final String photo;
-
-  AddCompanyEvent({required this.companyName, required this.photo});
+  final String? address;
+  final String? lat;
+  final String? lang;
+  AddCompanyEvent(
+      {this.address,
+      this.lat,
+      this.lang,
+      required this.companyName,
+      required this.photo});
   @override
   List<Object?> get props => [companyName, photo];
 }
