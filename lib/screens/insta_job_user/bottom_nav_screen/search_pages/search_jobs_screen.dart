@@ -1,30 +1,26 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:insta_job/bloc/company_bloc/company_bloc.dart';
-import 'package:insta_job/bloc/company_bloc/company_event.dart';
-import 'package:insta_job/bloc/company_bloc/company_state.dart';
 import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
 import 'package:insta_job/bloc/global_cubit/global_state.dart';
 import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
 import 'package:insta_job/bloc/job_position/job_pos_event.dart';
 import 'package:insta_job/bloc/job_position/job_pos_state.dart';
+import 'package:insta_job/bloc/location_cubit/location_cubit.dart';
+import 'package:insta_job/bloc/location_cubit/location_state.dart';
+import 'package:insta_job/screens/insta_job_user/bottom_nav_screen/search_pages/custom_search_page.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_cards/insta_job_user_cards/filter_tiles/custom_filter_tile.dart';
 import 'package:insta_job/widgets/custom_cards/insta_job_user_cards/map_tile.dart';
-import 'package:insta_job/widgets/custom_chip.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
 
 import '../../../../utils/my_colors.dart';
 import '../../../../widgets/custom_app_bar.dart';
 import '../../../../widgets/custom_button/custom_img_button.dart';
-import '../../../../widgets/custom_cards/assign_companies_tile.dart';
-import '../../../../widgets/custom_cards/insta_job_user_cards/search_job_tile.dart';
 import '../../../insta_recruit/bottom_navigation_screen/search_pages/search_company.dart';
-import '../../../insta_recruit/bottom_navigation_screen/user_account/setting_pages/save_card_screen.dart';
 import 'filter_screen.dart';
 
 class SearchJobsScreen extends StatefulWidget {
@@ -43,17 +39,17 @@ class _SearchJobsScreenState extends State<SearchJobsScreen> {
     super.initState();
   }
 
-  // CompanyModel companyData = CompanyModel();
+  Set<Marker> setOfMarker = {};
 
   @override
   Widget build(BuildContext context) {
-    var selectedFilterIndex = context.watch<GlobalCubit>().fIndex;
+    var jobDistanceIndex = context.watch<GlobalCubit>().fIndex;
     var selectedSearchIndex = context.read<GlobalCubit>().sIndex;
     return Scaffold(
         backgroundColor: MyColors.white,
         appBar: PreferredSize(
           preferredSize: Size(double.infinity, 70),
-          child: selectedFilterIndex == 1 || selectedFilterIndex == 2
+          child: jobDistanceIndex == 1 || jobDistanceIndex == 2
               ? SafeArea(
                   child: Row(
                   children: [
@@ -109,273 +105,215 @@ class _SearchJobsScreenState extends State<SearchJobsScreen> {
           color: MyColors.white,
           child:
               BlocBuilder<GlobalCubit, InitialState>(builder: (context, state) {
-            return Column(
-              children: [
-                Padding(
-                  padding: selectedFilterIndex == 1 || selectedFilterIndex == 2
-                      ? EdgeInsets.only(left: 10.0, top: 10)
-                      : EdgeInsets.only(left: 10.0),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                            height: 40,
-                            // width: MediaQuery.of(context).size.width - 30,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(30),
-                                border: Border.all(color: MyColors.blue),
-                                color: MyColors.white),
-                            child: Row(
-                              children: List.generate(
-                                  list.length,
-                                  (index) => Expanded(
-                                        child: Container(
-                                          height: 40,
-                                          // width: MediaQuery.of(context).size.width - 30,
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(30),
-                                              border: Border.all(
-                                                  color: MyColors.white),
-                                              color: MyColors.white),
-                                          child: CustomFilterTile(
-                                            onClick: () {
-                                              // filterIndex = index;
-                                              context
-                                                  .read<GlobalCubit>()
-                                                  .changeFilterIndex(index);
-                                            },
-                                            selectedIndex: selectedFilterIndex,
-                                            index: index,
-                                            title: list[index],
+            var value = context.read<GlobalCubit>();
+            return BlocBuilder<JobPositionBloc, JobPosState>(
+                builder: (context, jobState) {
+              return Column(
+                children: [
+                  Padding(
+                    padding: jobDistanceIndex == 1 || jobDistanceIndex == 2
+                        ? EdgeInsets.only(left: 10.0, top: 10)
+                        : EdgeInsets.only(left: 10.0),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                              height: 40,
+                              // width: MediaQuery.of(context).size.width - 30,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30),
+                                  border: Border.all(color: MyColors.blue),
+                                  color: MyColors.white),
+                              child: Row(
+                                children: List.generate(
+                                    3,
+                                    (index) => Expanded(
+                                          child: Container(
+                                            height: 40,
+                                            // width: MediaQuery.of(context).size.width - 30,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(30),
+                                                border: Border.all(
+                                                    color: MyColors.white),
+                                                color: MyColors.white),
+                                            child: CustomFilterTile(
+                                              onClick: () {
+                                                // filterIndex = index;
+                                                context
+                                                    .read<GlobalCubit>()
+                                                    .changeFilterIndex(index);
+                                              },
+                                              selectedIndex: jobDistanceIndex,
+                                              index: index,
+                                              title: [
+                                                "${context.read<LocationCubit>().placeMarks.first.name}",
+                                                "Job Distance Locator",
+                                                "${context.read<GlobalCubit>().range.toStringAsFixed(0)} Miles Away"
+                                              ][index],
+                                            ),
                                           ),
-                                        ),
-                                      )),
-                            )),
-                      ),
-                      SizedBox(width: 7),
-                      Expanded(
-                          flex: 0,
-                          child: GestureDetector(
-                            onTap: () {
-                              AppRoutes.push(context, FilterScreen());
-                              // context.read<CompanyBloc>().add(JobSearchEvent(
-                              //     filterModel: FilterModel(filter: "filter")));
-                            },
-                            child: Container(
-                              color: MyColors.transparent,
-                              child: Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: Image.asset(
-                                  MyImages.filter,
-                                  height: 30,
-                                  width: 30,
+                                        )),
+                              )),
+                        ),
+                        SizedBox(width: 7),
+                        Expanded(
+                            flex: 0,
+                            child: GestureDetector(
+                              onTap: () {
+                                AppRoutes.push(context, FilterScreen());
+                              },
+                              child: Container(
+                                color: MyColors.transparent,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: Image.asset(
+                                    MyImages.filter,
+                                    height: 30,
+                                    width: 30,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ))
-                    ],
-                  ),
-                ),
-                SizedBox(height: 20),
-                if (selectedFilterIndex == 0) ...[
-                  Expanded(
-                    child: Padding(
-                      padding:
-                          const EdgeInsets.only(left: 10.0, right: 10, top: 5),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                  child: CustomSearchChip(
-                                onTap: () {
-                                  context.read<GlobalCubit>().changeIndex(1);
-                                  context
-                                      .read<JobPositionBloc>()
-                                      .add(LoadJobPosListEvent());
-                                },
-                                image: MyImages.suitcase,
-                                index: 1,
-                                selectedIndex: selectedSearchIndex,
-                                title: "Search Jobs",
-                              )),
-                              SizedBox(width: 10),
-                              Expanded(
-                                  child: CustomSearchChip(
-                                onTap: () {
-                                  context.read<GlobalCubit>().changeIndex(2);
-                                  context
-                                      .read<CompanyBloc>()
-                                      .add(LoadCompanyListEvent());
-                                },
-                                index: 2,
-                                selectedIndex: selectedSearchIndex,
-                                title: "Search Companies",
-                              )),
-                            ],
-                          ),
-                          SizedBox(height: 20),
-                          Expanded(
-                              child: selectedSearchIndex == 1
-                                  ? BlocBuilder<JobPositionBloc, JobPosState>(
-                                      builder: (context, state) {
-                                      if (state is JobPosLoaded) {
-                                        return ListView.builder(
-                                            shrinkWrap: true,
-                                            itemCount: state.jobPosList.length,
-                                            itemBuilder: (c, i) {
-                                              var data = state.jobPosList[i];
-                                              context
-                                                  .read<JobPositionBloc>()
-                                                  .jobModel = data;
-                                              return Padding(
-                                                  padding: const EdgeInsets
-                                                          .symmetric(
-                                                      vertical: 7,
-                                                      horizontal: 5),
-                                                  child: SearchJobTile(
-                                                      companyModel: context
-                                                          .read<CompanyBloc>()
-                                                          .companyModel,
-                                                      jobPosModel: data));
-                                            });
-                                      }
-                                      if (state is JobSearchLoaded) {
-                                        return ListView.builder(
-                                            shrinkWrap: true,
-                                            itemCount:
-                                                state.searchJobPosList.length,
-                                            itemBuilder: (c, i) {
-                                              var data =
-                                                  state.searchJobPosList[i];
-                                              context
-                                                  .read<JobPositionBloc>()
-                                                  .jobModel = data;
-                                              return Padding(
-                                                  padding: const EdgeInsets
-                                                          .symmetric(
-                                                      vertical: 7,
-                                                      horizontal: 5),
-                                                  child: SearchJobTile(
-                                                      companyModel: context
-                                                          .read<CompanyBloc>()
-                                                          .companyModel,
-                                                      jobPosModel: data));
-                                            });
-                                      }
-                                      if (state is JobPosLoading) {
-                                        return Center(
-                                            child: CircularProgressIndicator());
-                                      }
-                                      if (state is JobErrorState) {
-                                        return Center(child: Text(state.error));
-                                      }
-                                      return SizedBox();
-                                    })
-                                  : BlocBuilder<CompanyBloc, CompanyState>(
-                                      builder: (context, state) {
-                                      if (state is CompanyLoaded) {
-                                        var companyData =
-                                            context.read<CompanyBloc>();
-                                        return ListView.builder(
-                                            shrinkWrap: true,
-                                            itemCount: state.companyList.length,
-                                            itemBuilder: (c, i) {
-                                              companyData.companyModel =
-                                                  state.companyList[i];
-                                              return Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 7,
-                                                        horizontal: 5),
-                                                child: AssignCompaniesTile(
-                                                    companyModel:
-                                                        companyData.companyModel
-                                                    // leadingImage:
-                                                    //     MyImages.businessAndTrade,
-                                                    // title: "Ford",
-                                                    ),
-                                              );
-                                            });
-                                      }
-                                      if (state is CompanyLoading) {
-                                        return Center(
-                                            child: CircularProgressIndicator());
-                                      }
-                                      if (state is ErrorState) {
-                                        return Center(child: Text(state.error));
-                                      }
-                                      return SizedBox();
-                                    })),
-                        ],
-                      ),
-                    ),
-                  )
-                ] else if (selectedFilterIndex == 1 ||
-                    selectedFilterIndex == 2) ...[
-                  Expanded(
-                      child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        BlocBuilder<GlobalCubit, InitialState>(
-                            builder: (context, state) {
-                          var value = context.read<GlobalCubit>();
-                          return Slider(
-                            value: value.range,
-                            onChanged: (val) {
-                              value.rangeVal(val);
-                            },
-                            max: 100,
-                            min: 0,
-                          );
-                        }),
-                        Stack(
-                          children: [
-                            Container(
-                              height: MediaQuery.of(context).size.height * 0.74,
-                              color: MyColors.grey,
-                              child: GoogleMap(
-                                initialCameraPosition: CameraPosition(
-                                    target: LatLng(0.0, 22.90), zoom: 10),
-                                zoomControlsEnabled: true,
-                                // zoomGesturesEnabled: true,
-                                // scrollGesturesEnabled: true,
-                                padding: EdgeInsets.only(
-                                    bottom: MediaQuery.of(context).size.height *
-                                        0.27),
-                              ),
-                            ),
-                            Positioned(
-                              bottom: 20,
-                              left: 0,
-                              right: 0,
-                              child: SizedBox(
-                                height: 220,
-                                width: MediaQuery.of(context).size.width,
-                                child: ListView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                    shrinkWrap: true,
-                                    itemCount: 10,
-                                    itemBuilder: (c, i) {
-                                      return Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8.0, vertical: 10),
-                                        child: MapTile(),
-                                      );
-                                    }),
-                              ),
-                            ),
-                          ],
-                        ),
+                            ))
                       ],
                     ),
-                  ))
-                ] else
-                  ...[],
-              ],
-            );
+                  ),
+                  jobDistanceIndex == 1 || jobDistanceIndex == 2
+                      ? Slider(
+                          value: value.range,
+                          onChanged: (val) {
+                            value.rangeVal(val);
+                          },
+                          onChangeEnd: (val) {
+                            print("END $val");
+                            context
+                                .read<JobPositionBloc>()
+                                .add(JobDistanceLocatorEvent(
+                                  miles: val.toStringAsFixed(0),
+                                  designation: "",
+                                ));
+                          },
+                          max: 100,
+                          min: 0,
+                        )
+                      : SizedBox(),
+                  jobDistanceIndex == 1 || jobDistanceIndex == 2
+                      ? SizedBox(height: 0)
+                      : SizedBox(height: 25),
+                  if (jobDistanceIndex == 0) ...[
+                    CompanyJobChip(selectedSearchIndex: selectedSearchIndex)
+                  ] else if (jobDistanceIndex == 1 ||
+                      jobDistanceIndex == 2) ...[
+                    BlocBuilder<LocationCubit, LocationInitial>(
+                        builder: (context, state) {
+                      var locationData = context.read<LocationCubit>();
+                      return Expanded(
+                          child: ListView(
+                        children: [
+                          Stack(
+                            children: [
+                              Container(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.74,
+                                color: MyColors.grey,
+                                child: GoogleMap(
+                                  initialCameraPosition: CameraPosition(
+                                      target: LatLng(locationData.latitude,
+                                          locationData.longitude),
+                                      zoom: 12),
+                                  zoomControlsEnabled: true,
+                                  padding: EdgeInsets.only(
+                                      bottom:
+                                          MediaQuery.of(context).size.height *
+                                              0.27),
+                                  markers: setOfMarker,
+                                  onMapCreated:
+                                      (GoogleMapController controller) {
+                                    locationData.googleMapController =
+                                        controller;
+                                    controller.animateCamera(
+                                        CameraUpdate.newCameraPosition(
+                                            CameraPosition(
+                                                target: LatLng(
+                                                    locationData.latitude,
+                                                    locationData.longitude),
+                                                zoom: 12)));
+                                    if (jobState is JobDistanceLoaded) {
+                                      print(
+                                          "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+                                      for (int i = 0;
+                                          i < jobState.jobList.length;
+                                          i++) {
+                                        print("@@@@@@@@@@@@@@@@@@@@@");
+                                        var jobData = jobState.jobList[i];
+                                        var marker = Marker(
+                                          markerId:
+                                              MarkerId(jobData.id.toString()),
+                                          position: LatLng(
+                                            double.parse(
+                                                jobData.cLat.toString()),
+                                            double.parse(
+                                                jobData.cLog.toString()),
+                                          ),
+                                        );
+                                        setOfMarker.add(marker);
+                                      }
+                                    }
+                                    // locationData.onMapCreated(jobState);
+                                    print("STATE: $jobState");
+                                    setState(() {});
+                                  },
+                                ),
+                              ),
+                              Positioned(
+                                bottom: 20,
+                                left: 0,
+                                right: 0,
+                                child: SizedBox(
+                                  height: 220,
+                                  width: MediaQuery.of(context).size.width,
+                                  child:
+                                      BlocBuilder<JobPositionBloc, JobPosState>(
+                                          builder: (context, jobState) {
+                                    if (jobState is JobDistanceLoaded) {
+                                      return ListView.builder(
+                                          scrollDirection: Axis.horizontal,
+                                          shrinkWrap: true,
+                                          itemCount: jobState.jobList.length,
+                                          itemBuilder: (c, i) {
+                                            return Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 8.0,
+                                                      vertical: 10),
+                                              child: MapTile(
+                                                jobDistanceModel:
+                                                    jobState.jobList[i],
+                                              ),
+                                            );
+                                          });
+                                    }
+                                    if (state is JobPosLoading) {
+                                      return Center(
+                                          child: CircularProgressIndicator());
+                                    }
+                                    // if (state is JobErrorState) {
+                                    //   return Center(child: Text(state.error));
+                                    // }
+                                    return SizedBox();
+                                  }),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ));
+                    }),
+                  ] else
+                    ...[],
+                ],
+              );
+            });
           }),
         ));
   }

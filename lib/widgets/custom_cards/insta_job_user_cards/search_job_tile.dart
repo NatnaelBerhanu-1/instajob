@@ -41,104 +41,110 @@ class SearchJobTile extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10),
             child: Row(
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Image.asset(
-                          MyImages.suitcase,
-                          height: 27,
-                          width: 27,
-                        ),
-                        SizedBox(width: 10),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            CommonText(
-                              text: "${jobPosModel.designation}",
-                              fontSize: 14,
-                              fontColor: MyColors.black,
-                              overflow: TextOverflow.clip,
-                              fontWeight: FontWeight.w400,
-                            ),
-                            SizedBox(height: 5),
-                            CommonText(
-                              text: "S",
-                              fontSize: 12,
-                              fontColor: MyColors.grey,
-                              overflow: TextOverflow.clip,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 10),
-                      ],
-                    ),
-                    SizedBox(height: 10),
-                    Row(
-                      children: [
-                        CustomCommonCard(
-                          bgColor: MyColors.lightBlue.withOpacity(.20),
-                          borderRadius: BorderRadius.circular(5),
-                          child: Padding(
-                            padding: const EdgeInsets.all(4.0),
-                            child: CommonText(
-                              text: "${jobPosModel.jobsType}",
-                              fontSize: 12,
-                              fontColor: MyColors.blue,
-                              overflow: TextOverflow.clip,
-                              fontWeight: FontWeight.w400,
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Image.asset(
+                            MyImages.suitcase,
+                            height: 27,
+                            width: 27,
+                          ),
+                          SizedBox(width: 10),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CommonText(
+                                text: "${jobPosModel.designation}",
+                                fontSize: 14,
+                                fontColor: MyColors.black,
+                                overflow: TextOverflow.clip,
+                                fontWeight: FontWeight.w400,
+                              ),
+                              SizedBox(height: 5),
+                              CommonText(
+                                text: "S",
+                                fontSize: 12,
+                                fontColor: MyColors.grey,
+                                overflow: TextOverflow.clip,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 10),
+                        ],
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        children: [
+                          CustomCommonCard(
+                            bgColor: MyColors.lightBlue.withOpacity(.20),
+                            borderRadius: BorderRadius.circular(5),
+                            child: Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: CommonText(
+                                text: "${jobPosModel.jobsType}",
+                                fontSize: 12,
+                                fontColor: MyColors.blue,
+                                overflow: TextOverflow.clip,
+                                fontWeight: FontWeight.w400,
+                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(width: 10),
-                        CustomCommonCard(
-                          bgColor: Colors.cyan.withOpacity(.20),
-                          borderRadius: BorderRadius.circular(5),
-                          child: Padding(
-                            padding: const EdgeInsets.all(4.0),
-                            child: CommonText(
-                              text: "60k+",
-                              fontSize: 12,
-                              fontColor: Colors.cyan,
-                              overflow: TextOverflow.clip,
-                              fontWeight: FontWeight.w400,
+                          SizedBox(width: 10),
+                          CustomCommonCard(
+                            bgColor: Colors.cyan.withOpacity(.20),
+                            borderRadius: BorderRadius.circular(5),
+                            child: Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: CommonText(
+                                text: "${jobPosModel.salaries}k+",
+                                fontSize: 12,
+                                fontColor: Colors.cyan.shade600,
+                                overflow: TextOverflow.clip,
+                                fontWeight: FontWeight.w400,
+                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(width: 10),
-                        CustomCommonCard(
-                          bgColor: Colors.purpleAccent.withOpacity(.30),
-                          borderRadius: BorderRadius.circular(5),
-                          child: Padding(
-                            padding: const EdgeInsets.all(4.0),
-                            child: CommonText(
-                              text: "${jobPosModel.experienceLevel}",
-                              fontSize: 12,
-                              fontColor: Colors.purpleAccent,
-                              overflow: TextOverflow.clip,
-                              fontWeight: FontWeight.w400,
+                          SizedBox(width: 10),
+                          CustomCommonCard(
+                            bgColor: Colors.purpleAccent.withOpacity(.30),
+                            borderRadius: BorderRadius.circular(5),
+                            child: Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: CommonText(
+                                text: "${jobPosModel.experienceLevel}",
+                                fontSize: 12,
+                                fontColor: Colors.purpleAccent,
+                                overflow: TextOverflow.clip,
+                                fontWeight: FontWeight.w400,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    )
-                  ],
+                        ],
+                      )
+                    ],
+                  ),
                 ),
-                Spacer(),
-                IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                      jobPosModel.jobStatus == 1
-                          ? Icons.favorite
-                          : Icons.favorite_border,
-                      color: jobPosModel.jobStatus == 1
-                          ? MyColors.lightRed
-                          : MyColors.grey),
+                // Spacer(),
+                Expanded(
+                  flex: 0,
+                  child: IconButton(
+                    onPressed: () {},
+                    icon: Icon(
+                        jobPosModel.jobStatus == 1
+                            ? Icons.favorite
+                            : Icons.favorite_border,
+                        color: jobPosModel.jobStatus == 1
+                            ? MyColors.lightRed
+                            : MyColors.grey),
+                  ),
                 ),
-                SizedBox(width: 15),
+
+                // SizedBox(width: 15),
               ],
             ),
           )),

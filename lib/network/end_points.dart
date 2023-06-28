@@ -68,5 +68,7 @@ class EndPoint {
   ///search
   static String searchJob = "search_job";
 
+  static String jobDistanceLocator = "job_distance_locator";
+
   // static String reSendCodeForUser = "resendpassword_user";
 }

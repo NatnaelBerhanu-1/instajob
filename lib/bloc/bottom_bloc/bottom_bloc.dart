@@ -6,22 +6,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/company_bloc/company_bloc.dart';
 import 'package:insta_job/bloc/company_bloc/company_event.dart';
+import 'package:insta_job/bloc/location_cubit/location_cubit.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/model/user_model.dart';
+import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/bottom_navigation_screen.dart';
 import 'package:insta_job/screens/insta_recruit/user_type_screen.dart';
 import 'package:insta_job/screens/insta_recruit/welcome_screen.dart';
-import 'package:insta_job/test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class BottomBloc extends Bloc<BottomEvent, BottomInitialState> {
   int currentIndex = 0;
   bool selectScreen = false;
   final CompanyBloc companyBloc;
+  final LocationCubit locationCubit;
   var screenNameVal;
 
   /// Implementation of event , bloc
 
-  BottomBloc(this.companyBloc) : super(BottomInitialState()) {
+  BottomBloc(this.companyBloc, this.locationCubit) : super(BottomInitialState()) {
     /// bottom navigation Index change
 
     on<GetIndexEvent>((event, emit) {
@@ -50,6 +52,8 @@ class BottomBloc extends Bloc<BottomEvent, BottomInitialState> {
       final currentUser = FirebaseAuth.instance.currentUser;
       var pref = await SharedPreferences.getInstance();
       var user = await jsonDecode(pref.getString("user").toString());
+      await locationCubit.getCurrentLocation();
+
       if (currentUser != null && user != null) {
         UserModel userModel = UserModel.fromJson(user);
         Global.userModel = userModel;
@@ -60,7 +64,7 @@ class BottomBloc extends Bloc<BottomEvent, BottomInitialState> {
         Timer(
             const Duration(seconds: 1),
             () => navigationKey.currentState?.pushAndRemoveUntil(
-                MaterialPageRoute(builder: (_) => SearchAdd()),
+                MaterialPageRoute(builder: (_) => const BottomNavScreen()),
                 (route) => false));
       } else {
         var type = pref.getString("type");

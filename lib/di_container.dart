@@ -45,11 +45,11 @@ Future<void> init() async {
   sl.registerLazySingleton(() =>
       AuthCubit(sl(), sl(), authRepository: sl(), sharedPreferences: sl()));
   sl.registerLazySingleton(() => CompanyBloc(sl()));
-  sl.registerLazySingleton(() => BottomBloc(sl())..add(UserEvent()));
+  sl.registerLazySingleton(() => BottomBloc(sl(), sl())..add(UserEvent()));
   sl.registerLazySingleton(() => JobPositionBloc(sl()));
   sl.registerLazySingleton(() => FeedBackAndAutoMsgBloc(sl()));
   sl.registerLazySingleton(() => ResumeBloc(sl()));
-  sl.registerLazySingleton(() => LocationCubit(sl()));
+  sl.registerLazySingleton(() => LocationCubit(sl(), sl()));
 
   /// other
   final SharedPreferences preferences = await SharedPreferences.getInstance();

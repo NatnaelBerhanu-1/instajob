@@ -167,7 +167,6 @@ class GlobalCubit extends Cubit<InitialState> {
   double range = 0;
   rangeVal(double val) {
     range = val;
-    print("RANGE: ${range.toStringAsFixed(0)}");
     emit(RangeState(range));
   }
 

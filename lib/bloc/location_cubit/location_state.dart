@@ -1,3 +1,4 @@
+import 'package:google_maps_webservice/places.dart';
 import 'package:insta_job/model/location_model.dart';
 
 class LocationInitial {}
@@ -5,7 +6,13 @@ class LocationInitial {}
 class AddressLoading extends LocationInitial {}
 
 class AddressLoaded extends LocationInitial {
-  final List<GetLocation> list;
+  final List<Prediction> list;
 
   AddressLoaded(this.list);
+}
+
+class PlaceByIdLoaded extends LocationInitial {
+  final List<GetPlaceById> list;
+
+  PlaceByIdLoaded(this.list);
 }

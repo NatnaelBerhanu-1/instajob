@@ -29,6 +29,12 @@ class JobSearchLoaded extends JobPosState {
   const JobSearchLoaded(this.searchJobPosList);
 }
 
+class JobDistanceLoaded extends JobPosState {
+  final List<JobDistanceModel> jobList;
+
+  const JobDistanceLoaded(this.jobList);
+}
+
 class AppliedJobLoaded extends JobPosState {
   final List<AppliedJobModel> appliedJobList;
 

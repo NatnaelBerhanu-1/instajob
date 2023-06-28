@@ -62,6 +62,27 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
     }
   }
 
+  _getJobDistanceLocator(Emitter emit,
+      {String? designation, String? miles}) async {
+    ApiResponse response = await jobPositionRepository.jobDistanceLocator(
+        designation: designation, miles: miles);
+    if (response.response.statusCode == 500) {
+      emit(const JobErrorState('Something went wrong'));
+    }
+    if (response.response.statusCode == 200) {
+      List<JobDistanceModel> list = (response.response.data['data'] as List)
+          .map((e) => JobDistanceModel.fromJson(e))
+          .toList();
+      emit(JobDistanceLoaded(list));
+      print('LISTTT ------------            $list');
+      return list;
+    } else if (response.response.statusCode == 400) {
+      emit(const JobErrorState("Data Not Found"));
+    } else {
+      emit(const JobErrorState('Something went wrong'));
+    }
+  }
+
   _getAppliedJobs(Emitter emit) async {
     ApiResponse response = await jobPositionRepository.getAppliedJob();
     if (response.response.statusCode == 500) {
@@ -198,6 +219,16 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
       emit(JobPosLoading());
       var jobList = await _getSearchJobs(emit, event.filterModel);
       emit(JobSearchLoaded(jobList));
+      // if (jobList.isEmpty) {
+      //   emit(const JobErrorState("Data not found"));
+      // }
+      // emit(JobPosInitialState());
+    });
+    on<JobDistanceLocatorEvent>((event, emit) async {
+      emit(JobPosLoading());
+      var jobList = await _getJobDistanceLocator(emit,
+          miles: event.miles, designation: event.designation);
+      emit(JobDistanceLoaded(jobList));
       // if (jobList.isEmpty) {
       //   emit(const JobErrorState("Data not found"));
       // }

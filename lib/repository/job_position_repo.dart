@@ -212,6 +212,31 @@ class JobPositionRepository {
     }
   }
 
+  jobDistanceLocator({String? designation, String? miles}) async {
+    try {
+      var map = {"designation": designation, "Area_Distance": miles};
+      var response =
+          await dioClient.post(data: map, uri: EndPoint.jobDistanceLocator);
+      return ApiResponse.withSuccess(response);
+    } on DioException catch (e) {
+      return ApiResponse.withError(e.response);
+    }
+  }
+
+  String kGoogleApiKey = "AIzaSyAwEmv3whQry4abe7SnIuPS4ttniNdkLuI";
+
+  Future<ApiResponse> getPlaceById(String placeId) async {
+    try {
+      final response = await dioClient.get(
+          data: {},
+          uri:
+              "https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&key=$kGoogleApiKey");
+      return ApiResponse.withSuccess(response);
+    } on DioException catch (e) {
+      return ApiResponse.withError(e.response);
+    }
+  }
+
   Future<ApiResponse> getLocation(String input) async {
     try {
       final response = await dioClient.get(

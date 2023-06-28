@@ -1,40 +1,48 @@
 class CompanyModel {
-  int? id;
   int? employeeId;
-  String? employeeName;
   String? companyName;
   String? uploadPhoto;
-  String? createdAt;
+  String? cAddress;
+  String? cLat;
+  String? cLog;
   String? updatedAt;
+  String? createdAt;
+  int? id;
 
   CompanyModel(
-      {this.id,
-      this.employeeId,
-      this.employeeName,
+      {this.employeeId,
       this.companyName,
       this.uploadPhoto,
+      this.cAddress,
+      this.cLat,
+      this.cLog,
+      this.updatedAt,
       this.createdAt,
-      this.updatedAt});
+      this.id});
 
   CompanyModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
     employeeId = json['employe_id'];
-    employeeName = json['employe_name'];
     companyName = json['companyname'];
     uploadPhoto = json['upload_photo'];
-    createdAt = json['created_at'];
+    cAddress = json['c_address'];
+    cLat = json['c_lat'];
+    cLog = json['c_log'];
     updatedAt = json['updated_at'];
+    createdAt = json['created_at'];
+    id = json['id'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
     data['employe_id'] = employeeId;
-    data['employe_name'] = employeeName;
     data['companyname'] = companyName;
     data['upload_photo'] = uploadPhoto;
-    data['created_at'] = createdAt;
+    data['c_address'] = cAddress;
+    data['c_lat'] = cLat;
+    data['c_log'] = cLog;
     data['updated_at'] = updatedAt;
+    data['created_at'] = createdAt;
+    data['id'] = id;
     return data;
   }
 }

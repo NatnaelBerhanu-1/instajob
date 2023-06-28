@@ -99,6 +99,14 @@ class JobSearchEvent extends JobPosEvent {
   List<Object?> get props => [];
 }
 
+class JobDistanceLocatorEvent extends JobPosEvent {
+  final String? designation;
+  final String? miles;
+  JobDistanceLocatorEvent({this.designation, this.miles});
+  @override
+  List<Object?> get props => [];
+}
+
 class SortListOrDenyEvent extends JobPosEvent {
   final String id;
 

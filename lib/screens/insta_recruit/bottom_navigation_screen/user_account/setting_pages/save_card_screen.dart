@@ -6,7 +6,6 @@ import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
 import 'package:insta_job/dialog/custom_dialog.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/user_account/setting_pages/add_card_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/user_account/subscribe_pages/congratulation_screen.dart';
-import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/user_account/subscribe_pages/job_board_screen.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_app_bar.dart';
@@ -16,11 +15,7 @@ import '../../../../../bloc/global_cubit/global_state.dart';
 import '../../../../../utils/my_colors.dart';
 import '../../../../../widgets/custom_button/custom_btn.dart';
 
-final List<String> list = [
-  "Detroit MI",
-  "Job Distance Locator",
-  "30 Miles Away"
-];
+
 
 class SaveCardScreen extends StatefulWidget {
   final bool isChoosePayment;
