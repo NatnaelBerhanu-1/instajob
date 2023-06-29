@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
@@ -52,6 +53,8 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
         if (Global.userModel?.type == "user") {
           context.read<JobPositionBloc>().add(LoadJobPosListEvent());
         }
+        context.read<JobPositionBloc>().add(SavedJobPositionListEvent());
+        context.read<JobPositionBloc>().add(AppliedJobListEvent());
         return true;
       },
       child: Scaffold(
@@ -59,12 +62,20 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
         child: Stack(
           children: [
             Positioned(
-                right: 0,
-                top: 0,
-                left: 0,
-                child: Image.network(
+              right: 0,
+              top: 0,
+              left: 0,
+              child: CachedNetworkImage(
+                imageUrl:
                     "${EndPoint.imageBaseUrl}${widget.jobPosModel!.uploadPhoto}",
-                    fit: BoxFit.cover)),
+                fit: BoxFit.cover,
+                errorWidget: (c, val, _) =>
+                    Center(child: CircularProgressIndicator()),
+              ),
+              // Image.network(
+              //     "${EndPoint.imageBaseUrl}${widget.jobPosModel!.uploadPhoto}",
+              //     fit: BoxFit.cover),
+            ),
             Positioned(
               top: 0,
               child: BlocBuilder<BottomBloc, BottomInitialState>(
@@ -212,9 +223,16 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                                                                     .jobPosModel,
                                                                 companyModel: widget
                                                                     .companyModel)));
-
+                                                    context
+                                                        .read<JobPositionBloc>()
+                                                        .add(AppliedJobListEvent(
+                                                            jobId: widget
+                                                                .jobPosModel?.id
+                                                                .toString()));
                                                     AppRoutes.push(context,
                                                         BottomNavScreen());
+                                                    print(
+                                                        "JOB ID ${widget.jobPosModel?.id.toString()}");
                                                   },
                                                 )),
                                               ],

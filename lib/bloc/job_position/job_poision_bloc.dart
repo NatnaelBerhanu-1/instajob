@@ -2,7 +2,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/job_position/job_pos_event.dart';
 import 'package:insta_job/bloc/job_position/job_pos_state.dart';
 import 'package:insta_job/globals.dart';
-import 'package:insta_job/model/applied_job_model.dart';
 import 'package:insta_job/model/filter_model.dart';
 import 'package:insta_job/model/job_position_model.dart';
 import 'package:insta_job/network/api_response.dart';
@@ -62,6 +61,7 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
     }
   }
 
+  List<JobDistanceModel> jobDistanceList = [];
   _getJobDistanceLocator(Emitter emit,
       {String? designation, String? miles}) async {
     ApiResponse response = await jobPositionRepository.jobDistanceLocator(
@@ -70,12 +70,11 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
       emit(const JobErrorState('Something went wrong'));
     }
     if (response.response.statusCode == 200) {
-      List<JobDistanceModel> list = (response.response.data['data'] as List)
+      jobDistanceList = (response.response.data['data'] as List)
           .map((e) => JobDistanceModel.fromJson(e))
           .toList();
-      emit(JobDistanceLoaded(list));
-      print('LISTTT ------------            $list');
-      return list;
+      print('JOB LIST ------------            $jobDistanceList');
+      return jobDistanceList;
     } else if (response.response.statusCode == 400) {
       emit(const JobErrorState("Data Not Found"));
     } else {
@@ -83,14 +82,15 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
     }
   }
 
-  _getAppliedJobs(Emitter emit) async {
-    ApiResponse response = await jobPositionRepository.getAppliedJob();
+  _getAppliedJobs(Emitter emit, {String? jobId}) async {
+    ApiResponse response =
+        await jobPositionRepository.getAppliedJob(jobId: jobId);
     if (response.response.statusCode == 500) {
       emit(const ApplyErrorState('Something went wrong'));
     }
     if (response.response.statusCode == 200) {
-      List<AppliedJobModel> list = (response.response.data['data'] as List)
-          .map((e) => AppliedJobModel.fromJson(e))
+      List<JobPosModel> list = (response.response.data['data'] as List)
+          .map((e) => JobPosModel.fromJson(e))
           .toList();
       emit(AppliedJobLoaded(list));
       return list;
@@ -226,12 +226,9 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
     });
     on<JobDistanceLocatorEvent>((event, emit) async {
       emit(JobPosLoading());
-      var jobList = await _getJobDistanceLocator(emit,
+      jobDistanceList = await _getJobDistanceLocator(emit,
           miles: event.miles, designation: event.designation);
-      emit(JobDistanceLoaded(jobList));
-      // if (jobList.isEmpty) {
-      //   emit(const JobErrorState("Data not found"));
-      // }
+      emit(JobDistanceLoaded(jobDistanceList));
       // emit(JobPosInitialState());
     });
 
@@ -251,7 +248,8 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
 
     on<AppliedJobListEvent>((event, emit) async {
       emit(ApplyLoading());
-      List<AppliedJobModel> appliedJobList = await _getAppliedJobs(emit);
+      List<JobPosModel> appliedJobList =
+          await _getAppliedJobs(emit, jobId: event.jobId);
       emit(AppliedJobLoaded(appliedJobList));
     });
 

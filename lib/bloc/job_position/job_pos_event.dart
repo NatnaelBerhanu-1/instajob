@@ -82,6 +82,9 @@ class ApplyJobEvent extends JobPosEvent {
 }
 
 class AppliedJobListEvent extends JobPosEvent {
+  final String? jobId;
+
+  AppliedJobListEvent({this.jobId});
   @override
   List<Object?> get props => [];
 }

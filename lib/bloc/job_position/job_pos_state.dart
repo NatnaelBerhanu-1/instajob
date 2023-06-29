@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:insta_job/model/applied_job_model.dart';
 
 import '../../model/job_position_model.dart';
 
@@ -36,7 +35,7 @@ class JobDistanceLoaded extends JobPosState {
 }
 
 class AppliedJobLoaded extends JobPosState {
-  final List<AppliedJobModel> appliedJobList;
+  final List<JobPosModel> appliedJobList;
 
   const AppliedJobLoaded(this.appliedJobList);
 }

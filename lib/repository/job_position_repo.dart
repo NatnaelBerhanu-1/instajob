@@ -12,7 +12,7 @@ class JobPositionRepository {
 
   getJobPositions({String? id}) async {
     try {
-      var map = {"company_id": id ?? ""};
+      var map = {"company_id": id ?? "", "user_id": Global.userModel?.id};
       var response =
           await dioClient.post(data: map, uri: EndPoint.getJobPosition);
       return ApiResponse.withSuccess(response);
@@ -36,8 +36,8 @@ class JobPositionRepository {
 
   Future<ApiResponse> getSavedJob() async {
     try {
-      Response response = await dioClient
-          .post(data: {"user_id": Global.userModel?.id}, uri: EndPoint.saveJob);
+      Response response = await dioClient.post(
+          data: {"user_id": Global.userModel?.id}, uri: EndPoint.showSaveJob);
       return ApiResponse.withSuccess(response);
     } on DioException catch (e) {
       return ApiResponse.withError(e.response);
@@ -59,9 +59,10 @@ class JobPositionRepository {
     }
   }
 
-  Future<ApiResponse> getAppliedJob() async {
+  Future<ApiResponse> getAppliedJob({String? jobId}) async {
     var map = {
-      "user_id": Global.userModel?.id,
+      "user_id": Global.userModel?.type == "user" ? Global.userModel?.id : "",
+      "job_id": jobId ?? "",
     };
     try {
       Response response =

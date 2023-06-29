@@ -156,6 +156,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:insta_job/bloc/location_cubit/location_cubit.dart';
 import 'package:insta_job/bloc/location_cubit/location_state.dart';
+import 'package:insta_job/bloc/validation/validation_bloc.dart';
 // import 'package:flutter_google_places/flutter_google_places.dart';
 // import 'package:google_maps_webservice/places.dart';
 import 'package:insta_job/utils/my_colors.dart';
@@ -300,6 +301,7 @@ class SearchAdd extends StatefulWidget {
 
 class _SearchAddState extends State<SearchAdd> {
   TextEditingController controller = TextEditingController();
+  bool suggestionVal = false;
 
   @override
   Widget build(BuildContext context) {
@@ -309,25 +311,75 @@ class _SearchAddState extends State<SearchAdd> {
         children: [
           BlocBuilder<LocationCubit, LocationInitial>(
               builder: (context, state) {
-            return TypeAheadField(
-                textFieldConfiguration:
-                    TextFieldConfiguration(controller: controller),
+            return TypeAheadFormField(
+                getImmediateSuggestions: true,
+                onSuggestionsBoxToggle: (val) {
+                  print("@@ ${val}");
+                  suggestionVal = val;
+                  setState(() {});
+                },
+                validator: (val) => requiredValidation(val!, "Address"),
+                // suggestionsBoxDecoration: SuggestionsBoxDecoration(),
+                textFieldConfiguration: TextFieldConfiguration(
+                    onChanged: (val) {
+                      // if (!formKey.currentState!.validate()) {
+                      requiredValidation(val, "Address");
+                      // }
+                    },
+                    controller: controller,
+                    autofocus: false,
+                    decoration: InputDecoration(
+                      isDense: true,
+                      prefixIcon: Icon(Icons.location_on_outlined,
+                          size: 25, color: MyColors.blue),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
+                        borderSide:
+                            BorderSide(color: MyColors.lightGrey, width: 1),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
+                        borderSide:
+                            BorderSide(color: MyColors.lightGrey, width: 1),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
+                        borderSide:
+                            BorderSide(color: MyColors.lightGrey, width: 1),
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
+                        borderSide:
+                            BorderSide(color: MyColors.lightGrey, width: 1),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
+                        borderSide:
+                            BorderSide(color: MyColors.lightGrey, width: 1),
+                      ),
+                    )),
+                hideOnLoading: true,
                 suggestionsCallback: (pattern) async {
                   return await context
                       .read<LocationCubit>()
                       .getLocation(controller.text);
                 },
+                // autoFlipDirection: true,
                 itemBuilder: (c, location) {
                   return ListTile(
                     contentPadding: EdgeInsets.only(left: 10, right: 10),
                     title: Text("${location.description}"),
                   );
                 },
-                onSuggestionSelected: (pattern) {
+                onSuggestionSelected: (pattern) async {
+                  print("SELECTED");
                   controller.text = pattern.description.toString();
+                  await context
+                      .read<LocationCubit>()
+                      .getPlaceById(pattern.placeId);
                   setState(() {});
                 });
-          })
+          }),
         ],
       )),
     );

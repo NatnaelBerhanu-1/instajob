@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:insta_job/bloc/choose_image_bloc/pick_image_cubit.dart';
 import 'package:insta_job/bloc/company_bloc/company_bloc.dart';
 import 'package:insta_job/bloc/company_bloc/company_event.dart';
@@ -11,6 +10,8 @@ import 'package:insta_job/bloc/location_cubit/location_cubit.dart';
 import 'package:insta_job/bloc/location_cubit/location_state.dart';
 import 'package:insta_job/bloc/validation/validation_bloc.dart';
 import 'package:insta_job/globals.dart';
+import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/search_company.dart';
+import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_app_bar.dart';
@@ -55,7 +56,9 @@ class _AddNewCompanyState extends State<AddNewCompany> {
     return WillPopScope(
       onWillPop: () async {
         var image = context.read<PickImageCubit>();
+        var locationData = context.read<LocationCubit>();
         image.clearImgUrl();
+        locationData.clearAddress();
         return true;
       },
       child: Scaffold(
@@ -70,6 +73,8 @@ class _AddNewCompanyState extends State<AddNewCompany> {
             onTap: () {
               var image = context.read<PickImageCubit>();
               image.clearImgUrl();
+              var locationData = context.read<LocationCubit>();
+              locationData.clearAddress();
               context
                   .read<BottomBloc>()
                   .add(SetScreenEvent(false, screenName: BottomNavScreen()));
@@ -113,125 +118,61 @@ class _AddNewCompanyState extends State<AddNewCompany> {
                   SizedBox(height: 15),
                   BlocBuilder<LocationCubit, LocationInitial>(
                       builder: (context, state) {
-                    return TypeAheadFormField(
-                        getImmediateSuggestions: true,
-                        onSuggestionsBoxToggle: (val) {
-                          print("@@ ${val}");
-                          suggestionVal = val;
-                          setState(() {});
-                        },
-                        validator: (val) => requiredValidation(val!, "Address"),
-                        suggestionsBoxDecoration:
-                            SuggestionsBoxDecoration(elevation: 0),
-                        textFieldConfiguration: TextFieldConfiguration(
-                            onChanged: (val) {
-                              if (!formKey.currentState!.validate()) {
-                                requiredValidation(val, "Address");
-                              }
-                            },
-                            controller: address,
-                            autofocus: false,
-                            decoration: InputDecoration(
-                              isDense: true,
-                              prefixIcon: Icon(Icons.location_on_outlined,
-                                  size: 25, color: MyColors.blue),
-                              border: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(12)),
-                                borderSide: BorderSide(
-                                    color: MyColors.lightGrey, width: 1),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(12)),
-                                borderSide: BorderSide(
-                                    color: MyColors.lightGrey, width: 1),
-                              ),
-                              errorBorder: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(12)),
-                                borderSide: BorderSide(
-                                    color: MyColors.lightGrey, width: 1),
-                              ),
-                              focusedErrorBorder: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(12)),
-                                borderSide: BorderSide(
-                                    color: MyColors.lightGrey, width: 1),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(12)),
-                                borderSide: BorderSide(
-                                    color: MyColors.lightGrey, width: 1),
-                              ),
-                            )),
-                        suggestionsCallback: (pattern) async {
-                          return await context
-                              .read<LocationCubit>()
-                              .getLocation(address.text);
-                        },
-                        itemBuilder: (c, location) {
-                          return ListTile(
-                            contentPadding:
-                                EdgeInsets.only(left: 10, right: 10),
-                            title: Text("${location.description}"),
-                          );
-                        },
-                        onSuggestionSelected: (pattern) async {
-                          address.text = pattern.description.toString();
-                          await context
-                              .read<LocationCubit>()
-                              .getPlaceById(pattern.placeId);
-                          setState(() {});
-                        });
+                    var data = context.read<LocationCubit>();
+                    return IconTextField(
+                      controller: address,
+                      prefixIcon: Icon(Icons.location_on_outlined,
+                          size: 25, color: MyColors.blue),
+                      hint: data.address.isEmpty
+                          ? "Search Address"
+                          : data.address,
+                      readOnly: true,
+                      hintColor: data.address.isEmpty
+                          ? MyColors.userFont
+                          : MyColors.black,
+                      onPressed: () {
+                        AppRoutes.push(context, SearchCompany(isAddress: true));
+                      },
+                    );
                   }),
-                  suggestionVal ? SizedBox(height: 60) : SizedBox(height: 30),
-                  suggestionVal
-                      ? SizedBox()
-                      : uploadPhotoCard(context, isSuggestion: suggestionVal),
-                  SizedBox(height: 30),
-                  suggestionVal
-                      ? SizedBox()
-                      : BlocConsumer<CompanyBloc, CompanyState>(
-                          listener: (c, state) {
-                          if (state is ErrorState) {
-                            showToast(state.error);
+                  SizedBox(height: 20),
+                  uploadPhotoCard(context, isSuggestion: suggestionVal),
+                  SizedBox(height: 20),
+                  BlocConsumer<CompanyBloc, CompanyState>(listener: (c, state) {
+                    if (state is ErrorState) {
+                      showToast(state.error);
+                    }
+                  }, builder: (context, snapshot) {
+                    var image = context.read<PickImageCubit>();
+                    var locationData = context.read<LocationCubit>();
+                    return CustomButton(
+                      title: "Submit",
+                      onTap: () {
+                        print("LATITUDE ${locationData.location.latitude}");
+                        print("LONGITUDE ${locationData.location.longitude}");
+                        // context.read<LocationCubit>().location.lat;
+                        if (formKey.currentState!.validate()) {
+                          if (image.imgUrl.isNotEmpty) {
+                            context.read<CompanyBloc>().add(AddCompanyEvent(
+                                  companyName: name.text,
+                                  photo: image.imgUrl,
+                                  address: locationData.address,
+                                  lat:
+                                      locationData.location.latitude.toString(),
+                                  lang: locationData.location.longitude
+                                      .toString(),
+                                ));
+                            context.read<BottomBloc>().add(SetScreenEvent(false,
+                                screenName: BottomNavScreen()));
+                            image.clearImgUrl();
+                            locationData.clearAddress();
+                          } else {
+                            showToast("Please choose image");
                           }
-                        }, builder: (context, snapshot) {
-                          var image = context.read<PickImageCubit>();
-                          var locationData = context.read<LocationCubit>();
-                          return CustomButton(
-                            title: "Submit",
-                            onTap: () {
-                              print(
-                                  "LATITUDE ${locationData.location.latitude}");
-                              print(
-                                  "LONGITUDE ${locationData.location.longitude}");
-                              // context.read<LocationCubit>().location.lat;
-                              if (formKey.currentState!.validate()) {
-                                if (image.imgUrl.isNotEmpty) {
-                                  context
-                                      .read<CompanyBloc>()
-                                      .add(AddCompanyEvent(
-                                        companyName: name.text,
-                                        photo: image.imgUrl,
-                                        address: address.text,
-                                        lat: locationData.location.latitude
-                                            .toString(),
-                                        lang: locationData.location.longitude
-                                            .toString(),
-                                      ));
-                                  context.read<BottomBloc>().add(SetScreenEvent(
-                                      false,
-                                      screenName: BottomNavScreen()));
-                                } else {
-                                  showToast("Please choose image");
-                                }
-                              }
-                            },
-                          );
-                        })
+                        }
+                      },
+                    );
+                  })
                 ],
               ),
             ),

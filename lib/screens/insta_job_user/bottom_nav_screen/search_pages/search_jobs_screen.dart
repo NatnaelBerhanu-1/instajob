@@ -39,7 +39,27 @@ class _SearchJobsScreenState extends State<SearchJobsScreen> {
     super.initState();
   }
 
-  Set<Marker> setOfMarker = {};
+  // Set<Marker> setOfMarker = {};
+  // CameraPosition? cameraPosition;
+  // getCurrent() {
+  //   var locationData = context.read<JobPositionBloc>();
+  //
+  //   print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+  //   setState(() {
+  //     for (int i = 0; i < locationData.jobDistanceList.length; i++) {
+  //       print("|||||||||||||| FOR LOOP |||||||||||||||");
+  //       var jobData = locationData.jobDistanceList[i];
+  //       final marker = Marker(
+  //           markerId: MarkerId(jobData.id.toString()),
+  //           position: LatLng(
+  //             double.parse(jobData.cLat.toString()),
+  //             double.parse(jobData.cLog.toString()),
+  //           ),
+  //           infoWindow: InfoWindow(title: jobData.designation));
+  //       setOfMarker.add(marker);
+  //     }
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -106,111 +126,123 @@ class _SearchJobsScreenState extends State<SearchJobsScreen> {
           child:
               BlocBuilder<GlobalCubit, InitialState>(builder: (context, state) {
             var value = context.read<GlobalCubit>();
-            return BlocBuilder<JobPositionBloc, JobPosState>(
-                builder: (context, jobState) {
-              return Column(
-                children: [
-                  Padding(
-                    padding: jobDistanceIndex == 1 || jobDistanceIndex == 2
-                        ? EdgeInsets.only(left: 10.0, top: 10)
-                        : EdgeInsets.only(left: 10.0),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Container(
-                              height: 40,
-                              // width: MediaQuery.of(context).size.width - 30,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(30),
-                                  border: Border.all(color: MyColors.blue),
-                                  color: MyColors.white),
-                              child: Row(
-                                children: List.generate(
-                                    3,
-                                    (index) => Expanded(
-                                          child: Container(
-                                            height: 40,
-                                            // width: MediaQuery.of(context).size.width - 30,
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(30),
-                                                border: Border.all(
-                                                    color: MyColors.white),
-                                                color: MyColors.white),
-                                            child: CustomFilterTile(
-                                              onClick: () {
-                                                // filterIndex = index;
+            return Column(
+              children: [
+                Padding(
+                  padding: jobDistanceIndex == 1 || jobDistanceIndex == 2
+                      ? EdgeInsets.only(left: 10.0, top: 10)
+                      : EdgeInsets.only(left: 10.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                            height: 40,
+                            // width: MediaQuery.of(context).size.width - 30,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(30),
+                                border: Border.all(color: MyColors.blue),
+                                color: MyColors.white),
+                            child: Row(
+                              children: List.generate(
+                                  3,
+                                  (index) => Expanded(
+                                        child: Container(
+                                          height: 40,
+                                          // width: MediaQuery.of(context).size.width - 30,
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(30),
+                                              border: Border.all(
+                                                  color: MyColors.white),
+                                              color: MyColors.white),
+                                          child: CustomFilterTile(
+                                            onClick: () {
+                                              // filterIndex = index;
+                                              context
+                                                  .read<GlobalCubit>()
+                                                  .changeFilterIndex(index);
+                                              if (index == 0) {
                                                 context
-                                                    .read<GlobalCubit>()
-                                                    .changeFilterIndex(index);
-                                              },
-                                              selectedIndex: jobDistanceIndex,
-                                              index: index,
-                                              title: [
-                                                "${context.read<LocationCubit>().placeMarks.first.name}",
-                                                "Job Distance Locator",
-                                                "${context.read<GlobalCubit>().range.toStringAsFixed(0)} Miles Away"
-                                              ][index],
-                                            ),
+                                                    .read<JobPositionBloc>()
+                                                    .add(LoadJobPosListEvent());
+                                              }
+                                            },
+                                            selectedIndex: jobDistanceIndex,
+                                            index: index,
+                                            title: [
+                                              "${context.read<LocationCubit>().placeMarks.first.name}",
+                                              "Job Distance Locator",
+                                              "${context.read<GlobalCubit>().range.toStringAsFixed(0)} Miles Away"
+                                            ][index],
                                           ),
-                                        )),
-                              )),
-                        ),
-                        SizedBox(width: 7),
-                        Expanded(
-                            flex: 0,
-                            child: GestureDetector(
-                              onTap: () {
-                                AppRoutes.push(context, FilterScreen());
-                              },
-                              child: Container(
-                                color: MyColors.transparent,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: Image.asset(
-                                    MyImages.filter,
-                                    height: 30,
-                                    width: 30,
+                                        ),
+                                      )),
+                            )),
+                      ),
+                      SizedBox(width: 7),
+                      Expanded(
+                          flex: 0,
+                          child: selectedSearchIndex == 2
+                              ? SizedBox(width: 5)
+                              : GestureDetector(
+                                  onTap: () {
+                                    AppRoutes.push(context, FilterScreen());
+                                  },
+                                  child: Container(
+                                    color: MyColors.transparent,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(5.0),
+                                      child: Image.asset(
+                                        MyImages.filter,
+                                        height: 30,
+                                        width: 30,
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ),
-                            ))
-                      ],
-                    ),
+                                ))
+                    ],
                   ),
-                  jobDistanceIndex == 1 || jobDistanceIndex == 2
-                      ? Slider(
-                          value: value.range,
-                          onChanged: (val) {
-                            value.rangeVal(val);
-                          },
-                          onChangeEnd: (val) {
-                            print("END $val");
-                            context
-                                .read<JobPositionBloc>()
-                                .add(JobDistanceLocatorEvent(
-                                  miles: val.toStringAsFixed(0),
-                                  designation: "",
-                                ));
-                          },
-                          max: 100,
-                          min: 0,
-                        )
-                      : SizedBox(),
-                  jobDistanceIndex == 1 || jobDistanceIndex == 2
-                      ? SizedBox(height: 0)
-                      : SizedBox(height: 25),
-                  if (jobDistanceIndex == 0) ...[
-                    CompanyJobChip(selectedSearchIndex: selectedSearchIndex)
-                  ] else if (jobDistanceIndex == 1 ||
-                      jobDistanceIndex == 2) ...[
-                    BlocBuilder<LocationCubit, LocationInitial>(
-                        builder: (context, state) {
-                      var locationData = context.read<LocationCubit>();
-                      return Expanded(
-                          child: ListView(
-                        children: [
-                          Stack(
+                ),
+                jobDistanceIndex == 1 || jobDistanceIndex == 2
+                    ? Slider(
+                        value: value.range,
+                        onChanged: (val) {
+                          value.rangeVal(val);
+                          context.read<LocationCubit>().onMapCreated(context);
+                          // setState(() {});
+                        },
+                        onChangeEnd: (val) {
+                          print("END $val");
+                          context
+                              .read<JobPositionBloc>()
+                              .add(JobDistanceLocatorEvent(
+                                miles: val.toStringAsFixed(0),
+                                designation: "",
+                              ));
+                          context.read<LocationCubit>().onMapCreated(context);
+                          // setState(() {});
+                        },
+                        max: 100,
+                        min: 0,
+                      )
+                    : SizedBox(),
+                jobDistanceIndex == 1 || jobDistanceIndex == 2
+                    ? SizedBox(height: 0)
+                    : SizedBox(height: 25),
+                if (jobDistanceIndex == 0) ...[
+                  CompanyJobChip(selectedSearchIndex: selectedSearchIndex)
+                ] else if (jobDistanceIndex == 1 || jobDistanceIndex == 2) ...[
+                  BlocBuilder<LocationCubit, LocationInitial>(
+                      builder: (context, state) {
+                    var locationData = context.read<LocationCubit>();
+                    return Expanded(
+                        child: ListView(
+                      children: [
+                        BlocBuilder<JobPositionBloc, JobPosState>(
+                            builder: (context, jobState) {
+                          var jobData = context.read<JobPositionBloc>();
+                          print("STATE: $jobState");
+                          return Stack(
                             children: [
                               Container(
                                 height:
@@ -220,16 +252,18 @@ class _SearchJobsScreenState extends State<SearchJobsScreen> {
                                   initialCameraPosition: CameraPosition(
                                       target: LatLng(locationData.latitude,
                                           locationData.longitude),
-                                      zoom: 12),
+                                      zoom: 8),
                                   zoomControlsEnabled: true,
                                   padding: EdgeInsets.only(
                                       bottom:
                                           MediaQuery.of(context).size.height *
                                               0.27),
-                                  markers: setOfMarker,
+                                  markers: locationData.setOfMarker,
                                   onMapCreated:
                                       (GoogleMapController controller) {
-                                    locationData.googleMapController =
+                                    locationData.onMapCreated(context);
+                                    // setState(() {});
+                                    /* locationData.googleMapController =
                                         controller;
                                     controller.animateCamera(
                                         CameraUpdate.newCameraPosition(
@@ -259,61 +293,59 @@ class _SearchJobsScreenState extends State<SearchJobsScreen> {
                                         setOfMarker.add(marker);
                                       }
                                     }
-                                    // locationData.onMapCreated(jobState);
-                                    print("STATE: $jobState");
-                                    setState(() {});
+                                    setState(() {});*/
                                   },
                                 ),
                               ),
+                              // if (jobState is JobDistanceLoaded) ...[
                               Positioned(
                                 bottom: 20,
                                 left: 0,
                                 right: 0,
                                 child: SizedBox(
-                                  height: 220,
-                                  width: MediaQuery.of(context).size.width,
-                                  child:
-                                      BlocBuilder<JobPositionBloc, JobPosState>(
-                                          builder: (context, jobState) {
-                                    if (jobState is JobDistanceLoaded) {
-                                      return ListView.builder(
-                                          scrollDirection: Axis.horizontal,
-                                          shrinkWrap: true,
-                                          itemCount: jobState.jobList.length,
-                                          itemBuilder: (c, i) {
-                                            return Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 8.0,
-                                                      vertical: 10),
+                                    height: 220,
+                                    width: MediaQuery.of(context).size.width,
+                                    child: ListView.builder(
+                                        scrollDirection: Axis.horizontal,
+                                        shrinkWrap: true,
+                                        itemCount:
+                                            jobData.jobDistanceList.length,
+                                        itemBuilder: (c, i) {
+                                          return Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 8.0, vertical: 10),
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                // AppRoutes.push(
+                                                //     context,
+                                                //     JobPositionScreen(
+                                                //       jobPosModel: jobData
+                                                //           .jobDistanceList[i],
+                                                //     ));
+                                              },
                                               child: MapTile(
                                                 jobDistanceModel:
-                                                    jobState.jobList[i],
+                                                    jobData.jobDistanceList[i],
                                               ),
-                                            );
-                                          });
-                                    }
-                                    if (state is JobPosLoading) {
-                                      return Center(
-                                          child: CircularProgressIndicator());
-                                    }
-                                    // if (state is JobErrorState) {
-                                    //   return Center(child: Text(state.error));
-                                    // }
-                                    return SizedBox();
-                                  }),
-                                ),
+                                            ),
+                                          );
+                                        })),
                               ),
+                              // ],
+
+                              if (jobState is JobPosLoading) ...[
+                                Center(child: CircularProgressIndicator())
+                              ]
                             ],
-                          ),
-                        ],
-                      ));
-                    }),
-                  ] else
-                    ...[],
-                ],
-              );
-            });
+                          );
+                        }),
+                      ],
+                    ));
+                  }),
+                ] else
+                  ...[],
+              ],
+            );
           }),
         ));
   }

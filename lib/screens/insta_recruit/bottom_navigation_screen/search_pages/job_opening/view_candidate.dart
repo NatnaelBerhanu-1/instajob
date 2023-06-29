@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
 import 'package:insta_job/bloc/global_cubit/global_state.dart';
+import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
+import 'package:insta_job/bloc/job_position/job_pos_event.dart';
+import 'package:insta_job/bloc/job_position/job_pos_state.dart';
 import 'package:insta_job/model/company_model.dart';
 import 'package:insta_job/model/job_position_model.dart';
 import 'package:insta_job/screens/insta_recruit/new_email_screen.dart';
@@ -99,6 +102,12 @@ class _ViewCandidatesState extends State<ViewCandidates> {
                           unselectedLabelColor: MyColors.tabClr,
                           onTap: (val) {
                             tab.changeTabValue(val);
+                            if (val == 1) {
+                              context.read<JobPositionBloc>().add(
+                                  AppliedJobListEvent(
+                                      jobId:
+                                          widget.jobPosModel!.id.toString()));
+                            }
                           },
                           tabs: [
                             Tab(text: "Applied"),
@@ -107,17 +116,47 @@ class _ViewCandidatesState extends State<ViewCandidates> {
                           ],
                         );
                       }),
-                      Expanded(
-                          child: TabBarView(children: [
-                        ListView.builder(
-                            itemCount: 7,
-                            itemBuilder: (c, i) {
-                              return Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 15.0, vertical: 10),
-                                child: BlocBuilder<GlobalCubit, InitialState>(
-                                    builder: (context, state) {
-                                  return CandidateTile(
+                      Expanded(child: BlocBuilder<JobPositionBloc, JobPosState>(
+                          builder: (context, appliedState) {
+                        return TabBarView(children: [
+                          if (appliedState is AppliedJobLoaded) ...[
+                            ListView.builder(
+                                itemCount: appliedState.appliedJobList.length,
+                                itemBuilder: (c, i) {
+                                  return Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 15.0, vertical: 10),
+                                    child:
+                                        BlocBuilder<GlobalCubit, InitialState>(
+                                            builder: (context, state) {
+                                      return CandidateTile(
+                                        onchange: (val) {
+                                          context
+                                              .read<GlobalCubit>()
+                                              .onSelected(val, i);
+                                          setState(() {});
+                                        },
+                                        value: context
+                                            .read<GlobalCubit>()
+                                            .list
+                                            .contains(i),
+                                        appliedJobModel:
+                                            appliedState.appliedJobList[i],
+                                      );
+                                    }),
+                                  );
+                                }),
+                          ],
+                          if (appliedState is ApplyLoading) ...[
+                            Center(child: CircularProgressIndicator())
+                          ],
+                          ListView.builder(
+                              itemCount: 7,
+                              itemBuilder: (c, i) {
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 15.0, vertical: 10),
+                                  child: CandidateTile(
                                     onchange: (val) {
                                       context
                                           .read<GlobalCubit>()
@@ -128,42 +167,22 @@ class _ViewCandidatesState extends State<ViewCandidates> {
                                         .read<GlobalCubit>()
                                         .list
                                         .contains(i),
-                                  );
-                                }),
-                              );
-                            }),
-                        ListView.builder(
-                            itemCount: 7,
+                                  ),
+                                );
+                              }),
+                          ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: 4,
                             itemBuilder: (c, i) {
                               return Padding(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 15.0, vertical: 10),
-                                child: CandidateTile(
-                                  onchange: (val) {
-                                    context
-                                        .read<GlobalCubit>()
-                                        .onSelected(val, i);
-                                    setState(() {});
-                                  },
-                                  value: context
-                                      .read<GlobalCubit>()
-                                      .list
-                                      .contains(i),
-                                ),
+                                    horizontal: 10, vertical: 5),
+                                child: MessageTile(),
                               );
-                            }),
-                        ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: 4,
-                          itemBuilder: (c, i) {
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 5),
-                              child: MessageTile(),
-                            );
-                          },
-                        ),
-                      ]))
+                            },
+                          ),
+                        ]);
+                      }))
                     ],
                   )),
             )

@@ -5,7 +5,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
-import 'package:insta_job/bloc/job_position/job_pos_state.dart';
 import 'package:insta_job/bloc/location_cubit/location_state.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/model/location_model.dart';
@@ -32,6 +31,16 @@ class LocationCubit extends Cubit<LocationInitial> {
   }
 
   LocationModel location = LocationModel();
+  String address = "";
+  getAddress(val) {
+    address = val;
+    emit(LocationInitial());
+  }
+
+  clearAddress() {
+    address = "";
+    emit(LocationInitial());
+  }
 
   getPlaceById(input) async {
     ApiResponse response = await jobPosRepository.getPlaceById(input);
@@ -53,25 +62,21 @@ class LocationCubit extends Cubit<LocationInitial> {
   GoogleMapController? googleMapController;
   Set<Marker> setOfMarker = {};
 
-  onMapCreated(state) {
+  onMapCreated(BuildContext context) {
     setOfMarker.clear();
-    if (state is JobDistanceLoaded) {
-      print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-      for (int i = 0; i < state.jobList.length; i++) {
-        print("@@@@@@@@@@@@@@@@@@@@@");
-        var jobData = state.jobList[i];
-        var marker = Marker(
+    var locationData = context.read<JobPositionBloc>();
+    for (int i = 0; i < locationData.jobDistanceList.length; i++) {
+      print("|||||||||||||| FOR LOOP |||||||||||||||");
+      var jobData = locationData.jobDistanceList[i];
+      final marker = Marker(
           markerId: MarkerId(jobData.id.toString()),
           position: LatLng(
             double.parse(jobData.cLat.toString()),
             double.parse(jobData.cLog.toString()),
           ),
-        );
-        setOfMarker.add(marker);
-        emit(LocationInitial());
-      }
-    } else {
-      print("************************************");
+          infoWindow: InfoWindow(title: jobData.designation));
+      setOfMarker.add(marker);
+      emit(LocationInitial());
     }
   }
 

@@ -1,11 +1,13 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:insta_job/model/resume_model.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/widgets/custom_divider.dart';
 
 class ApplicantTiles extends StatelessWidget {
-  const ApplicantTiles({Key? key}) : super(key: key);
+  final ResumeModel? resumeModel;
+  const ApplicantTiles({Key? key, this.resumeModel}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,17 +16,17 @@ class ApplicantTiles extends StatelessWidget {
         Expanded(
           child: ListView.builder(
               shrinkWrap: true,
-              itemCount: 6,
+              itemCount: resumeModel?.skills?.length,
               itemBuilder: (context, i) {
                 return Padding(
                   padding:
-                      const EdgeInsets.symmetric(vertical: 5.0, horizontal: 12),
+                      const EdgeInsets.symmetric(vertical: .0, horizontal: 0),
                   child: Column(
                     children: [
                       Row(
                         children: [
                           Text(
-                            "Powerpoint",
+                            "${resumeModel?.skills?[i].addSkill}",
                             style: TextStyle(fontSize: 14),
                           ),
                           Spacer(),

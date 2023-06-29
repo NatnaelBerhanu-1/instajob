@@ -29,7 +29,7 @@ class EndPoint {
   static String addJobPosition = "insert_of_jobpossition";
   static String getJobPosition = "list_of_jobposition";
   static String editJobPosition = "edit_of_jobposition";
-  static String saveJob = "save_job";
+  static String showSaveJob = "show_save_job";
   static String insertSaveJob = "insert_savejob";
   static String deleteJobPosition = "delete_jobposition";
 

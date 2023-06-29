@@ -61,6 +61,9 @@ class AddAchievementEvent extends ResumeEvent {
 }
 
 class UserResumeLoadedEvent extends ResumeEvent {
+  final String? userId;
+
+  UserResumeLoadedEvent({this.userId});
   @override
   List<Object?> get props => [];
 }

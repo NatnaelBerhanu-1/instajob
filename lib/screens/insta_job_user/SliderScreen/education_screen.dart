@@ -137,7 +137,6 @@ class _EducationScreenState extends State<EducationScreen> {
                           context
                               .read<ResumeBloc>()
                               .add(UserResumeLoadedEvent());
-
                           instituteName.clear();
                           city.clear();
                           state.clear();

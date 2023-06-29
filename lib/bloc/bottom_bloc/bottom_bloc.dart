@@ -23,7 +23,8 @@ class BottomBloc extends Bloc<BottomEvent, BottomInitialState> {
 
   /// Implementation of event , bloc
 
-  BottomBloc(this.companyBloc, this.locationCubit) : super(BottomInitialState()) {
+  BottomBloc(this.companyBloc, this.locationCubit)
+      : super(BottomInitialState()) {
     /// bottom navigation Index change
 
     on<GetIndexEvent>((event, emit) {

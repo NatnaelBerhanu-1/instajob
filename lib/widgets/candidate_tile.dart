@@ -1,8 +1,13 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
+import 'package:insta_job/bloc/resume_bloc/resume_bloc.dart';
+import 'package:insta_job/bloc/resume_bloc/resume_event.dart';
+import 'package:insta_job/model/job_position_model.dart';
+import 'package:insta_job/network/end_points.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/bottom_navigation_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/applicants_page.dart';
 import 'package:insta_job/utils/app_routes.dart';
@@ -17,7 +22,10 @@ import 'custom_cards/custom_common_card.dart';
 class CandidateTile extends StatelessWidget {
   final ValueChanged? onchange;
   final bool? value;
-  const CandidateTile({Key? key, this.onchange, this.value}) : super(key: key);
+  final JobPosModel? appliedJobModel;
+  const CandidateTile(
+      {Key? key, this.onchange, this.value, this.appliedJobModel})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +34,10 @@ class CandidateTile extends StatelessWidget {
         builder: (context, state) {
       return GestureDetector(
         onTap: () {
-          context
-              .read<BottomBloc>()
-              .add(SetScreenEvent(true, screenName: Applicants()));
+          context.read<BottomBloc>().add(SetScreenEvent(true,
+              screenName: Applicants(jobPosModel: appliedJobModel)));
+          context.read<ResumeBloc>().add(UserResumeLoadedEvent(
+              userId: appliedJobModel?.userId.toString()));
           AppRoutes.push(context, BottomNavScreen());
         },
         child: Container(
@@ -69,13 +78,15 @@ class CandidateTile extends StatelessWidget {
                           children: [
                             CircleAvatar(
                               radius: 20,
+                              backgroundImage: CachedNetworkImageProvider(
+                                  "${EndPoint.imageBaseUrl}${appliedJobModel?.uploadPhoto}"),
                             ),
                             SizedBox(width: 10),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 CommonText(
-                                  text: "Candidate",
+                                  text: "${appliedJobModel?.userName}",
                                   fontSize: 14,
                                   fontColor: MyColors.black,
                                   overflow: TextOverflow.clip,
@@ -83,7 +94,7 @@ class CandidateTile extends StatelessWidget {
                                 ),
                                 SizedBox(height: 5),
                                 CommonText(
-                                  text: "2714 wasterrn ave.",
+                                  text: "${appliedJobModel?.designation}",
                                   fontSize: 12,
                                   fontColor: MyColors.black,
                                   overflow: TextOverflow.clip,
@@ -96,6 +107,7 @@ class CandidateTile extends StatelessWidget {
                         ),
                         SizedBox(height: 10),
                         LinearPercentIndicator(
+                          padding: EdgeInsets.zero,
                           width: 170.0,
                           animation: true,
                           animationDuration: 1000,

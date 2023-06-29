@@ -94,12 +94,12 @@ class MapTile extends StatelessWidget {
               crossAxisAlignment: WrapCrossAlignment.center,
               children: [
                 ImageButton(
-                    image: MyImages.locationBlue, height: 18, width: 15),
+                    image: MyImages.locationBlue, height: 18, width: 12),
                 Text(
                   "${jobDistanceModel.cAddress}",
                   style: TextStyle(
                       color: MyColors.blue,
-                      fontSize: 13,
+                      fontSize: 11,
                       overflow: TextOverflow.ellipsis),
                 ),
               ],

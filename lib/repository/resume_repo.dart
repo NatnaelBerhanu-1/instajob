@@ -145,9 +145,10 @@ class ResumeRepository {
     }
   }
 
-  Future<ApiResponse> showCreatedResumes() async {
+  Future<ApiResponse> showCreatedResumes({String? userId}) async {
     var data = {
-      "user_id": Global.userModel?.id,
+      "user_id":
+          Global.userModel?.type == "user" ? Global.userModel?.id : userId,
     };
     try {
       Response response =

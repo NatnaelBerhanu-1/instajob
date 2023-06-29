@@ -128,7 +128,8 @@ class ResumeBloc extends Bloc<ResumeEvent, ResumeState> {
     });
 
     on<UserResumeLoadedEvent>((event, emit) async {
-      ApiResponse response = await resumeRepository.showCreatedResumes();
+      ApiResponse response =
+          await resumeRepository.showCreatedResumes(userId: event.userId);
       if (response.response.statusCode == 500) {
         emit(const ErrorState("Something went wrong"));
       }

@@ -7,6 +7,7 @@ import 'package:insta_job/bloc/company_bloc/company_bloc.dart';
 import 'package:insta_job/bloc/company_bloc/company_event.dart';
 import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
 import 'package:insta_job/bloc/job_position/job_pos_state.dart';
+import 'package:insta_job/globals.dart';
 import 'package:insta_job/model/company_model.dart';
 import 'package:insta_job/network/end_points.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/assigned_company_screen.dart';
@@ -59,46 +60,66 @@ class JobOpeningScreen extends StatelessWidget {
                       //     screenName: JobOpeningScreen());
                     },
                   ),
-                  Expanded(
-                    child: IconTextField(
-                      prefixIcon: ImageButton(
-                        image: MyImages.searchGrey,
-                        padding: EdgeInsets.all(14),
-                        height: 10,
-                        width: 10,
-                      ),
-                      readOnly: true,
-                      borderRadius: 25,
-                      hint: "search",
-                      onPressed: () {
-                        AppRoutes.push(
-                            context, SearchCompany(isJobSearch: true));
-                      },
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      context.read<BottomBloc>().add(SetScreenEvent(true,
-                          screenName: AddJobPositionScreen(
-                            companyModel: companyModel,
-                          )));
-                      // AppRoutes.push(context, EditListing());
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 10.0, left: 10),
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: MyColors.blue, shape: BoxShape.circle),
-                        child: Padding(
-                          padding: const EdgeInsets.all(9.0),
-                          child: Icon(
-                            Icons.add,
-                            color: MyColors.white,
+                  Global.userModel?.type == "user"
+                      ? Expanded(
+                          child: CommonText(
+                            text: " ${companyModel?.companyName}",
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18,
+                          ),
+                        )
+                      : Expanded(
+                          child: IconTextField(
+                            prefixIcon: ImageButton(
+                              image: MyImages.searchGrey,
+                              padding: EdgeInsets.all(14),
+                              height: 10,
+                              width: 10,
+                            ),
+                            readOnly: true,
+                            borderRadius: 25,
+                            hint: "search",
+                            onPressed: () {
+                              AppRoutes.push(
+                                  context, SearchCompany(isJobSearch: true));
+                            },
                           ),
                         ),
-                      ),
-                    ),
-                  )
+                  Global.userModel?.type == "user"
+                      ? ImageButton(
+                          image: MyImages.searchBlue,
+                          padding: EdgeInsets.only(left: 10, right: 20),
+                          onTap: () {
+                            AppRoutes.push(
+                                context,
+                                SearchCompany(
+                                    index: 2, companyModel: companyModel));
+                          },
+                        )
+                      : GestureDetector(
+                          onTap: () {
+                            context.read<BottomBloc>().add(SetScreenEvent(true,
+                                screenName: AddJobPositionScreen(
+                                  companyModel: companyModel,
+                                )));
+                            // AppRoutes.push(context, EditListing());
+                          },
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.only(right: 10.0, left: 10),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: MyColors.blue, shape: BoxShape.circle),
+                              child: Padding(
+                                padding: const EdgeInsets.all(9.0),
+                                child: Icon(
+                                  Icons.add,
+                                  color: MyColors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
                 ],
               ),
             )),

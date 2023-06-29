@@ -1,8 +1,10 @@
 class JobPosModel {
   int? id;
+  int? userId;
   int? companyId;
   String? designation;
   String? companyName;
+  String? userName;
   int? jobStatus;
   String? cAddress;
   String? cLat;
@@ -16,7 +18,7 @@ class JobPosModel {
   String? jobsType;
   String? experienceLevel;
   String? uploadPhoto;
-  String? companyUploadPhoto;
+  String? uploadResume;
   String? applicationReceivedSubject;
   String? applicationReceivedContent;
   String? disqualifiedReviewSubject;
@@ -28,10 +30,12 @@ class JobPosModel {
 
   JobPosModel(
       {this.id,
+      this.userId,
       this.companyId,
       this.designation,
       this.jobDetails,
       this.companyName,
+      this.userName,
       this.jobStatus,
       this.requirements,
       this.responsibilities,
@@ -41,7 +45,7 @@ class JobPosModel {
       this.jobsType,
       this.experienceLevel,
       this.uploadPhoto,
-      this.companyUploadPhoto,
+      this.uploadResume,
       this.applicationReceivedSubject,
       this.applicationReceivedContent,
       this.disqualifiedReviewSubject,
@@ -53,9 +57,11 @@ class JobPosModel {
 
   JobPosModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    userId = json['user_id'];
     companyId = json['company_id'];
     designation = json['designation'];
     companyName = json['companyname'];
+    userName = json['name'];
     jobStatus = json['job_saved'];
     jobDetails = json['jobdetails'];
     cAddress = json['c_address'];
@@ -69,7 +75,8 @@ class JobPosModel {
     jobsType = json['jobs_Type'];
     experienceLevel = json['Experience_level'];
     uploadPhoto = json['upload_photo'];
-    companyUploadPhoto = json['company_upload_photo'];
+    uploadResume = json['upload_resume'];
+    // userProfile = json['upload_photo'];
     applicationReceivedSubject = json['Application_Received_subject'];
     applicationReceivedContent = json['Application_Received_content'];
     disqualifiedReviewSubject = json['Disqualified_review_subject'];
@@ -83,9 +90,11 @@ class JobPosModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
+    data['user_id'] = userId;
     data['company_id'] = companyId;
     data['designation'] = designation;
     data['companyname'] = companyName;
+    data['name'] = userName;
     data['job_saved'] = jobStatus;
     data['jobdetails'] = jobDetails;
     data['Requirements'] = requirements;
@@ -99,7 +108,8 @@ class JobPosModel {
     data['jobs_Type'] = jobsType;
     data['Experience_level'] = experienceLevel;
     data['upload_photo'] = uploadPhoto;
-    data['company_upload_photo'] = companyUploadPhoto;
+    data['upload_resume'] = uploadResume;
+    // data['upload_photo'] = userProfile;
     data['Application_Received_subject'] = applicationReceivedSubject;
     data['Application_Received_content'] = applicationReceivedContent;
     data['Disqualified_review_subject'] = disqualifiedReviewSubject;
