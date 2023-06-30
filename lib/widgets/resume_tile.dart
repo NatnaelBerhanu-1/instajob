@@ -56,19 +56,21 @@ class ResumeTile extends StatelessWidget {
                   ),
                 ),
                 Spacer(),
-                BlocBuilder<ResumeBloc, ResumeState>(
-                    builder: (context, snapshot) {
-                  return ImageButton(
-                    image: MyImages.cancel2x,
-                    padding: EdgeInsets.zero,
-                    height: 19,
-                    color: MyColors.white,
-                    onTap: onTap,
-                    // onTap: () {
-                    //   data.add(DeleteEducation(index));
-                    // },
-                  );
-                }),
+                Global.userModel?.type == "user"
+                    ? BlocBuilder<ResumeBloc, ResumeState>(
+                        builder: (context, snapshot) {
+                        return ImageButton(
+                          image: MyImages.cancel2x,
+                          padding: EdgeInsets.zero,
+                          height: 19,
+                          color: MyColors.white,
+                          onTap: onTap,
+                          // onTap: () {
+                          //   data.add(DeleteEducation(index));
+                          // },
+                        );
+                      })
+                    : SizedBox(),
               ],
             ),
           ),
@@ -85,10 +87,13 @@ class ResumeTile extends StatelessWidget {
                       CommonText(
                           text: isWorkExp ? "Job Title:" : "Institute Name:",
                           fontSize: 14),
+                      SizedBox(height: 5),
                       CommonText(
                           text: isWorkExp ? "Employee:" : "Field Of Study:",
                           fontSize: 14),
+                      SizedBox(height: 5),
                       CommonText(text: "City:", fontSize: 14),
+                      SizedBox(height: 5),
                       CommonText(text: "State:", fontSize: 14),
                     ],
                   ),
@@ -104,16 +109,19 @@ class ResumeTile extends StatelessWidget {
                               ? "${workExperiences?.jobTitle}"
                               : "${educations?.institutionName}",
                           fontSize: 14),
+                      SizedBox(height: 5),
                       CommonText(
                           text: isWorkExp
                               ? "${workExperiences?.employer}"
                               : "${educations?.fieldOfStudy}",
                           fontSize: 14),
+                      SizedBox(height: 5),
                       CommonText(
                           text: isWorkExp
                               ? "${workExperiences?.workCity}"
                               : "${educations?.educationCity}",
                           fontSize: 14),
+                      SizedBox(height: 5),
                       CommonText(
                           text: isWorkExp
                               ? "${workExperiences?.workState}"

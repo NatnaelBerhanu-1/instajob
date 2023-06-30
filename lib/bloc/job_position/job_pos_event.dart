@@ -83,8 +83,8 @@ class ApplyJobEvent extends JobPosEvent {
 
 class AppliedJobListEvent extends JobPosEvent {
   final String? jobId;
-
-  AppliedJobListEvent({this.jobId});
+  final String? status;
+  AppliedJobListEvent({this.jobId, this.status});
   @override
   List<Object?> get props => [];
 }
@@ -111,9 +111,10 @@ class JobDistanceLocatorEvent extends JobPosEvent {
 }
 
 class SortListOrDenyEvent extends JobPosEvent {
-  final String id;
+  final String appliedListId;
+  final String? status;
 
-  SortListOrDenyEvent({required this.id});
+  SortListOrDenyEvent({required this.appliedListId, this.status});
   @override
   List<Object?> get props => [];
 }

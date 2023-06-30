@@ -464,6 +464,26 @@ class AuthCubit extends Cubit<AuthInitialState> {
     }
   }
 
+  /// CHECK PHONE NUMBER
+  checkPhoneNumber(BuildContext context) async {
+    emit(AuthLoadingState());
+    ApiResponse response = await authRepository.checkPhoneNumber(phoneNumber);
+    if (response.response.statusCode == 500) {
+      emit(ErrorState("Something went wrong"));
+    }
+    if (response.response.statusCode == 200) {
+      emit(ErrorState("Phone number already exist"));
+      emit(SuccessState());
+    }
+    if (response.response.statusCode == 400) {
+      if (response.response.data["success"] == 400) {
+        verifyPhone(context);
+      } else {
+        emit(ErrorState("Something went wrong"));
+      }
+    }
+  }
+
 /*  /// RESEND CODE
 
   reSendCodeForEmp({required String email}) async {

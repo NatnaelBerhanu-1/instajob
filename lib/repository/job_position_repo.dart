@@ -59,10 +59,11 @@ class JobPositionRepository {
     }
   }
 
-  Future<ApiResponse> getAppliedJob({String? jobId}) async {
+  Future<ApiResponse> getAppliedJob({String? jobId, String? status}) async {
     var map = {
       "user_id": Global.userModel?.type == "user" ? Global.userModel?.id : "",
       "job_id": jobId ?? "",
+      "status": status ?? ""
     };
     try {
       Response response =
@@ -73,10 +74,9 @@ class JobPositionRepository {
     }
   }
 
-  Future<ApiResponse> shortlistOrDenied({required String id}) async {
-    var map = {
-      "id": id,
-    };
+  Future<ApiResponse> shortlistOrDenied(
+      {required String appliedListId, String? status}) async {
+    var map = {"id": appliedListId, "status": status ?? "applied"};
     try {
       Response response =
           await dioClient.post(data: map, uri: EndPoint.shortlistOrDenied);

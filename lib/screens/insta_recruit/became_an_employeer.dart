@@ -126,6 +126,7 @@ class _BecameAnEmployerState extends State<BecameAnEmployer> {
                             height: 10,
                             width: 10,
                           ),
+                          textCapitalization: TextCapitalization.sentences,
                           // suffixIcon: formKey.currentState!.validate()
                           //     ? SizedBox()
                           //     : verifyImage,
@@ -230,10 +231,7 @@ class _BecameAnEmployerState extends State<BecameAnEmployer> {
                                       authData.profilePic = image.imgUrl;
                                       // authData.countryCode = "";
                                       authData.getData();
-                                      // setState(() {});
-                                      authData.verifyPhone(context);
-                                      // AppRoutes.push(
-                                      //     context, VerifyCodeScreen());
+                                      authData.checkPhoneNumber(context);
                                     } else {
                                       showToast("Please upload photo");
                                     }

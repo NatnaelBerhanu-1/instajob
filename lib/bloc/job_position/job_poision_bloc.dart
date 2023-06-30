@@ -82,9 +82,9 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
     }
   }
 
-  _getAppliedJobs(Emitter emit, {String? jobId}) async {
+  _getAppliedJobs(Emitter emit, {String? jobId, String? status}) async {
     ApiResponse response =
-        await jobPositionRepository.getAppliedJob(jobId: jobId);
+        await jobPositionRepository.getAppliedJob(jobId: jobId, status: status);
     if (response.response.statusCode == 500) {
       emit(const ApplyErrorState('Something went wrong'));
     }
@@ -249,13 +249,13 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
     on<AppliedJobListEvent>((event, emit) async {
       emit(ApplyLoading());
       List<JobPosModel> appliedJobList =
-          await _getAppliedJobs(emit, jobId: event.jobId);
+          await _getAppliedJobs(emit, jobId: event.jobId, status: event.status);
       emit(AppliedJobLoaded(appliedJobList));
     });
 
     on<SortListOrDenyEvent>((event, emit) async {
-      ApiResponse response =
-          await jobPositionRepository.shortlistOrDenied(id: event.id);
+      ApiResponse response = await jobPositionRepository.shortlistOrDenied(
+          appliedListId: event.appliedListId, status: event.status);
       if (response.response.statusCode == 500) {
         emit(const JobErrorState("Something went wrong"));
       }

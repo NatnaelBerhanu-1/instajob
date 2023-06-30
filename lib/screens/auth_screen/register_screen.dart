@@ -118,6 +118,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 height: 9,
                                 width: 9,
                               ),
+                              textCapitalization: TextCapitalization.sentences,
                               validator: (val) =>
                                   requiredValidation(val!, "Name"),
                               // suffixIcon: formKey.currentState!.validate()

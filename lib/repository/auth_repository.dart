@@ -197,6 +197,18 @@ class AuthRepository {
     }
   }*/
 
+  /// CHECK PHONE NUMBER
+  checkPhoneNumber(String phoneNumber) async {
+    try {
+      var map = {"phone_number": phoneNumber};
+      Response response =
+          await dioClient.post(data: map, uri: EndPoint.checkPhoneNumber);
+      return ApiResponse.withSuccess(response);
+    } on DioException catch (e) {
+      return ApiResponse.withError(e.response);
+    }
+  }
+
   /// CHANGE PASSWORD
   Future<ApiResponse> changePassword(
       {required String password, required String email}) async {

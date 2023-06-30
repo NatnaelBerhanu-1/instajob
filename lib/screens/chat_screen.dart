@@ -1,15 +1,20 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:insta_job/dialog/custom_dialog.dart';
 import 'package:insta_job/dialog/time_picker_dilaog.dart';
+import 'package:insta_job/model/job_position_model.dart';
+import 'package:insta_job/network/end_points.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
 
 class ChatScreen extends StatelessWidget {
-  const ChatScreen({Key? key}) : super(key: key);
+  final JobPosModel? jobPosModel;
+
+  const ChatScreen({Key? key, this.jobPosModel}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -49,21 +54,26 @@ class ChatScreen extends StatelessWidget {
                       Expanded(
                         child: Row(
                           children: [
-                            Expanded(flex: 0, child: CircleAvatar(radius: 22)),
+                            Expanded(
+                                flex: 0,
+                                child: CircleAvatar(
+                                    radius: 22,
+                                    backgroundImage: CachedNetworkImageProvider(
+                                        "${EndPoint.imageBaseUrl}${jobPosModel?.uploadPhoto}"))),
                             SizedBox(width: 5),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   CommonText(
-                                    text: "UserqqqqqqqqqqqName",
-                                    fontSize: 14,
+                                    text: "${jobPosModel?.userName}",
+                                    fontSize: 16,
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                   CommonText(
                                     text: "Active",
                                     fontColor: MyColors.greyTxt,
-                                    fontSize: 12,
+                                    fontSize: 11,
                                   ),
                                 ],
                               ),
@@ -104,7 +114,7 @@ class ChatScreen extends StatelessWidget {
                       // shrinkWrap: true,
                       itemCount: 10,
                       itemBuilder: (c, i) {
-                        return Text("data");
+                        return Text("");
                       }),
                 ),
               ),

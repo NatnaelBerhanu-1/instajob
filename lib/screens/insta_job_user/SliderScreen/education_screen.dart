@@ -126,10 +126,10 @@ class _EducationScreenState extends State<EducationScreen> {
                         educationCustomMessage: message.text,
                       );
                       if (formKey.currentState!.validate()) {
-                        if (!isStudyHere) {
-                          if (startYear == 0 || endYear == 0) {
-                            showToast("Please select year");
-                          }
+                        if (!isStudyHere && (startYear == 0 || endYear == 0)) {
+                          // if (startYear == 0 || endYear == 0) {
+                          showToast("Please select year");
+                          // }
                         } else {
                           context
                               .read<ResumeBloc>()

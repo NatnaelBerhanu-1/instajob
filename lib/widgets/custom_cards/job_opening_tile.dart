@@ -83,31 +83,44 @@ class JobOpeningTile extends StatelessWidget {
                                   : MyColors.grey,
                             ),
                           ))
-                      : CustomCommonCard(
-                          bgColor: MyColors.lightBlue,
-                          borderRadius: BorderRadius.circular(5),
-                          child: Padding(
-                            padding: const EdgeInsets.all(4.0),
-                            child: Row(
-                              children: [
-                                ImageButton(
-                                  image: MyImages.safety,
-                                  padding: EdgeInsets.zero,
-                                  height: 14,
-                                  width: 14,
-                                ),
-                                SizedBox(width: 5),
+                      : ImageButton(
+                          padding: EdgeInsets.only(right: 0),
+                          image: MyImages.rightArrow,
+                          color: MyColors.blue,
+                          height: 13,
+                        ),
+                  /*CustomCommonCard(
+                        bgColor: MyColors.lightBlue,
+                        borderRadius: BorderRadius.circular(5),
+                        child: Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Row(
+                            children: [
+                               // ImageButton(
+                               //    image: MyImages.safety,
+                               //    padding: EdgeInsets.zero,
+                               //    height: 14,
+                               //    width: 14,
+                               //  ),
+                              if (snapshot is AppliedJobLoaded) ...[
                                 CommonText(
-                                  text: "applied",
-                                  fontSize: 12,
-                                  fontColor: MyColors.white,
-                                  overflow: TextOverflow.clip,
-                                  fontWeight: FontWeight.w400,
-                                ),
+                                    text:
+                                        "${snapshot.appliedJobList.length + 1}",
+                                    fontColor: MyColors.white,
+                                    fontSize: 12),
                               ],
-                            ),
+                              SizedBox(width: 5),
+                              CommonText(
+                                text: "applied",
+                                fontSize: 12,
+                                fontColor: MyColors.white,
+                                overflow: TextOverflow.clip,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ],
                           ),
                         ),
+                      ),*/
                 ],
               ),
             )),

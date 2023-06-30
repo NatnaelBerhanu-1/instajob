@@ -1,6 +1,7 @@
 class JobPosModel {
   int? id;
   int? userId;
+  int? appliedId;
   int? companyId;
   String? designation;
   String? companyName;
@@ -19,6 +20,7 @@ class JobPosModel {
   String? experienceLevel;
   String? uploadPhoto;
   String? uploadResume;
+  String? candidateStatus;
   String? applicationReceivedSubject;
   String? applicationReceivedContent;
   String? disqualifiedReviewSubject;
@@ -32,6 +34,7 @@ class JobPosModel {
       {this.id,
       this.userId,
       this.companyId,
+      this.appliedId,
       this.designation,
       this.jobDetails,
       this.companyName,
@@ -46,6 +49,7 @@ class JobPosModel {
       this.experienceLevel,
       this.uploadPhoto,
       this.uploadResume,
+      this.candidateStatus,
       this.applicationReceivedSubject,
       this.applicationReceivedContent,
       this.disqualifiedReviewSubject,
@@ -59,6 +63,7 @@ class JobPosModel {
     id = json['id'];
     userId = json['user_id'];
     companyId = json['company_id'];
+    appliedId = json['applied_id'];
     designation = json['designation'];
     companyName = json['companyname'];
     userName = json['name'];
@@ -76,6 +81,7 @@ class JobPosModel {
     experienceLevel = json['Experience_level'];
     uploadPhoto = json['upload_photo'];
     uploadResume = json['upload_resume'];
+    candidateStatus = json['status'];
     // userProfile = json['upload_photo'];
     applicationReceivedSubject = json['Application_Received_subject'];
     applicationReceivedContent = json['Application_Received_content'];
@@ -92,6 +98,7 @@ class JobPosModel {
     data['id'] = id;
     data['user_id'] = userId;
     data['company_id'] = companyId;
+    data['applied_id'] = appliedId;
     data['designation'] = designation;
     data['companyname'] = companyName;
     data['name'] = userName;
@@ -109,6 +116,7 @@ class JobPosModel {
     data['Experience_level'] = experienceLevel;
     data['upload_photo'] = uploadPhoto;
     data['upload_resume'] = uploadResume;
+    data['status'] = candidateStatus;
     // data['upload_photo'] = userProfile;
     data['Application_Received_subject'] = applicationReceivedSubject;
     data['Application_Received_content'] = applicationReceivedContent;

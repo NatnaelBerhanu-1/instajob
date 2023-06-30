@@ -292,13 +292,16 @@ class _SkillsScreenState extends State<SkillsScreen> {
                     context.read<ResumeBloc>().add(
                         AddSkillsEvent(context.read<GlobalCubit>().skills));
                   }
+                  if (context.read<GlobalCubit>().achievementList.isNotEmpty) {
+                    context.read<GlobalCubit>().achievementList = context
+                            .read<ResumeBloc>()
+                            .resumeModel
+                            .achievements?[0]
+                            .achievements ??
+                        [];
+                  }
                 }
-                context.read<GlobalCubit>().achievementList = context
-                        .read<ResumeBloc>()
-                        .resumeModel
-                        .achievements?[0]
-                        .achievements ??
-                    [];
+
                 isAchievement = true;
                 setState(() {});
               },

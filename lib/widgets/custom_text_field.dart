@@ -21,6 +21,7 @@ class IconTextField extends StatelessWidget {
   final int? maxLine;
   final int? maxLength;
   final TextEditingController? controller;
+  final TextCapitalization? textCapitalization;
   final bool? autofocus;
   final FormFieldValidator<String>? validator;
   final List<TextInputFormatter>? inputFormatter;
@@ -51,6 +52,7 @@ class IconTextField extends StatelessWidget {
     this.lblColor,
     this.maxLength,
     this.borderRadius,
+    this.textCapitalization,
   }) : super(key: key);
 
   @override
@@ -76,6 +78,7 @@ class IconTextField extends StatelessWidget {
       obscureText: obscureText ?? false,
       cursorColor: MyColors.black,
       keyboardType: keyboardType ?? TextInputType.text,
+      textCapitalization: textCapitalization ?? TextCapitalization.none,
       decoration: InputDecoration(
         counterText: "",
         errorText: "",

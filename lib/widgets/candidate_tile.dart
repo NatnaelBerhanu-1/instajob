@@ -22,9 +22,14 @@ import 'custom_cards/custom_common_card.dart';
 class CandidateTile extends StatelessWidget {
   final ValueChanged? onchange;
   final bool? value;
+  final bool idDeny;
   final JobPosModel? appliedJobModel;
   const CandidateTile(
-      {Key? key, this.onchange, this.value, this.appliedJobModel})
+      {Key? key,
+      this.onchange,
+      this.value,
+      this.appliedJobModel,
+      this.idDeny = false})
       : super(key: key);
 
   @override
@@ -38,6 +43,7 @@ class CandidateTile extends StatelessWidget {
               screenName: Applicants(jobPosModel: appliedJobModel)));
           context.read<ResumeBloc>().add(UserResumeLoadedEvent(
               userId: appliedJobModel?.userId.toString()));
+          print("USER ID ${appliedJobModel?.userId}");
           AppRoutes.push(context, BottomNavScreen());
         },
         child: Container(
@@ -58,17 +64,19 @@ class CandidateTile extends StatelessWidget {
                 children: [
                   Expanded(
                     flex: 0,
-                    child: Checkbox(
-                      visualDensity: VisualDensity.comfortable,
-                      fillColor: MaterialStateProperty.all(MyColors.blue),
-                      onChanged: onchange,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5)),
-                      value: value,
-                      // activeColor: MyColors.green,
-                      // checkColor: MyColors.white,
-                      side: BorderSide(color: MyColors.blue, width: 2),
-                    ),
+                    child: idDeny
+                        ? SizedBox(width: 12)
+                        : Checkbox(
+                            visualDensity: VisualDensity.comfortable,
+                            fillColor: MaterialStateProperty.all(MyColors.blue),
+                            onChanged: onchange,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5)),
+                            value: value,
+                            // activeColor: MyColors.green,
+                            // checkColor: MyColors.white,
+                            side: BorderSide(color: MyColors.blue, width: 2),
+                          ),
                   ),
                   Expanded(
                     child: Column(

@@ -104,7 +104,6 @@ class _WorkExpScreenState extends State<WorkExpScreen> {
                   flex: 0,
                   child: TextButton.icon(
                       onPressed: () {
-                        print("object");
                         WorkExperiences workExpModel = WorkExperiences(
                           jobTitle: jobTitle.text,
                           workCity: city.text,
@@ -118,10 +117,8 @@ class _WorkExpScreenState extends State<WorkExpScreen> {
                           workCustomMessage: "",
                         );
                         if (formKey.currentState!.validate()) {
-                          if (!isWorkHere) {
-                            if (startYear == 0 || endYear == 0) {
-                              showToast("Please select year");
-                            }
+                          if (!isWorkHere && (startYear == 0 || endYear == 0)) {
+                            showToast("Please select year");
                           } else {
                             context
                                 .read<ResumeBloc>()

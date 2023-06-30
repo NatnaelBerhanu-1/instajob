@@ -12,6 +12,7 @@ import 'package:insta_job/bloc/job_position/job_pos_state.dart';
 import 'package:insta_job/dialog/applied_successful_dialog.dart';
 import 'package:insta_job/dialog/custom_dialog.dart';
 import 'package:insta_job/globals.dart';
+import 'package:insta_job/model/job_position_model.dart';
 import 'package:insta_job/network/end_points.dart';
 import 'package:insta_job/screens/insta_job_user/confirm_detail_screen.dart';
 import 'package:insta_job/utils/app_routes.dart';
@@ -25,7 +26,8 @@ import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class ApplyScreen extends StatefulWidget {
-  const ApplyScreen({Key? key}) : super(key: key);
+  final JobPosModel? jobPosModel;
+  const ApplyScreen({Key? key, this.jobPosModel}) : super(key: key);
 
   @override
   State<ApplyScreen> createState() => _ApplyScreenState();
@@ -67,28 +69,6 @@ class _ApplyScreenState extends State<ApplyScreen> {
   }
 
   edit() async {
-/*    // Create a PDF document
-    final pdf = pw.Document();
-
-    // Add a page to the document
-
-    pdf.addPage(
-      pw.Page(
-        build: (pw.Context context) {
-          return pw.Center(
-            child: pw.Text('Hello, PDF!', style: pw.TextStyle(fontSize: 40)),
-          );
-        },
-      ),
-    );
-
-    // Save the PDF to a file
-    final output = await getTemporaryDirectory();
-    final file = File('${output.path}/edited_pdf.pdf');
-    await file.writeAsBytes(await pdf.save());
-
-    print('Edited PDF saved to: ${file.path}');*/
-
     final PdfDocument document =
         PdfDocument(inputBytes: File("input.pdf").readAsBytesSync());
     final PdfPage page = document.pages[0];
@@ -199,7 +179,7 @@ class _ApplyScreenState extends State<ApplyScreen> {
                       var applyData = context.read<JobPositionBloc>();
                       applyData.add(ApplyJobEvent(
                           Global.userModel!.cv.toString(),
-                          jobId: applyData.jobModel.id.toString()));
+                          jobId: widget.jobPosModel!.id.toString()));
                     },
                   );
                 }),
@@ -213,7 +193,8 @@ class _ApplyScreenState extends State<ApplyScreen> {
                   borderColor: MyColors.blue,
                   fontColor: MyColors.blue,
                   onTap: () {
-                    AppRoutes.push(context, ConfirmDetailsScreen());
+                    AppRoutes.push(context,
+                        ConfirmDetailsScreen(jobPosModel: widget.jobPosModel));
                   },
                 ),
               )

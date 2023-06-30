@@ -46,6 +46,9 @@ class AssignCompaniesTile extends StatelessWidget {
               .add(LoadJobPosListEvent(companyId: companyModel!.id.toString()));
           context.read<BottomBloc>().add(SetScreenEvent(true,
               screenName: JobOpeningScreen(companyModel: companyModel)));
+          // context
+          //     .read<JobPositionBloc>()
+          //     .add(AppliedJobListEvent(jobId: widget.jobPosModel.id.toString()));
         },
         shape: RoundedRectangleBorder(
             side: BorderSide(color: MyColors.grey),

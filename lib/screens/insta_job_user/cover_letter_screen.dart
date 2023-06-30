@@ -9,6 +9,7 @@ import 'package:insta_job/dialog/applied_successful_dialog.dart';
 import 'package:insta_job/dialog/custom_dialog.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/model/cover_letter_model.dart';
+import 'package:insta_job/model/job_position_model.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 
@@ -16,8 +17,10 @@ import '../../widgets/custom_app_bar.dart';
 import '../../widgets/custom_button/custom_btn.dart';
 
 class CoverLetterScreen extends StatelessWidget {
+  final JobPosModel? jobPosModel;
   final CoverLetterModel coverLetterModel;
-  const CoverLetterScreen({Key? key, required this.coverLetterModel})
+  const CoverLetterScreen(
+      {Key? key, required this.coverLetterModel, this.jobPosModel})
       : super(key: key);
 
   @override
@@ -30,7 +33,7 @@ class CoverLetterScreen extends StatelessWidget {
             actions: IconButton(
                 onPressed: () {
                   String text =
-                      "Dear Hiring Manager,\nJob Title: ${context.read<JobPositionBloc>().jobModel.designation}\n${coverLetterModel.previousWork}\n${coverLetterModel.yourPassion}\nPlease take a moment to review my attached resume and credentials.\nSincerely\n${coverLetterModel.yourName}";
+                      "Dear Hiring Manager,\nJob Title: ${jobPosModel?.designation}\n${coverLetterModel.previousWork}\n${coverLetterModel.yourPassion}\nPlease take a moment to review my attached resume and credentials.\nSincerely\n${coverLetterModel.yourName}";
                   Clipboard.setData(ClipboardData(text: text)).then((value) {
                     showToast("Copied", isError: false);
                   });
@@ -56,8 +59,7 @@ class CoverLetterScreen extends StatelessWidget {
                     // mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text("Dear Hiring Manager,\n"),
-                      Text(
-                          "Job Title: ${context.read<JobPositionBloc>().jobModel.designation}\n"),
+                      Text("Job Title: ${jobPosModel?.designation}\n"),
                       Text("${coverLetterModel.previousWork}\n"),
                       Text("${coverLetterModel.yourPassion}\n"),
                       Text(
@@ -94,7 +96,7 @@ class CoverLetterScreen extends StatelessWidget {
                   onTap: () {
                     var applyData = context.read<JobPositionBloc>();
                     applyData.add(ApplyJobEvent(Global.userModel!.cv.toString(),
-                        jobId: applyData.jobModel.id.toString()));
+                        jobId: jobPosModel!.id.toString()));
                   },
                 );
               }),

@@ -6,6 +6,7 @@ import 'package:insta_job/bloc/resume_bloc/resume_event.dart';
 import 'package:insta_job/bloc/resume_bloc/resume_state.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/model/cover_letter_model.dart';
+import 'package:insta_job/model/job_position_model.dart';
 import 'package:insta_job/screens/insta_job_user/cover_letter_screen.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_colors.dart';
@@ -16,7 +17,8 @@ import '../../widgets/custom_app_bar.dart';
 import '../../widgets/custom_button/custom_btn.dart';
 
 class ConfirmDetailsScreen extends StatefulWidget {
-  const ConfirmDetailsScreen({Key? key}) : super(key: key);
+  final JobPosModel? jobPosModel;
+  const ConfirmDetailsScreen({Key? key, this.jobPosModel}) : super(key: key);
 
   @override
   State<ConfirmDetailsScreen> createState() => _ConfirmDetailsScreenState();
@@ -157,8 +159,11 @@ class _ConfirmDetailsScreenState extends State<ConfirmDetailsScreen> {
                         yourTop5Skills:
                             skillVal.isEmpty ? skills.text : skillVal);
                     resumeData.add(AddResumeEvent(coverLetterModel));
-                    AppRoutes.push(context,
-                        CoverLetterScreen(coverLetterModel: coverLetterModel));
+                    AppRoutes.push(
+                        context,
+                        CoverLetterScreen(
+                            coverLetterModel: coverLetterModel,
+                            jobPosModel: widget.jobPosModel));
                   },
                 ),
               ],

@@ -144,7 +144,7 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                                       fontWeight: FontWeight.bold,
                                       fontSize: 19,
                                     ),
-                                    SizedBox(height: 10),
+                                    /*SizedBox(height: 10),
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
@@ -159,8 +159,8 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                                           fontSize: 15,
                                         ),
                                       ],
-                                    ),
-                                    SizedBox(height: 20),
+                                    ),*/
+                                    SizedBox(height: 10),
                                     CommonText(
                                       text: "Job Details",
                                       fontSize: 15,
@@ -184,7 +184,10 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                                               title: "Apply",
                                               onTap: () {
                                                 AppRoutes.push(
-                                                    context, ApplyScreen());
+                                                    context,
+                                                    ApplyScreen(
+                                                        jobPosModel: widget
+                                                            .jobPosModel));
                                               },
                                             )
                                           : Row(
@@ -225,10 +228,14 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                                                                     .companyModel)));
                                                     context
                                                         .read<JobPositionBloc>()
-                                                        .add(AppliedJobListEvent(
-                                                            jobId: widget
-                                                                .jobPosModel?.id
-                                                                .toString()));
+                                                        .add(
+                                                            AppliedJobListEvent(
+                                                                jobId: widget
+                                                                    .jobPosModel
+                                                                    ?.id
+                                                                    .toString(),
+                                                                status:
+                                                                    "applied"));
                                                     AppRoutes.push(context,
                                                         BottomNavScreen());
                                                     print(

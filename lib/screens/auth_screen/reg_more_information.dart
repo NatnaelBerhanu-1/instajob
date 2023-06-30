@@ -194,7 +194,7 @@ class _RegMoreInfoScreenState extends State<RegMoreInfoScreen> {
                         authData.profilePic = image.imgUrl;
                         authData.cv = image.cvUrl;
                         authData.getData();
-                        authData.verifyPhone(context);
+                        authData.checkPhoneNumber(context);
                       } else {
                         showToast("Please enter valid number");
                       }

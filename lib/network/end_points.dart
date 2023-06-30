@@ -9,6 +9,7 @@ class EndPoint {
   static String sendCode = "forgotpassword";
   static String checkVerificationCode = "checkcodemail";
   static String changePassword = "changepassword";
+  static String checkPhoneNumber = "check_phone_number";
 
   /// ---------------- EMPLOYEE INTERFACE --------------- ///
 

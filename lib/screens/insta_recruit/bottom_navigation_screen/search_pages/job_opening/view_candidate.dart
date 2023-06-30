@@ -58,7 +58,7 @@ class _ViewCandidatesState extends State<ViewCandidates> {
               Navigator.of(context).pop();
             },
             centerTitle: false,
-            title: "Search",
+            title: "Candidates",
             actions: Row(
               children: [
                 ImageButton(
@@ -68,18 +68,24 @@ class _ViewCandidatesState extends State<ViewCandidates> {
                     AppRoutes.push(context, NewEmailScreen());
                   },
                 ),
-                ImageButton(
-                  image: MyImages.searchBlue,
-                ),
+                // ImageButton(
+                //   image: MyImages.searchBlue,
+                // ),
                 BlocBuilder<GlobalCubit, InitialState>(
                     builder: (context, state) {
                   var tab = context.read<GlobalCubit>();
                   return ImageButton(
                     onTap: () {
                       tab.changeTabValue(4);
-                      AppRoutes.push(context, SearchTrash());
+                      AppRoutes.push(context,
+                          SearchTrash(jobPosModel: widget.jobPosModel));
+                      context.read<JobPositionBloc>().add(AppliedJobListEvent(
+                          jobId: widget.jobPosModel!.id.toString(),
+                          status: "denied"));
                     },
                     image: MyImages.delete,
+                    height: 19,
+                    width: 19,
                   );
                 }),
               ],
@@ -102,12 +108,25 @@ class _ViewCandidatesState extends State<ViewCandidates> {
                           unselectedLabelColor: MyColors.tabClr,
                           onTap: (val) {
                             tab.changeTabValue(val);
+                            print("!!!!!!!!!!!!!!! $val");
+                            if (val == 0) {
+                              context.read<JobPositionBloc>().add(
+                                  AppliedJobListEvent(
+                                      jobId: widget.jobPosModel!.id.toString(),
+                                      status: "applied"));
+                            }
                             if (val == 1) {
                               context.read<JobPositionBloc>().add(
                                   AppliedJobListEvent(
-                                      jobId:
-                                          widget.jobPosModel!.id.toString()));
+                                      jobId: widget.jobPosModel!.id.toString(),
+                                      status: "shortlisted"));
                             }
+                            // if (val == 3) {
+                            //   context.read<JobPositionBloc>().add(
+                            //       AppliedJobListEvent(
+                            //           jobId: widget.jobPosModel!.id.toString(),
+                            //           status: "denied"));
+                            // }
                           },
                           tabs: [
                             Tab(text: "Applied"),
@@ -150,26 +169,37 @@ class _ViewCandidatesState extends State<ViewCandidates> {
                           if (appliedState is ApplyLoading) ...[
                             Center(child: CircularProgressIndicator())
                           ],
-                          ListView.builder(
-                              itemCount: 7,
-                              itemBuilder: (c, i) {
-                                return Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 15.0, vertical: 10),
-                                  child: CandidateTile(
-                                    onchange: (val) {
-                                      context
-                                          .read<GlobalCubit>()
-                                          .onSelected(val, i);
-                                      setState(() {});
-                                    },
-                                    value: context
-                                        .read<GlobalCubit>()
-                                        .list
-                                        .contains(i),
-                                  ),
-                                );
-                              }),
+                          if (appliedState is AppliedJobLoaded) ...[
+                            ListView.builder(
+                                itemCount: appliedState.appliedJobList.length,
+                                itemBuilder: (c, i) {
+                                  return Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 15.0, vertical: 10),
+                                    child:
+                                        BlocBuilder<GlobalCubit, InitialState>(
+                                            builder: (context, state) {
+                                      return CandidateTile(
+                                        onchange: (val) {
+                                          context
+                                              .read<GlobalCubit>()
+                                              .onSelected(val, i);
+                                          setState(() {});
+                                        },
+                                        value: context
+                                            .read<GlobalCubit>()
+                                            .list
+                                            .contains(i),
+                                        appliedJobModel:
+                                            appliedState.appliedJobList[i],
+                                      );
+                                    }),
+                                  );
+                                }),
+                          ],
+                          if (appliedState is ApplyLoading) ...[
+                            Center(child: CircularProgressIndicator())
+                          ],
                           ListView.builder(
                             shrinkWrap: true,
                             itemCount: 4,

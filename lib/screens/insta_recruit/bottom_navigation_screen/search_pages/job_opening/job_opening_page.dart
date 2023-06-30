@@ -23,10 +23,15 @@ import 'package:insta_job/widgets/custom_text_field.dart';
 
 import '../../../../../bloc/bottom_bloc/bottom_bloc.dart';
 
-class JobOpeningScreen extends StatelessWidget {
+class JobOpeningScreen extends StatefulWidget {
   final CompanyModel? companyModel;
   const JobOpeningScreen({Key? key, this.companyModel}) : super(key: key);
 
+  @override
+  State<JobOpeningScreen> createState() => _JobOpeningScreenState();
+}
+
+class _JobOpeningScreenState extends State<JobOpeningScreen> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -63,7 +68,7 @@ class JobOpeningScreen extends StatelessWidget {
                   Global.userModel?.type == "user"
                       ? Expanded(
                           child: CommonText(
-                            text: " ${companyModel?.companyName}",
+                            text: " ${widget.companyModel?.companyName}",
                             fontWeight: FontWeight.w600,
                             fontSize: 18,
                           ),
@@ -93,14 +98,15 @@ class JobOpeningScreen extends StatelessWidget {
                             AppRoutes.push(
                                 context,
                                 SearchCompany(
-                                    index: 2, companyModel: companyModel));
+                                    index: 2,
+                                    companyModel: widget.companyModel));
                           },
                         )
                       : GestureDetector(
                           onTap: () {
                             context.read<BottomBloc>().add(SetScreenEvent(true,
                                 screenName: AddJobPositionScreen(
-                                  companyModel: companyModel,
+                                  companyModel: widget.companyModel,
                                 )));
                             // AppRoutes.push(context, EditListing());
                           },
@@ -137,7 +143,7 @@ class JobOpeningScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                     image: DecorationImage(
                         image: CachedNetworkImageProvider(
-                            "${EndPoint.imageBaseUrl}${companyModel?.uploadPhoto}"),
+                            "${EndPoint.imageBaseUrl}${widget.companyModel?.uploadPhoto}"),
                         // image: AssetImage(MyImages.staffMeeting),
                         fit: BoxFit.cover)),
                 child: Padding(
@@ -147,7 +153,7 @@ class JobOpeningScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CommonText(
-                        text: "${companyModel?.companyName}",
+                        text: "${widget.companyModel?.companyName}",
                         fontColor: MyColors.white,
                         fontSize: 20,
                       ),
@@ -188,7 +194,8 @@ class JobOpeningScreen extends StatelessWidget {
                         itemBuilder: (c, i) {
                           var data = state.jobPosList[i];
                           return JobOpeningTile(
-                              jobPosModel: data, companyModel: companyModel);
+                              jobPosModel: data,
+                              companyModel: widget.companyModel);
                         }),
                   );
                 }
