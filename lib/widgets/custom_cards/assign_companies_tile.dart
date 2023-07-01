@@ -40,7 +40,6 @@ class AssignCompaniesTile extends StatelessWidget {
       child: ListTile(
         onTap: () {
           // AppRoutes.push(context, TranscriptionScreen());
-          print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& ${companyModel?.id}");
           context
               .read<JobPositionBloc>()
               .add(LoadJobPosListEvent(companyId: companyModel!.id.toString()));

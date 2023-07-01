@@ -15,6 +15,7 @@ class JobPosModel {
   String? responsibilities;
   List<String>? topSkills;
   String? salaries;
+  String? userEmail;
   String? areaDistance;
   String? jobsType;
   String? experienceLevel;
@@ -67,6 +68,7 @@ class JobPosModel {
     designation = json['designation'];
     companyName = json['companyname'];
     userName = json['name'];
+    userEmail = json['email'];
     jobStatus = json['job_saved'];
     jobDetails = json['jobdetails'];
     cAddress = json['c_address'];
@@ -102,6 +104,7 @@ class JobPosModel {
     data['designation'] = designation;
     data['companyname'] = companyName;
     data['name'] = userName;
+    data['email'] = userEmail;
     data['job_saved'] = jobStatus;
     data['jobdetails'] = jobDetails;
     data['Requirements'] = requirements;

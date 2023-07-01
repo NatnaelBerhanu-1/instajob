@@ -2,8 +2,10 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:insta_job/auth_service.dart';
 import 'package:insta_job/dialog/custom_dialog.dart';
 import 'package:insta_job/dialog/time_picker_dilaog.dart';
+import 'package:insta_job/globals.dart';
 import 'package:insta_job/model/job_position_model.dart';
 import 'package:insta_job/network/end_points.dart';
 import 'package:insta_job/utils/my_colors.dart';
@@ -14,8 +16,8 @@ import 'package:insta_job/widgets/custom_text_field.dart';
 class ChatScreen extends StatelessWidget {
   final JobPosModel? jobPosModel;
 
-  const ChatScreen({Key? key, this.jobPosModel}) : super(key: key);
-
+  ChatScreen({Key? key, this.jobPosModel}) : super(key: key);
+  TextEditingController msg = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,11 +58,14 @@ class ChatScreen extends StatelessWidget {
                           children: [
                             Expanded(
                                 flex: 0,
-                                child: CircleAvatar(
-                                    radius: 22,
-                                    backgroundImage: CachedNetworkImageProvider(
-                                        "${EndPoint.imageBaseUrl}${jobPosModel?.uploadPhoto}"))),
-                            SizedBox(width: 5),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: CircleAvatar(
+                                      radius: 24,
+                                      backgroundImage: CachedNetworkImageProvider(
+                                          "${EndPoint.imageBaseUrl}${jobPosModel?.uploadPhoto}")),
+                                )),
+                            SizedBox(width: 10),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,28 +86,30 @@ class ChatScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                      Expanded(
-                        child: CustomCommonCard(
-                          onTap: () {
-                            buildDialog(context, PickTimeDialog());
-                          },
-                          borderRadius: BorderRadius.circular(20),
-                          borderColor: MyColors.blue,
-                          child: Padding(
-                            padding: const EdgeInsets.all(6.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                CommonText(
-                                    text: "Set up interview  ",
-                                    fontColor: MyColors.blue,
-                                    fontSize: 14),
-                                Icon(Icons.call, color: MyColors.blue),
-                              ],
-                            ),
-                          ),
-                        ),
-                      )
+                      Global.userModel?.type == "user"
+                          ? SizedBox()
+                          : Expanded(
+                              child: CustomCommonCard(
+                                onTap: () {
+                                  buildDialog(context, PickTimeDialog());
+                                },
+                                borderRadius: BorderRadius.circular(20),
+                                borderColor: MyColors.blue,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(6.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      CommonText(
+                                          text: "Set up interview  ",
+                                          fontColor: MyColors.blue,
+                                          fontSize: 14),
+                                      Icon(Icons.call, color: MyColors.blue),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            )
                     ],
                   ),
                 ),
@@ -124,13 +131,18 @@ class ChatScreen extends StatelessWidget {
                   child: Align(
                     alignment: FractionalOffset.bottomCenter,
                     child: IconTextField(
+                      controller: msg,
                       // color: MyColors.lightGrey,
                       prefixIcon: Icon(Icons.mic),
                       color: MyColors.lightGrey,
                       borderRadius: 25,
                       hint: "Write message here..",
                       suffixIcon: GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          if (msg.text.isNotEmpty) {
+                            AuthService.insertMsg(gp: '');
+                          }
+                        },
                         child: Padding(
                           padding: const EdgeInsets.only(right: 2.0),
                           child: Container(

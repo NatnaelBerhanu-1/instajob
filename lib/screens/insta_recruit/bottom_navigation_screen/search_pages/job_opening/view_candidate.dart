@@ -121,12 +121,12 @@ class _ViewCandidatesState extends State<ViewCandidates> {
                                       jobId: widget.jobPosModel!.id.toString(),
                                       status: "shortlisted"));
                             }
-                            // if (val == 3) {
-                            //   context.read<JobPositionBloc>().add(
-                            //       AppliedJobListEvent(
-                            //           jobId: widget.jobPosModel!.id.toString(),
-                            //           status: "denied"));
-                            // }
+                            if (val == 3) {
+                              // context.read<JobPositionBloc>().add(
+                              //     AppliedJobListEvent(
+                              //         jobId: widget.jobPosModel!.id.toString(),
+                              //         status: "denied"));
+                            }
                           },
                           tabs: [
                             Tab(text: "Applied"),
@@ -152,7 +152,10 @@ class _ViewCandidatesState extends State<ViewCandidates> {
                                         onchange: (val) {
                                           context
                                               .read<GlobalCubit>()
-                                              .onSelected(val, i);
+                                              .onSelected(val, i,
+                                                  email: appliedState
+                                                      .appliedJobList[i]
+                                                      .userEmail);
                                           setState(() {});
                                         },
                                         value: context

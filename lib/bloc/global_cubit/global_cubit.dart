@@ -171,10 +171,20 @@ class GlobalCubit extends Cubit<InitialState> {
   }
 
   List list = [];
-
-  onSelected(bool selected, value) {
+  List<String> emailList = [];
+  final List<String> _eList = [];
+  onSelected(bool selected, value, {String? email}) {
     if (selected == true) {
       list.add(value);
+      _eList.add(email!);
+      emailList = _eList.toSet().toList();
+      print("@@@@@@@@ $_eList");
+      print("77777777 $emailList");
+      // for (int i = 0; i < emailList.length; i++) {
+      //   emailList.where((element) {
+      //     element==emailList[i];
+      //   });
+      // }
       SelectedCheckBoxState(selected);
     } else {
       list.remove(value);
