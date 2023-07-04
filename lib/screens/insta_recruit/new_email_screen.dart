@@ -39,7 +39,7 @@ class _NewEmailScreenState extends State<NewEmailScreen> {
   }
 
   List<TextEditingController> controllerList = [];
-  get() {
+  getController() {
     controllerList = List.generate(
         context.read<GlobalCubit>().emailList.length,
         (index) => TextEditingController(
@@ -49,7 +49,7 @@ class _NewEmailScreenState extends State<NewEmailScreen> {
 
   @override
   void initState() {
-    get();
+    getController();
     super.initState();
   }
 

@@ -8,6 +8,7 @@ import 'package:insta_job/bloc/job_position/job_pos_event.dart';
 import 'package:insta_job/bloc/job_position/job_pos_state.dart';
 import 'package:insta_job/bloc/resume_bloc/resume_bloc.dart';
 import 'package:insta_job/bloc/resume_bloc/resume_state.dart';
+import 'package:insta_job/globals.dart';
 import 'package:insta_job/model/job_position_model.dart';
 import 'package:insta_job/network/end_points.dart';
 import 'package:insta_job/screens/chat_screen.dart';
@@ -124,8 +125,14 @@ class _ApplicantsState extends State<Applicants> {
                           height: MediaQuery.of(context).size.height * 0.055,
                           title: "Contact",
                           onTap: () {
-                            AppRoutes.push(context,
-                                ChatScreen(jobPosModel: widget.jobPosModel));
+                            AppRoutes.push(
+                                context,
+                                ChatScreen(
+                                  jobPosModel: widget.jobPosModel,
+                                  oppId: widget.jobPosModel!.userFirebaseId
+                                      .toString(),
+                                  selfId: Global.userModel?.firebaseId,
+                                ));
                           },
                         )),
                         tab.selectedTab == 1 ? SizedBox() : SizedBox(width: 15),

@@ -2,11 +2,15 @@ class JobPosModel {
   int? id;
   int? userId;
   int? appliedId;
+  String? userFirebaseId;
   int? companyId;
   String? designation;
   String? companyName;
   String? userName;
   int? jobStatus;
+  int? empId;
+  String? empFirebase;
+  String? empName;
   String? cAddress;
   String? cLat;
   String? cLog;
@@ -36,11 +40,15 @@ class JobPosModel {
       this.userId,
       this.companyId,
       this.appliedId,
+      this.userFirebaseId,
       this.designation,
       this.jobDetails,
       this.companyName,
       this.userName,
       this.jobStatus,
+      this.empId,
+      this.empFirebase,
+      this.empName,
       this.requirements,
       this.responsibilities,
       this.topSkills,
@@ -65,10 +73,14 @@ class JobPosModel {
     userId = json['user_id'];
     companyId = json['company_id'];
     appliedId = json['applied_id'];
+    userFirebaseId = json['user_firebase_id'];
     designation = json['designation'];
     companyName = json['companyname'];
     userName = json['name'];
     userEmail = json['email'];
+    empId = json['emp_id'];
+    empFirebase = json['emp_firebase'];
+    empName = json['emp_name'];
     jobStatus = json['job_saved'];
     jobDetails = json['jobdetails'];
     cAddress = json['c_address'];
@@ -101,6 +113,7 @@ class JobPosModel {
     data['user_id'] = userId;
     data['company_id'] = companyId;
     data['applied_id'] = appliedId;
+    data['user_firebase_id'] = userFirebaseId;
     data['designation'] = designation;
     data['companyname'] = companyName;
     data['name'] = userName;
@@ -109,6 +122,9 @@ class JobPosModel {
     data['jobdetails'] = jobDetails;
     data['Requirements'] = requirements;
     data['Responsilibites'] = responsibilities;
+    data['emp_id'] = empId;
+    data['emp_firebase'] = empFirebase;
+    data['emp_name'] = empName;
     data['Topskills'] = topSkills;
     data['salaries'] = salaries;
     data['c_address'] = cAddress;

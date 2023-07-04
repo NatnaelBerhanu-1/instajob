@@ -13,11 +13,37 @@ import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
 
-class ChatScreen extends StatelessWidget {
+class ChatScreen extends StatefulWidget {
   final JobPosModel? jobPosModel;
+  final String? oppId;
+  final String? selfId;
+  ChatScreen({Key? key, this.jobPosModel, this.oppId, this.selfId})
+      : super(key: key);
 
-  ChatScreen({Key? key, this.jobPosModel}) : super(key: key);
+  @override
+  State<ChatScreen> createState() => _ChatScreenState();
+}
+
+class _ChatScreenState extends State<ChatScreen> {
   TextEditingController msg = TextEditingController();
+  String? gp;
+
+  generateGroupId() {
+    if (widget.selfId == widget.oppId) {
+      gp = "${widget.oppId}_${widget.selfId}";
+      print("IFFFFFFFFFF $gp");
+    } else {
+      gp = "${widget.selfId}_${widget.oppId}";
+      print("ELSEEEEEEEEE $gp");
+    }
+  }
+
+  @override
+  void initState() {
+    generateGroupId();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,7 +89,7 @@ class ChatScreen extends StatelessWidget {
                                   child: CircleAvatar(
                                       radius: 24,
                                       backgroundImage: CachedNetworkImageProvider(
-                                          "${EndPoint.imageBaseUrl}${jobPosModel?.uploadPhoto}")),
+                                          "${EndPoint.imageBaseUrl}${widget.jobPosModel?.uploadPhoto}")),
                                 )),
                             SizedBox(width: 10),
                             Expanded(
@@ -71,7 +97,7 @@ class ChatScreen extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   CommonText(
-                                    text: "${jobPosModel?.userName}",
+                                    text: "${widget.jobPosModel?.userName}",
                                     fontSize: 16,
                                     overflow: TextOverflow.ellipsis,
                                   ),
@@ -140,7 +166,12 @@ class ChatScreen extends StatelessWidget {
                       suffixIcon: GestureDetector(
                         onTap: () {
                           if (msg.text.isNotEmpty) {
-                            AuthService.insertMsg(gp: '');
+                            // AuthService.insertMsg(
+                            //   gp: '',
+                            //   msg: msg.text,
+                            //   oppId: '',
+                            //   selfId: '',
+                            // );
                           }
                         },
                         child: Padding(

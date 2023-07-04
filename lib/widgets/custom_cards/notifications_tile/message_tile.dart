@@ -2,6 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:insta_job/globals.dart';
+import 'package:insta_job/model/job_position_model.dart';
+import 'package:insta_job/screens/chat_screen.dart';
+import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
@@ -10,11 +14,21 @@ import 'package:insta_job/widgets/custom_divider.dart';
 import '../../../utils/my_images.dart';
 
 class MessageTile extends StatelessWidget {
-  MessageTile({Key? key}) : super(key: key);
+  final JobPosModel? jobPosModel;
+  const MessageTile({Key? key, this.jobPosModel}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      onTap: () {
+        AppRoutes.push(
+            context,
+            ChatScreen(
+              jobPosModel: jobPosModel,
+              oppId: jobPosModel!.empFirebase.toString(),
+              selfId: Global.userModel?.firebaseId,
+            ));
+      },
       child: Slidable(
         endActionPane: ActionPane(motion: ScrollMotion(), children: [
           SlidableAction(
@@ -62,7 +76,7 @@ class MessageTile extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             CommonText(
-                              text: "Teresa Williams",
+                              text: "${jobPosModel?.empName}",
                               fontWeight: FontWeight.w500,
                             ),
                             CommonText(
@@ -102,7 +116,7 @@ class MessageTile extends StatelessWidget {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             CommonText(
-                              text: "Senior Developer Position",
+                              text: "${jobPosModel?.designation}",
                               fontWeight: FontWeight.w400,
                               fontSize: 13,
                               fontColor: MyColors.green,

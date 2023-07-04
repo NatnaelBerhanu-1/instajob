@@ -66,6 +66,8 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
                   onTap: () {
                     bottomBloc.add(SetScreenEvent(false));
                     bottomBloc.add(GetIndexEvent(1));
+                    context.read<JobPositionBloc>().add(AppliedJobListEvent());
+
                     // bottomBloc.setSelectedScreen(false);
                     // bottomBloc.getIndex(1);
                   },
