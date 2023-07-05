@@ -118,3 +118,22 @@ class SortListOrDenyEvent extends JobPosEvent {
   @override
   List<Object?> get props => [];
 }
+
+class SetInterviewEvent extends JobPosEvent {
+  final String? companyId;
+  final String? employeeId;
+  final String? jobId;
+  final String? userId;
+  final String? time;
+  final String? timeType;
+
+  SetInterviewEvent(
+      {this.companyId,
+      this.employeeId,
+      this.jobId,
+      this.userId,
+      this.time,
+      this.timeType});
+  @override
+  List<Object?> get props => [];
+}

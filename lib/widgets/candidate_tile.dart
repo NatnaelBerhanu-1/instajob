@@ -8,7 +8,6 @@ import 'package:insta_job/bloc/resume_bloc/resume_bloc.dart';
 import 'package:insta_job/bloc/resume_bloc/resume_event.dart';
 import 'package:insta_job/model/job_position_model.dart';
 import 'package:insta_job/network/end_points.dart';
-import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/bottom_navigation_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/applicants_page.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
@@ -39,12 +38,13 @@ class CandidateTile extends StatelessWidget {
         builder: (context, state) {
       return GestureDetector(
         onTap: () {
-          context.read<BottomBloc>().add(SetScreenEvent(true,
-              screenName: Applicants(jobPosModel: appliedJobModel)));
+          AppRoutes.push(context, Applicants(jobPosModel: appliedJobModel));
+          // context.read<BottomBloc>().add(SetScreenEvent(true,
+          //     screenName: Applicants(jobPosModel: appliedJobModel)));
           context.read<ResumeBloc>().add(UserResumeLoadedEvent(
               userId: appliedJobModel?.userId.toString()));
           print("USER ID ${appliedJobModel?.userId}");
-          AppRoutes.push(context, BottomNavScreen());
+          // AppRoutes.push(context, BottomNavScreen());
         },
         child: Container(
             decoration: BoxDecoration(

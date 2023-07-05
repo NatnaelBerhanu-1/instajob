@@ -59,18 +59,24 @@ class CustomSearchChip extends StatelessWidget {
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    ImageButton(
-                      image: MyImages.searchGrey,
-                      color: index == selectedIndex
-                          ? MyColors.white
-                          : MyColors.blue,
+                    Expanded(
+                      flex: 0,
+                      child: ImageButton(
+                        image: MyImages.searchGrey,
+                        color: index == selectedIndex
+                            ? MyColors.white
+                            : MyColors.blue,
+                      ),
                     ),
-                    CommonText(
-                      text: title,
-                      fontSize: 13,
-                      fontColor: index == selectedIndex
-                          ? MyColors.white
-                          : MyColors.black,
+                    Expanded(
+                      child: CommonText(
+                        text: title,
+                        fontSize: 12.7,
+                        overflow: TextOverflow.ellipsis,
+                        fontColor: index == selectedIndex
+                            ? MyColors.white
+                            : MyColors.black,
+                      ),
                     ),
                   ],
                 ),

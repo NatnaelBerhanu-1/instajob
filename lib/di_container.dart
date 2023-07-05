@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:insta_job/bloc/agora_bloc/agora_cubit.dart';
 import 'package:insta_job/bloc/auth_bloc/auth_cubit.dart';
 import 'package:insta_job/bloc/choose_image_bloc/pick_image_cubit.dart';
 import 'package:insta_job/bloc/company_bloc/company_bloc.dart';
@@ -50,6 +51,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => FeedBackAndAutoMsgBloc(sl()));
   sl.registerLazySingleton(() => ResumeBloc(sl()));
   sl.registerLazySingleton(() => LocationCubit(sl(), sl()));
+  sl.registerLazySingleton(() => AgoraBloc());
 
   /// other
   final SharedPreferences preferences = await SharedPreferences.getInstance();

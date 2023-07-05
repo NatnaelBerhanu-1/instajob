@@ -17,7 +17,6 @@ import '../../../../../utils/app_routes.dart';
 import '../../../../../utils/my_images.dart';
 import '../../../../../widgets/custom_app_bar.dart';
 import '../../../../../widgets/custom_button/custom_img_button.dart';
-import '../../../../../widgets/custom_cards/notifications_tile/message_tile.dart';
 import '../search_trash_screen.dart';
 
 class ViewCandidates extends StatefulWidget {
@@ -203,17 +202,28 @@ class _ViewCandidatesState extends State<ViewCandidates> {
                           if (appliedState is ApplyLoading) ...[
                             Center(child: CircularProgressIndicator())
                           ],
-                          ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: 4,
-                            itemBuilder: (c, i) {
-                              return Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 5),
-                                child: MessageTile(),
-                              );
-                            },
-                          ),
+                          SizedBox()
+                          /* BlocBuilder<JobPositionBloc, JobPosState>(
+                              builder: (context, state) {
+                            if (state is AppliedJobLoaded) {
+                              return ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: state.appliedJobList.length,
+                                  itemBuilder: (c, i) {
+                                    var data = state.appliedJobList[i];
+                                    return MessageTile(
+                                      jobPosModel: data,
+                                    );
+                                  });
+                            }
+                            if (state is ApplyLoading) {
+                              Center(child: CircularProgressIndicator());
+                            }
+                            if (state is ApplyErrorState) {
+                              Center(child: Text(state.error));
+                            }
+                            return SizedBox();
+                          }),*/
                         ]);
                       }))
                     ],

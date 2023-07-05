@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:insta_job/bloc/agora_bloc/agora_cubit.dart';
 import 'package:insta_job/bloc/auth_bloc/auth_cubit.dart';
 import 'package:insta_job/bloc/choose_image_bloc/pick_image_cubit.dart';
 import 'package:insta_job/bloc/company_bloc/company_bloc.dart';
@@ -24,4 +25,5 @@ final List<SingleChildWidget> blocProviders = [
   BlocProvider(create: (_) => di.sl<FeedBackAndAutoMsgBloc>()),
   BlocProvider(create: (_) => di.sl<ResumeBloc>()),
   BlocProvider(create: (_) => di.sl<LocationCubit>()),
+  BlocProvider(create: (_) => di.sl<AgoraBloc>()),
 ];

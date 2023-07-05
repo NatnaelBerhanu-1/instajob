@@ -48,6 +48,7 @@ class ForgotPassword extends StatelessWidget {
                 SizedBox(height: 50),
                 IconTextField(
                   controller: email,
+                  textCapitalization: TextCapitalization.none,
                   prefixIcon: ImageButton(
                     image: MyImages.email,
                     padding: EdgeInsets.all(13),

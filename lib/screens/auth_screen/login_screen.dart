@@ -130,6 +130,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 height: 10,
                                 width: 10,
                               ),
+                              textCapitalization: TextCapitalization.none,
                               keyboardType: TextInputType.emailAddress,
                               suffixIcon: validationBloc.emailVAL
                                   ? verifyImage
@@ -265,8 +266,18 @@ class _LoginScreenState extends State<LoginScreen> {
                                               : false);
                                     },
                                   ),
-                                  CustomSocialButton(image: MyImages.twitter),
-                                  CustomSocialButton(image: MyImages.facebook),
+                                  CustomSocialButton(
+                                    image: MyImages.twitter,
+                                    onTap: () {
+                                      showToast("Currently Not Working");
+                                    },
+                                  ),
+                                  CustomSocialButton(
+                                    image: MyImages.facebook,
+                                    onTap: () {
+                                      showToast("Currently Not Working");
+                                    },
+                                  ),
                                 ],
                               );
                             })

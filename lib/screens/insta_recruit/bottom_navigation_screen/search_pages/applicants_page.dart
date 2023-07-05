@@ -12,8 +12,6 @@ import 'package:insta_job/globals.dart';
 import 'package:insta_job/model/job_position_model.dart';
 import 'package:insta_job/network/end_points.dart';
 import 'package:insta_job/screens/chat_screen.dart';
-import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/bottom_navigation_screen.dart';
-import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/job_opening/view_candidate.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
@@ -23,8 +21,6 @@ import 'package:insta_job/widgets/custom_divider.dart';
 import 'package:insta_job/widgets/resume_tile.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
-
-import '../../../../bloc/bottom_bloc/bottom_bloc.dart';
 
 class Applicants extends StatefulWidget {
   final JobPosModel? jobPosModel;
@@ -53,14 +49,17 @@ class _ApplicantsState extends State<Applicants> {
             // context
             //     .read<BottomCubit>()
             //     .setSelectedScreen(true, screenName: ViewCandidates());
-            context.read<BottomBloc>().add(SetScreenEvent(true,
-                screenName: ViewCandidates(jobPosModel: widget.jobPosModel)));
+            // context.read<BottomBloc>().add(SetScreenEvent(true,
+            //     screenName: ViewCandidates(jobPosModel: widget.jobPosModel)));
+            // AppRoutes.push(
+            //     context, ViewCandidates(jobPosModel: widget.jobPosModel));
+            Navigator.of(context).pop();
             tab.changeTabValue(0);
             context.read<JobPositionBloc>().add(AppliedJobListEvent(
                 jobId: widget.jobPosModel!.id.toString(), status: "applied"));
             // context.read<ResumeBloc>().resumeModel = ResumeModel();
             // setState(() {});
-            AppRoutes.push(context, BottomNavScreen());
+            // AppRoutes.push(context, BottomNavScreen());
           },
         ),
       ),
@@ -129,8 +128,7 @@ class _ApplicantsState extends State<Applicants> {
                                 context,
                                 ChatScreen(
                                   jobPosModel: widget.jobPosModel,
-                                  oppId: widget.jobPosModel!.userFirebaseId
-                                      .toString(),
+                                  oppId: widget.jobPosModel!.userFirebaseId,
                                   selfId: Global.userModel?.firebaseId,
                                 ));
                           },

@@ -257,7 +257,7 @@ class _SearchJobsScreenState extends State<SearchJobsScreen> {
                                   padding: EdgeInsets.only(
                                       bottom:
                                           MediaQuery.of(context).size.height *
-                                              0.27),
+                                              0.32),
                                   markers: locationData.setOfMarker,
                                   onMapCreated:
                                       (GoogleMapController controller) {

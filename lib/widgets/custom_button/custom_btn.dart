@@ -105,6 +105,7 @@ class CustomIconButton extends StatelessWidget {
       child: Container(
           height: height ?? MediaQuery.of(context).size.height * 0.075,
           width: width ?? MediaQuery.of(context).size.width,
+          alignment: Alignment.center,
           decoration: BoxDecoration(
               color: backgroundColor ?? MyColors.blue,
               borderRadius: borderRadius ?? BorderRadius.circular(10),

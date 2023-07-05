@@ -39,7 +39,7 @@ class InterviewTile extends StatelessWidget {
                   children: [
                     CircleAvatar(
                       // backgroundColor: MyColors.transparent,
-                      radius: 22,
+                      radius: 20,
                     ),
                     Positioned(
                         bottom: 5,
@@ -63,12 +63,13 @@ class InterviewTile extends StatelessWidget {
                     CommonText(
                       text: "Teresa Williams",
                       fontWeight: FontWeight.w500,
+                      fontSize: 14,
                     ),
                     CommonText(
                       text: "Software engineer",
                       fontWeight: FontWeight.w400,
                       fontColor: MyColors.grey,
-                      fontSize: 13,
+                      fontSize: 12,
                     ),
                   ],
                 ),
@@ -81,7 +82,7 @@ class InterviewTile extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 12),
+            SizedBox(height: 5),
             isRecording
                 ? Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 50.0),

@@ -224,6 +224,7 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
       // }
       // emit(JobPosInitialState());
     });
+
     on<JobDistanceLocatorEvent>((event, emit) async {
       emit(JobPosLoading());
       jobDistanceList = await _getJobDistanceLocator(emit,
@@ -261,6 +262,25 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
       }
       if (response.response.statusCode == 200) {
         emit(SortListDenyState());
+      } else if (response.response.statusCode == 400) {
+        emit(JobErrorState(response.response.data['message']));
+      }
+    });
+
+    on<SetInterviewEvent>((event, emit) async {
+      ApiResponse response = await jobPositionRepository.setInterview(
+          userId: event.userId,
+          jobId: event.jobId,
+          companyId: event.companyId,
+          employeeId: event.employeeId,
+          time: event.time,
+          timeType: event.timeType);
+      if (response.response.statusCode == 500) {
+        emit(const JobErrorState("Something went wrong"));
+      }
+      if (response.response.statusCode == 200) {
+        navigationKey.currentState?.pop();
+        emit(const SetInterviewSuccess());
       } else if (response.response.statusCode == 400) {
         emit(JobErrorState(response.response.data['message']));
       }

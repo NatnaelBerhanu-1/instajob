@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:insta_job/auth_service.dart';
 import 'package:insta_job/dialog/custom_dialog.dart';
@@ -17,7 +18,7 @@ class ChatScreen extends StatefulWidget {
   final JobPosModel? jobPosModel;
   final String? oppId;
   final String? selfId;
-  ChatScreen({Key? key, this.jobPosModel, this.oppId, this.selfId})
+  const ChatScreen({Key? key, this.jobPosModel, this.oppId, this.selfId})
       : super(key: key);
 
   @override
@@ -29,11 +30,16 @@ class _ChatScreenState extends State<ChatScreen> {
   String? gp;
 
   generateGroupId() {
-    if (widget.selfId == widget.oppId) {
+    print("OPPOSITE ID:  ${widget.oppId}");
+    print("SELF ID    :  ${widget.selfId}");
+
+    if (widget.selfId == widget.jobPosModel?.userFirebaseId) {
       gp = "${widget.oppId}_${widget.selfId}";
+      setState(() {});
       print("IFFFFFFFFFF $gp");
     } else {
       gp = "${widget.selfId}_${widget.oppId}";
+      setState(() {});
       print("ELSEEEEEEEEE $gp");
     }
   }
@@ -41,6 +47,7 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     generateGroupId();
+
     super.initState();
   }
 
@@ -97,7 +104,9 @@ class _ChatScreenState extends State<ChatScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   CommonText(
-                                    text: "${widget.jobPosModel?.userName}",
+                                    text: Global.userModel?.type == "user"
+                                        ? "${widget.jobPosModel?.empName}"
+                                        : "${widget.jobPosModel?.userName}",
                                     fontSize: 16,
                                     overflow: TextOverflow.ellipsis,
                                   ),
@@ -117,7 +126,10 @@ class _ChatScreenState extends State<ChatScreen> {
                           : Expanded(
                               child: CustomCommonCard(
                                 onTap: () {
-                                  buildDialog(context, PickTimeDialog());
+                                  buildDialog(
+                                      context,
+                                      PickTimeDialog(
+                                          jobPosModel: widget.jobPosModel));
                                 },
                                 borderRadius: BorderRadius.circular(20),
                                 borderColor: MyColors.blue,
@@ -143,21 +155,88 @@ class _ChatScreenState extends State<ChatScreen> {
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.only(right: 10, top: 10, left: 12),
-                  child: ListView.builder(
-                      // shrinkWrap: true,
-                      itemCount: 10,
-                      itemBuilder: (c, i) {
-                        return Text("");
+                  child: StreamBuilder<QuerySnapshot>(
+                      stream: FirebaseFirestore.instance
+                          .collection(AuthService.chatCollection)
+                          .doc(gp!)
+                          .collection(gp!)
+                          .orderBy('time', descending: true)
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        return snapshot.hasData
+                            ? Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 5.0),
+                                child: ListView.builder(
+                                    reverse: true,
+                                    // shrinkWrap: true,
+                                    itemCount: snapshot.data?.docs.length,
+                                    itemBuilder: (c, i) {
+                                      var data = snapshot.data?.docs[i];
+                                      return Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 5.0),
+                                        child: Align(
+                                          alignment:
+                                              Global.userModel?.firebaseId ==
+                                                      data?['selfId']
+                                                  ? Alignment.centerRight
+                                                  : Alignment.centerLeft,
+                                          child: DecoratedBox(
+                                            // chat bubble decoration
+                                            decoration: BoxDecoration(
+                                              color: Global.userModel
+                                                          ?.firebaseId ==
+                                                      data?['selfId']
+                                                  ? MyColors.lightBlue
+                                                      .withOpacity(.25)
+                                                  : MyColors.lightGrey,
+                                              borderRadius: Global.userModel
+                                                          ?.firebaseId ==
+                                                      data?['selfId']
+                                                  ? BorderRadius.only(
+                                                      topLeft:
+                                                          Radius.circular(15),
+                                                      topRight:
+                                                          Radius.circular(15),
+                                                      bottomLeft:
+                                                          Radius.circular(15),
+                                                    )
+                                                  : BorderRadius.only(
+                                                      topLeft:
+                                                          Radius.circular(15),
+                                                      topRight:
+                                                          Radius.circular(15),
+                                                      bottomRight:
+                                                          Radius.circular(15),
+                                                    ),
+                                            ),
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(12),
+                                              child: Text(
+                                                "${data?['msg']}",
+                                                style: TextStyle(
+                                                    color: Colors.black),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    }),
+                              )
+                            : SizedBox();
                       }),
                 ),
               ),
               Expanded(
+                flex: 0,
                 child: Padding(
                   padding: const EdgeInsets.only(right: 10, top: 10, left: 12),
                   child: Align(
                     alignment: FractionalOffset.bottomCenter,
                     child: IconTextField(
                       controller: msg,
+                      textCapitalization: TextCapitalization.sentences,
                       // color: MyColors.lightGrey,
                       prefixIcon: Icon(Icons.mic),
                       color: MyColors.lightGrey,
@@ -166,12 +245,13 @@ class _ChatScreenState extends State<ChatScreen> {
                       suffixIcon: GestureDetector(
                         onTap: () {
                           if (msg.text.isNotEmpty) {
-                            // AuthService.insertMsg(
-                            //   gp: '',
-                            //   msg: msg.text,
-                            //   oppId: '',
-                            //   selfId: '',
-                            // );
+                            AuthService.insertMsg(
+                              gp: gp!,
+                              msg: msg.text,
+                              oppId: widget.oppId,
+                              selfId: widget.selfId,
+                            );
+                            msg.clear();
                           }
                         },
                         child: Padding(

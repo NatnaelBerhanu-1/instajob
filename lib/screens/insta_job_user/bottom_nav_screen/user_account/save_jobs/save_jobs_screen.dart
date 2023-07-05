@@ -101,7 +101,7 @@ class _SaveJobsScreenState extends State<SaveJobsScreen> {
                                           crossAxisCount: 2,
                                           crossAxisSpacing: 0,
                                           mainAxisSpacing: 0,
-                                          childAspectRatio: 5.5 / 4.5),
+                                          childAspectRatio: 5.1 / 4.5),
                                 ),
                               )
                             ],
@@ -140,7 +140,7 @@ class _SaveJobsScreenState extends State<SaveJobsScreen> {
                                           crossAxisCount: 2,
                                           crossAxisSpacing: 0,
                                           mainAxisSpacing: 0,
-                                          childAspectRatio: 5.5 / 4.5),
+                                          childAspectRatio: 5.1 / 4.5),
                                 ),
                               )
                             ],

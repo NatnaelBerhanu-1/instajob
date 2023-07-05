@@ -78,7 +78,7 @@ class IconTextField extends StatelessWidget {
       obscureText: obscureText ?? false,
       cursorColor: MyColors.black,
       keyboardType: keyboardType ?? TextInputType.text,
-      textCapitalization: textCapitalization ?? TextCapitalization.none,
+      textCapitalization: textCapitalization ?? TextCapitalization.sentences,
       decoration: InputDecoration(
         counterText: "",
         errorText: "",

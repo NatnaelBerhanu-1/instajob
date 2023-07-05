@@ -4,12 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
 import 'package:insta_job/bloc/global_cubit/global_state.dart';
+import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
+import 'package:insta_job/bloc/job_position/job_pos_state.dart';
+import 'package:insta_job/globals.dart';
+import 'package:insta_job/model/job_position_model.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:intl/intl.dart';
 
+import '../bloc/job_position/job_pos_event.dart';
+
 class PickTimeDialog extends StatefulWidget {
-  const PickTimeDialog({Key? key}) : super(key: key);
+  final JobPosModel? jobPosModel;
+
+  const PickTimeDialog({Key? key, this.jobPosModel}) : super(key: key);
 
   @override
   State<PickTimeDialog> createState() => _PickTimeDialogState();
@@ -99,27 +107,42 @@ class _PickTimeDialogState extends State<PickTimeDialog> {
                     ),
                   ),
                   SizedBox(width: 40),
-                  CustomCommonCard(
-                    onTap: () {
-                      print('INDEX2 ------  $selectedIndex');
-                      context.read<GlobalCubit>().changeIndex(2);
-                      Navigator.pop(context);
-                    },
-                    bgColor:
-                        selectedIndex == 2 ? MyColors.blue : MyColors.white,
-                    borderColor: MyColors.blue,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 12.0, horizontal: 30),
-                      child: CommonText(
-                        text: "Submit",
-                        fontColor: selectedIndex == 2
-                            ? MyColors.white
-                            : MyColors.black,
-                        fontSize: 16,
+                  BlocBuilder<JobPositionBloc, JobPosState>(
+                      builder: (context, state) {
+                    return CustomCommonCard(
+                      onTap: () {
+                        print('INDEX2 ------  $selectedIndex');
+                        context.read<GlobalCubit>().changeIndex(2);
+                        if (formatTime != null) {
+                          context.read<JobPositionBloc>().add(SetInterviewEvent(
+                                time: formatTime,
+                                timeType: timeOfDay.period.name.toUpperCase(),
+                                employeeId: Global.userModel?.id.toString(),
+                                companyId: "${widget.jobPosModel?.companyId}",
+                                jobId: widget.jobPosModel?.id.toString(),
+                                userId: widget.jobPosModel?.userId.toString(),
+                              ));
+                        } else {
+                          showToast("Please choose time");
+                        }
+                        // Navigator.pop(context);
+                      },
+                      bgColor:
+                          selectedIndex == 2 ? MyColors.blue : MyColors.white,
+                      borderColor: MyColors.blue,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 12.0, horizontal: 30),
+                        child: CommonText(
+                          text: "Submit",
+                          fontColor: selectedIndex == 2
+                              ? MyColors.white
+                              : MyColors.black,
+                          fontSize: 16,
+                        ),
                       ),
-                    ),
-                  ),
+                    );
+                  }),
                 ],
               );
             }),
@@ -141,11 +164,10 @@ class _PickTimeDialogState extends State<PickTimeDialog> {
       timeOfDay = time;
       setState(() {});
     }
-    print("WWWWW $timeOfDay");
     var date =
         DateFormat("hh:mm").parse("${timeOfDay.hour}:${timeOfDay.minute}");
-    var dateFormat = DateFormat("hh : mm");
+    var dateFormat = DateFormat("hh:mm");
     formatTime = dateFormat.format(date);
-    print(dateFormat.format(date));
+    print(formatTime);
   }
 }

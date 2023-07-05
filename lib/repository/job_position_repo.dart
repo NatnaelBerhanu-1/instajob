@@ -224,6 +224,31 @@ class JobPositionRepository {
     }
   }
 
+  setInterview({
+    String? companyId,
+    String? employeeId,
+    String? jobId,
+    String? userId,
+    String? time,
+    String? timeType,
+  }) async {
+    try {
+      var map = {
+        "company_id": companyId,
+        "employee_id": employeeId,
+        "job_id": jobId,
+        "user_id": userId,
+        "time": time,
+        "time_type": timeType
+      };
+      var response =
+          await dioClient.post(data: map, uri: EndPoint.createVideoCall);
+      return ApiResponse.withSuccess(response);
+    } on DioException catch (e) {
+      return ApiResponse.withError(e.response);
+    }
+  }
+
   String kGoogleApiKey = "AIzaSyAwEmv3whQry4abe7SnIuPS4ttniNdkLuI";
 
   Future<ApiResponse> getPlaceById(String placeId) async {

@@ -53,7 +53,7 @@ class MessageTile extends StatelessWidget {
                         Stack(
                           children: [
                             CircleAvatar(
-                              radius: 22,
+                              radius: 20,
                             ),
                             Positioned(
                                 bottom: 5,
@@ -104,7 +104,7 @@ class MessageTile extends StatelessWidget {
                         )
                       ],
                     ),
-                    SizedBox(height: 15),
+                    SizedBox(height: 5),
                     Container(
                       decoration: BoxDecoration(
                         color: MyColors.lightGreen,

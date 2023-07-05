@@ -217,15 +217,22 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                                                     child: CustomButton(
                                                   title: "View Candidates",
                                                   onTap: () {
-                                                    context
-                                                        .read<BottomBloc>()
-                                                        .add(SetScreenEvent(
-                                                            true,
-                                                            screenName: ViewCandidates(
-                                                                jobPosModel: widget
-                                                                    .jobPosModel,
-                                                                companyModel: widget
-                                                                    .companyModel)));
+                                                    AppRoutes.push(
+                                                        context,
+                                                        ViewCandidates(
+                                                            jobPosModel: widget
+                                                                .jobPosModel,
+                                                            companyModel: widget
+                                                                .companyModel));
+                                                    // context
+                                                    //     .read<BottomBloc>()
+                                                    //     .add(SetScreenEvent(
+                                                    //         true,
+                                                    //         screenName: ViewCandidates(
+                                                    //             jobPosModel: widget
+                                                    //                 .jobPosModel,
+                                                    //             companyModel: widget
+                                                    //                 .companyModel)));
                                                     context
                                                         .read<JobPositionBloc>()
                                                         .add(
@@ -236,8 +243,8 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                                                                     .toString(),
                                                                 status:
                                                                     "applied"));
-                                                    AppRoutes.push(context,
-                                                        BottomNavScreen());
+                                                    // AppRoutes.push(context,
+                                                    //     BottomNavScreen());
                                                     print(
                                                         "JOB ID ${widget.jobPosModel?.id.toString()}");
                                                   },

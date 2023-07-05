@@ -61,3 +61,9 @@ class JobAppliedSuccessState extends JobPosState {
   @override
   List<Object?> get props => [];
 }
+
+class SetInterviewSuccess extends JobPosState {
+  const SetInterviewSuccess();
+  @override
+  List<Object?> get props => [];
+}

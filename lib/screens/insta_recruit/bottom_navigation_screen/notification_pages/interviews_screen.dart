@@ -43,6 +43,8 @@ class _InterviewScreenState extends State<InterviewScreen> {
                     Expanded(
                       flex: 0,
                       child: TabBar(
+                          padding: EdgeInsets.zero,
+                          labelPadding: EdgeInsets.zero,
                           unselectedLabelColor: MyColors.tabClr,
                           labelColor: MyColors.blue,
                           indicatorColor: MyColors.blue,
@@ -59,29 +61,30 @@ class _InterviewScreenState extends State<InterviewScreen> {
                         child: TabBarView(children: [
                       Padding(
                         padding:
-                            const EdgeInsets.only(left: 10, right: 10, top: 10),
+                            const EdgeInsets.only(left: 10, right: 10, top: 3),
                         child: GridView.builder(
                           shrinkWrap: true,
                           scrollDirection: Axis.horizontal,
                           itemCount: 4,
                           itemBuilder: (c, i) {
                             return Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 2, vertical: 5),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 0),
                               child: InterviewTile(),
                             );
                           },
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  mainAxisSpacing: 5,
-                                  crossAxisSpacing: 5,
-                                  childAspectRatio: 3 / 8),
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 5,
+                            crossAxisSpacing: 5,
+                            childAspectRatio: 3 / 8,
+                          ),
                         ),
                       ),
                       Padding(
                         padding:
-                            const EdgeInsets.only(left: 10, right: 10, top: 10),
+                            const EdgeInsets.only(left: 10, right: 10, top: 3),
                         child: GridView.builder(
                           shrinkWrap: true,
                           scrollDirection: Axis.horizontal,
@@ -89,7 +92,7 @@ class _InterviewScreenState extends State<InterviewScreen> {
                           itemBuilder: (c, i) {
                             return Padding(
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 2, vertical: 5),
+                                  horizontal: 2, vertical: 0),
                               child: InterviewTile(isRecording: true),
                             );
                           },
@@ -115,7 +118,7 @@ class _InterviewScreenState extends State<InterviewScreen> {
                     flex: 0,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 15.0, vertical: 10),
+                          horizontal: 15.0, vertical: 0),
                       child: SingleChildScrollView(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -123,9 +126,9 @@ class _InterviewScreenState extends State<InterviewScreen> {
                             CommonText(
                               text: "Messages",
                               fontWeight: FontWeight.w600,
-                              fontSize: 20,
+                              fontSize: 18,
                             ),
-                            SizedBox(height: 6),
+                            SizedBox(height: 4),
                             CommonText(
                               text: "All messages",
                               fontSize: 13,
@@ -146,7 +149,9 @@ class _InterviewScreenState extends State<InterviewScreen> {
                             itemCount: state.appliedJobList.length,
                             itemBuilder: (c, i) {
                               var data = state.appliedJobList[i];
-                              return MessageTile(jobPosModel: data);
+                              return MessageTile(
+                                jobPosModel: data,
+                              );
                             });
                       }
                       if (state is ApplyLoading) {

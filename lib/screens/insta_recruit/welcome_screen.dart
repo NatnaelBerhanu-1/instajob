@@ -123,12 +123,18 @@ class WelcomeScreen extends StatelessWidget {
                                   isUser: userType == "user" ? true : false);
                             },
                           ),
-                          CustomSocialButton(image: MyImages.twitter),
+                          CustomSocialButton(
+                            image: MyImages.twitter,
+                            onTap: () {
+                              showToast("Currently Not Working");
+                            },
+                          ),
                           CustomSocialButton(
                             image: MyImages.facebook,
                             onTap: () {
-                              auth.faceBookAuth(
-                                  isUser: userType == "user" ? true : false);
+                              showToast("Currently Not Working");
+                              // auth.faceBookAuth(
+                              //     isUser: userType == "user" ? true : false);
                             },
                           ),
                         ],

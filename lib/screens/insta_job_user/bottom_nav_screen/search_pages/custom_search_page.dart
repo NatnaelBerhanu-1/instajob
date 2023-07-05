@@ -44,7 +44,7 @@ class CompanyJobChip extends StatelessWidget {
                   selectedIndex: selectedSearchIndex,
                   title: "Search Jobs",
                 )),
-                SizedBox(width: 10),
+                SizedBox(width: 7),
                 Expanded(
                     child: CustomSearchChip(
                   onTap: () {

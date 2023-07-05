@@ -10,6 +10,7 @@ class EndPoint {
   static String checkVerificationCode = "checkcodemail";
   static String changePassword = "changepassword";
   static String checkPhoneNumber = "check_phone_number";
+  static String createVideoCall = "create_videocall";
 
   /// ---------------- EMPLOYEE INTERFACE --------------- ///
 
