@@ -28,7 +28,7 @@ class _TellUsAboutYSlfPageState extends State<TellUsAboutYSlfPage> {
 
   @override
   void initState() {
-    msg.text = "${context.read<ResumeBloc>().resumeModel.tellUss?[0].tellUs}";
+    msg.text = context.read<ResumeBloc>().resumeModel.tellUss?[0].tellUs ?? "";
     setState(() {});
     super.initState();
   }
@@ -93,6 +93,7 @@ class _TellUsAboutYSlfPageState extends State<TellUsAboutYSlfPage> {
                     context
                         .read<ResumeBloc>()
                         .add(TellMeAbtYourSelfEvent(msg.text));
+                    context.read<ResumeBloc>().add(UserResumeLoadedEvent());
                     context.read<ResumeBloc>().addNewEducation =
                         context.read<ResumeBloc>().resumeModel.educations ?? [];
                     context.read<ResumeBloc>().addNewWorkExp = context
@@ -100,12 +101,14 @@ class _TellUsAboutYSlfPageState extends State<TellUsAboutYSlfPage> {
                             .resumeModel
                             .workExperiences ??
                         [];
-                    context.read<GlobalCubit>().skills = context
-                            .read<ResumeBloc>()
-                            .resumeModel
-                            .skills?[0]
-                            .addSkill ??
-                        [];
+                    if (context.read<ResumeBloc>().resumeModel.skills != null) {
+                      context.read<GlobalCubit>().skills = context
+                              .read<ResumeBloc>()
+                              .resumeModel
+                              .skills?[0]
+                              .addSkill ??
+                          [];
+                    }
                     context.read<GlobalCubit>().achievementList = context
                             .read<ResumeBloc>()
                             .resumeModel

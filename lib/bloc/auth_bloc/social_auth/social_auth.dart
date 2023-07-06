@@ -40,7 +40,7 @@ class SocialAuth {
       print("QQQQQQQQQQQQQQQQQQQQQQQQ $isUser");
       context
           .read<AuthCubit>()
-          .login(email: email, password: password, isUser: isUser);
+          .login(context, email: email, password: password, isUser: isUser);
       context.read<GlobalCubit>().changeIndex(1);
       print(" @@@@@@ ${context.read<GlobalCubit>().sIndex}");
       // context.read<CompanyBloc>().add(LoadCompanyListEvent());

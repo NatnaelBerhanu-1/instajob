@@ -11,6 +11,7 @@ import 'package:insta_job/bloc/auth_bloc/auth_state.dart';
 import 'package:insta_job/bloc/auth_bloc/social_auth/social_auth.dart';
 import 'package:insta_job/bloc/bottom_bloc/bottom_bloc.dart';
 import 'package:insta_job/bloc/company_bloc/company_event.dart';
+import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/model/user_model.dart';
 import 'package:insta_job/network/api_response.dart';
@@ -22,7 +23,6 @@ import 'package:insta_job/screens/auth_screen/verify_code_screen.dart';
 import 'package:insta_job/screens/insta_recruit/became_an_employeer.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/bottom_navigation_screen.dart';
 import 'package:insta_job/screens/insta_recruit/membership_screen.dart';
-import 'package:insta_job/screens/insta_recruit/user_type_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../company_bloc/company_bloc.dart';
@@ -99,7 +99,8 @@ class AuthCubit extends Cubit<AuthInitialState> {
     }
   }
 
-  login({
+  login(
+    BuildContext context, {
     String? email,
     String? password,
     bool isUser = false,
@@ -121,6 +122,7 @@ class AuthCubit extends Cubit<AuthInitialState> {
       navigationKey.currentState?.pushAndRemoveUntil(
           MaterialPageRoute(builder: (_) => const BottomNavScreen()),
           (route) => false);
+      context.read<GlobalCubit>().changeIndex(1);
     }
     if (response.response.statusCode == 400) {
       emit(ErrorState("${response.response.data['message']}"));
@@ -154,11 +156,12 @@ class AuthCubit extends Cubit<AuthInitialState> {
 
   void _onVerificationCompletedRegister(
       PhoneAuthCredential phoneAuthCredential, BuildContext context) async {
+    var type = sharedPreferences.getString("type");
     FirebaseAuth.instance
         .signInWithCredential(phoneAuthCredential)
         .then((value) async {
       if (value.user != null) {
-        if (userType == "user") {
+        if (type == "user") {
           if (isSocialAuth) {
             registerData(isUser: true);
           } else {
@@ -261,13 +264,11 @@ class AuthCubit extends Cubit<AuthInitialState> {
 
   /// google auth
   bool isSocialAuth = false;
-  googleAuth({
-    bool isUser = false,
-  }) async {
+  googleAuth(BuildContext context) async {
     loading(value: true);
     GoogleSignIn googleSignIn = GoogleSignIn();
     final googleUser = await googleSignIn.signIn();
-
+    var type = sharedPreferences.getString("type");
     try {
       loading(value: false);
       isSocialAuth = true;
@@ -284,9 +285,9 @@ class AuthCubit extends Cubit<AuthInitialState> {
           ApiResponse response =
               await authRepository.checkUser(value.user!.email.toString());
           if (response.response.statusCode == 200) {
-            login(
+            login(context,
                 email: value.user!.email,
-                isUser: isUser,
+                isUser: type == "user" ? true : false,
                 password: value.user!.uid);
             // navigationKey.currentState?.pushAndRemoveUntil(
             //     MaterialPageRoute(builder: (_) => const BottomNavScreen()),
@@ -296,12 +297,16 @@ class AuthCubit extends Cubit<AuthInitialState> {
             email = value.user!.email!;
             password = value.user!.uid;
             getData();
-            navigationKey.currentState?.pushAndRemoveUntil(
-                MaterialPageRoute(
-                    builder: (_) => isUser
-                        ? const RegMoreInfoScreen()
-                        : const BecameAnEmployer()),
-                (route) => false);
+            print("_++++++++++++++++++++++ $type");
+            if (type == "user") {
+              navigationKey.currentState?.pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (_) => const RegMoreInfoScreen()),
+                  (route) => false);
+            } else {
+              navigationKey.currentState?.pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (_) => const BecameAnEmployer()),
+                  (route) => false);
+            }
           }
           // registerEmp(
           // email: value.user!.email,
@@ -336,8 +341,8 @@ class AuthCubit extends Cubit<AuthInitialState> {
 
   /// facebook
   faceBookAuth({bool isUser = false}) async {
-    final LoginResult loginResult =
-        await FacebookAuth.instance.login(permissions: ['email']);
+    final LoginResult loginResult = await FacebookAuth.instance
+        .login(permissions: ['email', 'public_profile']);
 
     try {
       if (loginResult.status == LoginStatus.success) {
@@ -352,10 +357,10 @@ class AuthCubit extends Cubit<AuthInitialState> {
             ApiResponse response =
                 await authRepository.checkUser(value.user!.email.toString());
             if (response.response.statusCode == 200) {
-              login(
-                  email: value.user!.email,
-                  isUser: isUser,
-                  password: value.user!.uid);
+              // login(
+              //     email: value.user!.email,
+              //     isUser: isUser,
+              //     password: value.user!.uid);
               // navigationKey.currentState?.pushAndRemoveUntil(
               //     MaterialPageRoute(builder: (_) => const BottomNavScreen()),
               //     (route) => false);

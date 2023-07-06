@@ -10,6 +10,7 @@ import 'package:insta_job/globals.dart';
 import 'package:insta_job/model/location_model.dart';
 import 'package:insta_job/network/api_response.dart';
 import 'package:insta_job/repository/job_position_repo.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class LocationCubit extends Cubit<LocationInitial> {
   final JobPositionRepository jobPosRepository;
@@ -25,7 +26,7 @@ class LocationCubit extends Cubit<LocationInitial> {
       emit(AddressLoaded(list));
       return list;
     } else {
-      showToast("message");
+      showToast("Something went wrong");
       return [];
     }
   }
@@ -50,7 +51,7 @@ class LocationCubit extends Cubit<LocationInitial> {
       // emit(PlaceByIdLoaded(list));
       // return list;
     } else {
-      showToast("message");
+      showToast("Something went wrong");
       return [];
     }
   }
@@ -120,6 +121,7 @@ class LocationCubit extends Cubit<LocationInitial> {
 
     if (permission == LocationPermission.deniedForever) {
       // Permissions are denied forever, handle appropriately.
+      openAppSettings();
       WidgetsBinding.instance.addPostFrameCallback((_) {
         showToast(
             'Location permissions are permanently denied, we cannot request permissions.');

@@ -53,6 +53,7 @@ class BottomBloc extends Bloc<BottomEvent, BottomInitialState> {
       final currentUser = FirebaseAuth.instance.currentUser;
       var pref = await SharedPreferences.getInstance();
       var user = await jsonDecode(pref.getString("user").toString());
+      // if(userType=="user")
       await locationCubit.getCurrentLocation();
 
       if (currentUser != null && user != null) {

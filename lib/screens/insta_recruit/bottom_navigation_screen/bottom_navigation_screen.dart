@@ -77,7 +77,9 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
                 ),
                 buildColumn(
                   onTap: () {
-                    context.read<ResumeBloc>().add(UserResumeLoadedEvent());
+                    if (Global.userModel?.type == "user") {
+                      context.read<ResumeBloc>().add(UserResumeLoadedEvent());
+                    }
                     bottomBloc.add(SetScreenEvent(false));
                     bottomBloc.add(GetIndexEvent(2));
                     // bottomBloc.setSelectedScreen(false);

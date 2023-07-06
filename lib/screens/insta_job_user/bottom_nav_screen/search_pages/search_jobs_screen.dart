@@ -170,7 +170,12 @@ class _SearchJobsScreenState extends State<SearchJobsScreen> {
                                             selectedIndex: jobDistanceIndex,
                                             index: index,
                                             title: [
-                                              "${context.read<LocationCubit>().placeMarks.first.name}",
+                                              (context
+                                                      .read<LocationCubit>()
+                                                      .placeMarks
+                                                      .first
+                                                      .name ??
+                                                  "Current"),
                                               "Job Distance Locator",
                                               "${context.read<GlobalCubit>().range.toStringAsFixed(0)} Miles Away"
                                             ][index],

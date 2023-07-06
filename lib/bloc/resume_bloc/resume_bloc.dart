@@ -45,6 +45,7 @@ class ResumeBloc extends Bloc<ResumeEvent, ResumeState> {
           "QQQQQQQQQQQQQQ -------------  ${response.response.data['data']['id']}");
     });
     on<AddEducationEvent>((event, emit) async {
+      emit(ResumeLoading());
       // if (event.isNew) {
       //   addNewEducation.add(event.educationModel);
       //   emit(ResumeAddSuccess());
@@ -56,7 +57,7 @@ class ResumeBloc extends Bloc<ResumeEvent, ResumeState> {
       }
       if (response.response.statusCode == 200) {
         addNewEducation.add(event.educationModel);
-        emit(ResumeAddSuccess());
+        emit(EducationAddSuccess());
       }
       if (response.response.statusCode == 400) {
         emit(const ErrorState("Data Not Found"));
@@ -65,6 +66,7 @@ class ResumeBloc extends Bloc<ResumeEvent, ResumeState> {
     });
 
     on<TellMeAbtYourSelfEvent>((event, emit) async {
+      emit(ResumeLoading());
       ApiResponse response =
           await resumeRepository.addTellAbtSelf(tellUs: event.data);
       if (response.response.statusCode == 500) {
@@ -91,7 +93,7 @@ class ResumeBloc extends Bloc<ResumeEvent, ResumeState> {
       if (response.response.statusCode == 200) {
         // showToast("Success");
         addNewWorkExp.add(event.workExpModel);
-        emit(ResumeAddSuccess());
+        emit(ExpAddSuccess());
       }
       if (response.response.statusCode == 400) {
         emit(const ErrorState("Data Not Found"));

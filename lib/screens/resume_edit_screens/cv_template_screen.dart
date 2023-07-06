@@ -3,8 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/bottom_bloc/bottom_bloc.dart';
-import 'package:insta_job/bloc/resume_bloc/resume_bloc.dart';
-import 'package:insta_job/bloc/resume_bloc/resume_event.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/bottom_navigation_screen.dart';
 import 'package:insta_job/screens/insta_recruit/home_page.dart';
@@ -96,7 +94,7 @@ class _CvTemplateScreenState extends State<CvTemplateScreen> {
               title: "Edit Template",
               borderColor: MyColors.blue,
               onTap: () {
-                context.read<ResumeBloc>().add(UserResumeLoadedEvent());
+                // context.read<ResumeBloc>().add(UserResumeLoadedEvent());
 
                 AppRoutes.push(context, EditTemplateScreen());
               },

@@ -10,7 +10,12 @@ abstract class ResumeState extends Equatable {
 
 class ResumeInitial extends ResumeState {}
 
-class ResumeAddSuccess extends ResumeState {}
+class ResumeLoading extends ResumeState {}
+// class EduLoading extends ResumeState {}
+
+class EducationAddSuccess extends ResumeState {}
+
+class ExpAddSuccess extends ResumeState {}
 
 class ResumeDeleted extends ResumeState {}
 

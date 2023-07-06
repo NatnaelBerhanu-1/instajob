@@ -119,8 +119,8 @@ class WelcomeScreen extends StatelessWidget {
                           CustomSocialButton(
                             image: MyImages.google,
                             onTap: () {
-                              auth.googleAuth(
-                                  isUser: userType == "user" ? true : false);
+                              print("@@@@@@@@@@ $userType");
+                              auth.googleAuth(context);
                             },
                           ),
                           CustomSocialButton(
@@ -132,9 +132,9 @@ class WelcomeScreen extends StatelessWidget {
                           CustomSocialButton(
                             image: MyImages.facebook,
                             onTap: () {
-                              showToast("Currently Not Working");
-                              // auth.faceBookAuth(
-                              //     isUser: userType == "user" ? true : false);
+                              // showToast("Currently Not Working");
+                              auth.faceBookAuth(
+                                  isUser: userType == "user" ? true : false);
                             },
                           ),
                         ],

@@ -123,6 +123,9 @@ class _WorkExpScreenState extends State<WorkExpScreen> {
                             context
                                 .read<ResumeBloc>()
                                 .add(AddWorkExpEvent(workExpModel));
+                            context
+                                .read<ResumeBloc>()
+                                .add(UserResumeLoadedEvent());
                             jobTitle.clear();
                             city.clear();
                             state.clear();
@@ -168,28 +171,34 @@ class _WorkExpScreenState extends State<WorkExpScreen> {
             SizedBox(height: 15),
             CommonText(text: "Start With Your Most Recent Job"),
             SizedBox(height: 15),
-            BlocBuilder<ResumeBloc, ResumeState>(builder: (context, snapshot) {
+            BlocBuilder<ResumeBloc, ResumeState>(builder: (context, rState) {
               var data = context.read<ResumeBloc>();
-              return ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: data.addNewWorkExp.length,
-                  itemBuilder: (c, index) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 7.0),
-                      child: ResumeTile(
-                        isWorkExp: true,
-                        onTap: () {
-                          data.add(DeleteWorkExp(
-                              id: data.resumeModel.workExperiences?[index].id
-                                  .toString(),
-                              index: index));
-                        },
-                        workExperiences:
-                            data.resumeModel.workExperiences?[index],
-                        index: index + 1,
-                      ),
-                    );
-                  });
+              if (rState is UserResumeLoaded) {
+                return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: data.addNewWorkExp.length,
+                    itemBuilder: (c, index) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 7.0),
+                        child: ResumeTile(
+                          isWorkExp: true,
+                          onTap: () {
+                            data.add(DeleteWorkExp(
+                                id: data.resumeModel.workExperiences?[index].id
+                                    .toString(),
+                                index: index));
+                          },
+                          workExperiences:
+                              data.resumeModel.workExperiences?[index],
+                          index: index + 1,
+                        ),
+                      );
+                    });
+              }
+              if (rState is ResumeLoading) {
+                return Center(child: CircularProgressIndicator());
+              }
+              return Text("%%% $rState");
             }),
             SizedBox(height: 15),
             CustomResumeCard(

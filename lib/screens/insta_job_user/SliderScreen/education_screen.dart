@@ -147,7 +147,7 @@ class _EducationScreenState extends State<EducationScreen> {
                           endMonth = "";
                           message.clear();
                           isStudyHere = false;
-                          setState(() {});
+                          // setState(() {});
                         }
                       } else {
                         showToast("Please Fill Details");
@@ -183,42 +183,50 @@ class _EducationScreenState extends State<EducationScreen> {
           context.read<ResumeBloc>().addNewEducation.isEmpty
               ? SizedBox()
               : BlocBuilder<ResumeBloc, ResumeState>(
-                  builder: (context, snapshot) {
+                  builder: (context, rState) {
                   var data = context.read<ResumeBloc>();
-                  return ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: data.addNewEducation.length,
-                      itemBuilder: (c, index) {
-                        var educationData = data.resumeModel.educations?[index];
+                  if (rState is EducationAddSuccess ||
+                      rState is UserResumeLoaded) {
+                    return ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: data.addNewEducation.length,
+                        itemBuilder: (c, index) {
+                          var educationData =
+                              data.resumeModel.educations?[index];
 
-                        // instituteName.text =
-                        //     "${educationData?.institutionName}";
-                        // isStudyHere =
-                        //     educationData?.schoolHistory == 0 ? false : true;
-                        // fieldOfStudy.text = "${educationData?.fieldOfStudy}";
-                        // city.text = "${educationData?.educationCity}";
-                        // state.text = "${educationData?.educationState}";
-                        // message.text =
-                        //     "${educationData?.educationCustomMessage}";
-                        // startMonth = "${educationData?.educationStartMonth}";
-                        // endMonth = "${educationData?.educationEndMonth}";
-                        // startYear = int.parse(
-                        //     "${educationData?.educationStartYear ?? 0}");
-                        // endYear = int.parse(
-                        //     "${educationData?.educationEndYear ?? 0}");
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 5.0),
-                          child: ResumeTile(
-                            educations: educationData,
-                            onTap: () {
-                              data.add(DeleteEducation(
-                                  id: educationData?.id.toString(),
-                                  index: index));
-                            },
-                            index: index + 1,
-                          ),
-                        );
-                      });
+                          // instituteName.text =
+                          //     "${educationData?.institutionName}";
+                          // isStudyHere =
+                          //     educationData?.schoolHistory == 0 ? false : true;
+                          // fieldOfStudy.text = "${educationData?.fieldOfStudy}";
+                          // city.text = "${educationData?.educationCity}";
+                          // state.text = "${educationData?.educationState}";
+                          // message.text =
+                          //     "${educationData?.educationCustomMessage}";
+                          // startMonth = "${educationData?.educationStartMonth}";
+                          // endMonth = "${educationData?.educationEndMonth}";
+                          // startYear = int.parse(
+                          //     "${educationData?.educationStartYear ?? 0}");
+                          // endYear = int.parse(
+                          //     "${educationData?.educationEndYear ?? 0}");
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 5.0),
+                            child: ResumeTile(
+                              educations: educationData,
+                              onTap: () {
+                                data.add(DeleteEducation(
+                                    id: educationData?.id.toString(),
+                                    index: index));
+                              },
+                              index: index + 1,
+                            ),
+                          );
+                        });
+                  }
+                  if (rState is ResumeLoading) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                  return Text("%%% $rState");
                 }),
           SizedBox(height: 10),
           CustomResumeCard(

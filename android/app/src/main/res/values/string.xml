@@ -4,5 +4,6 @@
     <string name="facebook_app_id">2487260214763328</string>
     <string name="app_name">insJob</string>
     <string name="fb_login_protocol_scheme">fb2487260214763328</string>
+    <string name="facebook_client_token">e0ac748959b7b36a73b39353959ab7a0</string>
 
 </resources>

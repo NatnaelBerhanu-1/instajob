@@ -260,10 +260,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   CustomSocialButton(
                                     image: MyImages.google,
                                     onTap: () async {
-                                      await auth.googleAuth(
-                                          isUser: userType == "user"
-                                              ? true
-                                              : false);
+                                      await auth.googleAuth(context);
                                     },
                                   ),
                                   CustomSocialButton(

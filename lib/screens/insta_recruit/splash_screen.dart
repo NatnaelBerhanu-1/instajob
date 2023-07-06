@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/bottom_bloc/bottom_bloc.dart';
+import 'package:insta_job/bloc/location_cubit/location_cubit.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
@@ -17,10 +18,16 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  @override
-  void initState() {
-    context.read<BottomBloc>().add(UserEvent());
+  permission() async {
+    // if (userType == "user") {
+    await context.read<LocationCubit>().getCurrentLocation();
+    // }
+  }
 
+  @override
+  initState() {
+    context.read<BottomBloc>().add(UserEvent());
+    // permission();
     super.initState();
   }
 
