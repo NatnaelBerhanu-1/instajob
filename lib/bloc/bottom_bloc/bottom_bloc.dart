@@ -55,7 +55,8 @@ class BottomBloc extends Bloc<BottomEvent, BottomInitialState> {
       var user = await jsonDecode(pref.getString("user").toString());
       // if(userType=="user")
       await locationCubit.getCurrentLocation();
-
+      var type = pref.getString("type");
+      print("TYPEEEEEEEEEEEEEEEEEE  $type");
       if (currentUser != null && user != null) {
         UserModel userModel = UserModel.fromJson(user);
         Global.userModel = userModel;
@@ -69,8 +70,6 @@ class BottomBloc extends Bloc<BottomEvent, BottomInitialState> {
                 MaterialPageRoute(builder: (_) => const BottomNavScreen()),
                 (route) => false));
       } else {
-        var type = pref.getString("type");
-        print("TYPEEEEEEEEEEEEEEEEEE  $type");
         if (type != null) {
           Timer(
               const Duration(seconds: 1),

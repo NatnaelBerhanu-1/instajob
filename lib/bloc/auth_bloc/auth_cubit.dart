@@ -164,6 +164,7 @@ class AuthCubit extends Cubit<AuthInitialState> {
         if (type == "user") {
           if (isSocialAuth) {
             registerData(isUser: true);
+            context.read<GlobalCubit>().changeIndex(1);
           } else {
             SocialAuth.emailAndPass(context, isUser: true);
           }

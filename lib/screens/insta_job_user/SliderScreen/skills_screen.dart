@@ -45,6 +45,7 @@ class _SkillsScreenState extends State<SkillsScreen> {
             children: [
               GestureDetector(
                 onTap: () {
+                  context.read<ResumeBloc>().add(UserResumeLoadedEvent());
                   if (isAchievement) {
                     isAchievement = false;
                     setState(() {});

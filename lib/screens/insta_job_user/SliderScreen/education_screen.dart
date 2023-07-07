@@ -58,10 +58,10 @@ class _EducationScreenState extends State<EducationScreen> {
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   getData() {
-    context.read<ResumeBloc>().addNewEducation =
-        context.read<ResumeBloc>().resumeModel.educations ?? [];
-    print("************** ${context.read<ResumeBloc>().addNewEducation}");
-    setState(() {});
+    // context.read<ResumeBloc>().addNewEducation =
+    //     context.read<ResumeBloc>().resumeModel.educations ?? [];
+    // print("************** ${context.read<ResumeBloc>().addNewEducation}");
+    // setState(() {});
   }
 
   @override
@@ -84,6 +84,7 @@ class _EducationScreenState extends State<EducationScreen> {
                 child: GestureDetector(
                   onTap: () {
                     widget.pageController?.jumpToPage(0);
+                    context.read<ResumeBloc>().add(UserResumeLoadedEvent());
                   },
                   child: Container(
                     color: MyColors.white,
@@ -180,16 +181,15 @@ class _EducationScreenState extends State<EducationScreen> {
             ],
           ),
           SizedBox(height: 10),
-          context.read<ResumeBloc>().addNewEducation.isEmpty
+          context.read<ResumeBloc>().resumeModel.educations == null
               ? SizedBox()
               : BlocBuilder<ResumeBloc, ResumeState>(
                   builder: (context, rState) {
                   var data = context.read<ResumeBloc>();
-                  if (rState is EducationAddSuccess ||
-                      rState is UserResumeLoaded) {
+                  if (rState is UserResumeLoaded) {
                     return ListView.builder(
                         shrinkWrap: true,
-                        itemCount: data.addNewEducation.length,
+                        itemCount: data.resumeModel.educations?.length,
                         itemBuilder: (c, index) {
                           var educationData =
                               data.resumeModel.educations?[index];
@@ -226,7 +226,7 @@ class _EducationScreenState extends State<EducationScreen> {
                   if (rState is ResumeLoading) {
                     return Center(child: CircularProgressIndicator());
                   }
-                  return Text("%%% $rState");
+                  return SizedBox();
                 }),
           SizedBox(height: 10),
           CustomResumeCard(
@@ -333,15 +333,18 @@ class _EducationScreenState extends State<EducationScreen> {
           BlocBuilder<ResumeBloc, ResumeState>(builder: (context, rState) {
             var educationList =
                 context.read<ResumeBloc>().resumeModel.educations;
+            print("********** $educationList");
             return CustomIconButton(
               title: "Continue",
               backgroundColor:
-                  educationList == null ? MyColors.lightBlue : MyColors.blue,
+                  educationList!.isEmpty ? MyColors.lightBlue : MyColors.blue,
               borderColor:
-                  educationList == null ? MyColors.lightBlue : MyColors.blue,
+                  educationList.isEmpty ? MyColors.white : MyColors.blue,
               image: MyImages.arrowWhite,
-              onclick: educationList == null
-                  ? null
+              onclick: educationList.isEmpty
+                  ? () {
+                      showToast("Please add education");
+                    }
                   : () {
                       widget.pageController?.jumpToPage(2);
                     },

@@ -94,13 +94,13 @@ class _TellUsAboutYSlfPageState extends State<TellUsAboutYSlfPage> {
                         .read<ResumeBloc>()
                         .add(TellMeAbtYourSelfEvent(msg.text));
                     context.read<ResumeBloc>().add(UserResumeLoadedEvent());
-                    context.read<ResumeBloc>().addNewEducation =
-                        context.read<ResumeBloc>().resumeModel.educations ?? [];
-                    context.read<ResumeBloc>().addNewWorkExp = context
-                            .read<ResumeBloc>()
-                            .resumeModel
-                            .workExperiences ??
-                        [];
+                    // context.read<ResumeBloc>().addNewEducation =
+                    //     context.read<ResumeBloc>().resumeModel.educations ?? [];
+                    // context.read<ResumeBloc>().addNewWorkExp = context
+                    //         .read<ResumeBloc>()
+                    //         .resumeModel
+                    //         .workExperiences ??
+                    //     [];
                     if (context.read<ResumeBloc>().resumeModel.skills != null) {
                       context.read<GlobalCubit>().skills = context
                               .read<ResumeBloc>()
@@ -115,8 +115,6 @@ class _TellUsAboutYSlfPageState extends State<TellUsAboutYSlfPage> {
                             .achievements?[0]
                             .achievements ??
                         [];
-                    print(
-                        "************** ${context.read<ResumeBloc>().addNewWorkExp}");
                   }
                 });
           }),

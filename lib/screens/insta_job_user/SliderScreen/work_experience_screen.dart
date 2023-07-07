@@ -75,6 +75,7 @@ class _WorkExpScreenState extends State<WorkExpScreen> {
                   child: GestureDetector(
                     onTap: () {
                       widget.pageController?.jumpToPage(1);
+                      context.read<ResumeBloc>().add(UserResumeLoadedEvent());
                     },
                     child: Container(
                       color: MyColors.white,
@@ -176,7 +177,7 @@ class _WorkExpScreenState extends State<WorkExpScreen> {
               if (rState is UserResumeLoaded) {
                 return ListView.builder(
                     shrinkWrap: true,
-                    itemCount: data.addNewWorkExp.length,
+                    itemCount: data.resumeModel.workExperiences?.length,
                     itemBuilder: (c, index) {
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 7.0),
@@ -198,9 +199,9 @@ class _WorkExpScreenState extends State<WorkExpScreen> {
               if (rState is ResumeLoading) {
                 return Center(child: CircularProgressIndicator());
               }
-              return Text("%%% $rState");
+              return SizedBox();
             }),
-            SizedBox(height: 15),
+            SizedBox(height: 10),
             CustomResumeCard(
               isWorkExp: true,
               value: isWorkHere,
@@ -313,10 +314,12 @@ class _WorkExpScreenState extends State<WorkExpScreen> {
                 backgroundColor:
                     workExpList!.isEmpty ? MyColors.lightBlue : MyColors.blue,
                 borderColor:
-                    workExpList.isEmpty ? MyColors.lightBlue : MyColors.blue,
+                    workExpList.isEmpty ? MyColors.white : MyColors.blue,
                 image: MyImages.arrowWhite,
                 onclick: workExpList.isEmpty
-                    ? null
+                    ? () {
+                        showToast("Please add work experience");
+                      }
                     : () {
                         widget.pageController?.jumpToPage(3);
                       },

@@ -22,8 +22,8 @@ class ResumeBloc extends Bloc<ResumeEvent, ResumeState> {
     }
   }
 
-  List<Educations> addNewEducation = [];
-  List<WorkExperiences> addNewWorkExp = [];
+  // List<Educations> addNewEducation = [];
+  // List<WorkExperiences> addNewWorkExp = [];
   ResumeModel resumeModel = ResumeModel();
 
   ResumeBloc(this.resumeRepository) : super(ResumeInitial()) {
@@ -56,7 +56,7 @@ class ResumeBloc extends Bloc<ResumeEvent, ResumeState> {
         emit(const ErrorState("Something went wrong"));
       }
       if (response.response.statusCode == 200) {
-        addNewEducation.add(event.educationModel);
+        // addNewEducation.add(event.educationModel);
         emit(EducationAddSuccess());
       }
       if (response.response.statusCode == 400) {
@@ -92,7 +92,7 @@ class ResumeBloc extends Bloc<ResumeEvent, ResumeState> {
       }
       if (response.response.statusCode == 200) {
         // showToast("Success");
-        addNewWorkExp.add(event.workExpModel);
+        // addNewWorkExp.add(event.workExpModel);
         emit(ExpAddSuccess());
       }
       if (response.response.statusCode == 400) {
@@ -151,7 +151,7 @@ class ResumeBloc extends Bloc<ResumeEvent, ResumeState> {
         emit(const ErrorState("Something went wrong"));
       }
       if (response.response.statusCode == 200) {
-        addNewEducation.removeAt(event.index!);
+        // addNewEducation.removeAt(event.index!);
         emit(ResumeDeleted());
       }
       if (response.response.statusCode == 400) {
@@ -165,7 +165,7 @@ class ResumeBloc extends Bloc<ResumeEvent, ResumeState> {
         emit(const ErrorState("Something went wrong"));
       }
       if (response.response.statusCode == 200) {
-        addNewWorkExp.removeAt(event.index!);
+        // addNewWorkExp.removeAt(event.index!);
         emit(ResumeDeleted());
       }
       if (response.response.statusCode == 400) {
