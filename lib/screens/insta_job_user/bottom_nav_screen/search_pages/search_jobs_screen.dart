@@ -63,6 +63,11 @@ class _SearchJobsScreenState extends State<SearchJobsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // List<String> filterList = [
+    //   context.read<LocationCubit>().placeMarks.first.name ?? "Current",
+    //   "Job Distance Locator",
+    //   "${context.read<GlobalCubit>().range.toStringAsFixed(0)} Miles Away"
+    // ];
     var jobDistanceIndex = context.watch<GlobalCubit>().fIndex;
     var selectedSearchIndex = context.read<GlobalCubit>().sIndex;
     return Scaffold(
@@ -146,41 +151,43 @@ class _SearchJobsScreenState extends State<SearchJobsScreen> {
                               children: List.generate(
                                   3,
                                   (index) => Expanded(
-                                        child: Container(
-                                          height: 40,
-                                          // width: MediaQuery.of(context).size.width - 30,
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(30),
-                                              border: Border.all(
-                                                  color: MyColors.white),
-                                              color: MyColors.white),
-                                          child: CustomFilterTile(
-                                            onClick: () {
-                                              // filterIndex = index;
-                                              context
-                                                  .read<GlobalCubit>()
-                                                  .changeFilterIndex(index);
-                                              if (index == 0) {
+                                        child: BlocBuilder<LocationCubit,
+                                                LocationInitial>(
+                                            builder: (context, state) {
+                                          return Container(
+                                            height: 40,
+                                            // width: MediaQuery.of(context).size.width - 30,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(30),
+                                                border: Border.all(
+                                                    color: MyColors.white),
+                                                color: MyColors.white),
+                                            child: CustomFilterTile(
+                                              onClick: () {
+                                                // filterIndex = index;
                                                 context
-                                                    .read<JobPositionBloc>()
-                                                    .add(LoadJobPosListEvent());
-                                              }
-                                            },
-                                            selectedIndex: jobDistanceIndex,
-                                            index: index,
-                                            title: [
-                                              (context
-                                                      .read<LocationCubit>()
-                                                      .placeMarks
-                                                      .first
-                                                      .name ??
-                                                  "Current"),
-                                              "Job Distance Locator",
-                                              "${context.read<GlobalCubit>().range.toStringAsFixed(0)} Miles Away"
-                                            ][index],
-                                          ),
-                                        ),
+                                                    .read<GlobalCubit>()
+                                                    .changeFilterIndex(index);
+                                                if (index == 0) {
+                                                  context
+                                                      .read<JobPositionBloc>()
+                                                      .add(
+                                                          LoadJobPosListEvent());
+                                                }
+                                              },
+                                              selectedIndex: jobDistanceIndex,
+                                              index: index,
+                                              title: [
+                                                state is CurrentLocation
+                                                    ? state.location
+                                                    : "Current",
+                                                "Job Distance Locator",
+                                                "${context.read<GlobalCubit>().range.toStringAsFixed(0)} Miles Away"
+                                              ][index],
+                                            ),
+                                          );
+                                        }),
                                       )),
                             )),
                       ),

@@ -1,9 +1,10 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/bottom_bloc/bottom_bloc.dart';
 import 'package:insta_job/bloc/location_cubit/location_cubit.dart';
+import 'package:insta_job/screens/insta_recruit/user_type_screen.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
@@ -19,15 +20,17 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   permission() async {
-    // if (userType == "user") {
-    await context.read<LocationCubit>().getCurrentLocation();
+    if (userType == "user") {
+      await context.read<LocationCubit>().getCurrentLocation();
+    }
+    context.read<BottomBloc>().add(UserEvent());
+
     // }
   }
 
   @override
   initState() {
-    context.read<BottomBloc>().add(UserEvent());
-    // permission();
+    permission();
     super.initState();
   }
 

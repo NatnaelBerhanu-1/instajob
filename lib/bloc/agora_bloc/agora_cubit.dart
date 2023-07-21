@@ -8,7 +8,7 @@ import 'package:permission_handler/permission_handler.dart';
 const String appId = '987d58b034624ccfb15d2eaf090659c9';
 const String channelId = 'instaJob_channel';
 const String token =
-    '007eJxTYFgpcuGzgpysYFzekiN8T57azXvXeeti1Hcv5tytShe+f9mgwGBpYZ5iapFkYGxiZmSSnJyWZGiaYpSamGZgaWBmapls+Sx4aUpDICND1u41TIwMEAjiCzBk5hWXJHrlJ8UnZyTm5aXmMDAAAH5FJl8=';
+    "007eJxTYFDap7josfLXVQuFp7Xaz4wIsX6+esLZr3Emn7eYrXDJnG2kwGBpYZ5iapFkYGxiZmSSnJyWZGiaYpSamGZgaWBmaplsyde0K6UhkJHh5fJuRkYGCATxBRgy84pLEr3yk+KTMxLz8lJzGBgALWolHQ==";
 
 class AgoraBloc extends Cubit<AgoraInitial> {
   AgoraBloc() : super(AgoraInitial());

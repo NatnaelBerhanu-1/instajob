@@ -7,7 +7,7 @@ import 'package:insta_job/network/end_points.dart';
 class CompanyRepository {
   final DioClient dioClient;
 
-  CompanyRepository({required this.dioClient});
+  CompanyRepository(this.dioClient);
 
   getCompanies() async {
     try {

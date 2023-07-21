@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
 import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
 import 'package:insta_job/bloc/job_position/job_pos_event.dart';
+import 'package:insta_job/bloc/location_cubit/location_cubit.dart';
 import 'package:insta_job/bloc/resume_bloc/resume_bloc.dart';
 import 'package:insta_job/bloc/resume_bloc/resume_event.dart';
 import 'package:insta_job/globals.dart';
@@ -34,6 +35,16 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
     const InterviewScreen(),
     const HomePage(),
   ];
+  getData() async {
+    await context.read<LocationCubit>().getCurrentLocation();
+    context.read<CompanyBloc>().add(LoadCompanyListEvent());
+  }
+
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

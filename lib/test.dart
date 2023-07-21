@@ -148,7 +148,6 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_email_sender/flutter_email_sender.dart';
 // import 'package:flutter_google_places/flutter_google_places.dart';
 // import 'package:google_maps_webservice/places.dart';
 import 'package:insta_job/utils/my_colors.dart';
@@ -280,38 +279,4 @@ class _VideoPageState extends State<VideoPage> {
   //   videoPlayerController?.dispose();
   //   super.dispose();
   // }
-}
-
-class VideoCall extends StatelessWidget {
-  const VideoCall({Key? key}) : super(key: key);
-  sendMail() async {
-    final Email email = Email(
-      body: 'Email body',
-      subject: 'Email subject',
-      recipients: [
-        "khushali1.saurabhinfosys@gmail.com",
-        "abc@gmail.com",
-      ],
-      // cc: ['cc@example.com'],
-      // bcc: ['bcc@example.com'],
-      // attachmentPaths: ['/path/to/attachment.zip'],
-      isHTML: false,
-    );
-    print("^^^^^^^^^^ $email");
-    await FlutterEmailSender.send(email);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          sendMail();
-        },
-      ),
-      body: Column(
-        children: [],
-      ),
-    );
-  }
 }

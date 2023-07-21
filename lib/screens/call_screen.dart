@@ -43,7 +43,7 @@ class _CallScreenState extends State<CallScreen> {
                     controller: VideoViewController(
                         rtcEngine: agoraEngine.engine,
                         canvas: VideoCanvas(uid: 0)))
-                : Center(child: CircularProgressIndicator()),
+                : SizedBox(),
             /*     Padding(
                       padding: const EdgeInsets.all(15.0),
                       child: Align(

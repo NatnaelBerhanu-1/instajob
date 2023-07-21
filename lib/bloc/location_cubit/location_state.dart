@@ -5,6 +5,12 @@ class LocationInitial {}
 
 class AddressLoading extends LocationInitial {}
 
+class CurrentLocation extends LocationInitial {
+  final String location;
+
+  CurrentLocation(this.location);
+}
+
 class AddressLoaded extends LocationInitial {
   final List<Prediction> list;
 

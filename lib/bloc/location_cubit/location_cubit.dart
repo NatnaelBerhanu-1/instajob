@@ -83,14 +83,17 @@ class LocationCubit extends Cubit<LocationInitial> {
 
   /// ========== CURRENT LOCATION ==========///
   List<Placemark> placeMarks = [];
+
   getCurrentLocation() async {
     Position position = await determinePosition();
     latitude = position.latitude;
     longitude = position.longitude;
-    emit(LocationInitial());
     placeMarks =
         await placemarkFromCoordinates(position.latitude, position.longitude);
-    // print("############## ${placeMarks.first.name}");
+    // log(" ${placeMarks}");
+    // log(" ${placeMarks[0].name}");
+    emit(CurrentLocation(placeMarks.first.name.toString()));
+
     print("############## $latitude");
     print("############## $longitude");
   }

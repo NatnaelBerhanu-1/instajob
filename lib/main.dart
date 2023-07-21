@@ -14,9 +14,10 @@ import 'utils/my_colors.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  await di.init();
+
   // await FlutterDownloader.initialize(debug: true, ignoreSsl: true);
   runApp(const MyApp());
+  await di.init();
 }
 
 class MyApp extends StatelessWidget {

@@ -27,12 +27,12 @@ final sl = GetIt.instance;
 Future<void> init() async {
   sl.registerLazySingleton(
     () => DioClient(
-        baseUrl: EndPoint.baseUrl, sharedPreferences: sl(), dioC: sl()),
+        sharedPreferences: sl(), baseUrl: EndPoint.baseUrl, dioC: sl()),
   );
 
   /// repo
   sl.registerLazySingleton(() => AuthRepository(dioClient: sl()));
-  sl.registerLazySingleton(() => CompanyRepository(dioClient: sl()));
+  sl.registerLazySingleton(() => CompanyRepository(sl()));
   sl.registerLazySingleton(() => JobPositionRepository(dioClient: sl()));
   sl.registerLazySingleton(() => FeedBackRepository(dioClient: sl()));
   sl.registerLazySingleton(() => ResumeRepository(dioClient: sl()));
@@ -46,7 +46,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() =>
       AuthCubit(sl(), sl(), authRepository: sl(), sharedPreferences: sl()));
   sl.registerLazySingleton(() => CompanyBloc(sl()));
-  sl.registerLazySingleton(() => BottomBloc(sl(), sl())..add(UserEvent()));
+  sl.registerLazySingleton(() => BottomBloc()..add(UserEvent()));
   sl.registerLazySingleton(() => JobPositionBloc(sl()));
   sl.registerLazySingleton(() => FeedBackAndAutoMsgBloc(sl()));
   sl.registerLazySingleton(() => ResumeBloc(sl()));
