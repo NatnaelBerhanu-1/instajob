@@ -1,12 +1,13 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/auth_bloc/auth_cubit.dart';
 import 'package:insta_job/bloc/auth_bloc/auth_state.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/utils/my_colors.dart';
-import 'package:insta_job/widgets/custom_chip.dart';
 import 'package:pinput/pinput.dart';
 
 import '../../utils/my_images.dart';
@@ -42,9 +43,31 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
       border: Border.all(color: MyColors.blue),
     ),
   );
+  int secondsRemaining = 1 * 60;
+  bool enableResend = false;
+  Timer? timer;
+  @override
+  void initState() {
+    timer = Timer.periodic(Duration(seconds: 1), (_) {
+      if (secondsRemaining != 0) {
+        setState(() {
+          secondsRemaining--;
+        });
+      } else {
+        setState(() {
+          enableResend = true;
+        });
+      }
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    Duration clockTimer = Duration(seconds: secondsRemaining);
+
+    String timerText =
+        '0${clockTimer.inMinutes.remainder(60).toString()}:${clockTimer.inSeconds.remainder(60).toString().padLeft(2, '0')}';
     return Scaffold(
         appBar: PreferredSize(
             preferredSize: const Size(double.infinity, kToolbarHeight),
@@ -99,20 +122,30 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
                   fontSize: 13,
                 ),
                 SizedBox(height: 15),
+                Align(
+                  alignment: Alignment.topRight,
+                  child: Text(
+                    secondsRemaining == 0 ? '' : timerText,
+                  ),
+                ),
+                SizedBox(height: 15),
                 BlocBuilder<AuthCubit, AuthInitialState>(
                     builder: (context, state) {
-                  return CustomGesture(
-                    onTap: () {
-                      var authData = context.read<AuthCubit>();
-                      if (widget.isForgotPassword) {
-                        context
-                            .read<AuthCubit>()
-                            .sendCodeOnEmail(email: authData.email);
-                      } else {
-                        /// phone resend code
-                      }
-                      // AppRoutes.push(context, VerifyCodeScreen());
-                    },
+                  return GestureDetector(
+                    onTap: enableResend
+                        ? () async {
+                            var authData = context.read<AuthCubit>();
+                            if (widget.isForgotPassword) {
+                              context
+                                  .read<AuthCubit>()
+                                  .sendCodeOnEmail(email: authData.email);
+                            } else {
+                              /// phone resend code
+                              await authData.verifyPhone(context);
+                            }
+                            // AppRoutes.push(context, VerifyCodeScreen());
+                          }
+                        : null,
                     child: Center(
                       child: CommonText(
                         text: "Resend",

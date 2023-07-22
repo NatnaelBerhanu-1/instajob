@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/agora_bloc/agora_cubit.dart';
 import 'package:insta_job/bloc/agora_bloc/agora_state.dart';
+import 'package:insta_job/bottom_sheet/overview_bottom_sheet.dart';
 import 'package:insta_job/utils/my_colors.dart';
 
 class CallScreen extends StatefulWidget {
@@ -38,10 +39,10 @@ class _CallScreenState extends State<CallScreen> {
         var agoraEngine = context.read<AgoraBloc>();
         return Stack(
           children: [
-            agoraEngine.localUserJoined
+            agoraEngine.engine != null
                 ? AgoraVideoView(
                     controller: VideoViewController(
-                        rtcEngine: agoraEngine.engine,
+                        rtcEngine: agoraEngine.engine!,
                         canvas: VideoCanvas(uid: 0)))
                 : SizedBox(),
             /*     Padding(
@@ -74,7 +75,13 @@ class _CallScreenState extends State<CallScreen> {
                   padding: const EdgeInsets.all(12.0),
                   child: Row(
                     children: [
-                      Expanded(child: CustomCallButtons(image: Icons.mic)),
+                      Expanded(
+                          child: CustomCallButtons(
+                        onTap: () async {
+                          // await agoraEngine.engine?.muteLocalAudioStream(true);
+                        },
+                        image: Icons.mic,
+                      )),
                       Expanded(
                           child: CustomCallButtons(
                         image: Icons.videocam_outlined,
@@ -90,7 +97,13 @@ class _CallScreenState extends State<CallScreen> {
                         ),
                       ),
                       Expanded(child: CustomCallButtons(image: Icons.chat)),
-                      Expanded(child: CustomCallButtons()),
+                      Expanded(
+                          child: CustomCallButtons(
+                        image: Icons.paste,
+                        onTap: () {
+                          overviewBottomSheet(context);
+                        },
+                      )),
                     ],
                   ),
                 ),
@@ -115,6 +128,7 @@ class _CallScreenState extends State<CallScreen> {
                                 Icon(Icons.camera_alt, color: MyColors.white),
                           )),
                     ),*/
+
 class CustomCallButtons extends StatelessWidget {
   final IconData? image;
   final VoidCallback? onTap;

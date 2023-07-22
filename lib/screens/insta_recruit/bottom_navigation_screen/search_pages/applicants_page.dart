@@ -148,6 +148,11 @@ class _ApplicantsState extends State<Applicants> {
                                           appliedListId:
                                               "${widget.jobPosModel?.appliedId}",
                                           status: "shortlisted"));
+                                  context.read<JobPositionBloc>().add(
+                                      AppliedJobListEvent(
+                                          jobId:
+                                              widget.jobPosModel!.id.toString(),
+                                          status: "shortlisted"));
                                   AppRoutes.pop(context);
                                 },
                               )),
@@ -160,6 +165,14 @@ class _ApplicantsState extends State<Applicants> {
                                     MediaQuery.of(context).size.height * 0.055,
                                 bgColor: MyColors.lightRed,
                                 title: "Deny",
+                                onTap: () {
+                                  context.read<JobPositionBloc>().add(
+                                      SortListOrDenyEvent(
+                                          appliedListId:
+                                              "${widget.jobPosModel?.appliedId}",
+                                          status: "denied"));
+                                  AppRoutes.pop(context);
+                                },
                               )),
                       ],
                     );

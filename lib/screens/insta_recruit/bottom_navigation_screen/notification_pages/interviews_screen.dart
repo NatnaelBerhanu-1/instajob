@@ -98,10 +98,11 @@ class _InterviewScreenState extends State<InterviewScreen> {
                           },
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  mainAxisSpacing: 5,
-                                  crossAxisSpacing: 5,
-                                  childAspectRatio: 3 / 8),
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 5,
+                            crossAxisSpacing: 5,
+                            childAspectRatio: 3 / 8,
+                          ),
                         ),
                       ),
                     ]))

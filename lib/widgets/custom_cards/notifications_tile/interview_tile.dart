@@ -29,33 +29,30 @@ class InterviewTile extends StatelessWidget {
           ]),
       child: Padding(
         padding:
-            const EdgeInsets.only(right: 10, top: 11, left: 15, bottom: 15),
+            const EdgeInsets.only(right: 10, top: 15, left: 15, bottom: 15),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Stack(
-                  children: [
-                    CircleAvatar(
-                      // backgroundColor: MyColors.transparent,
-                      radius: 20,
-                    ),
-                    Positioned(
-                        bottom: 5,
-                        left: 67,
-                        child: Container(
-                          padding: EdgeInsets.all(3.5),
-                          decoration: BoxDecoration(
-                              color: MyColors.blue, shape: BoxShape.circle),
-                          child: Icon(
-                            Icons.camera_alt_outlined,
-                            size: 13,
-                            color: MyColors.blue,
-                          ),
-                        )),
-                  ],
+                CircleAvatar(
+                  // backgroundColor: MyColors.transparent,
+                  radius: 20,
                 ),
+                // Positioned(
+                //     bottom: 5,
+                //     left: 67,
+                //     child: Container(
+                //       padding: EdgeInsets.all(3.5),
+                //       decoration: BoxDecoration(
+                //           color: MyColors.blue, shape: BoxShape.circle),
+                //       child: Icon(
+                //         Icons.camera_alt_outlined,
+                //         size: 13,
+                //         color: MyColors.blue,
+                //       ),
+                //     )),
                 SizedBox(width: 10),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -82,7 +79,7 @@ class InterviewTile extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 5),
+            SizedBox(height: 20),
             isRecording
                 ? Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 50.0),

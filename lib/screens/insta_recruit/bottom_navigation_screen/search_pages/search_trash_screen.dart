@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
 import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
 import 'package:insta_job/bloc/job_position/job_pos_event.dart';
 import 'package:insta_job/bloc/job_position/job_pos_state.dart';
@@ -32,8 +33,11 @@ class _SearchTrashState extends State<SearchTrash> {
             centerTitle: false,
             title: "Trash",
             onTap: () {
+              var tab = context.read<GlobalCubit>();
+
               context.read<JobPositionBloc>().add(AppliedJobListEvent(
-                  jobId: widget.jobPosModel!.id.toString()));
+                  jobId: widget.jobPosModel!.id.toString(), status: "applied"));
+              tab.changeTabValue(0);
               Navigator.of(context).pop();
             },
             // actions: ImageButton(

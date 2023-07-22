@@ -132,7 +132,7 @@ class AuthCubit extends Cubit<AuthInitialState> {
   /// =================== PHONE AUTH ================== ///
   String verificationCode = "";
 
-  verifyPhone(BuildContext context) async {
+  verifyPhone(BuildContext context, {bool isResend = false}) async {
     emit(AuthLoadingState());
     await FirebaseAuth.instance.verifyPhoneNumber(
         phoneNumber: countryCode + phoneNumber,
@@ -145,7 +145,9 @@ class AuthCubit extends Cubit<AuthInitialState> {
         },
         codeSent: (String verificationId, int? resendToken) {
           verificationCode = verificationId;
-          emit(CodeSentState());
+          if (!isResend) {
+            emit(CodeSentState());
+          }
         },
         codeAutoRetrievalTimeout: (String verificationId) {
           verificationCode = verificationId;
@@ -483,7 +485,7 @@ class AuthCubit extends Cubit<AuthInitialState> {
     }
     if (response.response.statusCode == 400) {
       if (response.response.data["success"] == 400) {
-        verifyPhone(context);
+        await verifyPhone(context);
       } else {
         emit(ErrorState("Something went wrong"));
       }

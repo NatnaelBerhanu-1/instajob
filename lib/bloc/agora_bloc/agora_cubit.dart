@@ -12,7 +12,7 @@ const String token =
 
 class AgoraBloc extends Cubit<AgoraInitial> {
   AgoraBloc() : super(AgoraInitial());
-  late RtcEngine engine;
+  RtcEngine? engine;
   int? remoteUid;
   bool localUserJoined = false;
   // CallModel? callModel;
@@ -23,12 +23,12 @@ class AgoraBloc extends Cubit<AgoraInitial> {
 
     //create the engine
     engine = createAgoraRtcEngine();
-    await engine.initialize(const RtcEngineContext(
+    await engine?.initialize(const RtcEngineContext(
       appId: appId,
       channelProfile: ChannelProfileType.channelProfileLiveBroadcasting,
     ));
 
-    engine.registerEventHandler(
+    engine?.registerEventHandler(
       RtcEngineEventHandler(
         onJoinChannelSuccess: (RtcConnection connection, int elapsed) {
           debugPrint(
@@ -65,11 +65,11 @@ class AgoraBloc extends Cubit<AgoraInitial> {
       ),
     );
 
-    await engine.setClientRole(role: ClientRoleType.clientRoleBroadcaster);
-    await engine.enableVideo();
-    await engine.startPreview();
+    await engine?.setClientRole(role: ClientRoleType.clientRoleBroadcaster);
+    await engine?.enableVideo();
+    await engine?.startPreview();
 
-    await engine.joinChannel(
+    await engine?.joinChannel(
       token: token,
       channelId: channelId,
       uid: 0,
@@ -92,7 +92,7 @@ class AgoraBloc extends Cubit<AgoraInitial> {
             ),
             child: AgoraVideoView(
               controller: VideoViewController.remote(
-                rtcEngine: engine,
+                rtcEngine: engine!,
                 canvas: VideoCanvas(uid: remoteUid),
                 connection: const RtcConnection(channelId: channelId),
               ),
@@ -103,7 +103,7 @@ class AgoraBloc extends Cubit<AgoraInitial> {
     } else {
       return const Center(
         child: Text(
-          'Please wait for remote user to join',
+          'Please wait for user to join',
           textAlign: TextAlign.center,
         ),
       );
@@ -111,6 +111,6 @@ class AgoraBloc extends Cubit<AgoraInitial> {
   }
 
   releaseEngine() {
-    engine.release();
+    engine?.release();
   }
 }
