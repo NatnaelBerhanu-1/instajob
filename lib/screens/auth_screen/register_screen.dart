@@ -14,6 +14,7 @@ import 'package:insta_job/screens/insta_recruit/membership_screen.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/widgets/custom_button/custom_all_small_button.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../bloc/validation/validation_bloc.dart';
 import '../../utils/my_colors.dart';
@@ -22,7 +23,6 @@ import '../../widgets/custom_button/custom_btn.dart';
 import '../../widgets/custom_button/custom_img_button.dart';
 import '../../widgets/custom_cards/custom_common_card.dart';
 import '../../widgets/custom_divider.dart';
-import '../insta_recruit/user_type_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -281,8 +281,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       setState(() {});
                                       var checkEmail = await authData.checkUser(
                                           authData.email, context);
+                                      var pref =
+                                          await SharedPreferences.getInstance();
+
+                                      var type = pref.getString("type");
                                       if (!checkEmail) {
-                                        if (userType == "user") {
+                                        if (type == "user") {
                                           AppRoutes.push(
                                               context, RegMoreInfoScreen());
                                         } else {

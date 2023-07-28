@@ -45,13 +45,6 @@ class GlobalCubit extends Cubit<InitialState> {
     emit(FilterState(fIndex));
   }
 
-  /// DROPDOWN VALUE
-  String dropDownValue = "abc";
-  changeDropDownValue(val) {
-    dropDownValue = val;
-    emit(DropDownState(dropDownValue));
-  }
-
   /// job Type
   String jobTypeValue = "";
   jobType(String val) {

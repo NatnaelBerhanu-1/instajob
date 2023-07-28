@@ -16,6 +16,7 @@ class AuthRepository {
     String? name,
     String? email,
     String? password,
+    String? type,
     String? date,
     String? profilePic,
     String? phoneNumber,
@@ -34,7 +35,7 @@ class AuthRepository {
               "cv": cv,
               "phone_number": phoneNumber,
               "upload_photo": profilePic,
-              "type": userType == "user" ? "user" : "recruiters",
+              "type": type,
               "fcm_token": "1234",
               "firebase_id": FirebaseAuth.instance.currentUser?.uid,
             }

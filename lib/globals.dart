@@ -10,7 +10,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:insta_job/bloc/resume_bloc/resume_bloc.dart';
 import 'package:insta_job/screens/resume_edit_screens/edit_template_screen.dart';
 import 'package:insta_job/utils/my_colors.dart';
-import 'package:open_file_safe/open_file_safe.dart';
+import 'package:open_file_safe_plus/open_file_safe_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -58,7 +58,7 @@ class Global {
     if (file == null) return;
 
     print("Path : ${file.path}");
-    await OpenFile.open(file.path);
+    await OpenFilePlus.open(file.path);
   }
 }
 

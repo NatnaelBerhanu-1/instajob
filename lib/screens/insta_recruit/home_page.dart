@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/bottom_bloc/bottom_bloc.dart';
+import 'package:insta_job/bloc/career_learning_bloc/career_learning_bloc.dart';
 import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
 import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
 import 'package:insta_job/bloc/job_position/job_pos_event.dart';
@@ -48,7 +49,6 @@ class _HomePageState extends State<HomePage> {
         context
             .read<BottomBloc>()
             .add(SetScreenEvent(true, screenName: SearchJobsScreen()));
-        print("&&&&&&&&&&");
         return true;
       },
       child: Scaffold(
@@ -208,6 +208,9 @@ class _HomePageState extends State<HomePage> {
                                   onTap: () {
                                     context.read<GlobalCubit>().changeIndex(2);
                                     if (Global.userModel?.type == "user") {
+                                      context
+                                          .read<CareerLearningBloc>()
+                                          .getCareerClusterList();
                                       AppRoutes.push(
                                           context, CareerClusterScreen());
                                     } else {

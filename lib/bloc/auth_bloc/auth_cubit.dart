@@ -61,9 +61,11 @@ class AuthCubit extends Cubit<AuthInitialState> {
 
   registerData({bool isUser = false}) async {
     emit(AuthLoadingState());
+    String type = sharedPreferences.getString("type").toString();
     ApiResponse response = await authRepository.registerData(
         name: userName,
         email: email,
+        type: type,
         password: password,
         isUser: isUser,
         phoneNumber: phoneNumber,

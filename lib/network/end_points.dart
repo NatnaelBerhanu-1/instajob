@@ -73,4 +73,9 @@ class EndPoint {
   static String jobDistanceLocator = "job_distance_locator";
 
   // static String reSendCodeForUser = "resendpassword_user";
+
+  /// CAREER CLUSTER
+
+  static String getCareerCluster =
+      "https://services.onetcenter.org/ws/online/career_clusters/";
 }

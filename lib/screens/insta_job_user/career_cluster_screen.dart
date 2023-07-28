@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
-import 'package:insta_job/bloc/global_cubit/global_state.dart';
+import 'package:insta_job/bloc/career_learning_bloc/career_learning_bloc.dart';
+import 'package:insta_job/bloc/career_learning_bloc/career_learning_state.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:insta_job/widgets/custom_cards/insta_job_user_cards/custom_career_tile.dart';
@@ -20,13 +20,18 @@ class CareerClusterScreen extends StatelessWidget {
             preferredSize: Size(double.infinity, kToolbarHeight),
             child: CustomAppBar(
               title: "Browse by career cluster",
+              onTap: () {
+                context.read<CareerLearningBloc>().clearValue();
+                Navigator.pop(context);
+              },
             )),
         body: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12),
           child: Column(
             children: [
-              BlocBuilder<GlobalCubit, InitialState>(builder: (context, state) {
-                var dropVal = context.read<GlobalCubit>();
+              BlocBuilder<CareerLearningBloc, InitialCareerLearning>(
+                  builder: (context, state) {
+                var careerValue = context.read<CareerLearningBloc>();
                 return CustomCommonCard(
                   borderRadius: BorderRadius.circular(30),
                   borderColor: MyColors.lightgrey,
@@ -36,16 +41,19 @@ class CareerClusterScreen extends StatelessWidget {
                       child: DropdownButton(
                         // style: TextStyle(color: MyColors.black),
                         padding: EdgeInsets.only(left: 12),
-                        items: ["abc", "pqr"]
+                        items: careerValue.list
                             .map((e) => DropdownMenuItem(
                                   value: e,
-                                  child: Text(e.toString()),
+                                  child: Text(
+                                    e.title.toString(),
+                                    style: TextStyle(fontSize: 15),
+                                  ),
                                 ))
                             .toList(),
                         isExpanded: true,
                         hint: Text(
-                          "",
-                          style: TextStyle(color: MyColors.black),
+                          "Browse by career cluster",
+                          style: TextStyle(color: MyColors.grey, fontSize: 14),
                         ),
                         icon: Row(
                           children: [
@@ -65,10 +73,11 @@ class CareerClusterScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                        value: dropVal.dropDownValue,
+                        value: careerValue.dropDownValue,
                         onChanged: (val) {
-                          dropVal.changeDropDownValue(val);
-                          print(dropVal.dropDownValue);
+                          careerValue.changeDropDownValue(val);
+                          careerValue.getClusterDetailList(code: val?.code);
+                          print(careerValue.dropDownValue);
                         },
                       ),
                     ),
@@ -77,12 +86,20 @@ class CareerClusterScreen extends StatelessWidget {
               }),
               SizedBox(height: 10),
               Expanded(
-                child: ListView.builder(
-                    itemCount: 8,
-                    // shrinkWrap: true,
-                    itemBuilder: (c, i) {
-                      return CustomCareerTile();
-                    }),
+                child: BlocBuilder<CareerLearningBloc, InitialCareerLearning>(
+                    builder: (context, state) {
+                  var careerValue = context.read<CareerLearningBloc>();
+                  return state is CareerLeaningLoading
+                      ? Center(child: CircularProgressIndicator())
+                      : ListView.builder(
+                          itemCount: careerValue.careerDetailList.length,
+                          itemBuilder: (c, i) {
+                            return CustomCareerTile(
+                              clusterDetailsModel:
+                                  careerValue.careerDetailList[i],
+                            );
+                          });
+                }),
               )
             ],
           ),
