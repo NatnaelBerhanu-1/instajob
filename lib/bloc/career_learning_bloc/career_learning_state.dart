@@ -22,6 +22,35 @@ class TechSkillLoaded extends InitialCareerLearning {
   TechSkillLoaded(this.list);
 }
 
+class WorkActivityLoaded extends InitialCareerLearning {
+  final List<WorkModel> list;
+
+  WorkActivityLoaded(this.list);
+}
+
+class KnowledgeLoaded extends InitialCareerLearning {
+  final List<WorkModel> list;
+
+  KnowledgeLoaded(this.list);
+}
+
+class EduLoaded extends InitialCareerLearning {
+  final List<ClusterEducationModel> list;
+
+  EduLoaded(this.list);
+}
+
+class DetailWorkActivityLoaded extends InitialCareerLearning {
+  final List<WorkModel> list;
+
+  DetailWorkActivityLoaded(this.list);
+}
+
+class WorkContextLoaded extends InitialCareerLearning {
+  final List<WorkModel> list;
+  WorkContextLoaded(this.list);
+}
+
 class CareerDetailLoaded extends InitialCareerLearning {
   final List<ClusterDetailsModel> list;
 
@@ -32,6 +61,12 @@ class DetailLoaded extends InitialCareerLearning {
   final CareerClusterModel data;
 
   DetailLoaded(this.data);
+}
+
+class JobZoneLoaded extends InitialCareerLearning {
+  final JobZoneModel data;
+
+  JobZoneLoaded(this.data);
 }
 
 class CareerErrorState extends InitialCareerLearning {

@@ -11,9 +11,9 @@ import 'package:insta_job/screens/insta_job_user/bottom_nav_screen/user_account/
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_colors.dart';
 
-import '../../../utils/my_images.dart';
-import '../../custom_button/custom_img_button.dart';
-import '../custom_common_card.dart';
+import '../../../../utils/my_images.dart';
+import '../../../custom_button/custom_img_button.dart';
+import '../../custom_common_card.dart';
 
 class CustomCareerTile extends StatelessWidget {
   final ClusterDetailsModel? clusterDetailsModel;

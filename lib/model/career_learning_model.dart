@@ -184,14 +184,16 @@ class TaskModel {
   bool? green;
   String? related;
   String? name;
+  String? description;
 
-  TaskModel({this.id, this.green, this.related, this.name});
+  TaskModel({this.id, this.green, this.related, this.name, this.description});
 
   TaskModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     green = json['green'];
     related = json['related'];
     name = json['name'];
+    description = json['description'];
   }
 
   Map<String, dynamic> toJson() {
@@ -200,6 +202,43 @@ class TaskModel {
     data['green'] = green;
     data['related'] = related;
     data['name'] = name;
+    data['description'] = description;
+    return data;
+  }
+}
+
+class WorkModel {
+  String? id;
+  String? related;
+  String? name;
+  String? description;
+  List<Response>? response;
+
+  WorkModel(
+      {this.id, this.related, this.name, this.description, this.response});
+
+  WorkModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    related = json['related'];
+    name = json['name'];
+    description = json['description'];
+    if (json['response'] != null) {
+      response = <Response>[];
+      json['response'].forEach((v) {
+        response!.add(Response.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['related'] = related;
+    data['name'] = name;
+    data['description'] = description;
+    if (response != null) {
+      data['response'] = response!.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 }
@@ -231,6 +270,25 @@ class TechSkillModel {
     if (example != null) {
       data['example'] = example!.map((v) => v.toJson()).toList();
     }
+    return data;
+  }
+}
+
+class Response {
+  int? percentage;
+  String? name;
+
+  Response({this.percentage, this.name});
+
+  Response.fromJson(Map<String, dynamic> json) {
+    percentage = json['percentage'];
+    name = json['name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['percentage'] = percentage;
+    data['name'] = name;
     return data;
   }
 }
@@ -333,6 +391,95 @@ class Resource {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['href'] = href;
     data['title'] = title;
+    return data;
+  }
+}
+
+class JobZoneModel {
+  String? code;
+  String? report;
+  int? value;
+  String? title;
+  String? education;
+  String? relatedExperience;
+  String? jobTraining;
+  String? jobZoneExamples;
+  String? svpRange;
+
+  JobZoneModel(
+      {this.code,
+      this.report,
+      this.value,
+      this.title,
+      this.education,
+      this.relatedExperience,
+      this.jobTraining,
+      this.jobZoneExamples,
+      this.svpRange});
+
+  JobZoneModel.fromJson(Map<String, dynamic> json) {
+    code = json['code'];
+    report = json['report'];
+    value = json['value'];
+    title = json['title'];
+    education = json['education'];
+    relatedExperience = json['related_experience'];
+    jobTraining = json['job_training'];
+    jobZoneExamples = json['job_zone_examples'];
+    svpRange = json['svp_range'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['code'] = code;
+    data['report'] = report;
+    data['value'] = value;
+    data['title'] = title;
+    data['education'] = education;
+    data['related_experience'] = relatedExperience;
+    data['job_training'] = jobTraining;
+    data['job_zone_examples'] = jobZoneExamples;
+    data['svp_range'] = svpRange;
+    return data;
+  }
+}
+
+class ClusterEducationModel {
+  String? name;
+  Score? score;
+
+  ClusterEducationModel({this.name, this.score});
+
+  ClusterEducationModel.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    score = json['score'] != null ? Score.fromJson(json['score']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['name'] = name;
+    if (score != null) {
+      data['score'] = score!.toJson();
+    }
+    return data;
+  }
+}
+
+class Score {
+  String? scale;
+  int? value;
+
+  Score({this.scale, this.value});
+
+  Score.fromJson(Map<String, dynamic> json) {
+    scale = json['scale'];
+    value = json['value'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['scale'] = scale;
+    data['value'] = value;
     return data;
   }
 }

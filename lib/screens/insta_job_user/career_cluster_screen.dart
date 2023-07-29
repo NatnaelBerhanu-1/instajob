@@ -6,7 +6,7 @@ import 'package:insta_job/bloc/career_learning_bloc/career_learning_bloc.dart';
 import 'package:insta_job/bloc/career_learning_bloc/career_learning_state.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
-import 'package:insta_job/widgets/custom_cards/insta_job_user_cards/custom_career_tile.dart';
+import 'package:insta_job/widgets/custom_cards/insta_job_user_cards/cluster_widget/custom_career_tile.dart';
 
 import '../../widgets/custom_app_bar.dart';
 

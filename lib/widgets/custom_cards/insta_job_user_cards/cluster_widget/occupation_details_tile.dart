@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
-import 'package:insta_job/widgets/custom_divider.dart';
+import 'package:insta_job/widgets/custom_expantion_tile.dart';
 
 class OccupationDetailTile extends StatelessWidget {
   final String? heading;
@@ -15,13 +15,21 @@ class OccupationDetailTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6.0),
-      child: CustomCommonCard(
+      child: CustomExpansionTile(
+        title: "$heading",
+        isNotExpandedIcon: Icons.keyboard_arrow_down,
+        isExpandedIcon: Icons.keyboard_arrow_up,
+        borderColor: MyColors.grey.withOpacity(.30),
+        children: child,
+      ),
+    );
+    /*CustomCommonCard(
         borderColor: MyColors.grey.withOpacity(.30),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.only(left: 15.0, right: 8, top: 8),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -45,8 +53,7 @@ class OccupationDetailTile extends StatelessWidget {
             child
           ],
         ),
-      ),
-    );
+      ),*/
   }
 }
 

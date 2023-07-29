@@ -9,11 +9,11 @@ import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
+import 'package:insta_job/widgets/custom_cards/insta_job_user_cards/cluster_widget/cluster_detail_%20tile.dart';
 
 import '../../../../bloc/global_cubit/global_cubit.dart';
 import '../../../../bloc/global_cubit/global_state.dart';
 import '../../../../widgets/custom_app_bar.dart';
-import '../../../../widgets/custom_cards/insta_job_user_cards/occupation_details_tile.dart';
 
 class OccupationDetailsScreen extends StatefulWidget {
   final ClusterDetailsModel? clusterDetailsModel;
@@ -43,6 +43,7 @@ class _OccupationDetailsScreenState extends State<OccupationDetailsScreen> {
     context.read<CareerLearningBloc>().getTechList(
           code: widget.clusterDetailsModel!.code.toString(),
         );
+
     super.initState();
   }
 
@@ -123,18 +124,7 @@ class _OccupationDetailsScreenState extends State<OccupationDetailsScreen> {
                                                   context
                                                       .read<GlobalCubit>()
                                                       .changeIndex(index);
-                                                  // context
-                                                  //     .read<
-                                                  //         CareerLearningBloc>()
-                                                  // .getDetailList(
-                                                  //     url: context
-                                                  //         .read<
-                                                  //             CareerLearningBloc>()
-                                                  //         .careerClusterModel
-                                                  //         .summaryResources!
-                                                  //         .resource![index]
-                                                  //         .href
-                                                  //         .toString());
+                                                  getData(index);
                                                 },
                                                 child: CustomCommonCard(
                                                   bgColor: selectedIndex ==
@@ -172,160 +162,15 @@ class _OccupationDetailsScreenState extends State<OccupationDetailsScreen> {
                               ),
                               SizedBox(height: 10),
                               if (selectedIndex == 0) ...[
-                                Expanded(child: BlocBuilder<CareerLearningBloc,
-                                        InitialCareerLearning>(
-                                    builder: (context, taskState) {
-                                  var careerData =
-                                      context.read<CareerLearningBloc>();
-                                  return SingleChildScrollView(
-                                    child: Column(
-                                      children: [
-                                        OccupationDetailTile(
-                                            heading: "Tasks",
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  bottom: 8.0),
-                                              child: SizedBox(
-                                                height: 230,
-                                                child: taskState
-                                                        is CareerLeaningLoading
-                                                    ? Center(
-                                                        child:
-                                                            CircularProgressIndicator())
-                                                    : ListView.builder(
-                                                        itemCount: careerData
-                                                            .taskList.length,
-                                                        // shrinkWrap: true,
-                                                        itemBuilder: (c, i) {
-                                                          return Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .symmetric(
-                                                                    vertical:
-                                                                        5.0,
-                                                                    horizontal:
-                                                                        10),
-                                                            child: Row(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                Expanded(
-                                                                    flex: 0,
-                                                                    child: Text(
-                                                                        "•  ")),
-                                                                Expanded(
-                                                                  child: Text(
-                                                                      '${careerData.taskList[i].name}'),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          );
-                                                        }),
-                                              ),
-                                            )),
-                                        SizedBox(height: 15),
-                                        OccupationDetailTile(
-                                            heading: "Technology Skills",
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  bottom: 8.0),
-                                              child: SizedBox(
-                                                child: ListView.builder(
-                                                    itemCount: careerData
-                                                        .techSkillList.length,
-                                                    shrinkWrap: true,
-                                                    itemBuilder: (c, i) {
-                                                      return Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .symmetric(
-                                                                vertical: 5.0,
-                                                                horizontal: 10),
-                                                        child: Row(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Expanded(
-                                                                flex: 0,
-                                                                child: Text(
-                                                                    "•  ")),
-                                                            Expanded(
-                                                              child: Text(
-                                                                  '${careerData.techSkillList[i].title?.name}'),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      );
-                                                    }),
-                                              ),
-                                            )),
-                                      ],
-                                    ),
-                                  );
-                                }))
+                                SpecificInfoTile()
                               ] else if (selectedIndex == 1) ...[
-                                Expanded(
-                                  child: ListView.builder(
-                                      itemCount: 6,
-                                      shrinkWrap: true,
-                                      itemBuilder: (c, i) {
-                                        return OccupationDetailTile(
-                                            heading: "Work Activities",
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(10.0),
-                                              child: Text('data'),
-                                            ));
-                                      }),
-                                )
+                                OccupationalReqTile()
                               ] else if (selectedIndex == 2) ...[
-                                Expanded(
-                                  child: ListView.builder(
-                                      itemCount: 6,
-                                      shrinkWrap: true,
-                                      itemBuilder: (c, i) {
-                                        return OccupationDetailTile(
-                                            heading: "Skills",
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(10.0),
-                                              child: Text('data'),
-                                            ));
-                                      }),
-                                )
+                                ExpReqTile()
                               ] else if (selectedIndex == 3) ...[
-                                Expanded(
-                                  child: ListView.builder(
-                                      itemCount: 6,
-                                      shrinkWrap: true,
-                                      itemBuilder: (c, i) {
-                                        return OccupationDetailTile(
-                                            heading: "Abilities",
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(10.0),
-                                              child: Text('data'),
-                                            ));
-                                      }),
-                                )
+                                WorkerReqTile(code: careerModel.code)
                               ] else if (selectedIndex == 4) ...[
-                                Expanded(
-                                  child: ListView.builder(
-                                      itemCount: 6,
-                                      shrinkWrap: true,
-                                      itemBuilder: (c, i) {
-                                        return OccupationDetailTile(
-                                            heading:
-                                                "Wages & Employment Trends",
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(10.0),
-                                              child: Text('data'),
-                                            ));
-                                      }),
-                                )
+                                WorkForceCharTile()
                               ]
                             ],
                           );
@@ -333,5 +178,27 @@ class _OccupationDetailsScreenState extends State<OccupationDetailsScreen> {
             );
           }),
         ));
+  }
+
+  getData(int index) {
+    String code = "${widget.clusterDetailsModel!.code}";
+    switch (index) {
+      case 1:
+        context.read<CareerLearningBloc>().getWorkActivityList(code: code);
+        context
+            .read<CareerLearningBloc>()
+            .getDetailWorkActivityList(code: code);
+        context.read<CareerLearningBloc>().getWorkContextList(code: code);
+        break;
+      case 2:
+        context.read<CareerLearningBloc>().getJobZoneList(code: code);
+        break;
+      case 3:
+        context
+            .read<CareerLearningBloc>()
+            .getWorkContextList(code: code, isSkills: true);
+        context.read<CareerLearningBloc>().getKnowledgeList(code: code);
+        context.read<CareerLearningBloc>().getEducationList(code: code);
+    }
   }
 }

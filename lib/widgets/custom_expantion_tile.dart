@@ -7,7 +7,16 @@ import 'custom_cards/custom_common_card.dart';
 class CustomExpansionTile extends StatefulWidget {
   final String? title;
   final Widget children;
-  const CustomExpansionTile({Key? key, this.title, required this.children})
+  final IconData? isExpandedIcon;
+  final IconData? isNotExpandedIcon;
+  final Color? borderColor;
+  const CustomExpansionTile(
+      {Key? key,
+      this.title,
+      required this.children,
+      this.isExpandedIcon,
+      this.isNotExpandedIcon,
+      this.borderColor})
       : super(key: key);
 
   @override
@@ -27,7 +36,7 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
               borderRadius: BorderRadius.circular(10),
               border: Border.all(
                   color: isExpanded
-                      ? MyColors.transparent
+                      ? widget.borderColor ?? MyColors.transparent
                       : MyColors.grey.withOpacity(.30))),
           child: Theme(
             data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
@@ -38,9 +47,9 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
               },
               trailing: Icon(
                 isExpanded
-                    ? Icons.arrow_drop_up_outlined
-                    : Icons.arrow_drop_down_sharp,
-                size: 30,
+                    ? widget.isExpandedIcon ?? Icons.arrow_drop_up_outlined
+                    : widget.isNotExpandedIcon ?? Icons.arrow_drop_down_sharp,
+                size: 25,
                 color: MyColors.blue,
               ),
               title: Text(
@@ -51,7 +60,8 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
                 Align(
                   alignment: Alignment.topLeft,
                   child: Padding(
-                    padding: const EdgeInsets.all(10.0),
+                    padding: const EdgeInsets.only(
+                        left: 10.0, right: 10, bottom: 10),
                     child: widget.children,
                   ),
                 )
@@ -59,7 +69,7 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
             ),
           ),
         ),
-        SizedBox(height: 17),
+        const SizedBox(height: 17),
       ],
     );
   }

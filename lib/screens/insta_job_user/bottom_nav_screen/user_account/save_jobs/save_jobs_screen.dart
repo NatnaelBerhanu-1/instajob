@@ -8,7 +8,7 @@ import 'package:insta_job/bloc/job_position/job_pos_state.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/job_opening/job_position_screen.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_colors.dart';
-import 'package:insta_job/widgets/custom_cards/insta_job_user_cards/custom_career_tile.dart';
+import 'package:insta_job/widgets/custom_cards/insta_job_user_cards/cluster_widget/custom_career_tile.dart';
 
 import '../../../../../widgets/custom_app_bar.dart';
 
