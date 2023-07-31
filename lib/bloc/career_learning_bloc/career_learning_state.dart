@@ -34,6 +34,12 @@ class KnowledgeLoaded extends InitialCareerLearning {
   KnowledgeLoaded(this.list);
 }
 
+class WorkStyleLoaded extends InitialCareerLearning {
+  final List<WorkModel> list;
+
+  WorkStyleLoaded(this.list);
+}
+
 class EduLoaded extends InitialCareerLearning {
   final List<ClusterEducationModel> list;
 

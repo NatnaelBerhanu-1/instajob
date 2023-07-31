@@ -27,26 +27,22 @@ class SpecificInfoTile extends StatelessWidget {
                 heading: "Tasks",
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
-                  child: SizedBox(
-                    height: 230,
-                    child: taskState is CareerLeaningLoading
-                        ? Center(child: CircularProgressIndicator())
-                        : ListView.builder(
-                            itemCount: careerData.taskList.length,
-                            // shrinkWrap: true,
-                            itemBuilder: (c, i) {
-                              return Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Expanded(flex: 0, child: Text("•  ")),
-                                  Expanded(
-                                    child:
-                                        Text('${careerData.taskList[i].name}'),
-                                  ),
-                                ],
-                              );
-                            }),
-                  ),
+                  child: taskState is CareerLeaningLoading
+                      ? Center(child: CircularProgressIndicator())
+                      : ListView.builder(
+                          itemCount: careerData.taskList.length,
+                          shrinkWrap: true,
+                          itemBuilder: (c, i) {
+                            return Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(flex: 0, child: Text("•  ")),
+                                Expanded(
+                                  child: Text('${careerData.taskList[i].name}'),
+                                ),
+                              ],
+                            );
+                          }),
                 )),
             OccupationDetailTile(
                 heading: "Technology Skills",
@@ -204,9 +200,10 @@ class OccupationalReqTile extends StatelessWidget {
                                           Expanded(flex: 0, child: Text("•  ")),
                                           Expanded(
                                             child: Text(
-                                              '${workContextState.list[i].name} : ${workContextState.list[i].response?[0].percentage}% responded ${workContextState.list[i].response?[0].name}',
+                                              '${workContextState.list[i].name}',
                                             ),
                                           ),
+                                          //  : ${workContextState.list[i].response!.isEmpty || workContextState.list[i].response == null ? "" : "${workContextState.list[i].response?[0].percentage}% responded ''${workContextState.list[i].response?[0].name}''"}
                                         ],
                                       ),
                                     );
@@ -220,25 +217,206 @@ class OccupationalReqTile extends StatelessWidget {
   }
 }
 
-class WorkForceCharTile extends StatelessWidget {
-  const WorkForceCharTile({
+class WorkCharTile extends StatelessWidget {
+  const WorkCharTile({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: ListView.builder(
-          itemCount: 6,
-          shrinkWrap: true,
-          itemBuilder: (c, i) {
-            return OccupationDetailTile(
-                heading: "Wages & Employment Trends",
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Text('data'),
-                ));
-          }),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            BlocBuilder<CareerLearningBloc, InitialCareerLearning>(
+                buildWhen: (previous, current) =>
+                    current is WorkActivityLoaded && previous != current,
+                builder: (context, state) {
+                  return OccupationDetailTile(
+                      heading: "Abilities",
+                      child: state is CareerLeaningLoading
+                          ? Center(child: CircularProgressIndicator())
+                          : state is WorkActivityLoaded
+                              ? ListView.builder(
+                                  itemCount: state.list.length,
+                                  shrinkWrap: true,
+                                  itemBuilder: (c, i) {
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 4.0, horizontal: 5),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          CommonText(
+                                              text: "${state.list[i].name} :",
+                                              fontWeight: FontWeight.bold),
+                                          SizedBox(height: 3),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                child: CommonText(
+                                                  text:
+                                                      "${state.list[i].description}",
+                                                  fontWeight: FontWeight.w300,
+                                                  fontSize: 13,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  })
+                              : SizedBox());
+                }),
+            BlocBuilder<CareerLearningBloc, InitialCareerLearning>(
+                buildWhen: (previous, current) =>
+                    current is WorkContextLoaded && previous != current,
+                builder: (context, state) {
+                  return OccupationDetailTile(
+                      heading: "Interest",
+                      child: state is CareerLeaningLoading
+                          ? Center(child: CircularProgressIndicator())
+                          : state is WorkContextLoaded
+                              ? SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.35,
+                                  child: ListView.builder(
+                                      itemCount: state.list.length,
+                                      // shrinkWrap: true,
+                                      itemBuilder: (c, i) {
+                                        return Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 4.0, horizontal: 5),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              CommonText(
+                                                  text:
+                                                      "${state.list[i].name} :",
+                                                  fontWeight: FontWeight.bold),
+                                              SizedBox(height: 3),
+                                              Row(
+                                                children: [
+                                                  Expanded(
+                                                    child: CommonText(
+                                                      text:
+                                                          "${state.list[i].description}",
+                                                      fontWeight:
+                                                          FontWeight.w300,
+                                                      fontSize: 13,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      }),
+                                )
+                              : SizedBox());
+                }),
+            BlocBuilder<CareerLearningBloc, InitialCareerLearning>(
+                buildWhen: (previous, current) =>
+                    current is KnowledgeLoaded && previous != current,
+                builder: (context, state) {
+                  return OccupationDetailTile(
+                      heading: "Work Values",
+                      child: state is CareerLeaningLoading
+                          ? Center(child: CircularProgressIndicator())
+                          : state is KnowledgeLoaded
+                              ? SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.35,
+                                  child: ListView.builder(
+                                      itemCount: state.list.length,
+                                      // shrinkWrap: true,
+                                      itemBuilder: (c, i) {
+                                        return Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 4.0, horizontal: 5),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              CommonText(
+                                                  text:
+                                                      "${state.list[i].name} :",
+                                                  fontWeight: FontWeight.bold),
+                                              SizedBox(height: 3),
+                                              Row(
+                                                children: [
+                                                  Expanded(
+                                                    child: CommonText(
+                                                      text:
+                                                          "${state.list[i].description}",
+                                                      fontWeight:
+                                                          FontWeight.w300,
+                                                      fontSize: 13,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      }),
+                                )
+                              : SizedBox());
+                }),
+            BlocBuilder<CareerLearningBloc, InitialCareerLearning>(
+                buildWhen: (previous, current) =>
+                    current is WorkStyleLoaded && previous != current,
+                builder: (context, state) {
+                  return OccupationDetailTile(
+                      heading: "Work Style",
+                      child: state is CareerLeaningLoading
+                          ? Center(child: CircularProgressIndicator())
+                          : state is WorkStyleLoaded
+                              ? SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.35,
+                                  child: ListView.builder(
+                                      itemCount: state.list.length,
+                                      // shrinkWrap: true,
+                                      itemBuilder: (c, i) {
+                                        return Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 4.0, horizontal: 5),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              CommonText(
+                                                  text:
+                                                      "${state.list[i].name} :",
+                                                  fontWeight: FontWeight.bold),
+                                              SizedBox(height: 3),
+                                              Row(
+                                                children: [
+                                                  Expanded(
+                                                    child: CommonText(
+                                                      text:
+                                                          "${state.list[i].description}",
+                                                      fontWeight:
+                                                          FontWeight.w300,
+                                                      fontSize: 13,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      }),
+                                )
+                              : SizedBox());
+                }),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -365,29 +543,34 @@ class WorkerReqTile extends StatelessWidget {
                                     // crossAxisAlignment:
                                     //     CrossAxisAlignment.start,
                                     children: [
-                                      Expanded(
-                                        flex: 0,
-                                        child: CommonText(
-                                          text:
-                                              "${skillData.list[i].score?.value}%",
-                                          fontSize: 14,
-                                        ),
-                                      ),
-                                      Expanded(
-                                          flex: 0,
-                                          child: LinearPercentIndicator(
-                                            width: 100.0,
-                                            animation: true,
-                                            animationDuration: 1000,
-                                            lineHeight: 10.0,
-                                            backgroundColor: MyColors.lightBl,
-                                            percent: double.parse(skillData
-                                                    .list[i].score!.value
-                                                    .toString()) /
-                                                100,
-                                            barRadius: Radius.circular(5),
-                                            progressColor: MyColors.blue,
-                                          )),
+                                      skillData.list[i].score == null
+                                          ? SizedBox()
+                                          : Expanded(
+                                              flex: 0,
+                                              child: CommonText(
+                                                text:
+                                                    "${skillData.list[i].score?.value}%",
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                      skillData.list[i].score == null
+                                          ? SizedBox()
+                                          : Expanded(
+                                              flex: 0,
+                                              child: LinearPercentIndicator(
+                                                width: 100.0,
+                                                animation: true,
+                                                animationDuration: 1000,
+                                                lineHeight: 10.0,
+                                                backgroundColor:
+                                                    MyColors.lightBl,
+                                                percent: double.parse(skillData
+                                                        .list[i].score!.value
+                                                        .toString()) /
+                                                    100,
+                                                barRadius: Radius.circular(5),
+                                                progressColor: MyColors.blue,
+                                              )),
                                       Expanded(
                                         child: CommonText(
                                           text: "${skillData.list[i].name}",

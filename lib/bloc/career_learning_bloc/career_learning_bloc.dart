@@ -106,10 +106,10 @@ class CareerLearningBloc extends Cubit<InitialCareerLearning> {
   List<WorkModel> detailWorkActivityList = [];
   List<WorkModel> workContextList = [];
 
-  getWorkActivityList({required String code}) async {
+  getWorkActivityList({required String code, bool isAbility = false}) async {
     emit(CareerLeaningLoading());
-    ApiResponse response =
-        await careerLearningRepo.taskDetailList(code, "work_activities");
+    ApiResponse response = await careerLearningRepo.taskDetailList(
+        code, isAbility ? "abilities" : "work_activities");
     if (response.response.statusCode == 500) {
       emit(CareerErrorState("Something went wrong"));
     }
@@ -145,11 +145,16 @@ class CareerLearningBloc extends Cubit<InitialCareerLearning> {
   getWorkContextList({
     required String code,
     bool isSkills = false,
+    bool isInterests = false,
   }) async {
     emit(CareerLeaningLoading());
     ApiResponse response = await careerLearningRepo.taskDetailList(
       code,
-      isSkills ? "skills" : "work_context",
+      isSkills
+          ? "skills"
+          : isInterests
+              ? "interests"
+              : "work_context",
     );
     if (response.response.statusCode == 500) {
       emit(CareerErrorState("Something went wrong"));
@@ -158,20 +163,17 @@ class CareerLearningBloc extends Cubit<InitialCareerLearning> {
       workContextList = (response.response.data['element'] as List)
           .map((e) => WorkModel.fromJson(e))
           .toList();
-      knowledgeList = (response.response.data['element'] as List)
-          .map((e) => WorkModel.fromJson(e))
-          .toList();
+
       emit(WorkContextLoaded(workContextList));
-      emit(KnowledgeLoaded(knowledgeList));
     } else if (response.response.statusCode == 400) {
       emit(CareerErrorState("Data not found"));
     }
   }
 
-  getKnowledgeList({required String code}) async {
+  getKnowledgeList({required String code, bool isWorkValue = false}) async {
     emit(CareerLeaningLoading());
-    ApiResponse response =
-        await careerLearningRepo.taskDetailList(code, "knowledge");
+    ApiResponse response = await careerLearningRepo.taskDetailList(
+        code, isWorkValue ? "work_values" : "knowledge");
     if (response.response.statusCode == 500) {
       emit(CareerErrorState("Something went wrong"));
     }
@@ -220,6 +222,24 @@ class CareerLearningBloc extends Cubit<InitialCareerLearning> {
     }
   }
 
+  List<WorkModel> workStyleList = [];
+
+  getWorkStyle({required String code}) async {
+    emit(CareerLeaningLoading());
+    ApiResponse response =
+        await careerLearningRepo.taskDetailList(code, "work_styles");
+    if (response.response.statusCode == 500) {
+      emit(CareerErrorState("Something went wrong"));
+    }
+    if (response.response.statusCode == 200) {
+      workStyleList = (response.response.data['element'] as List)
+          .map((e) => WorkModel.fromJson(e))
+          .toList();
+      emit(WorkStyleLoaded(workStyleList));
+    } else if (response.response.statusCode == 400) {
+      emit(CareerErrorState("Data not found"));
+    }
+  }
   // getSkillList({required String code}) async {
   //   emit(CareerLeaningLoading());
   //   ApiResponse response =

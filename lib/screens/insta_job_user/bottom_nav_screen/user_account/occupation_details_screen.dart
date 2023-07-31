@@ -170,7 +170,7 @@ class _OccupationDetailsScreenState extends State<OccupationDetailsScreen> {
                               ] else if (selectedIndex == 3) ...[
                                 WorkerReqTile(code: careerModel.code)
                               ] else if (selectedIndex == 4) ...[
-                                WorkForceCharTile()
+                                WorkCharTile()
                               ]
                             ],
                           );
@@ -199,6 +199,18 @@ class _OccupationDetailsScreenState extends State<OccupationDetailsScreen> {
             .getWorkContextList(code: code, isSkills: true);
         context.read<CareerLearningBloc>().getKnowledgeList(code: code);
         context.read<CareerLearningBloc>().getEducationList(code: code);
+        break;
+      case 4:
+        context
+            .read<CareerLearningBloc>()
+            .getWorkActivityList(code: code, isAbility: true);
+        context
+            .read<CareerLearningBloc>()
+            .getWorkContextList(code: code, isInterests: true);
+        context
+            .read<CareerLearningBloc>()
+            .getKnowledgeList(code: code, isWorkValue: true);
+        context.read<CareerLearningBloc>().getWorkStyle(code: code);
     }
   }
 }
