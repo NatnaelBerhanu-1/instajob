@@ -78,4 +78,6 @@ class EndPoint {
 
   static String getCareerCluster =
       "https://services.onetcenter.org/ws/online/career_clusters/";
+
+  static String uploadMp3File = "http://3.82.226.4:8000/uploadfile/";
 }

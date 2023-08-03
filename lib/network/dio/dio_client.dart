@@ -21,8 +21,7 @@ class DioClient {
       };
     dio?.interceptors.add(PrettyDioLogger());
   }
-  Future<Response> post(
-      {required Map<String, dynamic> data, required String uri}) async {
+  Future<Response> post({dynamic data, required String uri}) async {
     print("ENCODE DATA --->  ${jsonEncode(data)}");
     print("URL --->  $uri");
     try {
