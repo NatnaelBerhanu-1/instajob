@@ -21,15 +21,10 @@ class InterviewTile extends StatelessWidget {
           border: Border.all(color: MyColors.lightgrey, width: 1.2),
           color: MyColors.white,
           boxShadow: [
-            BoxShadow(
-                color: Colors.grey.withOpacity(0.10),
-                spreadRadius: 5,
-                blurRadius: 7,
-                offset: Offset(2, 3))
+            BoxShadow(color: Colors.grey.withOpacity(0.10), spreadRadius: 5, blurRadius: 7, offset: Offset(2, 3))
           ]),
       child: Padding(
-        padding:
-            const EdgeInsets.only(right: 10, top: 15, left: 15, bottom: 15),
+        padding: const EdgeInsets.only(right: 10, top: 15, left: 15, bottom: 15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -99,11 +94,11 @@ class InterviewTile extends StatelessWidget {
                           flex: 1,
                           child: CustomButton(
                             height: MediaQuery.of(context).size.height * 0.048,
-                            borderColor: MyColors.lightRed,
+                            borderColor: MyColors.darkRed,
                             bgColor: MyColors.white,
                             borderRadius: BorderRadius.circular(20),
                             title: "Cancel",
-                            fontColor: MyColors.lightRed,
+                            fontColor: MyColors.darkRed,
                           )),
                       SizedBox(width: 10),
                       Expanded(

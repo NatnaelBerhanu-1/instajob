@@ -163,7 +163,7 @@ class _ApplicantsState extends State<Applicants> {
                                 child: CustomButton(
                                 height:
                                     MediaQuery.of(context).size.height * 0.055,
-                                bgColor: MyColors.lightRed,
+                                bgColor: MyColors.darkRed,
                                 title: "Deny",
                                 onTap: () {
                                   context.read<JobPositionBloc>().add(

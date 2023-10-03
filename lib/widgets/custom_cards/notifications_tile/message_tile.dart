@@ -35,7 +35,7 @@ class MessageTile extends StatelessWidget {
             onPressed: (val) {},
             icon: Icons.delete_outline,
             label: "",
-            backgroundColor: MyColors.lightRed,
+            backgroundColor: MyColors.darkRed,
           )
         ]),
         direction: Axis.horizontal,
@@ -60,9 +60,7 @@ class MessageTile extends StatelessWidget {
                                 left: 67,
                                 child: Container(
                                   padding: EdgeInsets.all(3.5),
-                                  decoration: BoxDecoration(
-                                      color: MyColors.blue,
-                                      shape: BoxShape.circle),
+                                  decoration: BoxDecoration(color: MyColors.blue, shape: BoxShape.circle),
                                   child: Icon(
                                     Icons.camera_alt_outlined,
                                     size: 13,

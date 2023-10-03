@@ -79,7 +79,7 @@ class JobOpeningTile extends StatelessWidget {
                                   ? Icons.favorite
                                   : Icons.favorite_border,
                               color: jobPosModel.jobStatus == 1
-                                  ? MyColors.lightRed
+                                  ? MyColors.darkRed
                                   : MyColors.grey,
                             ),
                           ))

@@ -117,8 +117,7 @@ BoxShadow normalBoxShadow = BoxShadow(
   blurRadius: 7,
 );
 
-Future<Uint8List> makePdf(BuildContext context,
-    {int? color, font, String? image}) async {
+Future<Uint8List> makePdf(BuildContext context, {int? color, font, String? image}) async {
   final pdf = pw.Document();
   var data = context.read<ResumeBloc>();
   final netImage = await networkImage(image ?? profileImage);
@@ -158,8 +157,7 @@ Future<Uint8List> makePdf(BuildContext context,
                               decoration: pw.BoxDecoration(
                                 color: PdfColor.fromHex("#b9ccc8"),
                                 shape: pw.BoxShape.circle,
-                                image: pw.DecorationImage(
-                                    image: netImage, fit: pw.BoxFit.cover),
+                                image: pw.DecorationImage(image: netImage, fit: pw.BoxFit.cover),
                               ),
                               // child: image == null
                               //     ? pw.SizedBox()
@@ -168,18 +166,11 @@ Future<Uint8List> makePdf(BuildContext context,
                           ),
                           pw.SizedBox(height: 30),
                           pw.Text("${Global.userModel?.name}",
-                              style: pw.TextStyle(
-                                  fontSize: 20,
-                                  font: font,
-                                  fontWeight: pw.FontWeight.bold)),
-                          pw.Text("Designation",
-                              style: pw.TextStyle(fontSize: 17, font: font)),
+                              style: pw.TextStyle(fontSize: 20, font: font, fontWeight: pw.FontWeight.bold)),
+                          pw.Text("Designation", style: pw.TextStyle(fontSize: 17, font: font)),
                           pw.SizedBox(height: 30),
                           pw.Text("ABOUT ME",
-                              style: pw.TextStyle(
-                                  fontSize: 17,
-                                  font: font,
-                                  fontWeight: pw.FontWeight.bold)),
+                              style: pw.TextStyle(fontSize: 17, font: font, fontWeight: pw.FontWeight.bold)),
                           pw.Divider(),
                           pw.Text(
                               data.resumeModel.tellUss == null
@@ -199,83 +190,53 @@ Future<Uint8List> makePdf(BuildContext context,
             crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
               pw.SizedBox(height: 20),
-              pw.Text("WORK EXPERIENCE",
-                  style: pw.TextStyle(
-                      fontSize: 17,
-                      fontWeight: pw.FontWeight.bold,
-                      font: font)),
+              pw.Text("WORK EXPERIENCE", style: pw.TextStyle(fontSize: 17, fontWeight: pw.FontWeight.bold, font: font)),
               pw.Divider(),
               pw.SizedBox(height: 20),
               data.resumeModel.workExperiences == null
-                  ? pw.Text("Test",
-                      style: pw.TextStyle(fontSize: 15, font: font))
+                  ? pw.Text("Test", style: pw.TextStyle(fontSize: 15, font: font))
                   : pw.ListView.builder(
                       itemCount: data.resumeModel.workExperiences!.length,
                       itemBuilder: (c, i) {
-                        return pw.Column(
-                            crossAxisAlignment: pw.CrossAxisAlignment.start,
-                            children: [
-                              pw.Text(
-                                  "${data.resumeModel.workExperiences?[i].jobTitle}",
-                                  style: pw.TextStyle(
-                                      fontSize: 15,
-                                      font: font,
-                                      fontWeight: pw.FontWeight.bold)),
-                              pw.SizedBox(height: 5),
-                              pw.Row(children: [
-                                pw.Text(
-                                    "${data.resumeModel.workExperiences?[i].employer}",
-                                    style:
-                                        pw.TextStyle(fontSize: 15, font: font)),
-                                pw.Spacer(),
-                                pw.Text(
-                                    "${data.resumeModel.workExperiences?[i].workStartYear} - ${data.resumeModel.workExperiences?[i].workEndYear == "" ? "Currently Working" : data.resumeModel.workExperiences?[i].workEndYear}",
-                                    style:
-                                        pw.TextStyle(fontSize: 11, font: font)),
-                              ]),
-                              pw.SizedBox(height: 20),
-                            ]);
+                        return pw.Column(crossAxisAlignment: pw.CrossAxisAlignment.start, children: [
+                          pw.Text("${data.resumeModel.workExperiences?[i].jobTitle}",
+                              style: pw.TextStyle(fontSize: 15, font: font, fontWeight: pw.FontWeight.bold)),
+                          pw.SizedBox(height: 5),
+                          pw.Row(children: [
+                            pw.Text("${data.resumeModel.workExperiences?[i].employer}",
+                                style: pw.TextStyle(fontSize: 15, font: font)),
+                            pw.Spacer(),
+                            pw.Text(
+                                "${data.resumeModel.workExperiences?[i].workStartYear} - ${data.resumeModel.workExperiences?[i].workEndYear == "" ? "Currently Working" : data.resumeModel.workExperiences?[i].workEndYear}",
+                                style: pw.TextStyle(fontSize: 11, font: font)),
+                          ]),
+                          pw.SizedBox(height: 20),
+                        ]);
                       },
                     ),
               pw.SizedBox(height: 50),
-              pw.Text("EDUCATION",
-                  style: pw.TextStyle(
-                      fontSize: 17,
-                      fontWeight: pw.FontWeight.bold,
-                      font: font)),
+              pw.Text("EDUCATION", style: pw.TextStyle(fontSize: 17, fontWeight: pw.FontWeight.bold, font: font)),
               pw.Divider(),
               pw.SizedBox(height: 20),
               data.resumeModel.educations == null
-                  ? pw.Text("Test",
-                      style: pw.TextStyle(fontSize: 15, font: font))
+                  ? pw.Text("Test", style: pw.TextStyle(fontSize: 15, font: font))
                   : pw.ListView.builder(
                       itemCount: data.resumeModel.educations!.length,
                       itemBuilder: (c, i) {
-                        return pw.Column(
-                            crossAxisAlignment: pw.CrossAxisAlignment.start,
-                            children: [
-                              pw.Text(
-                                  "${data.resumeModel.educations?[i].fieldOfStudy}",
-                                  style: pw.TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: pw.FontWeight.bold,
-                                      font: font)),
-                              pw.SizedBox(height: 2),
-                              pw.Row(children: [
-                                pw.Text(
-                                    "${data.resumeModel.educations?[i].institutionName}",
-                                    style: pw.TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: pw.FontWeight.bold,
-                                        font: font)),
-                                pw.Spacer(),
-                                pw.Text(
-                                    "${data.resumeModel.educations?[i].educationStartYear} - ${data.resumeModel.educations?[i].educationEndYear == "" ? "Currently Studying" : data.resumeModel.educations?[i].educationEndYear}",
-                                    style:
-                                        pw.TextStyle(fontSize: 12, font: font)),
-                              ]),
-                              pw.SizedBox(height: 25),
-                            ]);
+                        return pw.Column(crossAxisAlignment: pw.CrossAxisAlignment.start, children: [
+                          pw.Text("${data.resumeModel.educations?[i].fieldOfStudy}",
+                              style: pw.TextStyle(fontSize: 15, fontWeight: pw.FontWeight.bold, font: font)),
+                          pw.SizedBox(height: 2),
+                          pw.Row(children: [
+                            pw.Text("${data.resumeModel.educations?[i].institutionName}",
+                                style: pw.TextStyle(fontSize: 15, fontWeight: pw.FontWeight.bold, font: font)),
+                            pw.Spacer(),
+                            pw.Text(
+                                "${data.resumeModel.educations?[i].educationStartYear} - ${data.resumeModel.educations?[i].educationEndYear == "" ? "Currently Studying" : data.resumeModel.educations?[i].educationEndYear}",
+                                style: pw.TextStyle(fontSize: 12, font: font)),
+                          ]),
+                          pw.SizedBox(height: 25),
+                        ]);
                       },
                     ),
             ],
@@ -294,12 +255,11 @@ showToast(message, {color, textColor, bool isError = true}) {
   EasyLoading.instance
     ..toastPosition = EasyLoadingToastPosition.top
     ..textColor = textColor ?? MyColors.white
-    ..backgroundColor = isError ? MyColors.lightRed : MyColors.black;
+    ..backgroundColor = isError ? MyColors.darkRed : MyColors.black;
   EasyLoading.showToast(message);
 }
 
-dynamic loading(
-    {@required bool? value, String? title, bool closeOverlays = false}) {
+dynamic loading({@required bool? value, String? title, bool closeOverlays = false}) {
   if (value!) {
     EasyLoading.instance
       ..indicatorType = EasyLoadingIndicatorType.ring

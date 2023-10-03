@@ -123,17 +123,14 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                     left: 5,
                     child: Row(
                       children: [
-                        BlocBuilder<BottomBloc, BottomInitialState>(
-                            builder: (context, value) {
+                        BlocBuilder<BottomBloc, BottomInitialState>(builder: (context, value) {
                           return ImageButton(
                             onTap: () {
                               var image = context.read<PickImageCubit>();
                               image.clearImgUrl();
                               context.read<GlobalCubit>().skills.clear();
-                              context.read<BottomBloc>().add(SetScreenEvent(
-                                  true,
-                                  screenName: JobOpeningScreen(
-                                      companyModel: widget.companyModel)));
+                              context.read<BottomBloc>().add(SetScreenEvent(true,
+                                  screenName: JobOpeningScreen(companyModel: widget.companyModel)));
                               // Navigator.pop(context);
                             },
                             height: 28,
@@ -142,37 +139,25 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                           );
                         }),
                         Padding(
-                          padding: const EdgeInsets.only(
-                              top: 8.0, left: 8, right: 10),
+                          padding: const EdgeInsets.only(top: 8.0, left: 8, right: 10),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                widget.isUpdate
-                                    ? "Edit Listing"
-                                    : "Add Job Positions",
-                                style: TextStyle(
-                                    color: MyColors.black,
-                                    fontSize: 16.5,
-                                    fontWeight: FontWeight.w600),
+                                widget.isUpdate ? "Edit Listing" : "Add Job Positions",
+                                style: TextStyle(color: MyColors.black, fontSize: 16.5, fontWeight: FontWeight.w600),
                               ),
                               SizedBox(height: 5),
                               Text(
-                                widget.isUpdate
-                                    ? "Update job details"
-                                    : "Add job details for new opening",
-                                style: TextStyle(
-                                    color: MyColors.grey,
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w600),
+                                widget.isUpdate ? "Update job details" : "Add job details for new opening",
+                                style: TextStyle(color: MyColors.grey, fontSize: 13, fontWeight: FontWeight.w600),
                               ),
                             ],
                           ),
                         ),
                         SizedBox(width: 52),
                         widget.isUpdate
-                            ? BlocBuilder<BottomBloc, BottomInitialState>(
-                                builder: (context, value) {
+                            ? BlocBuilder<BottomBloc, BottomInitialState>(builder: (context, value) {
                                 return GestureDetector(
                                   onTap: () {
                                     buildDialog(
@@ -180,21 +165,15 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                                         CustomDialog(
                                           desc1: "You want to Remove Listing",
                                           okOnTap: () {
-                                            context.read<JobPositionBloc>().add(
-                                                DeleteJobPositionEvent(
-                                                    jobId:
-                                                        "${widget.jobPosModel?.id}"));
-                                            context.read<JobPositionBloc>().add(
-                                                LoadJobPosListEvent(
-                                                    companyId:
-                                                        "${widget.companyModel?.id}"));
-                                            context.read<BottomBloc>().add(
-                                                SetScreenEvent(true,
-                                                    screenName: JobOpeningScreen(
-                                                        companyModel: widget
-                                                            .companyModel)));
-                                            AppRoutes.push(
-                                                context, BottomNavScreen());
+                                            context
+                                                .read<JobPositionBloc>()
+                                                .add(DeleteJobPositionEvent(jobId: "${widget.jobPosModel?.id}"));
+                                            context
+                                                .read<JobPositionBloc>()
+                                                .add(LoadJobPosListEvent(companyId: "${widget.companyModel?.id}"));
+                                            context.read<BottomBloc>().add(SetScreenEvent(true,
+                                                screenName: JobOpeningScreen(companyModel: widget.companyModel)));
+                                            AppRoutes.push(context, BottomNavScreen());
                                           },
                                           cancelOnTap: () {
                                             Navigator.pop(context);
@@ -207,16 +186,12 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                                     decoration: BoxDecoration(
                                         color: MyColors.white,
                                         borderRadius: BorderRadius.circular(20),
-                                        border: Border.all(
-                                            color: MyColors.lightRed)),
+                                        border: Border.all(color: MyColors.darkRed)),
                                     child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 10.0, right: 10),
+                                      padding: const EdgeInsets.only(left: 10.0, right: 10),
                                       child: Text(
                                         "Remove Listing",
-                                        style: TextStyle(
-                                            fontSize: 13,
-                                            color: MyColors.lightRed),
+                                        style: TextStyle(fontSize: 13, color: MyColors.darkRed),
                                       ),
                                     ),
                                   ),
@@ -231,10 +206,8 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
             ),
             Expanded(
               child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 0.0, horizontal: 15),
-                child: BlocConsumer<ValidationCubit, InitialValidation>(
-                    listener: (context, state) {
+                padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 15),
+                child: BlocConsumer<ValidationCubit, InitialValidation>(listener: (context, state) {
                   if (state is RequiredValidation) {
                     showToast(state.require);
                   }
@@ -251,8 +224,7 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                           //   validate.requiredValidation(val!, "!!!!!!!");
                           //   return null;
                           // },
-                          validator: (val) =>
-                              requiredValidation(val!, 'Job Title')),
+                          validator: (val) => requiredValidation(val!, 'Job Title')),
                       SizedBox(height: 15),
                       CustomTextField(
                         controller: jobDetails,
@@ -260,8 +232,7 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                         lblColor: MyColors.black,
                         hint: "Sed ut perspisious",
                         maxLine: 5,
-                        validator: (val) =>
-                            requiredValidation(val!, 'JobDetails'),
+                        validator: (val) => requiredValidation(val!, 'JobDetails'),
                       ),
                       SizedBox(height: 15),
                       CustomTextField(
@@ -270,8 +241,7 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                         lblColor: MyColors.black,
                         hint: "Sed ut perspisious",
                         maxLine: 5,
-                        validator: (val) =>
-                            requiredValidation(val!, "Requirements"),
+                        validator: (val) => requiredValidation(val!, "Requirements"),
                       ),
                       SizedBox(height: 15),
                       CustomTextField(
@@ -280,29 +250,23 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                         lblColor: MyColors.black,
                         hint: "",
                         maxLine: 5,
-                        validator: (val) =>
-                            requiredValidation(val!, "Responsibilities"),
+                        validator: (val) => requiredValidation(val!, "Responsibilities"),
                       ),
                       SizedBox(height: 15),
-                      BlocBuilder<GlobalCubit, InitialState>(
-                          builder: (context, state) {
+                      BlocBuilder<GlobalCubit, InitialState>(builder: (context, state) {
                         var skillList = context.read<GlobalCubit>();
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               "Enter Top Skills",
-                              style: TextStyle(
-                                  color: MyColors.black,
-                                  fontSize: 13.5,
-                                  fontWeight: FontWeight.w400),
+                              style: TextStyle(color: MyColors.black, fontSize: 13.5, fontWeight: FontWeight.w400),
                             ),
                             SizedBox(height: 5),
                             skillList.skills.isEmpty
                                 ? SizedBox()
                                 : GridView.builder(
-                                    gridDelegate:
-                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                                       crossAxisCount: 3,
                                       childAspectRatio: 4 / 1,
                                       mainAxisSpacing: 10,
@@ -317,30 +281,24 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                                         padding: const EdgeInsets.all(.0),
                                         child: Container(
                                           decoration: BoxDecoration(
-                                            color: MyColors.lightBlue
-                                                .withOpacity(.20),
-                                            borderRadius:
-                                                BorderRadius.circular(5),
+                                            color: MyColors.lightBlue.withOpacity(.20),
+                                            borderRadius: BorderRadius.circular(5),
                                           ),
                                           child: Padding(
                                             padding: const EdgeInsets.all(5),
                                             child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               children: [
                                                 Expanded(
                                                   child: CommonText(
-                                                    text:
-                                                        skillList.skills[index],
+                                                    text: skillList.skills[index],
                                                     fontColor: MyColors.blue,
                                                     fontSize: 13,
                                                   ),
                                                 ),
                                                 GestureDetector(
                                                   onTap: () {
-                                                    skillList
-                                                        .removeSkill(index);
+                                                    skillList.removeSkill(index);
                                                   },
                                                   child: Icon(
                                                     Icons.close,
@@ -364,8 +322,7 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                                     child: CustomTextField(
                                       controller: topSkills,
                                       hint: "",
-                                      textCapitalization:
-                                          TextCapitalization.words,
+                                      textCapitalization: TextCapitalization.words,
                                       // validator: (val) =>
                                       //     validate.requiredValidation(
                                       //         val!, "Skills"),
@@ -381,12 +338,9 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                                       }
                                     },
                                     child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          right: 10.0, left: 10, top: 15),
+                                      padding: const EdgeInsets.only(right: 10.0, left: 10, top: 15),
                                       child: Container(
-                                        decoration: BoxDecoration(
-                                            color: MyColors.blue,
-                                            shape: BoxShape.circle),
+                                        decoration: BoxDecoration(color: MyColors.blue, shape: BoxShape.circle),
                                         child: Padding(
                                           padding: const EdgeInsets.all(9.0),
                                           child: Icon(
@@ -409,8 +363,7 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                         fontSize: 14,
                       ),
                       SizedBox(height: 10),
-                      BlocBuilder<GlobalCubit, InitialState>(
-                          builder: (context, state) {
+                      BlocBuilder<GlobalCubit, InitialState>(builder: (context, state) {
                         var values = context.read<GlobalCubit>();
                         return CustomCommonCard(
                           borderColor: MyColors.grey.withOpacity(.30),
@@ -420,8 +373,7 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                             child: Column(
                               children: [
                                 Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     CommonText(
                                       text: "All Salaries",
@@ -437,8 +389,7 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                                 SizedBox(height: 10),
                                 divider(color: MyColors.grey.withOpacity(.40)),
                                 Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     CommonText(
                                       text: "Custom Range",
@@ -473,8 +424,7 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                         fontSize: 14,
                       ),
                       SizedBox(height: 10),
-                      BlocBuilder<GlobalCubit, InitialState>(
-                          builder: (context, state) {
+                      BlocBuilder<GlobalCubit, InitialState>(builder: (context, state) {
                         var value = context.read<GlobalCubit>();
                         return CustomCommonCard(
                           borderColor: MyColors.grey.withOpacity(.30),
@@ -485,8 +435,7 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 CommonText(
-                                  text:
-                                      "With in ${value.range.toStringAsFixed(0)} miles",
+                                  text: "With in ${value.range.toStringAsFixed(0)} miles",
                                   fontSize: 12,
                                   fontColor: MyColors.blue,
                                 ),
@@ -512,8 +461,7 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                         fontSize: 14,
                       ),
                       SizedBox(height: 10),
-                      BlocBuilder<GlobalCubit, InitialState>(
-                          builder: (context, state) {
+                      BlocBuilder<GlobalCubit, InitialState>(builder: (context, state) {
                         var value = context.read<GlobalCubit>();
                         return Column(
                           children: [
@@ -534,8 +482,7 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                                         value.jobType("Full Time");
                                       },
                                     ),
-                                    divider(
-                                        color: MyColors.grey.withOpacity(.40)),
+                                    divider(color: MyColors.grey.withOpacity(.40)),
                                     jobTypeTile(
                                       title: "Part Time",
                                       value: value.jobTypeValue,
@@ -544,8 +491,7 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                                         value.jobType("Part Time");
                                       },
                                     ),
-                                    divider(
-                                        color: MyColors.grey.withOpacity(.40)),
+                                    divider(color: MyColors.grey.withOpacity(.40)),
                                     jobTypeTile(
                                       title: "Contact",
                                       value: value.jobTypeValue,
@@ -554,8 +500,7 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                                         value.jobType("Contact");
                                       },
                                     ),
-                                    divider(
-                                        color: MyColors.grey.withOpacity(.40)),
+                                    divider(color: MyColors.grey.withOpacity(.40)),
                                     jobTypeTile(
                                       title: "Temporary",
                                       value: value.jobTypeValue,
@@ -582,12 +527,10 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                                       value: value.experienceLevelVal,
                                       selectedValue: "All Experience Level",
                                       onTap: () {
-                                        value.experienceLevel(
-                                            "All Experience Level");
+                                        value.experienceLevel("All Experience Level");
                                       },
                                     ),
-                                    divider(
-                                        color: MyColors.grey.withOpacity(.40)),
+                                    divider(color: MyColors.grey.withOpacity(.40)),
                                     jobTypeTile(
                                       title: "Entry Level",
                                       value: value.experienceLevelVal,
@@ -596,8 +539,7 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                                         value.experienceLevel("Enter Level");
                                       },
                                     ),
-                                    divider(
-                                        color: MyColors.grey.withOpacity(.40)),
+                                    divider(color: MyColors.grey.withOpacity(.40)),
                                     jobTypeTile(
                                       title: "Mid Level",
                                       value: value.experienceLevelVal,
@@ -607,8 +549,7 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                                       },
                                     ),
 
-                                    divider(
-                                        color: MyColors.grey.withOpacity(.40)),
+                                    divider(color: MyColors.grey.withOpacity(.40)),
                                     jobTypeTile(
                                       title: "Senior Level",
                                       value: value.experienceLevelVal,
@@ -629,14 +570,11 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
 
                       /// display image
 
-                      uploadPhotoCard(context,
-                          isUpdate: widget.isUpdate,
-                          url: widget.jobPosModel?.uploadPhoto),
+                      uploadPhotoCard(context, isUpdate: widget.isUpdate, url: widget.jobPosModel?.uploadPhoto),
                       SizedBox(height: 20),
                       Global.userModel?.automateMsgBtn == 0
                           ? CommonText(
-                              text:
-                                  "Kindly enable automate message for better experience",
+                              text: "Kindly enable automate message for better experience",
                               fontSize: 12,
                               fontColor: MyColors.blue,
                             )
@@ -649,15 +587,13 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                                 ),
                                 SizedBox(height: 10),
                                 CommonText(
-                                  text:
-                                      "Automated reply sent when candidate apply",
+                                  text: "Automated reply sent when candidate apply",
                                   fontSize: 13,
                                   fontColor: MyColors.grey,
                                 ),
                                 SizedBox(height: 10),
                                 CommonText(
-                                  text:
-                                      "Ask screening questions to speed up process",
+                                  text: "Ask screening questions to speed up process",
                                   fontSize: 13,
                                   fontColor: MyColors.grey,
                                 ),
@@ -688,8 +624,7 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                                 ),
                                 SizedBox(height: 10),
                                 CommonText(
-                                  text:
-                                      "This will be sent the morning after rejecting a candidate",
+                                  text: "This will be sent the morning after rejecting a candidate",
                                   fontSize: 13,
                                   fontColor: MyColors.grey,
                                 ),
@@ -741,17 +676,15 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                               ],
                             ),
                       SizedBox(height: 20),
-                      BlocConsumer<JobPositionBloc, JobPosState>(
-                          listener: (context, state) {
+                      BlocConsumer<JobPositionBloc, JobPosState>(listener: (context, state) {
                         var bottomNav = context.read<BottomBloc>();
 
                         if (state is JobErrorState) {
                           showToast(state.error);
                         }
                         if (state is JobPosLoaded) {
-                          bottomNav.add(SetScreenEvent(true,
-                              screenName: JobOpeningScreen(
-                                  companyModel: widget.companyModel)));
+                          bottomNav.add(
+                              SetScreenEvent(true, screenName: JobOpeningScreen(companyModel: widget.companyModel)));
                           AppRoutes.push(context, BottomNavScreen());
                         }
                       }, builder: (context, state) {
@@ -759,54 +692,39 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                         return CustomIconButton(
                           image: MyImages.arrowWhite,
                           loading: state is JobPosLoading ? true : false,
-                          title: widget.isUpdate
-                              ? "Edit Job Position"
-                              : "Post Job Position",
+                          title: widget.isUpdate ? "Edit Job Position" : "Post Job Position",
                           backgroundColor: MyColors.blue,
                           fontColor: MyColors.white,
                           borderColor: MyColors.blue,
                           onclick: () async {
-                            print(
-                                "ID ++++++++++++++ ||||||||||| ${context.read<CompanyBloc>().companyModel.id}");
+                            print("ID ++++++++++++++ ||||||||||| ${context.read<CompanyBloc>().companyModel.id}");
                             FocusManager.instance.primaryFocus?.unfocus();
                             if (formKey.currentState!.validate()) {
                               var value = context.read<GlobalCubit>();
                               var uploadPhoto = context.read<PickImageCubit>();
-                              String salary =
-                                  value.rangeValue.end.toStringAsFixed(0);
+                              String salary = value.rangeValue.end.toStringAsFixed(0);
                               jobPosition.add(AddJobPositionEvent(
                                 companyId: widget.companyModel?.id.toString(),
                                 isUpdate: widget.isUpdate ? true : false,
-                                id: widget.isUpdate
-                                    ? widget.jobPosModel?.id.toString()
-                                    : "",
+                                id: widget.isUpdate ? widget.jobPosModel?.id.toString() : "",
                                 designation: designation.text,
-                                applicationReceivedContent:
-                                    applicationReceivedContent.text,
-                                applicationReceivedSubject:
-                                    applicationReceivedSubject.text,
+                                applicationReceivedContent: applicationReceivedContent.text,
+                                applicationReceivedSubject: applicationReceivedSubject.text,
                                 areaDistance: value.range.toStringAsFixed(0),
-                                disqualifiedReviewContent:
-                                    disqualifiedReviewContent.text,
-                                disqualifiedReviewSubject:
-                                    disqualifiedReviewSubject.text,
+                                disqualifiedReviewContent: disqualifiedReviewContent.text,
+                                disqualifiedReviewSubject: disqualifiedReviewSubject.text,
                                 experienceLevel: value.experienceLevelVal,
                                 jobDetails: jobDetails.text,
                                 jobsType: value.jobTypeValue,
                                 requirements: requirements.text,
                                 responsibility: responsibility.text,
                                 salaries: salary,
-                                shortlistedReviewContent:
-                                    shortlistedReviewContent.text,
-                                shortlistedReviewSubject:
-                                    shortlistedReviewSubject.text,
+                                shortlistedReviewContent: shortlistedReviewContent.text,
+                                shortlistedReviewSubject: shortlistedReviewSubject.text,
                                 topSkills: value.skills,
                                 uploadPhoto: uploadPhoto.imgUrl,
                               ));
-                              AppRoutes.push(
-                                  context,
-                                  JobOpeningScreen(
-                                      companyModel: widget.companyModel));
+                              AppRoutes.push(context, JobOpeningScreen(companyModel: widget.companyModel));
 
                               // jobPosition.add(LoadJobPosListEvent());
                             } else {

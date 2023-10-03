@@ -6,7 +6,7 @@ class MyColors {
   static Color grey = Colors.grey;
   // static Color blue = Colors.blue;
   static Color green = Colors.green;
-  static Color lightRed = Colors.redAccent;
+  static Color darkRed = const Color(0xFFD80027);
   static Color red = Colors.red.shade700;
   static Color lightBlue = Colors.blue.withOpacity(.40);
   static Color transparent = const Color(0x00000000);

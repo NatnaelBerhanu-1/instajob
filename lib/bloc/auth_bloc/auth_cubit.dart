@@ -23,6 +23,7 @@ import 'package:insta_job/screens/auth_screen/verify_code_screen.dart';
 import 'package:insta_job/screens/insta_recruit/became_an_employeer.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/bottom_navigation_screen.dart';
 import 'package:insta_job/screens/insta_recruit/membership_screen.dart';
+import 'package:insta_job/utils/my_colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../company_bloc/company_bloc.dart';
@@ -33,8 +34,7 @@ class AuthCubit extends Cubit<AuthInitialState> {
   final CompanyBloc companyBloc;
   final BottomBloc user;
 
-  AuthCubit(this.companyBloc, this.user,
-      {required this.sharedPreferences, required this.authRepository})
+  AuthCubit(this.companyBloc, this.user, {required this.sharedPreferences, required this.authRepository})
       : super(AuthInitialState());
   String userName = "";
   String companyName = "";
@@ -79,22 +79,18 @@ class AuthCubit extends Cubit<AuthInitialState> {
     }
     if (response.response.statusCode == 200) {
       // loading(value: true);
-      await sharedPreferences.setString(
-          "user", jsonEncode(response.response.data['data']));
+      await sharedPreferences.setString("user", jsonEncode(response.response.data['data']));
       var userModel = UserModel.fromJson(response.response.data['data']);
       Global.userModel = userModel;
       emit(AuthState(userModel: userModel));
       companyBloc.add(LoadCompanyListEvent());
       var agree = sharedPreferences.getBool('isAgree');
       if (agree == true) {
-        navigationKey.currentState?.pushAndRemoveUntil(
-            MaterialPageRoute(builder: (_) => const BottomNavScreen()),
-            (route) => false);
+        navigationKey.currentState
+            ?.pushAndRemoveUntil(MaterialPageRoute(builder: (_) => const BottomNavScreen()), (route) => false);
       } else {
         navigationKey.currentState?.pushAndRemoveUntil(
-            MaterialPageRoute(
-                builder: (_) => const MemberShipScreen(isAgreement: true)),
-            (route) => false);
+            MaterialPageRoute(builder: (_) => const MemberShipScreen(isAgreement: true)), (route) => false);
       }
     } else {
       emit(ErrorState("Something went wrong"));
@@ -108,22 +104,19 @@ class AuthCubit extends Cubit<AuthInitialState> {
     bool isUser = false,
   }) async {
     emit(AuthLoadingState());
-    ApiResponse response = await authRepository.loginData(
-        email: email, password: password, isUser: isUser);
+    ApiResponse response = await authRepository.loginData(email: email, password: password, isUser: isUser);
     if (response.response.statusCode == 500) {
       emit(ErrorState("Something went wrong"));
     }
     if (response.response.statusCode == 200) {
-      await sharedPreferences.setString(
-          "user", jsonEncode(response.response.data['data']));
+      await sharedPreferences.setString("user", jsonEncode(response.response.data['data']));
       var userModel = UserModel.fromJson(response.response.data['data']);
       Global.userModel = userModel;
       print('user ----------        ${userModel.id}  ');
       emit(AuthState(userModel: userModel));
       companyBloc.add(LoadCompanyListEvent());
-      navigationKey.currentState?.pushAndRemoveUntil(
-          MaterialPageRoute(builder: (_) => const BottomNavScreen()),
-          (route) => false);
+      navigationKey.currentState
+          ?.pushAndRemoveUntil(MaterialPageRoute(builder: (_) => const BottomNavScreen()), (route) => false);
       context.read<GlobalCubit>().changeIndex(1);
     }
     if (response.response.statusCode == 400) {
@@ -158,12 +151,9 @@ class AuthCubit extends Cubit<AuthInitialState> {
     // emit(AuthInitialState());
   }
 
-  void _onVerificationCompletedRegister(
-      PhoneAuthCredential phoneAuthCredential, BuildContext context) async {
+  void _onVerificationCompletedRegister(PhoneAuthCredential phoneAuthCredential, BuildContext context) async {
     var type = sharedPreferences.getString("type");
-    FirebaseAuth.instance
-        .signInWithCredential(phoneAuthCredential)
-        .then((value) async {
+    FirebaseAuth.instance.signInWithCredential(phoneAuthCredential).then((value) async {
       if (value.user != null) {
         if (type == "user") {
           if (isSocialAuth) {
@@ -194,8 +184,8 @@ class AuthCubit extends Cubit<AuthInitialState> {
   validateOTP(String code, BuildContext context) async {
     emit(AuthLoadingState());
     try {
-      final PhoneAuthCredential credential = PhoneAuthProvider.credential(
-          verificationId: verificationCode, smsCode: code);
+      final PhoneAuthCredential credential =
+          PhoneAuthProvider.credential(verificationId: verificationCode, smsCode: code);
       _onVerificationCompletedRegister(credential, context);
     } catch (e) {
       emit(ErrorState(e.toString()));
@@ -225,8 +215,7 @@ class AuthCubit extends Cubit<AuthInitialState> {
       emit(ErrorState("Something went wrong"));
     }
     if (response.response.statusCode == 200) {
-      await sharedPreferences.setString(
-          "user", jsonEncode(response.response.data['data']));
+      await sharedPreferences.setString("user", jsonEncode(response.response.data['data']));
       var userModel = UserModel.fromJson(response.response.data['data']);
       Global.userModel = userModel;
       emit(AuthState(userModel: userModel));
@@ -253,8 +242,7 @@ class AuthCubit extends Cubit<AuthInitialState> {
       emit(ErrorState("Something went wrong"));
     }
     if (response.response.statusCode == 200) {
-      await sharedPreferences.setString(
-          "user", jsonEncode(response.response.data['data']));
+      await sharedPreferences.setString("user", jsonEncode(response.response.data['data']));
       var userModel = UserModel.fromJson(response.response.data['data']);
       Global.userModel = userModel;
       emit(AuthState(userModel: userModel));
@@ -283,34 +271,31 @@ class AuthCubit extends Cubit<AuthInitialState> {
         idToken: googleAuth?.idToken,
         accessToken: googleAuth?.accessToken,
       );
-      await FirebaseAuth.instance
-          .signInWithCredential(credential)
-          .then((value) async {
+      await FirebaseAuth.instance.signInWithCredential(credential).then((value) async {
         if (value.user != null) {
-          ApiResponse response =
-              await authRepository.checkUser(value.user!.email.toString());
+          ApiResponse response = await authRepository.checkUser(value.user!.email.toString());
           if (response.response.statusCode == 200) {
-            login(context,
-                email: value.user!.email,
-                isUser: type == "user" ? true : false,
-                password: value.user!.uid);
+            login(
+              context,
+              email: value.user!.email,
+              isUser: type == "user" ? true : false,
+              password: "123456",
+            );
             // navigationKey.currentState?.pushAndRemoveUntil(
             //     MaterialPageRoute(builder: (_) => const BottomNavScreen()),
             //     (route) => false);
           } else {
             userName = value.user!.displayName!;
             email = value.user!.email!;
-            password = value.user!.uid;
+            password = "123456";
             getData();
             print("_++++++++++++++++++++++ $type");
             if (type == "user") {
-              navigationKey.currentState?.pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (_) => const RegMoreInfoScreen()),
-                  (route) => false);
+              navigationKey.currentState
+                  ?.pushAndRemoveUntil(MaterialPageRoute(builder: (_) => const RegMoreInfoScreen()), (route) => false);
             } else {
-              navigationKey.currentState?.pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (_) => const BecameAnEmployer()),
-                  (route) => false);
+              navigationKey.currentState
+                  ?.pushAndRemoveUntil(MaterialPageRoute(builder: (_) => const BecameAnEmployer()), (route) => false);
             }
           }
           // registerEmp(
@@ -346,21 +331,16 @@ class AuthCubit extends Cubit<AuthInitialState> {
 
   /// facebook
   faceBookAuth({bool isUser = false}) async {
-    final LoginResult loginResult = await FacebookAuth.instance
-        .login(permissions: ['email', 'public_profile']);
+    final LoginResult loginResult = await FacebookAuth.instance.login(permissions: ['email', 'public_profile']);
 
     try {
       if (loginResult.status == LoginStatus.success) {
         final AccessToken accessToken = loginResult.accessToken!;
-        final OAuthCredential facebookCredential =
-            FacebookAuthProvider.credential(accessToken.token);
-        FirebaseAuth.instance
-            .signInWithCredential(facebookCredential)
-            .then((value) async {
+        final OAuthCredential facebookCredential = FacebookAuthProvider.credential(accessToken.token);
+        FirebaseAuth.instance.signInWithCredential(facebookCredential).then((value) async {
           print('THENN ');
           if (value.user != null) {
-            ApiResponse response =
-                await authRepository.checkUser(value.user!.email.toString());
+            ApiResponse response = await authRepository.checkUser(value.user!.email.toString());
             if (response.response.statusCode == 200) {
               // login(
               //     email: value.user!.email,
@@ -375,10 +355,7 @@ class AuthCubit extends Cubit<AuthInitialState> {
               password = value.user!.uid;
               getData();
               navigationKey.currentState?.pushAndRemoveUntil(
-                  MaterialPageRoute(
-                      builder: (_) => isUser
-                          ? const RegMoreInfoScreen()
-                          : const BecameAnEmployer()),
+                  MaterialPageRoute(builder: (_) => isUser ? const RegMoreInfoScreen() : const BecameAnEmployer()),
                   (route) => false);
             }
             // registerEmp(
@@ -425,9 +402,8 @@ class AuthCubit extends Cubit<AuthInitialState> {
         await FirebaseAuth.instance.signOut();
       }
       user.add(ResetIndex());
-      navigationKey.currentState?.pushAndRemoveUntil(
-          MaterialPageRoute(builder: (_) => const LoginScreen()),
-          (route) => false);
+      navigationKey.currentState
+          ?.pushAndRemoveUntil(MaterialPageRoute(builder: (_) => const LoginScreen()), (route) => false);
     } else {
       emit(ErrorState("Something went wrong"));
     }
@@ -442,28 +418,25 @@ class AuthCubit extends Cubit<AuthInitialState> {
     }
     if (response.response.statusCode == 200) {
       emit(SuccessState());
-      showToast("Send code on your email");
-      navigationKey.currentState?.push(MaterialPageRoute(
-          builder: (_) => const VerifyCodeScreen(isForgotPassword: true)));
+      showToast("Send code on your email", color: MyColors.black);
+      navigationKey.currentState
+          ?.push(MaterialPageRoute(builder: (_) => const VerifyCodeScreen(isForgotPassword: true)));
     }
     if (response.response.statusCode == 400) {
       emit(ErrorState("Email not register yet"));
     }
   }
 
-  checkEmailVerificationCode(
-      {required String email, required String code}) async {
+  checkEmailVerificationCode({required String email, required String code}) async {
     emit(AuthLoadingState());
-    ApiResponse response = await authRepository.checkEmailVerificationCode(
-        email: email, code: code);
+    ApiResponse response = await authRepository.checkEmailVerificationCode(email: email, code: code);
     if (response.response.statusCode == 500) {
       emit(ErrorState("Something went wrong"));
     }
     if (response.response.statusCode == 200) {
       // if (response.response.data["statusCode"] == 200) {
       emit(SuccessState());
-      navigationKey.currentState?.pushReplacement(
-          MaterialPageRoute(builder: (_) => const SetPassword()));
+      navigationKey.currentState?.pushReplacement(MaterialPageRoute(builder: (_) => const SetPassword()));
       // } else {
       //   emit(ErrorState("error"));
       // }
@@ -526,16 +499,14 @@ class AuthCubit extends Cubit<AuthInitialState> {
 
   changePassword({required String password, required String email}) async {
     emit(AuthLoadingState());
-    ApiResponse response =
-        await authRepository.changePassword(password: password, email: email);
+    ApiResponse response = await authRepository.changePassword(password: password, email: email);
     if (response.response.statusCode == 500) {
       emit(ErrorState("Something went wrong"));
     }
     if (response.response.statusCode == 200) {
       emit(SuccessState());
       showToast("Password change successfully", isError: false);
-      navigationKey.currentState?.pushReplacement(
-          MaterialPageRoute(builder: (_) => const LoginScreen()));
+      navigationKey.currentState?.pushReplacement(MaterialPageRoute(builder: (_) => const LoginScreen()));
     }
     if (response.response.statusCode == 400) {
       emit(ErrorState("${response.response.data['message']}"));

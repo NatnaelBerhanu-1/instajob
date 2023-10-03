@@ -123,7 +123,7 @@ class _SettingScreenState extends State<SettingScreen> {
                 return CustomIconButton(
                   image: MyImages.logout,
                   title: "Log Out",
-                  backgroundColor: MyColors.lightRed,
+                  backgroundColor: MyColors.darkRed,
                   fontColor: MyColors.white,
                   onclick: () {
                     buildDialog(

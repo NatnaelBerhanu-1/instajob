@@ -23,26 +23,19 @@ class CandidateTile extends StatelessWidget {
   final bool? value;
   final bool idDeny;
   final JobPosModel? appliedJobModel;
-  const CandidateTile(
-      {Key? key,
-      this.onchange,
-      this.value,
-      this.appliedJobModel,
-      this.idDeny = false})
+  const CandidateTile({Key? key, this.onchange, this.value, this.appliedJobModel, this.idDeny = false})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var tab = context.watch<GlobalCubit>();
-    return BlocBuilder<BottomBloc, BottomInitialState>(
-        builder: (context, state) {
+    return BlocBuilder<BottomBloc, BottomInitialState>(builder: (context, state) {
       return GestureDetector(
         onTap: () {
           AppRoutes.push(context, Applicants(jobPosModel: appliedJobModel));
           // context.read<BottomBloc>().add(SetScreenEvent(true,
           //     screenName: Applicants(jobPosModel: appliedJobModel)));
-          context.read<ResumeBloc>().add(UserResumeLoadedEvent(
-              userId: appliedJobModel?.userId.toString()));
+          context.read<ResumeBloc>().add(UserResumeLoadedEvent(userId: appliedJobModel?.userId.toString()));
           print("USER ID ${appliedJobModel?.userId}");
           // AppRoutes.push(context, BottomNavScreen());
         },
@@ -52,11 +45,7 @@ class CandidateTile extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(color: MyColors.lightgrey),
                 boxShadow: [
-                  BoxShadow(
-                      color: Colors.grey.withOpacity(0.10),
-                      spreadRadius: 5,
-                      blurRadius: 7,
-                      offset: Offset(2, 3))
+                  BoxShadow(color: Colors.grey.withOpacity(0.10), spreadRadius: 5, blurRadius: 7, offset: Offset(2, 3))
                 ]),
             child: Padding(
               padding: const EdgeInsets.only(top: 15, right: 10, bottom: 15),
@@ -68,12 +57,11 @@ class CandidateTile extends StatelessWidget {
                         ? SizedBox(width: 12)
                         : Checkbox(
                             visualDensity: VisualDensity.comfortable,
-                            fillColor: MaterialStateProperty.all(MyColors.blue),
+                            // fillColor: MaterialStateProperty.all(MyColors.white),
                             onChanged: onchange,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5)),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                             value: value,
-                            // activeColor: MyColors.green,
+                            activeColor: MyColors.blue,
                             // checkColor: MyColors.white,
                             side: BorderSide(color: MyColors.blue, width: 2),
                           ),
@@ -86,8 +74,8 @@ class CandidateTile extends StatelessWidget {
                           children: [
                             CircleAvatar(
                               radius: 20,
-                              backgroundImage: CachedNetworkImageProvider(
-                                  "${EndPoint.imageBaseUrl}${appliedJobModel?.uploadPhoto}"),
+                              backgroundImage:
+                                  CachedNetworkImageProvider("${EndPoint.imageBaseUrl}${appliedJobModel?.uploadPhoto}"),
                             ),
                             SizedBox(width: 10),
                             Column(
@@ -124,8 +112,7 @@ class CandidateTile extends StatelessWidget {
                           percent: 0.87,
                           center: Text(
                             "90% Match",
-                            style:
-                                TextStyle(fontSize: 12, color: MyColors.blue),
+                            style: TextStyle(fontSize: 12, color: MyColors.blue),
                           ),
                           barRadius: Radius.circular(5),
                           progressColor: Colors.blue.shade100,

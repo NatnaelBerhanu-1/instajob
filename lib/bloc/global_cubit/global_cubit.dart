@@ -169,7 +169,7 @@ class GlobalCubit extends Cubit<InitialState> {
   onSelected(bool selected, value, {String? email}) {
     if (selected == true) {
       list.add(value);
-      _eList.add(email!);
+      _eList.add(email ?? "");
       emailList = _eList.toSet().toList();
       print("@@@@@@@@ $_eList");
       print("77777777 $emailList");

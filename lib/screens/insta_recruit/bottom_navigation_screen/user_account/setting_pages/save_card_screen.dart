@@ -15,12 +15,9 @@ import '../../../../../bloc/global_cubit/global_state.dart';
 import '../../../../../utils/my_colors.dart';
 import '../../../../../widgets/custom_button/custom_btn.dart';
 
-
-
 class SaveCardScreen extends StatefulWidget {
   final bool isChoosePayment;
-  const SaveCardScreen({Key? key, this.isChoosePayment = false})
-      : super(key: key);
+  const SaveCardScreen({Key? key, this.isChoosePayment = false}) : super(key: key);
 
   @override
   State<SaveCardScreen> createState() => _SaveCardScreenState();
@@ -36,9 +33,7 @@ class _SaveCardScreenState extends State<SaveCardScreen> {
         appBar: PreferredSize(
             preferredSize: Size(double.infinity, kToolbarHeight),
             child: CustomAppBar(
-              title: widget.isChoosePayment
-                  ? "Choose Payment Option"
-                  : "Saved Cards",
+              title: widget.isChoosePayment ? "Choose Payment Option" : "Saved Cards",
               leadingImage: MyImages.arrowBlueLeft,
               onTap: () {
                 // AppRoutes.push(context, JobBoardsScreen());
@@ -60,14 +55,13 @@ class _SaveCardScreenState extends State<SaveCardScreen> {
                       },
                       icon: Icon(
                         Icons.delete,
-                        color: MyColors.lightRed,
+                        color: MyColors.darkRed,
                       )),
             )),
         body: Padding(
           padding: const EdgeInsets.all(20.0),
           child: SingleChildScrollView(
-            child: BlocBuilder<GlobalCubit, InitialState>(
-                builder: (context, state) {
+            child: BlocBuilder<GlobalCubit, InitialState>(builder: (context, state) {
               return Column(
                 children: [
                   PaymentTile(

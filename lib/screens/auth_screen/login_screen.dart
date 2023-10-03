@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,12 +7,12 @@ import 'package:insta_job/bloc/validation/validation_state.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/screens/auth_screen/forgot_password.dart';
 import 'package:insta_job/screens/auth_screen/register_screen.dart';
-import 'package:insta_job/screens/insta_recruit/user_type_screen.dart';
 import 'package:insta_job/screens/insta_recruit/welcome_screen.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 import 'package:insta_job/widgets/custom_chip.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../bloc/auth_bloc/auth_cubit.dart';
 import '../../bloc/auth_bloc/auth_state.dart';
@@ -207,10 +207,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                     state is AuthLoadingState ? true : false,
                                 borderColor: MyColors.blue,
                                 iconColor: MyColors.white,
-                                onclick: () {
+                                onclick: () async {
                                   FocusManager.instance.primaryFocus?.unfocus();
                                   if (formKey.currentState!.validate()) {
-                                    if (userType == "user") {
+                                    var pref =
+                                        await SharedPreferences.getInstance();
+                                    var type = pref.getString("type");
+
+                                    if (type == "user") {
                                       SocialAuth.loginWithEmail(context,
                                           email: email.text,
                                           password: password.text,
