@@ -93,26 +93,26 @@ class _SettingScreenState extends State<SettingScreen> {
                 leadingImage: MyImages.user,
                 title: "Change Account Information",
               ),
-              SizedBox(height: 10),
-              Global.userModel?.type == "user"
-                  ? SizedBox()
-                  : SettingTile(
-                      onTap: () {
-                        AppRoutes.push(context, SaveCardScreen());
-                      },
-                      leadingImage: MyImages.visaCardBlue,
-                      title: "Saved Cards",
-                    ),
-              SizedBox(height: 10),
-              Global.userModel?.type == "user"
-                  ? SizedBox()
-                  : SettingTile(
-                      onTap: () {
-                        buildDialog(context, CustomDialog());
-                      },
-                      leadingImage: MyImages.cancelSub,
-                      title: "Cancel Subscription",
-                    ),
+              // SizedBox(height: 10),
+              // Global.userModel?.type == "user"
+              //     ? SizedBox()
+              //     : SettingTile(
+              //         onTap: () {
+              //           AppRoutes.push(context, SaveCardScreen());
+              //         },
+              //         leadingImage: MyImages.visaCardBlue,
+              //         title: "Saved Cards",
+              //       ),
+              // SizedBox(height: 10),
+              // Global.userModel?.type == "user"
+              //     ? SizedBox()
+              //     : SettingTile(
+              //         onTap: () {
+              //           buildDialog(context, CustomDialog());
+              //         },
+              //         leadingImage: MyImages.cancelSub,
+              //         title: "Cancel Subscription",
+              //       ),
               Spacer(),
               BlocConsumer<AuthCubit, AuthInitialState>(
                   listener: (context, state) {

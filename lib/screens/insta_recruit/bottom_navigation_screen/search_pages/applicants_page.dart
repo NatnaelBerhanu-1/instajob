@@ -119,6 +119,23 @@ class _ApplicantsState extends State<Applicants> {
                       builder: (context, state) {
                     return Row(
                       children: [
+                        tab.selectedTab == 4
+                            ? SizedBox()
+                            : Expanded(
+                            child: CustomButton(
+                              height:
+                              MediaQuery.of(context).size.height * 0.055,
+                              bgColor: MyColors.darkRed,
+                              title: "Deny",
+                              onTap: () {
+                                context.read<JobPositionBloc>().add(
+                                    SortListOrDenyEvent(
+                                        appliedListId:
+                                        "${widget.jobPosModel?.appliedId}",
+                                        status: "denied"));
+                                AppRoutes.pop(context);
+                              },
+                            )), tab.selectedTab == 4 ? SizedBox() : SizedBox(width: 15),
                         Expanded(
                             child: CustomButton(
                           height: MediaQuery.of(context).size.height * 0.055,
@@ -156,24 +173,7 @@ class _ApplicantsState extends State<Applicants> {
                                   AppRoutes.pop(context);
                                 },
                               )),
-                        tab.selectedTab == 4 ? SizedBox() : SizedBox(width: 15),
-                        tab.selectedTab == 4
-                            ? SizedBox()
-                            : Expanded(
-                                child: CustomButton(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.055,
-                                bgColor: MyColors.darkRed,
-                                title: "Deny",
-                                onTap: () {
-                                  context.read<JobPositionBloc>().add(
-                                      SortListOrDenyEvent(
-                                          appliedListId:
-                                              "${widget.jobPosModel?.appliedId}",
-                                          status: "denied"));
-                                  AppRoutes.pop(context);
-                                },
-                              )),
+
                       ],
                     );
                   }),

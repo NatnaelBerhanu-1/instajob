@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/auth_bloc/auth_cubit.dart';
@@ -10,6 +12,7 @@ import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_button/custom_all_small_button.dart';
 import 'package:insta_job/widgets/custom_button/custom_btn.dart';
+import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:insta_job/widgets/custom_divider.dart';
 
@@ -35,6 +38,16 @@ class WelcomeScreen extends StatelessWidget {
                 // color: MyColors.blue,
                 child: Stack(
                   children: [
+                   GestureDetector(
+                     onTap: (){
+                       log('0000');
+                       Navigator.pop(context);
+                     },
+                     child: Padding(
+                       padding: const EdgeInsets.only(top: 35,left: 5),
+                       child: Image.asset(MyImages.backArrow,height: 40,),
+                     ),
+                   ),
                     Image.asset(
                       MyImages.bgCurve,
                       color: MyColors.grey.withOpacity(.10),
@@ -100,7 +113,7 @@ class WelcomeScreen extends StatelessWidget {
                       borderColor: MyColors.blue,
                       iconColor: MyColors.blue,
                       onclick: () {
-                        AppRoutes.pushAndRemoveUntil(context, RegisterScreen());
+                        AppRoutes.push(context, RegisterScreen());
                       },
                     ),
                     SizedBox(height: 30),

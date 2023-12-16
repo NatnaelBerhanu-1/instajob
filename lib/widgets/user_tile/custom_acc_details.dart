@@ -11,6 +11,7 @@ class CustomAccDetails extends StatelessWidget {
   final double? width;
   final int? index;
   final int? selectedIndex;
+  final bool isLock;
   final VoidCallback? onTap;
   const CustomAccDetails(
       {Key? key,
@@ -20,7 +21,7 @@ class CustomAccDetails extends StatelessWidget {
       this.width,
       this.index,
       this.selectedIndex,
-      this.onTap})
+      this.onTap, this.isLock=false})
       : super(key: key);
 
   @override
@@ -29,7 +30,7 @@ class CustomAccDetails extends StatelessWidget {
       onTap: onTap,
       child: Container(
         height: height,
-        width: width,
+        // width: width,
         decoration: BoxDecoration(
             color: index == selectedIndex ? MyColors.blue : MyColors.white,
             boxShadow: [
@@ -40,9 +41,16 @@ class CustomAccDetails extends StatelessWidget {
               )
             ]),
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 35.0),
+          padding: const EdgeInsets.only(bottom: 40),
           child: Column(
             children: [
+             isLock?  Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Align(
+                  alignment: Alignment.topLeft,
+                    child: Icon(Icons.lock,color: MyColors.blue,size: 20)),
+              ):const SizedBox(height: 35),
+              // const SizedBox(height: 10),
               ImageButton(
                 image: img,
                 color: index == selectedIndex ? MyColors.white : MyColors.blue,
@@ -51,7 +59,7 @@ class CustomAccDetails extends StatelessWidget {
                 text: title,
                 fontColor:
                     index == selectedIndex ? MyColors.white : MyColors.userFont,
-                fontSize: 13,
+                fontSize: 12,
                 fontWeight: FontWeight.normal,
               ),
             ],

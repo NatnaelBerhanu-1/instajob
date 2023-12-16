@@ -68,9 +68,11 @@ class _SaveJobsScreenState extends State<SaveJobsScreen> {
                       ),
                       Expanded(
                         child: BlocBuilder<JobPositionBloc, JobPosState>(
+                          buildWhen: (p,c)=>c is SaveJobPosLoaded   ,
                             builder: (context, state) {
+                              print('QQQQQQQQQQ $state');
                           return TabBarView(children: [
-                            if (state is JobPosLoaded) ...[
+                            if (state is SaveJobPosLoaded) ...[
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: GridView.builder(

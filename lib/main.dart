@@ -31,6 +31,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           scaffoldBackgroundColor: MyColors.white,
           fontFamily: "Inter",
+          useMaterial3: false,
           colorScheme:
               ColorScheme.fromSwatch().copyWith(secondary: Colors.white),
         ),

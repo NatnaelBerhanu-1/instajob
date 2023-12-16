@@ -156,22 +156,23 @@ class _HomePageState extends State<HomePage> {
                                   padding: const EdgeInsets.only(left: 15.0),
                                   child: CustomAccDetails(
                                     onTap: () async {
-                                      var pref =
-                                          await SharedPreferences.getInstance();
-                                      var isGetStarted =
-                                          pref.getBool("isGetStarted");
-                                      if (isGetStarted == true) {
-                                        AppRoutes.push(
-                                            context, CvTemplateScreen());
-                                      } else {
-                                        context
-                                            .read<GlobalCubit>()
-                                            .changeIndex(0);
-                                        AppRoutes.push(
-                                            context, OnBoardingScreen());
-                                      }
+                                      // var pref =
+                                      //     await SharedPreferences.getInstance();
+                                      // var isGetStarted =
+                                      //     pref.getBool("isGetStarted");
+                                      // if (isGetStarted == true) {
+                                      //   AppRoutes.push(
+                                      //       context, CvTemplateScreen());
+                                      // } else {
+                                      //   context
+                                      //       .read<GlobalCubit>()
+                                      //       .changeIndex(0);
+                                      //   AppRoutes.push(
+                                      //       context, OnBoardingScreen());
+                                      // }
                                     },
                                     index: 0,
+                                    isLock: true,
                                     selectedIndex: selectedIndex,
                                     width: double.infinity,
                                     img: MyImages.automateMsg,
@@ -206,19 +207,22 @@ class _HomePageState extends State<HomePage> {
                               Expanded(
                                 child: CustomAccDetails(
                                   onTap: () {
-                                    context.read<GlobalCubit>().changeIndex(2);
+
                                     if (Global.userModel?.type == "user") {
+                                      context.read<GlobalCubit>().changeIndex(2);
                                       context
                                           .read<CareerLearningBloc>()
                                           .getCareerClusterList();
                                       AppRoutes.push(
                                           context, CareerClusterScreen());
                                     } else {
-                                      AppRoutes.push(
-                                          context, JobBoardsScreen());
+                                      // AppRoutes.push(
+                                      //     context, JobBoardsScreen());
                                     }
                                   },
                                   index: 2,
+                                  isLock: Global.userModel?.type == "user"
+                                      ?false:true,
                                   selectedIndex: selectedIndex,
                                   width: double.infinity,
                                   img: Global.userModel?.type == "user"
@@ -268,16 +272,22 @@ class _HomePageState extends State<HomePage> {
                             ],
                           ),
                           SizedBox(height: 25),
-                          CustomAccDetails(
-                            onTap: () {
-                              context.read<GlobalCubit>().changeIndex(4);
-                              AppRoutes.push(context, SettingScreen());
-                            },
-                            index: 4,
-                            selectedIndex: selectedIndex,
-                            width: double.infinity,
-                            img: MyImages.settings,
-                            title: "Settings",
+                          Row(
+                            children: [
+                              Expanded(
+                                child: CustomAccDetails(
+                                  onTap: () {
+                                    context.read<GlobalCubit>().changeIndex(4);
+                                    AppRoutes.push(context, SettingScreen());
+                                  },
+                                  index: 4,
+                                  selectedIndex: selectedIndex,
+                                  width: double.infinity,
+                                  img: MyImages.settings,
+                                  title: "Settings",
+                                ),
+                              ),
+                            ],
                           ),
                           SizedBox(height: 25),
                         ],

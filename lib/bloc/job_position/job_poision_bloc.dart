@@ -35,7 +35,7 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
       List<JobPosModel> jobPosList = (response.response.data['data'] as List)
           .map((e) => JobPosModel.fromJson(e))
           .toList();
-      emit(JobPosLoaded(jobPosList));
+      emit(SaveJobPosLoaded(jobPosList));
       return jobPosList;
     } else {
       emit(const JobErrorState("Data not found"));
@@ -196,7 +196,7 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
     on<SavedJobPositionListEvent>((event, emit) async {
       emit(JobPosLoading());
       List<JobPosModel> jobPosList = await _getSaveJobPosList(emit);
-      emit(JobPosLoaded(jobPosList));
+      emit(SaveJobPosLoaded(jobPosList));
       if (jobPosList.isEmpty) {
         emit(const JobErrorState("Data not found"));
       }

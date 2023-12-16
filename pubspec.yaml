@@ -47,7 +47,7 @@ dependencies:
   google_maps_flutter: ^2.2.5
   syncfusion_flutter_pdfviewer: any
   file_picker:
-  open_file_safe_plus: ^0.0.2
+  open_file_safe_plus: ^0.0.4
   path_provider: ^2.0.14
   pdf: ^3.10.1
   printing: ^5.10.3

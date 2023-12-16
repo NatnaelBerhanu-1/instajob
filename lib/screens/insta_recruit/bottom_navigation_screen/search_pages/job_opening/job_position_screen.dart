@@ -48,14 +48,16 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      onPopInvoked: (val) async {
         if (Global.userModel?.type == "user") {
+          context.read<BottomBloc>().add(
+              SetScreenEvent(true, screenName: SearchJobsScreen()));
+          context.read<GlobalCubit>().changeIndex(1);
           context.read<JobPositionBloc>().add(LoadJobPosListEvent());
         }
-        context.read<JobPositionBloc>().add(SavedJobPositionListEvent());
-        context.read<JobPositionBloc>().add(AppliedJobListEvent());
-        return true;
+        // context.read<JobPositionBloc>().add(SavedJobPositionListEvent());
+        // context.read<JobPositionBloc>().add(AppliedJobListEvent());
       },
       child: Scaffold(
           body: SafeArea(
@@ -196,6 +198,7 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                                                     child: CustomButton(
                                                   title: "Edit Listing",
                                                   onTap: () {
+
                                                     context
                                                         .read<BottomBloc>()
                                                         .add(SetScreenEvent(

@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -58,7 +57,7 @@ class Global {
     if (file == null) return;
 
     print("Path : ${file.path}");
-    await OpenFilePlus.open(file.path);
+    await OpenFileSafePlus.open(file.path);
   }
 }
 

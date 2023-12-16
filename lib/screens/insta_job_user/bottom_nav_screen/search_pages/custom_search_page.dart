@@ -61,8 +61,11 @@ class CompanyJobChip extends StatelessWidget {
             Expanded(
                 child: selectedSearchIndex == 1
                     ? BlocBuilder<JobPositionBloc, JobPosState>(
+                  buildWhen: (previous,current)=> current is JobPosLoaded,
                         builder: (context, state) {
+
                         if (state is JobPosLoaded) {
+                          print('&&&&&&&&&&&&&&&&&&&&&&& ${state.jobPosList.length}');
                           return ListView.builder(
                               shrinkWrap: true,
                               itemCount: state.jobPosList.length,

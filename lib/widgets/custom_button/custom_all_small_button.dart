@@ -22,8 +22,10 @@ class CustomCheckbox extends StatelessWidget {
         Expanded(
           flex: 0,
           child: Checkbox(
+
             visualDensity: VisualDensity.comfortable,
-            fillColor: color ?? MaterialStateProperty.all(MyColors.blue),
+            // fillColor: color ?? MaterialStateProperty.all(MyColors.blue),
+            activeColor: MyColors.blue,
             onChanged: onchanged,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
