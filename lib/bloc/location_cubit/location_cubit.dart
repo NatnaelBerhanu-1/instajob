@@ -14,9 +14,10 @@ import 'package:permission_handler/permission_handler.dart';
 
 class LocationCubit extends Cubit<LocationInitial> {
   final JobPositionRepository jobPosRepository;
-  final JobPositionBloc jobPositionBloc;
-  LocationCubit(this.jobPosRepository, this.jobPositionBloc)
-      : super(LocationInitial());
+
+  LocationCubit(this.jobPosRepository) : super(LocationInitial());
+
+  /// Search Location ///
   Future<List<Prediction>> getLocation(input) async {
     ApiResponse response = await jobPosRepository.getLocation(input);
     if (response.response.statusCode == 200) {
@@ -33,6 +34,7 @@ class LocationCubit extends Cubit<LocationInitial> {
 
   LocationModel location = LocationModel();
   String address = "";
+
   getAddress(val) {
     address = val;
     emit(LocationInitial());
@@ -77,7 +79,7 @@ class LocationCubit extends Cubit<LocationInitial> {
           ),
           infoWindow: InfoWindow(title: jobData.designation));
       setOfMarker.add(marker);
-      emit(LocationInitial());
+      emit(OnMapCreate(setOfMarker: setOfMarker));
     }
   }
 

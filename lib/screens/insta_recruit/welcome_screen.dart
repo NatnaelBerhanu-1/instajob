@@ -38,16 +38,31 @@ class WelcomeScreen extends StatelessWidget {
                 // color: MyColors.blue,
                 child: Stack(
                   children: [
-                   GestureDetector(
-                     onTap: (){
-                       log('0000');
-                       Navigator.pop(context);
-                     },
-                     child: Padding(
-                       padding: const EdgeInsets.only(top: 35,left: 5),
-                       child: Image.asset(MyImages.backArrow,height: 40,),
-                     ),
-                   ),
+                    Positioned(
+                        top: 30,
+                        child: IconButton(
+                            onPressed: () {
+                              log('0000');
+                              navigationKey.currentState?.pop();
+                              // Navigator.pop(context);
+                            },
+                            icon: Icon(Icons.arrow_back))),
+                    // Container(
+                    //   color: Colors.black,
+                    //   child: InkWell(
+                    //     onTap: () {
+                    //       log('0000');
+                    //       Navigator.pop(context);
+                    //     },
+                    //     child: Padding(
+                    //       padding: const EdgeInsets.only(top: 35, left: 5),
+                    //       child: Image.asset(
+                    //         MyImages.backArrow,
+                    //         height: 40,
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                     Image.asset(
                       MyImages.bgCurve,
                       color: MyColors.grey.withOpacity(.10),

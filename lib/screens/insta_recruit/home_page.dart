@@ -121,9 +121,12 @@ class _HomePageState extends State<HomePage> {
                                   height: 150,
                                   color: MyColors.transparent,
                                   child: CachedNetworkImage(
+                                    fadeInDuration:
+                                        const Duration(milliseconds: 250),
                                     imageUrl:
                                         "${EndPoint.imageBaseUrl}${Global.userModel?.uploadPhoto}",
                                     fit: BoxFit.cover,
+                                    filterQuality: FilterQuality.high,
                                     placeholder: (val, _) {
                                       return Center(
                                           child: CircularProgressIndicator());
@@ -207,9 +210,10 @@ class _HomePageState extends State<HomePage> {
                               Expanded(
                                 child: CustomAccDetails(
                                   onTap: () {
-
                                     if (Global.userModel?.type == "user") {
-                                      context.read<GlobalCubit>().changeIndex(2);
+                                      context
+                                          .read<GlobalCubit>()
+                                          .changeIndex(2);
                                       context
                                           .read<CareerLearningBloc>()
                                           .getCareerClusterList();
@@ -222,7 +226,8 @@ class _HomePageState extends State<HomePage> {
                                   },
                                   index: 2,
                                   isLock: Global.userModel?.type == "user"
-                                      ?false:true,
+                                      ? false
+                                      : true,
                                   selectedIndex: selectedIndex,
                                   width: double.infinity,
                                   img: Global.userModel?.type == "user"

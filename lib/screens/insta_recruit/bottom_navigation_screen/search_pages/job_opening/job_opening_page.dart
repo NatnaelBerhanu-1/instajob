@@ -25,6 +25,7 @@ import '../../../../../bloc/bottom_bloc/bottom_bloc.dart';
 
 class JobOpeningScreen extends StatefulWidget {
   final CompanyModel? companyModel;
+
   const JobOpeningScreen({Key? key, this.companyModel}) : super(key: key);
 
   @override
@@ -34,16 +35,20 @@ class JobOpeningScreen extends StatefulWidget {
 class _JobOpeningScreenState extends State<JobOpeningScreen> {
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        context.read<BottomBloc>().add(SetScreenEvent(AssignCompany()));
-        return true;
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (val) async {
+        print('============ $val');
+        context.read<CompanyBloc>().add(LoadCompanyListEvent());
+        context
+            .read<BottomBloc>()
+            .add(SetScreenEvent(false, screenName: AssignCompany()));
       },
       child: Scaffold(
+        backgroundColor: Colors.white,
         appBar: PreferredSize(
             preferredSize: Size(double.infinity, 90),
-            child: Padding(
-              padding: const EdgeInsets.only(top: 42.0, bottom: 10),
+            child: SafeArea(
               child: Row(
                 // elevation: 0,
                 // leadingWidth: 50,
@@ -129,80 +134,82 @@ class _JobOpeningScreenState extends State<JobOpeningScreen> {
                 ],
               ),
             )),
-        body: Column(
-          children: [
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
-              child: Container(
-                height: 180,
-                alignment: Alignment.bottomLeft,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    // color: MyColors.green,
-                    borderRadius: BorderRadius.circular(10),
-                    image: DecorationImage(
-                        image: CachedNetworkImageProvider(
-                            "${EndPoint.imageBaseUrl}${widget.companyModel?.uploadPhoto}"),
-                        // image: AssetImage(MyImages.staffMeeting),
-                        fit: BoxFit.cover)),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CommonText(
-                        text: "${widget.companyModel?.companyName}",
-                        fontColor: MyColors.white,
-                        fontSize: 20,
-                      ),
-                      SizedBox(height: 10),
-                      CommonText(
-                        text:
-                            "It's a long established fact that reader will directly by the",
-                        fontColor: MyColors.white,
-                        fontSize: 13,
-                      ),
-                      CommonText(
-                        text:
-                            "readable content of page when looking at it's layout",
-                        fontColor: MyColors.white,
-                        fontSize: 13,
-                      ),
-                    ],
+        body: Container(
+          child: Column(
+            children: [
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
+                child: Container(
+                  height: 180,
+                  alignment: Alignment.bottomLeft,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      // color: MyColors.green,
+                      borderRadius: BorderRadius.circular(10),
+                      image: DecorationImage(
+                          image: CachedNetworkImageProvider(
+                              "${EndPoint.imageBaseUrl}${widget.companyModel?.uploadPhoto}"),
+                          // image: AssetImage(MyImages.staffMeeting),
+                          fit: BoxFit.cover)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CommonText(
+                          text: "${widget.companyModel?.companyName}",
+                          fontColor: MyColors.white,
+                          fontSize: 20,
+                        ),
+                        SizedBox(height: 10),
+                        CommonText(
+                          text:
+                              "It's a long established fact that reader will directly by the",
+                          fontColor: MyColors.white,
+                          fontSize: 13,
+                        ),
+                        CommonText(
+                          text:
+                              "readable content of page when looking at it's layout",
+                          fontColor: MyColors.white,
+                          fontSize: 13,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-            SizedBox(height: 10),
-            Expanded(
-              child: BlocBuilder<JobPositionBloc, JobPosState>(
-                  builder: (context, state) {
-                if (state is JobPosLoading) {
-                  return Center(child: CircularProgressIndicator());
-                }
-                if (state is JobErrorState) {
-                  return Center(child: Text(state.error));
-                }
-                if (state is JobPosLoaded) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 8.0, horizontal: 15),
-                    child: ListView.builder(
-                        itemCount: state.jobPosList.length,
-                        itemBuilder: (c, i) {
-                          var data = state.jobPosList[i];
-                          return JobOpeningTile(
-                              jobPosModel: data,
-                              companyModel: widget.companyModel);
-                        }),
-                  );
-                }
-                return SizedBox();
-              }),
-            )
-          ],
+              SizedBox(height: 10),
+              Expanded(
+                child: BlocBuilder<JobPositionBloc, JobPosState>(
+                    builder: (context, state) {
+                  if (state is JobPosLoading) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                  if (state is JobErrorState) {
+                    return Center(child: Text(state.error));
+                  }
+                  if (state is JobPosLoaded) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 8.0, horizontal: 15),
+                      child: ListView.builder(
+                          itemCount: state.jobPosList.length,
+                          itemBuilder: (c, i) {
+                            var data = state.jobPosList[i];
+                            return JobOpeningTile(
+                                jobPosModel: data,
+                                companyModel: widget.companyModel);
+                          }),
+                    );
+                  }
+                  return SizedBox();
+                }),
+              )
+            ],
+          ),
         ),
       ),
     );

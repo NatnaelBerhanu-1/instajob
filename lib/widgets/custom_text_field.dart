@@ -30,6 +30,7 @@ class IconTextField extends StatelessWidget {
   final bool? readOnly;
   final VoidCallback? onPressed;
   final TextInputType? keyboardType;
+
   const IconTextField({
     Key? key,
     this.label,
@@ -92,8 +93,8 @@ class IconTextField extends StatelessWidget {
           borderSide: BorderSide(color: color ?? MyColors.grey, width: 1),
         ),
         // prefixText: "+973",
-        prefixIcon: prefixIcon ?? SizedBox(),
-        suffixIcon: suffixIcon ?? SizedBox(),
+        prefixIcon: prefixIcon,
+        suffixIcon: suffixIcon,
         hintText: "$hint",
         hintStyle: TextStyle(
           color: hintColor ?? MyColors.userFont,
@@ -140,6 +141,7 @@ class CustomTextField extends StatelessWidget {
   final bool? readOnly;
   final VoidCallback? onPressed;
   final TextInputType? keyboardType;
+
   const CustomTextField({
     Key? key,
     this.label,
@@ -232,6 +234,7 @@ class CustomPhonePickerTextField extends StatelessWidget {
   final String? Function(String?)? validator;
   final ValueChanged<bool>? onInputValidated;
   final ValueChanged<PhoneNumber>? onInputChanged;
+
   CustomPhonePickerTextField(
       {Key? key,
       this.controller,
@@ -243,6 +246,7 @@ class CustomPhonePickerTextField extends StatelessWidget {
   InputBorder border = OutlineInputBorder(
       borderSide: BorderSide(color: MyColors.lightgrey, width: 1),
       borderRadius: BorderRadius.circular(10));
+
   @override
   Widget build(BuildContext context) {
     return Column(

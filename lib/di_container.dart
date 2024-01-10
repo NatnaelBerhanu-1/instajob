@@ -56,7 +56,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => JobPositionBloc(sl()));
   sl.registerLazySingleton(() => FeedBackAndAutoMsgBloc(sl()));
   sl.registerLazySingleton(() => ResumeBloc(sl()));
-  sl.registerLazySingleton(() => LocationCubit(sl(), sl()));
+  sl.registerLazySingleton(() => LocationCubit(sl()));
   sl.registerLazySingleton(() => AgoraBloc());
   sl.registerLazySingleton(() => CareerLearningBloc(sl()));
   sl.registerLazySingleton(() => InterviewCubit(sl()));

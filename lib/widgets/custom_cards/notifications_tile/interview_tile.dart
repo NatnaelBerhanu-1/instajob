@@ -11,6 +11,7 @@ import '../../../utils/my_colors.dart';
 
 class InterviewTile extends StatelessWidget {
   final bool isRecording;
+
   const InterviewTile({Key? key, this.isRecording = false}) : super(key: key);
 
   @override
@@ -21,10 +22,15 @@ class InterviewTile extends StatelessWidget {
           border: Border.all(color: MyColors.lightgrey, width: 1.2),
           color: MyColors.white,
           boxShadow: [
-            BoxShadow(color: Colors.grey.withOpacity(0.10), spreadRadius: 5, blurRadius: 7, offset: Offset(2, 3))
+            BoxShadow(
+                color: Colors.grey.withOpacity(0.10),
+                spreadRadius: 5,
+                blurRadius: 7,
+                offset: Offset(2, 3))
           ]),
       child: Padding(
-        padding: const EdgeInsets.only(right: 10, top: 15, left: 15, bottom: 15),
+        padding:
+            const EdgeInsets.only(right: 10, top: 15, left: 15, bottom: 15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -74,7 +80,7 @@ class InterviewTile extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 10),
             isRecording
                 ? Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 50.0),

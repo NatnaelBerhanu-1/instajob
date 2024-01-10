@@ -16,12 +16,28 @@ import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import '../../widgets/custom_app_bar.dart';
 import '../../widgets/custom_button/custom_btn.dart';
 
-class CoverLetterScreen extends StatelessWidget {
+class CoverLetterScreen extends StatefulWidget {
   final JobPosModel? jobPosModel;
   final CoverLetterModel coverLetterModel;
+
   const CoverLetterScreen(
       {Key? key, required this.coverLetterModel, this.jobPosModel})
       : super(key: key);
+
+  @override
+  State<CoverLetterScreen> createState() => _CoverLetterScreenState();
+}
+
+class _CoverLetterScreenState extends State<CoverLetterScreen> {
+  TextEditingController controller = TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    controller.text =
+        "Dear Hiring Manager,\nJob Title: ${widget.jobPosModel?.designation}\n${widget.coverLetterModel.previousWork}\n${widget.coverLetterModel.yourPassion}\nPlease take a moment to review my attached resume and credentials.\nSincerely\n${widget.coverLetterModel.yourName}";
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +49,7 @@ class CoverLetterScreen extends StatelessWidget {
             actions: IconButton(
                 onPressed: () {
                   String text =
-                      "Dear Hiring Manager,\nJob Title: ${jobPosModel?.designation}\n${coverLetterModel.previousWork}\n${coverLetterModel.yourPassion}\nPlease take a moment to review my attached resume and credentials.\nSincerely\n${coverLetterModel.yourName}";
+                      "Dear Hiring Manager,\nJob Title: ${widget.jobPosModel?.designation}\n${widget.coverLetterModel.previousWork}\n${widget.coverLetterModel.yourPassion}\nPlease take a moment to review my attached resume and credentials.\nSincerely\n${widget.coverLetterModel.yourName}";
                   Clipboard.setData(ClipboardData(text: text)).then((value) {
                     showToast("Copied", isError: false);
                   });
@@ -50,6 +66,10 @@ class CoverLetterScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             // mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              // TextField(
+              //   controller: controller,
+              //   maxLines: 10,
+              // ),
               CustomCommonCard(
                 borderColor: MyColors.blue,
                 child: Padding(
@@ -59,14 +79,14 @@ class CoverLetterScreen extends StatelessWidget {
                     // mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text("Dear Hiring Manager,\n"),
-                      Text("Job Title: ${jobPosModel?.designation}\n"),
-                      Text("${coverLetterModel.previousWork}\n"),
-                      Text("${coverLetterModel.yourPassion}\n"),
+                      Text("Job Title: ${widget.jobPosModel?.designation}\n"),
+                      Text("${widget.coverLetterModel.previousWork}\n"),
+                      Text("${widget.coverLetterModel.yourPassion}\n"),
                       Text(
                           "Please take a moment to review my attached resume and credentials.\n"),
                       Text("Thank you for your consideration\n"),
                       Text("Sincerely"),
-                      Text("${coverLetterModel.yourName}"),
+                      Text("${widget.coverLetterModel.yourName}"),
                     ],
                   ),
                 ),
@@ -96,7 +116,7 @@ class CoverLetterScreen extends StatelessWidget {
                   onTap: () {
                     var applyData = context.read<JobPositionBloc>();
                     applyData.add(ApplyJobEvent(Global.userModel!.cv.toString(),
-                        jobId: jobPosModel!.id.toString()));
+                        jobId: widget.jobPosModel!.id.toString()));
                   },
                 );
               }),

@@ -5,16 +5,17 @@ import 'package:insta_job/bloc/agora_bloc/agora_state.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-const String appId = '987d58b034624ccfb15d2eaf090659c9';
+const String appId = '181c4f5ccf6a49bda4f5bbcf36bc3f92';
 const String channelId = 'instaJob_channel';
 const String token =
-    "007eJxTYFDap7josfLXVQuFp7Xaz4wIsX6+esLZr3Emn7eYrXDJnG2kwGBpYZ5iapFkYGxiZmSSnJyWZGiaYpSamGZgaWBmaplsyde0K6UhkJHh5fJuRkYGCATxBRgy84pLEr3yk+KTMxLz8lJzGBgALWolHQ==";
+    "007eJxTYDCMbC9d5n36kWqmxvunXs16mdvqS3z1RL38Vok8Pd27PF6BwdLCPMXUIsnA2MTMyCQ5OS3J0DTFKDUxzcDSwMzUMtmSuXheakMgIwOj7lQmIAmGIL4AQ2ZecUmiV35SfHJGYl5eag4DAwBuyyIq";
 
 class AgoraBloc extends Cubit<AgoraInitial> {
   AgoraBloc() : super(AgoraInitial());
   RtcEngine? engine;
   int? remoteUid;
   bool localUserJoined = false;
+
   // CallModel? callModel;
 
   Future<void> initAgora() async {

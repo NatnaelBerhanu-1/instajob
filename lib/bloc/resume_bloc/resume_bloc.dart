@@ -8,6 +8,7 @@ import 'package:insta_job/repository/resume_repo.dart';
 
 class ResumeBloc extends Bloc<ResumeEvent, ResumeState> {
   final ResumeRepository resumeRepository;
+
   getResumeData(String id, Emitter emit) async {
     ApiResponse response = await resumeRepository.getResume(id: id);
     if (response.response.statusCode == 500) {
@@ -40,9 +41,8 @@ class ResumeBloc extends Bloc<ResumeEvent, ResumeState> {
         skills: event.coverLetterModel.yourTop5Skills,
         phoneNumber: event.coverLetterModel.phoneNumber.toString(),
       );
-      await getResumeData(response.response.data['data']['id'], emit);
-      print(
-          "QQQQQQQQQQQQQQ -------------  ${response.response.data['data']['id']}");
+      await getResumeData(
+          response.response.data['data']['id'].toString(), emit);
     });
     on<AddEducationEvent>((event, emit) async {
       emit(ResumeLoading());

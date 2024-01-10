@@ -17,6 +17,7 @@ import '../../custom_common_card.dart';
 
 class CustomCareerTile extends StatelessWidget {
   final ClusterDetailsModel? clusterDetailsModel;
+
   const CustomCareerTile({
     Key? key,
     this.clusterDetailsModel,
@@ -135,6 +136,7 @@ class CustomCareerTile extends StatelessWidget {
 class AppliedTile extends StatelessWidget {
   final JobPosModel? jobPosModel;
   final bool isFav;
+
   const AppliedTile({
     Key? key,
     this.isFav = false,
@@ -170,7 +172,7 @@ class AppliedTile extends StatelessWidget {
                     ),
                   ),
                   Spacer(),
-                  isFav
+                  !isFav
                       ? Icon(Icons.favorite, color: MyColors.darkRed)
                       : SizedBox(),
                 ],

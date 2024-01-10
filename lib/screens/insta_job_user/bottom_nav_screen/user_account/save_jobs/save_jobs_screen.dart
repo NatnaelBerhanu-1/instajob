@@ -19,7 +19,25 @@ class SaveJobsScreen extends StatefulWidget {
   State<SaveJobsScreen> createState() => _SaveJobsScreenState();
 }
 
-class _SaveJobsScreenState extends State<SaveJobsScreen> {
+class _SaveJobsScreenState extends State<SaveJobsScreen>
+    with SingleTickerProviderStateMixin {
+  // TabController? tabController;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    // tabController = TabController(length: 2, vsync: this);
+    // tabController?.addListener(() {
+    //   if (tabController?.index == 0) {
+    //     context.read<JobPositionBloc>().add(SavedJobPositionListEvent());
+    //   } else {
+    //     context.read<JobPositionBloc>().add(AppliedJobListEvent());
+    //   }
+    //   setState(() {});
+    // });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -46,6 +64,7 @@ class _SaveJobsScreenState extends State<SaveJobsScreen> {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 10.0, right: 10),
                           child: TabBar(
+                              // controller: tabController,
                               unselectedLabelColor: MyColors.tabClr,
                               labelColor: MyColors.blue,
                               indicatorColor: MyColors.blue,
@@ -68,90 +87,90 @@ class _SaveJobsScreenState extends State<SaveJobsScreen> {
                       ),
                       Expanded(
                         child: BlocBuilder<JobPositionBloc, JobPosState>(
-                          buildWhen: (p,c)=>c is SaveJobPosLoaded   ,
+                            // buildWhen: (p,c)=>c is SaveJobPosLoaded   ,
                             builder: (context, state) {
-                              print('QQQQQQQQQQ $state');
+                          print('QQQQQQQQQQ $state');
                           return TabBarView(children: [
-                            if (state is SaveJobPosLoaded) ...[
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: GridView.builder(
-                                  itemCount: state.jobPosList.length,
-                                  itemBuilder: (c, i) {
-                                    return GestureDetector(
-                                      onTap: () {
-                                        AppRoutes.push(
-                                            context,
-                                            JobPositionScreen(
-                                              jobPosModel: state.jobPosList[i],
-                                              // companyModel: context
-                                              //     .read<CompanyBloc>()
-                                              //     .companyModel,
-                                            ));
-                                      },
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 5, vertical: 8),
-                                        child: AppliedTile(
-                                            isFav: true,
-                                            jobPosModel: state.jobPosList[i]),
-                                      ),
-                                    );
-                                  },
-                                  gridDelegate:
-                                      SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 2,
-                                          crossAxisSpacing: 0,
-                                          mainAxisSpacing: 0,
-                                          childAspectRatio: 5.1 / 4.5),
-                                ),
-                              )
-                            ],
-                            if (state is JobErrorState) ...[
-                              Center(child: Text(state.error))
-                            ],
-                            if (state is JobPosLoading) ...[
-                              Center(child: CircularProgressIndicator()),
-                            ],
-                            if (state is AppliedJobLoaded) ...[
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: GridView.builder(
-                                  itemCount: state.appliedJobList.length,
-                                  itemBuilder: (c, i) {
-                                    return GestureDetector(
-                                      onTap: () {
-                                        AppRoutes.push(
-                                            context,
-                                            JobPositionScreen(
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: state is SaveJobPosLoaded
+                                  ? GridView.builder(
+                                      itemCount: state.jobPosList.length,
+                                      itemBuilder: (c, i) {
+                                        return GestureDetector(
+                                          onTap: () {
+                                            AppRoutes.push(
+                                                context,
+                                                JobPositionScreen(
+                                                  jobPosModel:
+                                                      state.jobPosList[i],
+                                                  // companyModel: context
+                                                  //     .read<CompanyBloc>()
+                                                  //     .companyModel,
+                                                ));
+                                          },
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 5, vertical: 8),
+                                            child: AppliedTile(
+                                                isFav: true,
                                                 jobPosModel:
-                                                    state.appliedJobList[i]));
+                                                    state.jobPosList[i]),
+                                          ),
+                                        );
                                       },
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 5, vertical: 8),
-                                        child: AppliedTile(
-                                            // isAppliedTab: true,
-                                            jobPosModel:
-                                                state.appliedJobList[i]),
-                                      ),
-                                    );
-                                  },
-                                  gridDelegate:
-                                      SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 2,
-                                          crossAxisSpacing: 0,
-                                          mainAxisSpacing: 0,
-                                          childAspectRatio: 5.1 / 4.5),
-                                ),
-                              )
-                            ],
-                            if (state is ApplyErrorState) ...[
-                              Center(child: Text(state.error))
-                            ],
-                            if (state is ApplyLoading) ...[
-                              Center(child: CircularProgressIndicator()),
-                            ],
+                                      gridDelegate:
+                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                              crossAxisCount: 2,
+                                              crossAxisSpacing: 0,
+                                              mainAxisSpacing: 0,
+                                              childAspectRatio: 5.1 / 4.5),
+                                    )
+                                  : state is JobErrorState
+                                      ? Center(child: Text(state.error))
+                                      : Center(
+                                          child: CircularProgressIndicator()),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: state is AppliedJobLoaded
+                                  ? GridView.builder(
+                                      itemCount: state.appliedJobList.length,
+                                      itemBuilder: (c, i) {
+                                        return GestureDetector(
+                                          onTap: () {
+                                            AppRoutes.push(
+                                                context,
+                                                JobPositionScreen(
+                                                  jobPosModel:
+                                                      state.appliedJobList[i],
+                                                  // companyModel: context
+                                                  //     .read<CompanyBloc>()
+                                                  //     .companyModel,
+                                                ));
+                                          },
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 5, vertical: 8),
+                                            child: AppliedTile(
+                                                isFav: true,
+                                                jobPosModel:
+                                                    state.appliedJobList[i]),
+                                          ),
+                                        );
+                                      },
+                                      gridDelegate:
+                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                              crossAxisCount: 2,
+                                              crossAxisSpacing: 0,
+                                              mainAxisSpacing: 0,
+                                              childAspectRatio: 5.1 / 4.5),
+                                    )
+                                  : state is ApplyErrorState
+                                      ? Center(child: Text(state.error))
+                                      : Center(
+                                          child: CircularProgressIndicator()),
+                            ),
                           ]);
                         }),
                       )

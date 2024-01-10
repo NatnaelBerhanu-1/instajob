@@ -39,6 +39,7 @@ class _ChangeAccInfoScreenState extends State<ChangeAccInfoScreen> {
   InputBorder border = OutlineInputBorder(
       borderSide: BorderSide(color: MyColors.lightgrey, width: 1),
       borderRadius: BorderRadius.circular(10));
+
   update() {
     var userImage = context.read<PickImageCubit>();
     var model = Global.userModel!;
@@ -325,6 +326,7 @@ class _ChangeAccInfoScreenState extends State<ChangeAccInfoScreen> {
   }
 
   String selectedDate = userType == "user" ? "" : "${DateTime.now()}";
+
   chooseDate() async {
     DateTime date = DateTime.now();
     date = await selectDate(context, date);
