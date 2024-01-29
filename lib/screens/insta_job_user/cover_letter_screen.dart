@@ -41,6 +41,9 @@ class _CoverLetterScreenState extends State<CoverLetterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var border = OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+        borderSide: BorderSide(color: MyColors.blue, width: 1.5));
     return Scaffold(
       appBar: PreferredSize(
           preferredSize: Size(double.infinity, kToolbarHeight),
@@ -70,7 +73,7 @@ class _CoverLetterScreenState extends State<CoverLetterScreen> {
               //   controller: controller,
               //   maxLines: 10,
               // ),
-              CustomCommonCard(
+              /*CustomCommonCard(
                 borderColor: MyColors.blue,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -89,6 +92,20 @@ class _CoverLetterScreenState extends State<CoverLetterScreen> {
                       Text("${widget.coverLetterModel.yourName}"),
                     ],
                   ),
+                ),
+              ),*/
+              TextFormField(
+                maxLines: 18,
+                controller: TextEditingController(
+                    text:
+                        "Dear Hiring Manager,\n\nJob Title: ${widget.jobPosModel?.designation}\n\n${widget.coverLetterModel.previousWork}\n\n${widget.coverLetterModel.yourPassion}\n\nPlease take a moment to review my attached resume and credentials.\n\nThank you for your consideration\n\nSincerely\n${widget.coverLetterModel.yourName}"),
+                decoration: InputDecoration(
+                  border: border,
+                  focusedBorder: border,
+                  enabledBorder: border,
+                  disabledBorder: border,
+                  // border: border,
+                  // border: border,
                 ),
               ),
               SizedBox(height: 30),

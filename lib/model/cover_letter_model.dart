@@ -2,7 +2,7 @@ class CoverLetterModel {
   int? id;
   int? userId;
   String? yourName;
-  int? phoneNumber;
+  String? phoneNumber;
   String? yourTop5Skills;
   String? previousWork;
   String? yourPassion;
@@ -21,12 +21,12 @@ class CoverLetterModel {
   CoverLetterModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     userId = json['user_id'];
-    yourName = json['your_name'];
-    phoneNumber = json['phone_number'];
-    yourTop5Skills = json['your_top_5_skills'];
-    previousWork = json['previous_work'];
-    yourPassion = json['your_passion'];
-    uploadResume = json['upload_resume'];
+    yourName = json['your_name'].toString();
+    phoneNumber = json['phone_number'].toString();
+    yourTop5Skills = json['your_top_5_skills'].toString();
+    previousWork = json['previous_work'].toString();
+    yourPassion = json['your_passion'].toString();
+    uploadResume = json['upload_resume'].toString();
   }
 
   Map<String, dynamic> toJson() {

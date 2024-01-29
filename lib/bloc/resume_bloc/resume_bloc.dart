@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/resume_bloc/resume_event.dart';
 import 'package:insta_job/bloc/resume_bloc/resume_state.dart';
@@ -14,11 +16,12 @@ class ResumeBloc extends Bloc<ResumeEvent, ResumeState> {
     if (response.response.statusCode == 500) {
       emit(const ErrorState("Something went wrong"));
     }
-    if (response.response.success == 200) {
+    if (response.response.statusCode == 200) {
+      log('response.response.data ${response.response.data}');
       CoverLetterModel coverLetterModel =
-          CoverLetterModel.fromJson(response.response.data['data']);
+          CoverLetterModel.fromJson(response.response.data['data'][0]);
       emit(ResumeLoaded(resumeModel: coverLetterModel));
-    } else if (response.response.success == 400) {
+    } else if (response.response.statusCode == 400) {
       emit(const ErrorState("Data not found"));
     }
   }

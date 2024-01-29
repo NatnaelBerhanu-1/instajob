@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:insta_job/globals.dart';
 
 class AuthService {
@@ -13,7 +14,11 @@ class AuthService {
     String? selfId,
     required String gp,
     String? msg,
+    String? userName,
+    String? profile,
   }) async {
+    var fcmToken = await FirebaseMessaging.instance.getToken();
+
     var docRef = FirebaseFirestore.instance
         .collection(chatCollection)
         .doc(gp)
@@ -31,6 +36,34 @@ class AuthService {
     FirebaseFirestore.instance.runTransaction((transaction) async {
       transaction.set(docRef, data);
     });
+    // var doc = await db.collection("recentChatUser").doc(selfId).get();
+    // if (doc.exists) {
+    //   print("EXISTS");
+    //   await db
+    //       .collection("recentChatUser")
+    //       .doc(selfId)
+    //       .collection("users")
+    //       .doc(oppId)
+    //       .update({
+    //     "phone_number": oppId,
+    //     "user_name": userName,
+    //     "profile": profile,
+    //     "fcm_token": fcmToken,
+    //   });
+    // } else {
+    //   print("NOT EXISTS");
+    //   await db
+    //       .collection("recentChatUser")
+    //       .doc(selfId)
+    //       .collection("users")
+    //       .doc(oppId)
+    //       .set({
+    //     "phone_number": oppId,
+    //     "user_name": userName,
+    //     "profile": profile,
+    //     "fcm_token": fcmToken,
+    //   });
+    // }
   }
 
   static insertUsers() async {
