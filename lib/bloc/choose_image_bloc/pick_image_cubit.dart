@@ -45,9 +45,7 @@ class PickImageCubit extends Cubit<InitialImage> {
     final picker = ImagePicker();
     var image = await picker.pickImage(
       source: isCamera == true ? ImageSource.camera : ImageSource.gallery,
-      imageQuality: 100,
-      maxHeight: 100,
-      maxWidth: 100,
+      imageQuality: 50,
     );
     if (image != null) {
       File? img;
@@ -55,8 +53,7 @@ class PickImageCubit extends Cubit<InitialImage> {
       var base64 = base64Encode(img.readAsBytesSync());
       var type = getFileExtension(image.path);
       emit(LoadingImageState());
-      ApiResponse response =
-          await companyRepository.base64ImgApi(base64, ".$type");
+      ApiResponse response = await companyRepository.base64ImgApi(base64, ".$type");
       print('TYPEE **************      $type');
       if (response.response.statusCode == 200) {
         imgUrl = response.response.data['data'];
@@ -73,13 +70,11 @@ class PickImageCubit extends Cubit<InitialImage> {
   getCvImage() async {
     getStoragePermission();
 
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-        allowMultiple: false,
-        type: FileType.custom,
-        allowedExtensions: [
-          'pdf',
-          'doc',
-        ]);
+    FilePickerResult? result =
+        await FilePicker.platform.pickFiles(allowMultiple: false, type: FileType.custom, allowedExtensions: [
+      'pdf',
+      'doc',
+    ]);
 
     if (result != null) {
       PlatformFile file = result.files.first;
@@ -87,8 +82,7 @@ class PickImageCubit extends Cubit<InitialImage> {
       var base64 = base64Encode(img.readAsBytesSync());
       var type = getFileExtension(file.path!);
       emit(LoadingImageState());
-      ApiResponse response =
-          await companyRepository.base64ImgApi(base64, ".$type");
+      ApiResponse response = await companyRepository.base64ImgApi(base64, ".$type");
       print('TYPEE **************      $type');
       if (response.response.statusCode == 200) {
         cvUrl = response.response.data['data'];

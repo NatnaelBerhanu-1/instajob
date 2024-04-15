@@ -32,8 +32,7 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: MyColors.white,
           fontFamily: "Inter",
           useMaterial3: false,
-          colorScheme:
-              ColorScheme.fromSwatch().copyWith(secondary: Colors.white),
+          colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.white),
         ),
         home: SplashScreen(),
         navigatorKey: navigationKey,

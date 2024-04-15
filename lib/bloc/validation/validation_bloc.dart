@@ -110,7 +110,7 @@ String? confirmPassValidation(String s, String passValue) {
 }
 
 String? hasValidUrl(String s, val) {
-  String pattern = r'(?:https?://)?\S+\.\S+\.\S+';
+  String pattern = r'(?:https?:\/\/)?[\S+\.]\S+\.\S+';
   RegExp regExp = RegExp(pattern);
   if (s.isEmpty) {
     return '$val is required';

@@ -179,10 +179,7 @@ class CustomTextField extends StatelessWidget {
             ? SizedBox()
             : Text(
                 "$label",
-                style: TextStyle(
-                    color: lblColor ?? MyColors.grey,
-                    fontSize: 13.5,
-                    fontWeight: FontWeight.w400),
+                style: TextStyle(color: lblColor ?? MyColors.grey, fontSize: 13.5, fontWeight: FontWeight.w400),
               ),
         SizedBox(height: 5),
         TextFormField(
@@ -195,8 +192,7 @@ class CustomTextField extends StatelessWidget {
           inputFormatters: inputFormatter,
           maxLength: maxLength,
           controller: controller,
-          textCapitalization:
-              textCapitalization ?? TextCapitalization.sentences,
+          textCapitalization: textCapitalization ?? TextCapitalization.sentences,
           autofocus: autofocus!,
           obscureText: obscureText ?? false,
           cursorColor: MyColors.black,
@@ -234,18 +230,13 @@ class CustomPhonePickerTextField extends StatelessWidget {
   final String? Function(String?)? validator;
   final ValueChanged<bool>? onInputValidated;
   final ValueChanged<PhoneNumber>? onInputChanged;
+  final PhoneNumber initialValue;
 
   CustomPhonePickerTextField(
-      {Key? key,
-      this.controller,
-      this.label,
-      this.validator,
-      this.onInputValidated,
-      this.onInputChanged})
+      {Key? key, this.controller, this.label, this.validator, this.onInputValidated, this.onInputChanged, required this.initialValue})
       : super(key: key);
   InputBorder border = OutlineInputBorder(
-      borderSide: BorderSide(color: MyColors.lightgrey, width: 1),
-      borderRadius: BorderRadius.circular(10));
+      borderSide: BorderSide(color: MyColors.lightgrey, width: 1), borderRadius: BorderRadius.circular(10));
 
   @override
   Widget build(BuildContext context) {
@@ -256,10 +247,7 @@ class CustomPhonePickerTextField extends StatelessWidget {
             ? SizedBox()
             : Text(
                 "$label",
-                style: TextStyle(
-                    color: MyColors.grey,
-                    fontSize: 13.5,
-                    fontWeight: FontWeight.w400),
+                style: TextStyle(color: MyColors.grey, fontSize: 13.5, fontWeight: FontWeight.w400),
               ),
         SizedBox(height: 9),
         InternationalPhoneNumberInput(
@@ -268,6 +256,7 @@ class CustomPhonePickerTextField extends StatelessWidget {
           errorMessage: "",
           validator: validator,
           // autoValidateMode: AutovalidateMode.always,
+
           selectorConfig: const SelectorConfig(
               selectorType: PhoneInputSelectorType.DIALOG,
               leadingPadding: 10,
@@ -275,11 +264,10 @@ class CustomPhonePickerTextField extends StatelessWidget {
               showFlags: false),
           ignoreBlank: false,
           // keyboardType: TextInputType.number,
-          keyboardType: Platform.isIOS
-              ? TextInputType.numberWithOptions(signed: true, decimal: true)
-              : TextInputType.number,
+          keyboardType:
+              Platform.isIOS ? TextInputType.numberWithOptions(signed: true, decimal: true) : TextInputType.number,
           formatInput: false,
-          // initialValue: PhoneNumber(isoCode: "IN"),
+          initialValue: initialValue,
           textFieldController: controller,
           inputDecoration: InputDecoration(
             // prefixIcon:

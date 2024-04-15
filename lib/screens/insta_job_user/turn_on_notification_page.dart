@@ -8,7 +8,6 @@ import 'package:insta_job/widgets/custom_button/custom_btn.dart';
 import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:insta_job/widgets/custom_divider.dart';
-
 import '../insta_recruit/bottom_navigation_screen/bottom_navigation_screen.dart';
 
 class TurnOnNotification extends StatelessWidget {

@@ -1,7 +1,11 @@
 class EndPoint {
-  static String baseUrl = "https://shaybani-web.flutterclone.com/api/";
+  // static String baseUrl = "https://shaybani-web.flutterclone.com/api/";
+  // static String baseUrl = "http://10.0.2.2:8000/api/";
+  static String baseUrl = "http://172.17.251.109:8000/api/";
 
   static String imageBaseUrl = "https://shaybani-web.flutterclone.com";
+  // static String imageBaseUrl = "http://10.0.2.2:8000";
+  // static String imageBaseUrl = "http://172.17.251.109:8000";
 
   /// Common api's
   static String checkUser = "check_user";
@@ -76,8 +80,7 @@ class EndPoint {
 
   /// CAREER CLUSTER
 
-  static String getCareerCluster =
-      "https://services.onetcenter.org/ws/online/career_clusters/";
+  static String getCareerCluster = "https://services.onetcenter.org/ws/online/career_clusters/";
 
   static String uploadMp3File = "http://3.82.226.4:8000/uploadfile/";
 }

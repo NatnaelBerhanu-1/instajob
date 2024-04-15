@@ -12,14 +12,7 @@ class UserTypeCard extends StatelessWidget {
   final int? index;
   final int? selectedIndex;
   final VoidCallback? onTap;
-  const UserTypeCard(
-      {Key? key,
-      this.image,
-      this.title,
-      this.index,
-      this.selectedIndex,
-      this.onTap})
-      : super(key: key);
+  const UserTypeCard({Key? key, this.image, this.title, this.index, this.selectedIndex, this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -38,27 +31,21 @@ class UserTypeCard extends StatelessWidget {
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
-                  color:
-                      index == selectedIndex ? MyColors.blue : MyColors.white,
+                  color: index == selectedIndex ? MyColors.blue : MyColors.white,
                   boxShadow: [blueBoxShadow],
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.only(
-                      top: 45, right: 25, left: 25, bottom: 10),
+                  padding: const EdgeInsets.only(top: 45, right: 25, left: 25, bottom: 10),
                   child: Column(
                     children: [
                       CommonText(
                         text: title,
-                        fontColor: index == selectedIndex
-                            ? MyColors.white
-                            : MyColors.blue,
+                        fontColor: index == selectedIndex ? MyColors.white : MyColors.blue,
                         fontSize: 18,
                       ),
                       const SizedBox(height: 5),
                       ImageButton(
-                        image: index == selectedIndex
-                            ? MyImages.arrow_white_circle
-                            : MyImages.nextArrow,
+                        image: index == selectedIndex ? MyImages.arrow_white_circle : MyImages.nextArrow,
                         padding: EdgeInsets.zero,
                       )
                     ],
@@ -71,7 +58,7 @@ class UserTypeCard extends StatelessWidget {
             alignment: Alignment.center,
             child: FloatingActionButton(
               heroTag: "$title",
-              onPressed: () {},
+              onPressed: onTap,
               child: Container(
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,

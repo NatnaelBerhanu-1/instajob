@@ -31,27 +31,20 @@ class AssignCompaniesTile extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
           border: Border.all(color: MyColors.grey.withOpacity(.15)),
           boxShadow: [
-            BoxShadow(
-                color: Colors.grey.withOpacity(0.10),
-                spreadRadius: 5,
-                blurRadius: 7,
-                offset: Offset(2, 3))
+            BoxShadow(color: Colors.grey.withOpacity(0.10), spreadRadius: 5, blurRadius: 7, offset: Offset(2, 3))
           ]),
       child: ListTile(
         onTap: () {
           // AppRoutes.push(context, TranscriptionScreen());
+          context.read<JobPositionBloc>().add(LoadJobPosListEvent(companyId: companyModel!.id.toString()));
           context
-              .read<JobPositionBloc>()
-              .add(LoadJobPosListEvent(companyId: companyModel!.id.toString()));
-          context.read<BottomBloc>().add(SetScreenEvent(true,
-              screenName: JobOpeningScreen(companyModel: companyModel)));
+              .read<BottomBloc>()
+              .add(SetScreenEvent(true, screenName: JobOpeningScreen(companyModel: companyModel)));
           // context
           //     .read<JobPositionBloc>()
           //     .add(AppliedJobListEvent(jobId: widget.jobPosModel.id.toString()));
         },
-        shape: RoundedRectangleBorder(
-            side: BorderSide(color: MyColors.grey),
-            borderRadius: BorderRadius.circular(10)),
+        shape: RoundedRectangleBorder(side: BorderSide(color: MyColors.grey), borderRadius: BorderRadius.circular(10)),
         contentPadding: EdgeInsets.all(6),
         tileColor: MyColors.white,
         leading: ImageButton(
@@ -78,8 +71,7 @@ class AssignCompaniesTile extends StatelessWidget {
   }
 }
 
-Widget uploadPhotoCard(BuildContext context,
-    {bool isUpdate = false, String? url, bool isSuggestion = false}) {
+Widget uploadPhotoCard(BuildContext context, {bool isUpdate = false, String? url, bool isSuggestion = false}) {
   return BlocConsumer<PickImageCubit, InitialImage>(buildWhen: (c, state) {
     if (state is PickImageState) {
       return true;
@@ -100,31 +92,44 @@ Widget uploadPhotoCard(BuildContext context,
       bgColor: MyColors.blue.withOpacity(.10),
       borderRadius: BorderRadius.circular(10),
       borderColor: MyColors.lightBlue,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 45),
-        child: isUpdate
-            ? state is PickImageState
-                ? Image.network("${EndPoint.imageBaseUrl}${state.url}",
-                    fit: BoxFit.cover)
-                : Image.network("${EndPoint.imageBaseUrl}$url",
-                    fit: BoxFit.cover)
-            : state is PickImageState
-                ? Image.network("${EndPoint.imageBaseUrl}${state.url}",
-                    fit: BoxFit.cover)
-                : state is LoadingImageState
-                    ? Center(child: CircularProgressIndicator())
-                    : Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ImageButton(
-                            image: MyImages.upload,
-                          ),
-                          CommonText(
-                            text: "Upload Photo",
-                            fontColor: MyColors.blue,
-                          )
-                        ],
-                      ),
+      height: 300,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: Padding(
+          padding: EdgeInsets.zero,
+          child: isUpdate
+              ? state is PickImageState
+                  ? Image.network(
+                      "${EndPoint.imageBaseUrl}${state.url}",
+                      fit: BoxFit.cover,
+                      width: double.maxFinite,
+                    )
+                  : Image.network(
+                      "${EndPoint.imageBaseUrl}$url",
+                      fit: BoxFit.cover,
+                      width: double.maxFinite,
+                    )
+              : state is PickImageState
+                  ? Image.network(
+                      "${EndPoint.imageBaseUrl}${state.url}",
+                      fit: BoxFit.cover,
+                      width: double.maxFinite,
+                    )
+                  : state is LoadingImageState
+                      ? Center(child: CircularProgressIndicator())
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ImageButton(
+                              image: MyImages.upload,
+                            ),
+                            CommonText(
+                              text: "Upload Photo",
+                              fontColor: MyColors.blue,
+                            )
+                          ],
+                        ),
+        ),
       ),
     );
   });

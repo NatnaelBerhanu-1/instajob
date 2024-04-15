@@ -37,6 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController password = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    var width = MediaQuery.of(context).size.width;
     return WillPopScope(
       onWillPop: () async {
         FocusManager.instance.primaryFocus?.unfocus();
@@ -44,61 +45,64 @@ class _LoginScreenState extends State<LoginScreen> {
       },
       child: Scaffold(
         backgroundColor: MyColors.white,
-        body: SafeArea(
+        body: Container(
+          padding: EdgeInsets.fromLTRB(10, 40, 10, 0),
+          decoration: BoxDecoration(
+              image: DecorationImage(
+            alignment: Alignment.topCenter,
+            colorFilter: ColorFilter.mode(MyColors.grey.withOpacity(.10), BlendMode.srcIn),
+            image: AssetImage(
+              MyImages.bgCurve,
+            ),
+            fit: BoxFit.fitWidth,
+          )),
           child: Form(
             key: formKey,
             child: Column(
               children: [
-                Expanded(
-                  flex: 0,
-                  child: Column(
-                    children: [
-                      Stack(
+                Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 5.0, top: 5),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Image.asset(
-                            MyImages.bgCurve,
-                            color: MyColors.grey.withOpacity(.10),
+                          ImageButton(
+                            image: MyImages.backArrow,
+                            height: 30,
+                            width: 30,
+                            onTap: () {
+                              FocusManager.instance.primaryFocus?.unfocus();
+                              AppRoutes.pop(context);
+                            },
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 5.0, top: 5),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                ImageButton(
-                                  image: MyImages.backArrow,
-                                  height: 30,
-                                  width: 30,
-                                  onTap: () {
-                                    FocusManager.instance.primaryFocus
-                                        ?.unfocus();
-                                    AppRoutes.pushAndRemoveUntil(
-                                        context, WelcomeScreen());
-                                  },
-                                ),
-                                SizedBox(width: 50),
-                                Column(
-                                  children: [
-                                    Image.asset(MyImages.instaLogo_),
-                                    CommonText(
-                                      text: "Employ instantly",
-                                      fontColor: MyColors.grey,
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
+                          Spacer(),
+                          Column(
+                            children: [
+                              Image.asset(MyImages.instaLogo_),
+                              CommonText(
+                                text: "Employ instantly",
+                                fontColor: MyColors.grey,
+                              ),
+                            ],
+                          ),
+                          Spacer(),
+                          SizedBox(
+                            width: 50,
                           )
                         ],
-                      )
-                    ],
-                  ),
+                      ),
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: 60,
                 ),
                 Expanded(
                   child: SingleChildScrollView(
                     child: Padding(
                       padding: const EdgeInsets.all(15),
-                      child: BlocBuilder<ValidationCubit, InitialValidation>(
-                          builder: (context, state) {
+                      child: BlocBuilder<ValidationCubit, InitialValidation>(builder: (context, state) {
                         var validationBloc = context.read<ValidationCubit>();
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -121,7 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 fontSize: 14,
                               ),
                             ),
-                            SizedBox(height: 30),
+                            SizedBox(height: 20),
                             IconTextField(
                               controller: email,
                               prefixIcon: ImageButton(
@@ -132,9 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                               textCapitalization: TextCapitalization.none,
                               keyboardType: TextInputType.emailAddress,
-                              suffixIcon: validationBloc.emailVAL
-                                  ? verifyImage
-                                  : SizedBox(),
+                              suffixIcon: validationBloc.emailVAL ? verifyImage : SizedBox(),
                               validator: (val) => emailValidation(val!),
                               onChanged: (val) {
                                 if (!formKey.currentState!.validate()) {
@@ -159,9 +161,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   validationBloc.visiblePass();
                                 },
                                 child: Icon(
-                                  validationBloc.pass
-                                      ? Icons.visibility_off
-                                      : Icons.visibility,
+                                  validationBloc.pass ? Icons.visibility_off : Icons.visibility,
                                 ),
                               ),
                               obscureText: validationBloc.pass,
@@ -191,9 +191,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               ),
                             ),
-                            SizedBox(height: 40),
-                            BlocConsumer<AuthCubit, AuthInitialState>(
-                                listener: (context, state) {
+                            SizedBox(height: 30),
+                            BlocConsumer<AuthCubit, AuthInitialState>(listener: (context, state) {
                               if (state is ErrorState) {
                                 showToast(state.error);
                               }
@@ -203,26 +202,20 @@ class _LoginScreenState extends State<LoginScreen> {
                                 title: "Sign In Now",
                                 backgroundColor: MyColors.blue,
                                 fontColor: MyColors.white,
-                                loading:
-                                    state is AuthLoadingState ? true : false,
+                                loading: state is AuthLoadingState ? true : false,
                                 borderColor: MyColors.blue,
                                 iconColor: MyColors.white,
                                 onclick: () async {
                                   FocusManager.instance.primaryFocus?.unfocus();
                                   if (formKey.currentState!.validate()) {
-                                    var pref =
-                                        await SharedPreferences.getInstance();
+                                    var pref = await SharedPreferences.getInstance();
                                     var type = pref.getString("type");
 
                                     if (type == "user") {
                                       SocialAuth.loginWithEmail(context,
-                                          email: email.text,
-                                          password: password.text,
-                                          isUser: true);
+                                          email: email.text, password: password.text, isUser: true);
                                     } else {
-                                      SocialAuth.loginWithEmail(context,
-                                          email: email.text,
-                                          password: password.text);
+                                      SocialAuth.loginWithEmail(context, email: email.text, password: password.text);
                                     }
                                   }
                                   // if (Global.type == "user") {
@@ -250,16 +243,14 @@ class _LoginScreenState extends State<LoginScreen> {
                             SizedBox(height: 30),
                             CustomDivider(),
                             SizedBox(height: 30),
-                            BlocConsumer<AuthCubit, AuthInitialState>(
-                                listener: (context, state) {
+                            BlocConsumer<AuthCubit, AuthInitialState>(listener: (context, state) {
                               if (state is ErrorState) {
                                 showToast(state.error);
                               }
                             }, builder: (context, state) {
                               var auth = context.read<AuthCubit>();
                               return Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
                                   CustomSocialButton(
                                     image: MyImages.google,
@@ -269,14 +260,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                   CustomSocialButton(
                                     image: MyImages.twitter,
-                                    onTap: () {
-                                      showToast("Currently Not Working");
+                                    onTap: () async {
+                                      await auth.signInWithTwitter();
                                     },
                                   ),
                                   CustomSocialButton(
                                     image: MyImages.facebook,
-                                    onTap: () {
-                                      showToast("Currently Not Working");
+                                    onTap: () async {
+                                      await auth.faceBookAuth();
                                     },
                                   ),
                                 ],

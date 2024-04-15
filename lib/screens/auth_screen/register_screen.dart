@@ -47,46 +47,60 @@ class _RegisterScreenState extends State<RegisterScreen> {
       },
       child: Scaffold(
         backgroundColor: MyColors.white,
-        body: Form(
-          key: formKey,
-          child: SafeArea(
+        body: Container(
+          padding: EdgeInsets.fromLTRB(10, 40, 10, 0),
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  fit: BoxFit.fitWidth,
+                  colorFilter: ColorFilter.mode(MyColors.grey.withOpacity(.10), BlendMode.srcIn),
+                  alignment: Alignment.topCenter,
+                  image: AssetImage(
+                    MyImages.bgCurve,
+                  ))),
+          child: Form(
+            key: formKey,
             child: Column(
               children: [
-                Expanded(
-                  flex: 0,
-                  child: Column(
-                    children: [
-                      Stack(
-                        children: [
-                          Image.asset(
-                            MyImages.bgCurve,
-                            color: MyColors.grey.withOpacity(.10),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 10),
-                            child: Center(
-                              child: Column(
-                                children: [
-                                  Image.asset(MyImages.instaLogo_),
-                                  CommonText(
-                                    text: "Employ instantly",
-                                    fontColor: MyColors.grey,
-                                  ),
-                                ],
-                              ),
+                Row(
+                  children: [
+                    ImageButton(
+                      image: MyImages.backArrow,
+                      height: 30,
+                      width: 30,
+                      onTap: () {
+                        FocusManager.instance.primaryFocus?.unfocus();
+                        Navigator.pop(context);
+                      },
+                    ),
+                    Spacer(),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: Center(
+                        child: Column(
+                          children: [
+                            Image.asset(MyImages.instaLogo_),
+                            CommonText(
+                              text: "Employ instantly",
+                              fontColor: MyColors.grey,
                             ),
-                          )
-                        ],
-                      )
-                    ],
-                  ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Spacer(),
+                    SizedBox(
+                      width: 30,
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: 60,
                 ),
                 Expanded(
                   child: SingleChildScrollView(
                     child: Padding(
                       padding: const EdgeInsets.all(15),
-                      child: BlocBuilder<ValidationCubit, InitialValidation>(
-                          builder: (context, state) {
+                      child: BlocBuilder<ValidationCubit, InitialValidation>(builder: (context, state) {
                         var validationBloc = context.read<ValidationCubit>();
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -119,8 +133,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 width: 9,
                               ),
                               textCapitalization: TextCapitalization.sentences,
-                              validator: (val) =>
-                                  requiredValidation(val!, "Name"),
+                              validator: (val) => requiredValidation(val!, "Name"),
                               // suffixIcon: formKey.currentState!.validate()
                               //     ? SizedBox()
                               //     : verifyImage,
@@ -167,9 +180,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   validationBloc.visiblePass();
                                 },
                                 child: Icon(
-                                  validationBloc.pass
-                                      ? Icons.visibility_off
-                                      : Icons.visibility,
+                                  validationBloc.pass ? Icons.visibility_off : Icons.visibility,
                                 ),
                               ),
                               validator: (val) => passwordValidation(val!),
@@ -196,16 +207,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   validationBloc.visibleCPass();
                                 },
                                 child: Icon(
-                                  validationBloc.cPass
-                                      ? Icons.visibility_off
-                                      : Icons.visibility,
+                                  validationBloc.cPass ? Icons.visibility_off : Icons.visibility,
                                 ),
                               ),
                               obscureText: validationBloc.cPass,
                               hint: "Confirm password",
                               maxLine: 1,
-                              validator: (val) =>
-                                  confirmPassValidation(val!, password.text),
+                              validator: (val) => confirmPassValidation(val!, password.text),
                               onChanged: (val) {
                                 if (!formKey.currentState!.validate()) {
                                   confirmPassValidation(val!, password.text);
@@ -230,10 +238,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     TextSpan(
                                       recognizer: TapGestureRecognizer()
                                         ..onTap = () {
-                                          AppRoutes.push(
-                                              context,
-                                              MemberShipScreen(
-                                                  isAgreement: false));
+                                          AppRoutes.push(context, MemberShipScreen(isAgreement: false));
                                         },
                                       text: "Terms & Conditions",
                                       style: TextStyle(
@@ -254,9 +259,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 ),
                               ),
                             ),
-                            SizedBox(height: 40),
-                            BlocConsumer<AuthCubit, AuthInitialState>(
-                                listener: (context, state) {
+                            SizedBox(height: 20),
+                            BlocConsumer<AuthCubit, AuthInitialState>(listener: (context, state) {
                               if (state is ErrorState) {
                                 showToast(state.error);
                               }
@@ -269,8 +273,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 fontColor: MyColors.white,
                                 borderColor: MyColors.blue,
                                 iconColor: MyColors.white,
-                                loading:
-                                    state is AuthLoadingState ? true : false,
+                                loading: state is AuthLoadingState ? true : false,
                                 onclick: () async {
                                   FocusManager.instance.primaryFocus?.unfocus();
                                   if (formKey.currentState!.validate()) {
@@ -279,31 +282,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       authData.email = email.text;
                                       authData.password = password.text;
                                       setState(() {});
-                                      var checkEmail = await authData.checkUser(
-                                          authData.email, context);
-                                      var pref =
-                                          await SharedPreferences.getInstance();
+                                      var checkEmail = await authData.checkUser(authData.email, context);
+                                      var pref = await SharedPreferences.getInstance();
 
                                       var type = pref.getString("type");
                                       if (!checkEmail) {
                                         if (type == "user") {
-                                          AppRoutes.push(
-                                              context, RegMoreInfoScreen());
+                                          AppRoutes.push(context, RegMoreInfoScreen());
                                         } else {
-                                          AppRoutes.push(
-                                              context, BecameAnEmployer());
+                                          AppRoutes.push(context, BecameAnEmployer());
                                         }
                                       } else {
-                                        showToast(
-                                            "The account already exists for this email");
+                                        showToast("The account already exists for this email");
                                       }
                                       authData.getData();
                                       // context
                                       //     .read<CompanyBloc>()
                                       //     .add(LoadCompanyListEvent());
                                     } else {
-                                      showToast(
-                                          "Please accept terms & conditions");
+                                      showToast("Please accept terms & conditions");
                                     }
                                   }
                                   // AppRoutes.pushAndRemoveUntil(
@@ -318,8 +315,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 AppRoutes.push(context, LoginScreen());
                               },
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     "Already part of InstaJob",
@@ -329,11 +325,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     ),
                                   ),
                                   TextButton(
-                                      style: ButtonStyle(overlayColor:
-                                          MaterialStateProperty.resolveWith(
-                                              (states) {
-                                        if (states
-                                            .contains(MaterialState.pressed)) {
+                                      style: ButtonStyle(overlayColor: MaterialStateProperty.resolveWith((states) {
+                                        if (states.contains(MaterialState.pressed)) {
                                           return MyColors.transparent;
                                         }
                                         return MyColors.blue;

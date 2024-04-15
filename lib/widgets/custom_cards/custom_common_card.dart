@@ -33,6 +33,7 @@ class CustomCommonCard extends StatelessWidget {
         onTap: onTap,
         child: Container(
           alignment: Alignment.center,
+          height: height,
           decoration: BoxDecoration(
             borderRadius: borderRadius ?? BorderRadius.circular(10),
             color: bgColor ?? MyColors.white,

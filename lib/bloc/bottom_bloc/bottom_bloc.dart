@@ -59,22 +59,19 @@ class BottomBloc extends Bloc<BottomEvent, BottomInitialState> {
         emit(UserState(userModel));
         Timer(
             const Duration(seconds: 1),
-            () => navigationKey.currentState?.pushAndRemoveUntil(
-                MaterialPageRoute(builder: (_) => const BottomNavScreen()),
-                (route) => false));
+            () => navigationKey.currentState
+                ?.pushAndRemoveUntil(MaterialPageRoute(builder: (_) => const BottomNavScreen()), (route) => false));
       } else {
         if (type != null) {
           Timer(
               const Duration(seconds: 1),
-              () => navigationKey.currentState?.pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (_) => const WelcomeScreen()),
-                  (route) => false));
+              () => navigationKey.currentState
+                  ?.pushAndRemoveUntil(MaterialPageRoute(builder: (_) => const UserTypeScreen()), (route) => false));
         } else {
           Timer(
               const Duration(seconds: 1),
-              () => navigationKey.currentState?.pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (_) => const UserTypeScreen()),
-                  (route) => false));
+              () => navigationKey.currentState
+                  ?.pushAndRemoveUntil(MaterialPageRoute(builder: (_) => const UserTypeScreen()), (route) => false));
         }
       }
     });

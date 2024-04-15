@@ -23,6 +23,7 @@ import 'package:insta_job/screens/auth_screen/verify_code_screen.dart';
 import 'package:insta_job/screens/insta_recruit/became_an_employeer.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/bottom_navigation_screen.dart';
 import 'package:insta_job/screens/insta_recruit/membership_screen.dart';
+import 'package:insta_job/screens/insta_recruit/user_type_screen.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -291,11 +292,11 @@ class AuthCubit extends Cubit<AuthInitialState> {
             getData();
             print("_++++++++++++++++++++++ $type");
             if (type == "user") {
-              navigationKey.currentState
-                  ?.pushAndRemoveUntil(MaterialPageRoute(builder: (_) => const RegMoreInfoScreen()), (route) => false);
+              navigationKey.currentState?.push(
+                MaterialPageRoute(builder: (_) => const RegMoreInfoScreen()),
+              );
             } else {
-              navigationKey.currentState
-                  ?.pushAndRemoveUntil(MaterialPageRoute(builder: (_) => const BecameAnEmployer()), (route) => false);
+              navigationKey.currentState?.push(MaterialPageRoute(builder: (_) => const BecameAnEmployer()));
             }
           }
           // registerEmp(
@@ -314,6 +315,7 @@ class AuthCubit extends Cubit<AuthInitialState> {
         }
       });
     } catch (e) {
+      debugPrint("Error:${e.toString()}");
       loading(value: false);
       emit(ErrorState("Something went wrong"));
     }
@@ -341,6 +343,7 @@ class AuthCubit extends Cubit<AuthInitialState> {
           print('THENN ');
           if (value.user != null) {
             ApiResponse response = await authRepository.checkUser(value.user!.email.toString());
+            debugPrint('ResponseCode: ${response.response.statusCode}');
             if (response.response.statusCode == 200) {
               // login(
               //     email: value.user!.email,
@@ -354,9 +357,9 @@ class AuthCubit extends Cubit<AuthInitialState> {
               email = value.user!.email!;
               password = value.user!.uid;
               getData();
-              navigationKey.currentState?.pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (_) => isUser ? const RegMoreInfoScreen() : const BecameAnEmployer()),
-                  (route) => false);
+              navigationKey.currentState?.push(
+                MaterialPageRoute(builder: (_) => isUser ? const RegMoreInfoScreen() : const BecameAnEmployer()),
+              );
             }
             // registerEmp(
             // email: value.user!.email,
@@ -403,7 +406,7 @@ class AuthCubit extends Cubit<AuthInitialState> {
       }
       user.add(ResetIndex());
       navigationKey.currentState
-          ?.pushAndRemoveUntil(MaterialPageRoute(builder: (_) => const LoginScreen()), (route) => false);
+          ?.pushAndRemoveUntil(MaterialPageRoute(builder: (_) => const UserTypeScreen()), (route) => false);
     } else {
       emit(ErrorState("Something went wrong"));
     }
@@ -464,6 +467,45 @@ class AuthCubit extends Cubit<AuthInitialState> {
       } else {
         emit(ErrorState("Something went wrong"));
       }
+    }
+  }
+
+  Future<void> signInWithTwitter({bool isUser = false}) async {
+    TwitterAuthProvider twitterProvider = TwitterAuthProvider();
+
+    final value = await FirebaseAuth.instance.signInWithProvider(twitterProvider);
+    if (value.user != null) {
+      ApiResponse response = await authRepository.checkUser(value.user!.email.toString());
+      if (response.response.statusCode == 200) {
+        // login(
+        //     email: value.user!.email,
+        //     isUser: isUser,
+        //     password: value.user!.uid);
+        // navigationKey.currentState?.pushAndRemoveUntil(
+        //     MaterialPageRoute(builder: (_) => const BottomNavScreen()),
+        //     (route) => false);
+      } else {
+        userName = value.user!.displayName!;
+        email = value.user!.email!;
+        password = value.user!.uid;
+        getData();
+        navigationKey.currentState?.push(
+          MaterialPageRoute(builder: (_) => isUser ? const RegMoreInfoScreen() : const BecameAnEmployer()),
+        );
+      }
+      // registerEmp(
+      // email: value.user!.email,
+      // isUser: isUser,
+      // password: value.user!.uid,
+      // name: value.user!.displayName,
+      // );
+      // var userModel = UserModel.fromJson(response.response.data['data']);
+      // Global.userModel = userModel;
+      // await sharedPreferences.setString(
+      //     "user", jsonEncode(response.response.data['data']));
+      // emit(AuthState(userModel: userModel));
+
+      print('USERRRR ------------------           ${value.user}');
     }
   }
 

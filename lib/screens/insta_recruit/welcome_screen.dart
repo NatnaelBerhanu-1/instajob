@@ -4,6 +4,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:insta_job/bloc/auth_bloc/auth_cubit.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/screens/auth_screen/login_screen.dart';
@@ -34,49 +35,40 @@ class WelcomeScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                height: 340,
+                height: 240,
                 // color: MyColors.blue,
                 child: Stack(
                   children: [
                     Positioned(
-                        top: 30,
-                        child: IconButton(
-                            onPressed: () {
-                              log('0000');
-                              navigationKey.currentState?.pop();
-                              // Navigator.pop(context);
-                            },
-                            icon: Icon(Icons.arrow_back))),
-                    // Container(
-                    //   color: Colors.black,
-                    //   child: InkWell(
-                    //     onTap: () {
-                    //       log('0000');
-                    //       Navigator.pop(context);
-                    //     },
-                    //     child: Padding(
-                    //       padding: const EdgeInsets.only(top: 35, left: 5),
-                    //       child: Image.asset(
-                    //         MyImages.backArrow,
-                    //         height: 40,
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
-                    Image.asset(
-                      MyImages.bgCurve,
-                      color: MyColors.grey.withOpacity(.10),
-                      height: MediaQuery.of(context).size.height * 0.30,
-                      width: MediaQuery.of(context).size.width,
-                      fit: BoxFit.fitHeight,
+                      bottom: 60,
+                      child: Image.asset(
+                        MyImages.bgCurve,
+                        color: MyColors.grey.withOpacity(.10),
+                        width: MediaQuery.of(context).size.width,
+                        fit: BoxFit.contain,
+                      ),
                     ),
-                    Positioned(
-                      top: 80,
+                    Align(
+                      alignment: Alignment.center,
                       child: Image.asset(
                         MyImages.welcomeLogo,
+                        alignment: Alignment.center,
                         height: MediaQuery.of(context).size.height * 0.35,
-                        width: MediaQuery.of(context).size.width,
+                        // width: MediaQuery.of(context).size.width,
                         fit: BoxFit.cover,
+                      ),
+                    ),
+                    Positioned(
+                      top: 45,
+                      left: 15,
+                      child: ImageButton(
+                        image: MyImages.backArrow,
+                        height: 30,
+                        width: 30,
+                        onTap: () {
+                          FocusManager.instance.primaryFocus?.unfocus();
+                          AppRoutes.pop(context);
+                        },
                       ),
                     ),
                   ],
@@ -85,8 +77,7 @@ class WelcomeScreen extends StatelessWidget {
               // SizedBox(height: 20),
               Center(child: Image.asset(MyImages.instaLogo_)),
               Padding(
-                padding:
-                    const EdgeInsets.only(right: 15.0, left: 15, bottom: 10),
+                padding: const EdgeInsets.only(right: 15.0, left: 15, bottom: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -105,8 +96,7 @@ class WelcomeScreen extends StatelessWidget {
                     ),
                     SizedBox(height: 5),
                     CommonText(
-                      text:
-                          "Login in to your existing account or register to make new\naccount.",
+                      text: "Login in to your existing account or register to make new\naccount.",
                       fontWeight: FontWeight.w400,
                       fontColor: MyColors.grey,
                       fontSize: 13,
@@ -134,8 +124,7 @@ class WelcomeScreen extends StatelessWidget {
                     SizedBox(height: 30),
                     CustomDivider(),
                     SizedBox(height: 30),
-                    BlocConsumer<AuthCubit, AuthInitialState>(
-                        listener: (context, state) {
+                    BlocConsumer<AuthCubit, AuthInitialState>(listener: (context, state) {
                       if (state is ErrorState) {
                         showToast(state.error);
                       }
@@ -147,22 +136,20 @@ class WelcomeScreen extends StatelessWidget {
                           CustomSocialButton(
                             image: MyImages.google,
                             onTap: () {
-                              print("@@@@@@@@@@ $userType");
                               auth.googleAuth(context);
                             },
                           ),
                           CustomSocialButton(
                             image: MyImages.twitter,
-                            onTap: () {
-                              showToast("Currently Not Working");
+                            onTap: () async {
+                              await auth.signInWithTwitter(isUser: userType == "user" ? true : false);
                             },
                           ),
                           CustomSocialButton(
                             image: MyImages.facebook,
                             onTap: () {
                               // showToast("Currently Not Working");
-                              auth.faceBookAuth(
-                                  isUser: userType == "user" ? true : false);
+                              auth.faceBookAuth(isUser: userType == "user" ? true : false);
                             },
                           ),
                         ],

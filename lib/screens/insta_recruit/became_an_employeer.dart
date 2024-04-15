@@ -34,6 +34,7 @@ class _BecameAnEmployerState extends State<BecameAnEmployer> {
   TextEditingController companyName = TextEditingController();
   TextEditingController phone = TextEditingController();
   bool isValid = false;
+  var initialValue = PhoneNumber(isoCode: "US");
 
   update() {
     var userImage = context.read<PickImageCubit>();
@@ -82,8 +83,7 @@ class _BecameAnEmployerState extends State<BecameAnEmployer> {
                           // Spacer(),
                           ImageButton(
                               onTap: () {
-                                AppRoutes.pushAndRemoveUntil(
-                                    context, WelcomeScreen());
+                                AppRoutes.pushAndRemoveUntil(context, WelcomeScreen());
                               },
                               image: MyImages.backArrow,
                               height: 30,
@@ -131,8 +131,7 @@ class _BecameAnEmployerState extends State<BecameAnEmployer> {
                           //     ? SizedBox()
                           //     : verifyImage,
                           hint: "Company Name",
-                          validator: (val) =>
-                              requiredValidation(val!, "Company name"),
+                          validator: (val) => requiredValidation(val!, "Company name"),
                           onChanged: (val) {
                             if (!formKey.currentState!.validate()) {
                               requiredValidation(val!, "Company name");
@@ -154,24 +153,23 @@ class _BecameAnEmployerState extends State<BecameAnEmployer> {
                                 hint: Global.userModel?.phoneNumber,
                               )
                             : CustomPhonePickerTextField(
+                                initialValue: initialValue,
                                 validator: (val) {
                                   return null;
                                 },
                                 controller: phone,
                                 onInputValidated: (val) {
                                   isValid = val;
-                                  setState(() {});
+                                  // setState(() {});
                                   if (val == true) {
-                                    FocusManager.instance.primaryFocus
-                                        ?.unfocus();
+                                    FocusManager.instance.primaryFocus?.unfocus();
                                   }
                                   print("VAL  ::: $val");
                                 },
                                 onInputChanged: (PhoneNumber number) async {
-                                  context.read<AuthCubit>().countryCode =
-                                      number.dialCode ?? "";
+                                  context.read<AuthCubit>().countryCode = number.dialCode ?? "";
                                   print(
-                                      "COUNTRY CODE -->  ${context.read<AuthCubit>().countryCode}");
+                                      "COUNTRY CODE -->  ${context.read<AuthCubit>().countryCode} ${number.dialCode}");
                                 },
                               ),
                         SizedBox(height: 20),
@@ -194,11 +192,9 @@ class _BecameAnEmployerState extends State<BecameAnEmployer> {
                         ),
                         SizedBox(height: 60),
                         uploadPhotoCard(context,
-                            isUpdate: widget.isUpdate ? true : false,
-                            url: context.read<PickImageCubit>().imgUrl),
+                            isUpdate: widget.isUpdate ? true : false, url: context.read<PickImageCubit>().imgUrl),
                         SizedBox(height: 40),
-                        BlocConsumer<AuthCubit, AuthInitialState>(
-                            listener: (context, state) {
+                        BlocConsumer<AuthCubit, AuthInitialState>(listener: (context, state) {
                           if (state is ErrorState) {
                             showToast(state.error);
                           }
@@ -219,8 +215,7 @@ class _BecameAnEmployerState extends State<BecameAnEmployer> {
                             onclick: () {
                               print("**************************** $state");
                               if (formKey.currentState!.validate()) {
-                                if (phone.text.isEmpty ||
-                                    image.imgUrl.isEmpty) {
+                                if (phone.text.isEmpty || image.imgUrl.isEmpty) {
                                   showToast("Please fill all details");
                                 } else {
                                   if (isValid) {

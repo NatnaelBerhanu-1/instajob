@@ -30,6 +30,7 @@ class RegMoreInfoScreen extends StatefulWidget {
 class _RegMoreInfoScreenState extends State<RegMoreInfoScreen> {
   TextEditingController phone = TextEditingController();
   bool isValid = false;
+  var initialValue = PhoneNumber(isoCode: "US");
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +39,7 @@ class _RegMoreInfoScreenState extends State<RegMoreInfoScreen> {
           child: CustomAppBar(
             onTap: () {
               // AppRoutes.pushAndRemoveUntil(context, WelcomeScreen());
-              Navigator.of(context).pop();
+              AppRoutes.pop(context);
             },
             title: "",
           )),
@@ -64,16 +65,14 @@ class _RegMoreInfoScreenState extends State<RegMoreInfoScreen> {
                 label: "Date of Birth",
                 hint: selectedDate.isEmpty ? "DD-MM-YYY" : selectedDate,
                 readOnly: true,
-                hintColor:
-                    selectedDate.isEmpty ? MyColors.grey : MyColors.black,
+                hintColor: selectedDate.isEmpty ? MyColors.grey : MyColors.black,
                 prefixIcon: ImageButton(
                   image: MyImages.cal,
                   padding: EdgeInsets.all(12),
                   height: 10,
                   width: 10,
                 ),
-                suffixIcon: Icon(Icons.arrow_drop_down_sharp,
-                    color: MyColors.black, size: 25),
+                suffixIcon: Icon(Icons.arrow_drop_down_sharp, color: MyColors.black, size: 25),
               ),
               SizedBox(height: 30),
               CustomPhonePickerTextField(
@@ -86,10 +85,11 @@ class _RegMoreInfoScreenState extends State<RegMoreInfoScreen> {
                     FocusManager.instance.primaryFocus?.unfocus();
                   }
                 },
+                initialValue: initialValue,
                 onInputChanged: (PhoneNumber number) async {
                   context.read<AuthCubit>().countryCode = number.dialCode ?? "";
-                  print(
-                      "COUNTRY CODE -->  ${context.read<AuthCubit>().countryCode}");
+                  initialValue = await PhoneNumber.getRegionInfoFromPhoneNumber(number.phoneNumber ?? "");
+                  print("COUNTRY CODE -->  ${context.read<AuthCubit>().countryCode} $initialValue");
                 },
                 // validator: (val) {},
               ),
@@ -97,8 +97,7 @@ class _RegMoreInfoScreenState extends State<RegMoreInfoScreen> {
               Text(
                 "Upload Photo",
                 textAlign: TextAlign.start,
-                style: TextStyle(
-                    fontWeight: FontWeight.w400, color: MyColors.grey),
+                style: TextStyle(fontWeight: FontWeight.w400, color: MyColors.grey),
               ),
               SizedBox(height: 10),
               uploadPhotoCard(context),
@@ -117,11 +116,7 @@ class _RegMoreInfoScreenState extends State<RegMoreInfoScreen> {
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text(context
-                              .read<PickImageCubit>()
-                              .cvUrl
-                              .split('/')
-                              .last),
+                          Text(context.read<PickImageCubit>().cvUrl.split('/').last),
                           IconButton(
                               visualDensity: VisualDensity.compact,
                               onPressed: () {
@@ -161,8 +156,7 @@ class _RegMoreInfoScreenState extends State<RegMoreInfoScreen> {
                 );
               }),
               SizedBox(height: 50),
-              BlocConsumer<AuthCubit, AuthInitialState>(
-                  listener: (context, state) {
+              BlocConsumer<AuthCubit, AuthInitialState>(listener: (context, state) {
                 print("**************************** $state");
                 if (state is ErrorState) {
                   showToast(state.error);
@@ -182,13 +176,10 @@ class _RegMoreInfoScreenState extends State<RegMoreInfoScreen> {
                   iconColor: MyColors.white,
                   loading: state is AuthLoadingState ? true : false,
                   onclick: () {
-                    if (phone.text.isEmpty ||
-                        selectedDate.isEmpty ||
-                        image.imgUrl.isEmpty ||
-                        image.cvUrl.isEmpty) {
+                    if (phone.text.isEmpty || selectedDate.isEmpty || image.imgUrl.isEmpty || image.cvUrl.isEmpty) {
                       showToast("Please fill all details");
                     } else {
-                      if (isValid) {
+                      if (true) {
                         authData.dob = selectedDate;
                         authData.phoneNumber = phone.text;
                         authData.profilePic = image.imgUrl;

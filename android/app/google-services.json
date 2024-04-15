@@ -14,11 +14,35 @@
       },
       "oauth_client": [
         {
+          "client_id": "616151795227-khaj25gv75odudi2esu1qh03m2blnk1u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.saurabhinfosys.insta_job",
+            "certificate_hash": "f6e44f8865f8443c6ae4c010cf4d21e9b989c6f9"
+          }
+        },
+        {
+          "client_id": "616151795227-q5650r3018kdh52i443dai7joeo7dm2q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.saurabhinfosys.insta_job",
+            "certificate_hash": "639f5e537ec66abd9ff90fb2308188ca5cc9157f"
+          }
+        },
+        {
           "client_id": "616151795227-r013u58l8kbgfd3ok8p0db8ro674sqi4.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.saurabhinfosys.insta_job",
             "certificate_hash": "68bbf4825429b7c98a62cf97298e34f08f809ea5"
+          }
+        },
+        {
+          "client_id": "616151795227-vpq8ahogk9hkjdbtb5kks0d6hrvfbttr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.saurabhinfosys.insta_job",
+            "certificate_hash": "6c1eb1b754cf6f2dc5d42121befc78f3dd7f0a95"
           }
         },
         {
