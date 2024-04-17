@@ -31,6 +31,8 @@ class _NewEmailScreenState extends State<NewEmailScreen> {
   TextEditingController subject = TextEditingController();
   TextEditingController desc = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  bool maskTheResumes = false; // State to track mask/unmask choice
+
   sendMail({required List<String>? downloadedFilesUrlPaths}) async {
     final Email email = Email(
       body: desc.text,
@@ -174,13 +176,16 @@ class _NewEmailScreenState extends State<NewEmailScreen> {
                     children: [
                       Expanded(
                         flex: 0,
-                        child: false
-                            ? Icon(
-                                Icons.visibility_off,
-                              )
-                            : Icon(
-                                Icons.visibility,
+                        child: !maskTheResumes
+                            ? IconButton(
+                                //TODO: handle the effect (UI)
+                                onPressed: toggleMarkingTheResume,
+                                icon: Icon(Icons.visibility),
                                 color: MyColors.blue,
+                              )
+                            : IconButton(
+                                onPressed: toggleMarkingTheResume,
+                                icon: Icon(Icons.visibility_off),
                               ),
                       ),
                       Spacer(),
@@ -226,7 +231,9 @@ class _NewEmailScreenState extends State<NewEmailScreen> {
                                       .read<AttachmentDownloadCubit>()
                                       .execute(
                                           context: context,
-                                          resumesPaths: widget.resumesPath);
+                                        resumesPaths: widget.resumesPath,
+                                        maskTheResumes: maskTheResumes,
+                                      );
                                 }
                               : null,
                         );
@@ -241,5 +248,11 @@ class _NewEmailScreenState extends State<NewEmailScreen> {
         ),
       ),
     );
+  }
+
+  void toggleMarkingTheResume() {
+    setState(() {
+      maskTheResumes = !maskTheResumes;
+    });
   }
 }

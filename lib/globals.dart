@@ -55,7 +55,7 @@ class Global {
   }
 
   Future<List<String>?> downloadMultiplePdfsNew(
-      context, List<String> resumeUrlsList) async {
+      List<String> resumeUrlsList) async {
     try {
       // List to store paths of downloaded files
       List<String> downloadedFilePaths = [];
@@ -83,6 +83,58 @@ class Global {
         }
       }
       return downloadedFilePaths;
+    } on DioException catch (e) {
+      print("@@@ Error ${e.type}");
+      showToast("Something went wrong");
+      return null;
+    }
+  }
+
+  Future<List<String>?> maskMultipleResumesAndDownloadthem(
+      List<String> resumeUrlsList) async {
+    try {
+      List<String> downloadedMaskedFilePaths = [];
+
+      for (var i = 0; i < resumeUrlsList.length; i++) {
+        var currUrl = resumeUrlsList[i];
+        // Get the temporary directory
+        final tempDir = await getTemporaryDirectory();
+        // Define the path for the temporary file
+        final tempFilePath =
+            '${tempDir.path}/masked_resume${Random().nextInt(10000) + 1}.pdf';
+
+        //first mask the pdf and get downloadable link from endpoint
+        FormData formData = FormData.fromMap({
+          'resume': await MultipartFile.fromFile(currUrl),
+          'api_key': "86wbdiu23hu134jsdf", // TODO: move to ENV later
+        });
+
+        final response =
+            await Dio().post(EndPoint.maskResumeNewFull, data: formData);
+
+        if (response.statusCode == 200) {
+          String maskedUrlRes = response.data["masked_resume_url"];
+          final response2 = await Dio().download(maskedUrlRes,
+              tempFilePath); //using the response url got from mask api
+
+          if (response2.statusCode == 200) {
+            downloadedMaskedFilePaths.add(tempFilePath);
+          } else if (response2.statusCode == 500) {
+            print('Failed to download resume: HTTP ${response.statusCode}');
+            throw Exception();
+          } else {
+            print('Failed to download resume: HTTP ${response.statusCode}');
+            throw Exception();
+          }
+        } else if (response.statusCode == 500) {
+          print('Failed to download resume: HTTP ${response.statusCode}');
+          throw Exception();
+        } else {
+          print('Failed to download resume: HTTP ${response.statusCode}');
+          throw Exception();
+        }
+      }
+      return downloadedMaskedFilePaths;
     } on DioException catch (e) {
       print("@@@ Error ${e.type}");
       showToast("Something went wrong");
