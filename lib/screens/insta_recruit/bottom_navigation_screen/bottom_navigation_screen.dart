@@ -42,8 +42,8 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
 
   @override
   void initState() {
-    getData();
     super.initState();
+    getData();
   }
 
   @override

@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/company_bloc/company_bloc.dart';
+import 'package:insta_job/bloc/company_bloc/company_event.dart';
 import 'package:insta_job/bloc/company_bloc/company_state.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/add_new_company.dart';
 import 'package:insta_job/utils/app_routes.dart';
@@ -25,6 +26,14 @@ class AssignCompany extends StatefulWidget {
 }
 
 class _AssignCompanyState extends State<AssignCompany> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<CompanyBloc>().add(LoadCompanyListEvent());
+    // context.read<JobPositionBloc>().add(
+    //     LoadJobPosListEvent()); //TODO: double check if this is necessary, IDTS
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

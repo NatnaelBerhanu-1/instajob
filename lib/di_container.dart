@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:insta_job/bloc/agora_bloc/agora_cubit.dart';
+import 'package:insta_job/bloc/attachment_download_cubit/attachment_download_cubit.dart';
 import 'package:insta_job/bloc/auth_bloc/auth_cubit.dart';
 import 'package:insta_job/bloc/career_learning_bloc/career_learning_bloc.dart';
 import 'package:insta_job/bloc/choose_image_bloc/pick_image_cubit.dart';
@@ -14,6 +15,7 @@ import 'package:insta_job/bloc/resume_bloc/resume_bloc.dart';
 import 'package:insta_job/bloc/validation/validation_bloc.dart';
 import 'package:insta_job/network/dio/dio_client.dart';
 import 'package:insta_job/network/end_points.dart';
+import 'package:insta_job/repository/attachment_download_repository.dart';
 import 'package:insta_job/repository/auth_repository.dart';
 import 'package:insta_job/repository/career_learning_repo.dart';
 import 'package:insta_job/repository/company_repo.dart';
@@ -42,6 +44,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => ResumeRepository(dioClient: sl()));
   sl.registerLazySingleton(() => CareerLearningRepo(sl()));
   sl.registerLazySingleton(() => InterviewRepo(dioClient: sl()));
+  sl.registerLazySingleton(() => AttachmentDownloadRepository(dioClient: sl()));
 
   /// cubit
   sl.registerLazySingleton(() => GlobalCubit());
@@ -60,6 +63,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => AgoraBloc());
   sl.registerLazySingleton(() => CareerLearningBloc(sl()));
   sl.registerLazySingleton(() => InterviewCubit(sl()));
+  sl.registerLazySingleton(() => AttachmentDownloadCubit(sl()));
 
   /// other
   final SharedPreferences preferences = await SharedPreferences.getInstance();

@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:insta_job/bloc/attachment_download_cubit/attachment_download_cubit.dart';
+import 'package:insta_job/bloc/attachment_download_cubit/attachment_download_state.dart';
 import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
 import 'package:insta_job/bloc/validation/validation_bloc.dart';
 import 'package:insta_job/globals.dart';
@@ -29,12 +31,12 @@ class _NewEmailScreenState extends State<NewEmailScreen> {
   TextEditingController subject = TextEditingController();
   TextEditingController desc = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  sendMail() async {
-    Global().downloadPdf(context, widget.resumesPath[0], "resume ${0}");
+  sendMail({required List<String>? downloadedFilesUrlPaths}) async {
     final Email email = Email(
       body: desc.text,
       subject: subject.text,
       recipients: [to.text],
+      attachmentPaths: downloadedFilesUrlPaths,
       // cc: ['cc@example.com'],
       // bcc: ['bcc@example.com'],
       // attachmentPaths: ['/path/to/attachment.zip'],
@@ -149,12 +151,6 @@ class _NewEmailScreenState extends State<NewEmailScreen> {
                     errorBorder: border,
                     focusedErrorBorder: border,
                   ),
-                  validator: (String? value) {
-                    if (value == null || value.isEmpty) {
-                      return "Field can't be empty";
-                    }
-                    return null;
-                  },
                   style: TextStyle(
                     fontWeight: FontWeight.w700,
                   ),
@@ -165,12 +161,6 @@ class _NewEmailScreenState extends State<NewEmailScreen> {
                   maxLine: 10,
                   color: MyColors.grey.withOpacity(.30),
                   hint: "Description",
-                  validator: (String? value) {
-                    if (value == null || value.isEmpty) {
-                      return "Field can't be empty";
-                    }
-                    return null;
-                  },
                 ),
                 SizedBox(height: 50),
                 // Spacer(),
@@ -201,20 +191,46 @@ class _NewEmailScreenState extends State<NewEmailScreen> {
                       //     color: MyColors.grey,
                       //   ),
                       // ),
-                      Expanded(
-                          child: ElevatedButton(
-                        style: ButtonStyle(
-                          elevation: MaterialStateProperty.all(0),
-                          backgroundColor:
-                              MaterialStateProperty.all(MyColors.blue),
+                      Center(
+                        child: BlocConsumer<AttachmentDownloadCubit,
+                            AttachmentDownloadState>(
+                          builder: (context, state) {
+                            if (state is AttachmentDownloadLoading) {
+                              return CircularProgressIndicator();
+                            }
+                            return SizedBox.shrink();
+                          },
+                          listener: (context, state) {
+                            if (state is AttachmentDownloadSuccess) {
+                              sendMail(
+                                  downloadedFilesUrlPaths:
+                                      state.downloadedFilesUrlPaths);
+                            }
+                          },
                         ),
-                        child: Text("Send Now"),
-                        onPressed: () {
-                          // if (_formKey.currentState!.validate()) {
-                          sendMail();
-                          // }
-                        },
-                      ))
+                      ),
+                      SizedBox(width: 12),
+                      Expanded(
+                          child: BlocBuilder<AttachmentDownloadCubit,
+                          AttachmentDownloadState>(builder: (context, state) {
+                        return ElevatedButton(
+                          style: ButtonStyle(
+                            elevation: MaterialStateProperty.all(0),
+                            backgroundColor:
+                                MaterialStateProperty.all(MyColors.blue),
+                          ),
+                          child: Text("Send Now"),
+                          onPressed: state is! AttachmentDownloadLoading
+                              ? () {
+                                  context
+                                      .read<AttachmentDownloadCubit>()
+                                      .execute(
+                                          context: context,
+                                          resumesPaths: widget.resumesPath);
+                                }
+                              : null,
+                        );
+                      }))
                     ],
                   ),
                 ),
