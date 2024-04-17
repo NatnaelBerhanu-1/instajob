@@ -112,7 +112,7 @@ class _NewEmailScreenState extends State<NewEmailScreen> {
                             focusedErrorBorder: border,
                           ),
                           style: TextStyle(
-                            fontWeight: FontWeight.w700,
+                            fontWeight: FontWeight.w600,
                           ),
                           validator: (String? value) {
                             if (value == null || value.isEmpty) {
@@ -153,9 +153,6 @@ class _NewEmailScreenState extends State<NewEmailScreen> {
                     errorBorder: border,
                     focusedErrorBorder: border,
                   ),
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                  ),
                 ),
                 SizedBox(height: 10),
                 CustomTextField(
@@ -178,14 +175,15 @@ class _NewEmailScreenState extends State<NewEmailScreen> {
                         flex: 0,
                         child: !maskTheResumes
                             ? IconButton(
-                                //TODO: handle the effect (UI)
                                 onPressed: toggleMarkingTheResume,
                                 icon: Icon(Icons.visibility),
                                 color: MyColors.blue,
+                                splashRadius: 20,
                               )
                             : IconButton(
                                 onPressed: toggleMarkingTheResume,
                                 icon: Icon(Icons.visibility_off),
+                                splashRadius: 20,
                               ),
                       ),
                       Spacer(),
