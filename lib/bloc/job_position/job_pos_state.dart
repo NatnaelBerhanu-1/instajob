@@ -41,8 +41,14 @@ class JobDistanceLoaded extends JobPosState {
 
 class AppliedJobLoaded extends JobPosState {
   final List<JobPosModel> appliedJobList;
+  final List<JobPosModel> appliedOnly;
+  final List<JobPosModel> shortlisted;
 
-  const AppliedJobLoaded(this.appliedJobList);
+  const AppliedJobLoaded({
+    required this.appliedJobList,
+    required this.appliedOnly,
+    required this.shortlisted,
+  });
 }
 
 class JobErrorState extends JobPosState {

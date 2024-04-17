@@ -47,7 +47,7 @@ class _ViewCandidatesState extends State<ViewCandidates> {
         ));
     ;
   }
-
+  
 
   @override
   Widget build(BuildContext context) {
@@ -137,16 +137,18 @@ class _ViewCandidatesState extends State<ViewCandidates> {
                             tab.changeTabValue(val);
                             print("!!!!!!!!!!!!!!! $val");
                             if (val == 0) {
-                              context.read<JobPositionBloc>().add(
-                                  AppliedJobListEvent(
-                                      jobId: widget.jobPosModel!.id.toString(),
-                                      status: "applied"));
+                              context
+                                  .read<JobPositionBloc>()
+                                  .add(AppliedJobListEvent(
+                                    jobId: widget.jobPosModel!.id.toString(),
+                                  ));
                             }
                             if (val == 1) {
-                              context.read<JobPositionBloc>().add(
-                                  AppliedJobListEvent(
-                                      jobId: widget.jobPosModel!.id.toString(),
-                                      status: "shortlisted"));
+                              context
+                                  .read<JobPositionBloc>()
+                                  .add(AppliedJobListEvent(
+                                    jobId: widget.jobPosModel!.id.toString(),
+                                  ));
                             }
                             if (val == 3) {
                               // context.read<JobPositionBloc>().add(
@@ -154,6 +156,8 @@ class _ViewCandidatesState extends State<ViewCandidates> {
                               //         jobId: widget.jobPosModel!.id.toString(),
                               //         status: "denied"));
                             }
+                            selectedCandidatesIndices.clear();
+                            setState(() {});
                           },
                           tabs: [
                             Tab(text: "Applied"),
@@ -167,7 +171,7 @@ class _ViewCandidatesState extends State<ViewCandidates> {
                         return TabBarView(children: [
                           if (appliedState is AppliedJobLoaded) ...[
                             ListView.builder(
-                                itemCount: appliedState.appliedJobList.length,
+                                itemCount: appliedState.appliedOnly.length,
                                 itemBuilder: (c, i) {
                                   return Padding(
                                     padding: const EdgeInsets.symmetric(
@@ -181,7 +185,7 @@ class _ViewCandidatesState extends State<ViewCandidates> {
                                               .read<GlobalCubit>()
                                               .onSelected(val, i,
                                                   email: appliedState
-                                                      .appliedJobList[i]
+                                                      .appliedOnly[i]
                                                       .userEmail);
                                           if (val == true) {
                                             selectedCandidatesIndices.add(i);
@@ -195,7 +199,7 @@ class _ViewCandidatesState extends State<ViewCandidates> {
                                         value: selectedCandidatesIndices
                                             .contains(i),
                                         appliedJobModel:
-                                            appliedState.appliedJobList[i],
+                                            appliedState.appliedOnly[i],
                                       );
                                     }),
                                   );
@@ -206,7 +210,7 @@ class _ViewCandidatesState extends State<ViewCandidates> {
                           ],
                           if (appliedState is AppliedJobLoaded) ...[
                             ListView.builder(
-                                itemCount: appliedState.appliedJobList.length,
+                                itemCount: appliedState.shortlisted.length,
                                 itemBuilder: (c, i) {
                                   return Padding(
                                     padding: const EdgeInsets.symmetric(
@@ -221,12 +225,10 @@ class _ViewCandidatesState extends State<ViewCandidates> {
                                               .onSelected(val, i);
                                           setState(() {});
                                         },
-                                        value: context
-                                            .read<GlobalCubit>()
-                                            .list
+                                        value: selectedCandidatesIndices
                                             .contains(i),
                                         appliedJobModel:
-                                            appliedState.appliedJobList[i],
+                                            appliedState.shortlisted[i],
                                       );
                                     }),
                                   );
