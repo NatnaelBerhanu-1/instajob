@@ -12,6 +12,7 @@ import 'package:insta_job/model/job_position_model.dart';
 import 'package:insta_job/screens/insta_recruit/new_email_screen.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/widgets/candidate_tile.dart';
+import 'package:pinput/pinput.dart';
 
 import '../../../../../utils/app_routes.dart';
 import '../../../../../utils/my_images.dart';
@@ -36,6 +37,17 @@ class ViewCandidates extends StatefulWidget {
 class _ViewCandidatesState extends State<ViewCandidates> {
   int selectedTab = 0;
   bool isCheck = false;
+  late Set<int> selectedCandidatesIndices;
+  @override
+  void initState() {
+    super.initState();
+    selectedCandidatesIndices = <int>{};
+    context.read<JobPositionBloc>().add(AppliedJobListEvent(
+          jobId: widget.jobPosModel?.id.toString(),
+        ));
+    ;
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -60,13 +72,29 @@ class _ViewCandidatesState extends State<ViewCandidates> {
             title: "Candidates",
             actions: Row(
               children: [
-                ImageButton(
-                  image: MyImages.logout,
-                  color: MyColors.blue,
-                  onTap: () {
-                    AppRoutes.push(context, NewEmailScreen());
-                  },
-                ),
+                if (selectedCandidatesIndices.isNotEmpty)
+                  BlocBuilder<JobPositionBloc, JobPosState>(
+                      builder: (context, appliedState) {
+                    return ImageButton(
+                      image: MyImages.logout,
+                      color: MyColors.blue,
+                      onTap: () {
+                        List<String> resumesPath = [];
+                        if (appliedState is AppliedJobLoaded) {
+                          for (var currSelectedIdx
+                              in selectedCandidatesIndices) {
+                            String? currResumeUrl = appliedState
+                                .appliedJobList[currSelectedIdx].uploadResume;
+                            if (currResumeUrl != null) {
+                              resumesPath.add(currResumeUrl);
+                            }
+                          }
+                        }
+                        AppRoutes.push(
+                            context, NewEmailScreen(resumesPath: resumesPath));
+                      },
+                    );
+                  }),
                 // ImageButton(
                 //   image: MyImages.searchBlue,
                 // ),
@@ -155,11 +183,16 @@ class _ViewCandidatesState extends State<ViewCandidates> {
                                                   email: appliedState
                                                       .appliedJobList[i]
                                                       .userEmail);
+                                          if (val == true) {
+                                            selectedCandidatesIndices.add(i);
+                                          } else if (val == false &&
+                                              selectedCandidatesIndices
+                                                  .contains(i)) {
+                                            selectedCandidatesIndices.remove(i);
+                                          }
                                           setState(() {});
                                         },
-                                        value: context
-                                            .read<GlobalCubit>()
-                                            .list
+                                        value: selectedCandidatesIndices
                                             .contains(i),
                                         appliedJobModel:
                                             appliedState.appliedJobList[i],
