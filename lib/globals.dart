@@ -142,6 +142,42 @@ class Global {
     }
   }
 
+  Future<List<int>?> getResumesMatchingScore(
+      List<String> resumeUrlsList) async {
+    // unimplemented //TODO:(URGENT)
+    try {
+      List<int> scores = []; //score out of 100
+
+      for (var i = 0; i < resumeUrlsList.length; i++) {
+        var currUrl = resumeUrlsList[i];
+
+        FormData formData = FormData.fromMap({
+          'resume': await MultipartFile.fromFile(currUrl),
+          'api_key': "86wbdiu23hu134jsdf", // TODO: move to ENV later
+        });
+
+        final response =
+            await Dio().post(EndPoint.resumeMatcherNewFull, data: formData);
+
+        if (response.statusCode == 200) {
+          int scoreRes = response.data["score"]; //untested TODO: CHECK
+          scores.add(scoreRes);
+        } else if (response.statusCode == 500) {
+          print('Failed to get score: HTTP ${response.statusCode}');
+          throw Exception();
+        } else {
+          print('Failed to get score: HTTP ${response.statusCode}');
+          throw Exception();
+        }
+      }
+      return scores;
+    } on DioException catch (e) {
+      print("@@@ Error ${e.type}");
+      showToast("Something went wrong");
+      return null;
+    }
+  }
+
   openPdf(BuildContext context, String url, String fileName) async {
     final file = await downloadPdf(context, url, fileName.split('/').last);
     if (file == null) return;

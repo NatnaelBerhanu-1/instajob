@@ -92,7 +92,7 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
       List<JobPosModel> list = (response.response.data['data'] as List)
           .map((e) => JobPosModel.fromJson(e))
           .toList();
-      
+
       // Defining lists for filtering
       List<JobPosModel> appliedOnly = [];
       List<JobPosModel> shortlisted = [];
@@ -112,7 +112,9 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
         appliedOnly: appliedOnly,
         shortlisted: shortlisted,
       ));
-      return list;
+
+      //todo: add another emit loaded state after checking resume matcher endpoint
+      // return list; //delete return
     } else if (response.response.statusCode == 400) {
       emit(const ApplyErrorState("Data Not Found"));
     } else {
@@ -270,7 +272,7 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
       emit(ApplyLoading());
       List<JobPosModel> jobList =
           await _getAppliedJobs(emit, jobId: event.jobId, status: event.status);
-      
+
 
       emit(AppliedJobLoaded(
         appliedJobList: jobList,

@@ -66,6 +66,8 @@ class EndPoint {
   static String editResume = "edit_resume";
   static String maskResumeNewFull =
       "http://3.226.151.140/resume-masker"; // NOTE: this is using another baseurl
+  static String resumeMatcherNewFull =
+      "http://3.226.151.140/resume-matcher"; // NOTE: this is using another baseurl
   static String addEducation = "education";
   static String tellUs = "tell_us_about_self";
   static String addWorkExperience = "work_experience";

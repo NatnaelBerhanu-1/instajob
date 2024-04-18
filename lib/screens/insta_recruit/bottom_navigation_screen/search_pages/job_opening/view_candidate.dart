@@ -169,6 +169,10 @@ class _ViewCandidatesState extends State<ViewCandidates> {
                       Expanded(child: BlocBuilder<JobPositionBloc, JobPosState>(
                           builder: (context, appliedState) {
                         return TabBarView(children: [
+                          if (appliedState is! ApplyLoading ||
+                              appliedState is! AppliedJobLoaded) ...[
+                            SizedBox()
+                          ], ///////TODO: revisit untested
                           if (appliedState is AppliedJobLoaded) ...[
                             ListView.builder(
                                 itemCount: appliedState.appliedOnly.length,
