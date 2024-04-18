@@ -23,16 +23,33 @@ class CandidateTile extends StatelessWidget {
   final bool? value;
   final bool idDeny;
   final JobPosModel? appliedJobModel;
-  const CandidateTile({Key? key, this.onchange, this.value, this.appliedJobModel, this.idDeny = false})
+  final List<JobPosModel> fullFilteredApplicantsList;
+  final int selectedIndex;
+
+  const CandidateTile({
+    Key? key,
+    this.onchange,
+    this.value,
+    this.appliedJobModel,
+    this.idDeny = false,
+    required this.fullFilteredApplicantsList,
+    required this.selectedIndex,
+  })
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var tab = context.watch<GlobalCubit>();
-    return BlocBuilder<BottomBloc, BottomInitialState>(builder: (context, state) {
+    return BlocBuilder<BottomBloc, BottomInitialState>(
+        builder: (context, state) {
       return GestureDetector(
         onTap: () {
-          AppRoutes.push(context, Applicants(jobPosModel: appliedJobModel));
+          AppRoutes.push(
+              context,
+              Applicants(
+                selectedIndex: selectedIndex,
+                fullFilteredApplicantsList: fullFilteredApplicantsList,
+              ));
           // context.read<BottomBloc>().add(SetScreenEvent(true,
           //     screenName: Applicants(jobPosModel: appliedJobModel)));
           context.read<ResumeBloc>().add(UserResumeLoadedEvent(userId: appliedJobModel?.userId.toString()));

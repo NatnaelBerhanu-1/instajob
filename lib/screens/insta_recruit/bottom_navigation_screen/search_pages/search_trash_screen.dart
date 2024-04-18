@@ -82,7 +82,12 @@ class _SearchTrashState extends State<SearchTrash> {
                                     child: CandidateTile(
                                       idDeny: true,
                                       appliedJobModel:
-                                          appliedState.appliedJobList[i],
+                                          appliedState
+                                              .appliedJobList[
+                                          i], //TODO: revisit this screen & revisit this property(to remove)
+                                      selectedIndex: i,
+                                      fullFilteredApplicantsList:
+                                          appliedState.appliedOnly,
                                     ),
                                   );
                                 }),

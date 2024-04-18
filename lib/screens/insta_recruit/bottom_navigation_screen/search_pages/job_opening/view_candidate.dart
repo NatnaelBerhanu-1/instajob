@@ -200,6 +200,9 @@ class _ViewCandidatesState extends State<ViewCandidates> {
                                             .contains(i),
                                         appliedJobModel:
                                             appliedState.appliedOnly[i],
+                                        selectedIndex: i,
+                                        fullFilteredApplicantsList:
+                                            appliedState.appliedOnly,
                                       );
                                     }),
                                   );
@@ -229,6 +232,9 @@ class _ViewCandidatesState extends State<ViewCandidates> {
                                             .contains(i),
                                         appliedJobModel:
                                             appliedState.shortlisted[i],
+                                        selectedIndex: i,
+                                        fullFilteredApplicantsList:
+                                            appliedState.shortlisted,
                                       );
                                     }),
                                   );
