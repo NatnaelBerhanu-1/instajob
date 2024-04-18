@@ -84,7 +84,7 @@ class _ViewCandidatesState extends State<ViewCandidates> {
                           for (var currSelectedIdx
                               in selectedCandidatesIndices) {
                             String? currResumeUrl = appliedState
-                                .appliedJobList[currSelectedIdx].uploadResume;
+                                .appliedOnly[currSelectedIdx].uploadResume;
                             if (currResumeUrl != null) {
                               resumesPath.add(currResumeUrl);
                             }
