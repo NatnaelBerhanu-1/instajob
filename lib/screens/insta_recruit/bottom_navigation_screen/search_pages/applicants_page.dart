@@ -38,7 +38,7 @@ class Applicants extends StatefulWidget {
 class _ApplicantsState extends State<Applicants> {
   late JobPosModel? jobPosModel;
   late PageController _pageController;
-@override
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
@@ -52,7 +52,6 @@ class _ApplicantsState extends State<Applicants> {
     _pageController.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -78,8 +77,8 @@ class _ApplicantsState extends State<Applicants> {
             //     context, ViewCandidates(jobPosModel: jobPosModel));
             Navigator.of(context).pop();
             tab.changeTabValue(0);
-            context.read<JobPositionBloc>().add(AppliedJobListEvent(
-                jobId: jobPosModel!.id.toString(), status: "applied"));
+            // context.read<JobPositionBloc>().add(AppliedJobListEvent(
+            //     jobId: jobPosModel!.id.toString(), status: "applied"));
             // context.read<ResumeBloc>().resumeModel = ResumeModel();
             // setState(() {});
             // AppRoutes.push(context, BottomNavScreen());
@@ -92,8 +91,7 @@ class _ApplicantsState extends State<Applicants> {
           itemBuilder: (context, index) {
             return SingleChildScrollView(
               child: ConstrainedBox(
-                constraints: BoxConstraints(
-                    maxHeight: MediaQuery.of(context).size.height),
+                constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height),
                 child: Column(
                   children: [
                     Row(
@@ -108,8 +106,7 @@ class _ApplicantsState extends State<Applicants> {
                           percent: 0.87,
                           center: Text(
                             "90% Match",
-                            style:
-                                TextStyle(fontSize: 12, color: MyColors.blue),
+                            style: TextStyle(fontSize: 12, color: MyColors.blue),
                           ),
                           barRadius: Radius.circular(5),
                           progressColor: Colors.blue.shade100,
@@ -126,10 +123,7 @@ class _ApplicantsState extends State<Applicants> {
                               color: MyColors.white,
                               borderRadius: BorderRadius.circular(10),
                               boxShadow: [
-                                BoxShadow(
-                                    color: MyColors.grey.withOpacity(.10),
-                                    spreadRadius: 5,
-                                    blurRadius: 8)
+                                BoxShadow(color: MyColors.grey.withOpacity(.10), spreadRadius: 5, blurRadius: 8)
                               ]),
                           child: SfPdfViewer.network(
                             "${EndPoint.imageBaseUrl}${jobPosModel?.uploadResume}",
@@ -141,37 +135,27 @@ class _ApplicantsState extends State<Applicants> {
                     Expanded(
                       flex: 0,
                       child: Padding(
-                        padding: const EdgeInsets.only(
-                            left: 15.0, right: 15, top: 10),
-                        child: BlocBuilder<JobPositionBloc, JobPosState>(
-                            builder: (context, state) {
+                        padding: const EdgeInsets.only(left: 15.0, right: 15, top: 10),
+                        child: BlocBuilder<JobPositionBloc, JobPosState>(builder: (context, state) {
                           return Row(
                             children: [
                               tab.selectedTab == 4
                                   ? SizedBox()
                                   : Expanded(
                                       child: CustomButton(
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.055,
+                                      height: MediaQuery.of(context).size.height * 0.055,
                                       bgColor: MyColors.darkRed,
                                       title: "Deny",
                                       onTap: () {
-                                        context.read<JobPositionBloc>().add(
-                                            SortListOrDenyEvent(
-                                                appliedListId:
-                                                    "${jobPosModel?.appliedId}",
-                                                status: "denied"));
+                                        context.read<JobPositionBloc>().add(SortListOrDenyEvent(
+                                            appliedListId: "${jobPosModel?.appliedId}", status: "denied"));
                                         AppRoutes.pop(context);
                                       },
                                     )),
-                              tab.selectedTab == 4
-                                  ? SizedBox()
-                                  : SizedBox(width: 15),
+                              tab.selectedTab == 4 ? SizedBox() : SizedBox(width: 15),
                               Expanded(
                                   child: CustomButton(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.055,
+                                height: MediaQuery.of(context).size.height * 0.055,
                                 title: "Contact",
                                 onTap: () {
                                   AppRoutes.push(
@@ -183,29 +167,19 @@ class _ApplicantsState extends State<Applicants> {
                                       ));
                                 },
                               )),
-                              tab.selectedTab == 1
-                                  ? SizedBox()
-                                  : SizedBox(width: 15),
+                              tab.selectedTab == 1 ? SizedBox() : SizedBox(width: 15),
                               tab.selectedTab == 1
                                   ? SizedBox()
                                   : Expanded(
                                       child: CustomButton(
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.055,
+                                      height: MediaQuery.of(context).size.height * 0.055,
                                       title: "Shortlist",
                                       bgColor: MyColors.cyan,
                                       onTap: () {
-                                        context.read<JobPositionBloc>().add(
-                                            SortListOrDenyEvent(
-                                                appliedListId:
-                                                    "${jobPosModel?.appliedId}",
-                                                status: "shortlisted"));
-                                        context.read<JobPositionBloc>().add(
-                                            AppliedJobListEvent(
-                                                jobId:
-                                                    jobPosModel!.id.toString(),
-                                                status: "shortlisted"));
+                                        context.read<JobPositionBloc>().add(SortListOrDenyEvent(
+                                            appliedListId: "${jobPosModel?.appliedId}", status: "shortlisted"));
+                                        context.read<JobPositionBloc>().add(AppliedJobListEvent(
+                                            jobId: jobPosModel!.id.toString(), status: "shortlisted"));
                                         AppRoutes.pop(context);
                                       },
                                     )),
@@ -216,8 +190,7 @@ class _ApplicantsState extends State<Applicants> {
                     ),
                     SizedBox(height: 15),
                     Expanded(
-                      child: BlocBuilder<ResumeBloc, ResumeState>(
-                          builder: (context, state) {
+                      child: BlocBuilder<ResumeBloc, ResumeState>(builder: (context, state) {
                         var resumeData = context.read<ResumeBloc>();
                         return DefaultTabController(
                             length: 5,
@@ -228,8 +201,7 @@ class _ApplicantsState extends State<Applicants> {
                                   isScrollable: true,
                                   unselectedLabelColor: MyColors.tabClr,
                                   indicatorColor: MyColors.blue,
-                                  indicatorPadding:
-                                      EdgeInsets.symmetric(horizontal: 4),
+                                  indicatorPadding: EdgeInsets.symmetric(horizontal: 4),
                                   tabs: [
                                     Tab(text: "Bio"),
                                     Tab(text: "Education"),
@@ -240,70 +212,53 @@ class _ApplicantsState extends State<Applicants> {
                                 ),
                                 Expanded(
                                     child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 15.0, horizontal: 15),
+                                  padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 15),
                                   child: TabBarView(
                                     children: [
                                       if (state is UserResumeLoaded) ...[
-                                        Text(
-                                            "${state.resumeModel.tellUss?[0].tellUs}"),
+                                        Text("${state.resumeModel.tellUss?[0].tellUs}"),
                                         ListView.builder(
-                                            itemCount: state
-                                                .resumeModel.educations?.length,
+                                            itemCount: state.resumeModel.educations?.length,
                                             shrinkWrap: true,
                                             itemBuilder: (c, i) {
                                               return Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 5.0),
+                                                padding: const EdgeInsets.symmetric(vertical: 5.0),
                                                 child: ResumeTile(
                                                   index: i + 1,
-                                                  educations: state.resumeModel
-                                                      .educations?[i],
+                                                  educations: state.resumeModel.educations?[i],
                                                 ),
                                               );
                                             }),
                                         ListView.builder(
-                                            itemCount: state.resumeModel
-                                                .workExperiences?.length,
+                                            itemCount: state.resumeModel.workExperiences?.length,
                                             shrinkWrap: true,
                                             itemBuilder: (c, i) {
                                               return Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 5.0),
+                                                padding: const EdgeInsets.symmetric(vertical: 5.0),
                                                 child: ResumeTile(
                                                   index: i + 1,
                                                   isWorkExp: true,
-                                                  workExperiences: state
-                                                      .resumeModel
-                                                      .workExperiences?[i],
+                                                  workExperiences: state.resumeModel.workExperiences?[i],
                                                 ),
                                               );
                                             }),
                                         ListView.builder(
                                             shrinkWrap: true,
-                                            itemCount: state.resumeModel
-                                                .skills?[0].addSkill?.length,
+                                            itemCount: state.resumeModel.skills?[0].addSkill?.length,
                                             itemBuilder: (context, i) {
                                               return Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: .0,
-                                                        horizontal: 0),
+                                                padding: const EdgeInsets.symmetric(vertical: .0, horizontal: 0),
                                                 child: Column(
                                                   children: [
                                                     Row(
                                                       children: [
                                                         Text(
                                                           "${state.resumeModel.skills?[0].addSkill?[i]}",
-                                                          style: TextStyle(
-                                                              fontSize: 14),
+                                                          style: TextStyle(fontSize: 14),
                                                         ),
                                                         Spacer(),
                                                         Icon(
-                                                          Icons
-                                                              .check_circle_outline_rounded,
+                                                          Icons.check_circle_outline_rounded,
                                                           color: MyColors.blue,
                                                         ),
                                                       ],
@@ -315,30 +270,21 @@ class _ApplicantsState extends State<Applicants> {
                                             }),
                                         ListView.builder(
                                             shrinkWrap: true,
-                                            itemCount: state
-                                                .resumeModel
-                                                .achievements?[0]
-                                                .achievements
-                                                ?.length,
+                                            itemCount: state.resumeModel.achievements?[0].achievements?.length,
                                             itemBuilder: (context, i) {
                                               return Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: .0,
-                                                        horizontal: 0),
+                                                padding: const EdgeInsets.symmetric(vertical: .0, horizontal: 0),
                                                 child: Column(
                                                   children: [
                                                     Row(
                                                       children: [
                                                         Text(
                                                           "${state.resumeModel.achievements?[0].achievements?[i]}",
-                                                          style: TextStyle(
-                                                              fontSize: 14),
+                                                          style: TextStyle(fontSize: 14),
                                                         ),
                                                         Spacer(),
                                                         Icon(
-                                                          Icons
-                                                              .check_circle_outline_rounded,
+                                                          Icons.check_circle_outline_rounded,
                                                           color: MyColors.blue,
                                                         ),
                                                       ],
@@ -349,21 +295,11 @@ class _ApplicantsState extends State<Applicants> {
                                               );
                                             }),
                                       ],
-                                      if (state is ErrorState) ...[
-                                        Center(child: Text(state.error))
-                                      ],
-                                      if (state is ErrorState) ...[
-                                        Center(child: Text(state.error))
-                                      ],
-                                      if (state is ErrorState) ...[
-                                        Center(child: Text(state.error))
-                                      ],
-                                      if (state is ErrorState) ...[
-                                        Center(child: Text(state.error))
-                                      ],
-                                      if (state is ErrorState) ...[
-                                        Center(child: Text(state.error))
-                                      ],
+                                      if (state is ErrorState) ...[Center(child: Text(state.error))],
+                                      if (state is ErrorState) ...[Center(child: Text(state.error))],
+                                      if (state is ErrorState) ...[Center(child: Text(state.error))],
+                                      if (state is ErrorState) ...[Center(child: Text(state.error))],
+                                      if (state is ErrorState) ...[Center(child: Text(state.error))],
                                     ],
                                   ),
                                 ))
@@ -375,8 +311,7 @@ class _ApplicantsState extends State<Applicants> {
                 ),
               ),
             );
-          }
-      ),
+          }),
     );
   }
 }

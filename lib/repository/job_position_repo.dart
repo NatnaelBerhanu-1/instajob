@@ -1,9 +1,15 @@
+import 'dart:convert';
+import 'dart:math';
+
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/model/filter_model.dart';
 import 'package:insta_job/network/api_response.dart';
 import 'package:insta_job/network/dio/dio_client.dart';
 import 'package:insta_job/network/end_points.dart';
+import 'package:path_provider/path_provider.dart';
 
 class JobPositionRepository {
   final DioClient dioClient;
@@ -13,8 +19,7 @@ class JobPositionRepository {
   getJobPositions({String? id}) async {
     try {
       var map = {"company_id": id ?? "", "user_id": Global.userModel?.id};
-      var response =
-          await dioClient.post(data: map, uri: EndPoint.getJobPosition);
+      var response = await dioClient.post(data: map, uri: EndPoint.getJobPosition);
       return ApiResponse.withSuccess(response);
     } on DioException catch (e) {
       return ApiResponse.withError(e.response);
@@ -23,11 +28,9 @@ class JobPositionRepository {
 
   Future<ApiResponse> saveJob({String? jobId, String? jobStatus}) async {
     try {
-      Response response = await dioClient.post(data: {
-        "job_id": jobId,
-        "user_id": Global.userModel?.id.toString(),
-        "job_status": jobStatus
-      }, uri: EndPoint.insertSaveJob);
+      Response response = await dioClient.post(
+          data: {"job_id": jobId, "user_id": Global.userModel?.id.toString(), "job_status": jobStatus},
+          uri: EndPoint.insertSaveJob);
       return ApiResponse.withSuccess(response);
     } on DioException catch (e) {
       return ApiResponse.withError(e.response);
@@ -36,8 +39,7 @@ class JobPositionRepository {
 
   Future<ApiResponse> getSavedJob() async {
     try {
-      Response response = await dioClient.post(
-          data: {"user_id": Global.userModel?.id}, uri: EndPoint.showSaveJob);
+      Response response = await dioClient.post(data: {"user_id": Global.userModel?.id}, uri: EndPoint.showSaveJob);
       return ApiResponse.withSuccess(response);
     } on DioException catch (e) {
       return ApiResponse.withError(e.response);
@@ -45,14 +47,9 @@ class JobPositionRepository {
   }
 
   Future<ApiResponse> applyForJob({String? jobId, String? resume}) async {
-    var map = {
-      "user_id": Global.userModel?.id,
-      "job_id": jobId,
-      "upload_resume": resume
-    };
+    var map = {"user_id": Global.userModel?.id, "job_id": jobId, "upload_resume": resume};
     try {
-      Response response =
-          await dioClient.post(data: map, uri: EndPoint.applyForJob);
+      Response response = await dioClient.post(data: map, uri: EndPoint.applyForJob);
       return ApiResponse.withSuccess(response);
     } on DioException catch (e) {
       return ApiResponse.withError(e.response);
@@ -73,20 +70,17 @@ class JobPositionRepository {
       };
     }
     try {
-      Response response =
-          await dioClient.post(data: map, uri: EndPoint.getAppliedJob);
+      Response response = await dioClient.post(data: map, uri: EndPoint.getAppliedJob);
       return ApiResponse.withSuccess(response);
     } on DioException catch (e) {
       return ApiResponse.withError(e.response);
     }
   }
 
-  Future<ApiResponse> shortlistOrDenied(
-      {required String appliedListId, String? status}) async {
+  Future<ApiResponse> shortlistOrDenied({required String appliedListId, String? status}) async {
     var map = {"id": appliedListId, "status": status ?? "applied"};
     try {
-      Response response =
-          await dioClient.post(data: map, uri: EndPoint.shortlistOrDenied);
+      Response response = await dioClient.post(data: map, uri: EndPoint.shortlistOrDenied);
       return ApiResponse.withSuccess(response);
     } on DioException catch (e) {
       return ApiResponse.withError(e.response);
@@ -95,8 +89,7 @@ class JobPositionRepository {
 
   Future<ApiResponse> deleteJobPosition({String? jobId}) async {
     try {
-      Response response = await dioClient
-          .post(data: {"id": jobId}, uri: EndPoint.deleteJobPosition);
+      Response response = await dioClient.post(data: {"id": jobId}, uri: EndPoint.deleteJobPosition);
       return ApiResponse.withSuccess(response);
     } on DioException catch (e) {
       return ApiResponse.withError(e.response);
@@ -142,8 +135,7 @@ class JobPositionRepository {
         "shortlisted_review_subject": shortlistedReviewSubject,
         "shortlisted_review_content": shortlistedReviewContent,
       };
-      Response response =
-          await dioClient.post(data: map, uri: EndPoint.addJobPosition);
+      Response response = await dioClient.post(data: map, uri: EndPoint.addJobPosition);
       return ApiResponse.withSuccess(response);
     } on DioException catch (e) {
       return ApiResponse.withError(e.response);
@@ -190,8 +182,7 @@ class JobPositionRepository {
         "shortlisted_review_subject": shortlistedReviewSubject,
         "shortlisted_review_content": shortlistedReviewContent,
       };
-      Response response =
-          await dioClient.post(data: map, uri: EndPoint.editJobPosition);
+      Response response = await dioClient.post(data: map, uri: EndPoint.editJobPosition);
       return ApiResponse.withSuccess(response);
     } on DioException catch (e) {
       return ApiResponse.withError(e.response);
@@ -223,8 +214,7 @@ class JobPositionRepository {
   jobDistanceLocator({String? designation, String? miles}) async {
     try {
       var map = {"designation": designation, "Area_Distance": miles};
-      var response =
-          await dioClient.post(data: map, uri: EndPoint.jobDistanceLocator);
+      var response = await dioClient.post(data: map, uri: EndPoint.jobDistanceLocator);
       return ApiResponse.withSuccess(response);
     } on DioException catch (e) {
       return ApiResponse.withError(e.response);
@@ -248,8 +238,7 @@ class JobPositionRepository {
         "time": time,
         "time_type": timeType
       };
-      var response =
-          await dioClient.post(data: map, uri: EndPoint.createVideoCall);
+      var response = await dioClient.post(data: map, uri: EndPoint.createVideoCall);
       return ApiResponse.withSuccess(response);
     } on DioException catch (e) {
       return ApiResponse.withError(e.response);
@@ -262,8 +251,7 @@ class JobPositionRepository {
     try {
       final response = await dioClient.get(
           data: {},
-          uri:
-              "https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&key=$kGoogleApiKey");
+          uri: "https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&key=$kGoogleApiKey");
       return ApiResponse.withSuccess(response);
     } on DioException catch (e) {
       return ApiResponse.withError(e.response);
@@ -279,6 +267,44 @@ class JobPositionRepository {
       return ApiResponse.withSuccess(response);
     } on DioException catch (e) {
       return ApiResponse.withError(e.response);
+    }
+  }
+
+  Future<int> getJobMatchScore(int userId, String jobDetails, String resumeUrl) async {
+    try {
+      // Get the temporary directory
+      final tempDir = await getTemporaryDirectory();
+      // Define the path for the temporary file
+      final tempFilePath = '${tempDir.path}/temp_resume${Random().nextInt(10000) + 1}.pdf';
+
+      var response = await dioClient.dio?.downloadUri(Uri.parse(resumeUrl), tempFilePath);
+      if (response?.statusCode == 200) {
+        FormData formData = FormData.fromMap({
+          'resume': await MultipartFile.fromFile(tempFilePath),
+          'api_key': "86wbdiu23hu134jsdf", // TODO: move to ENV later
+          'job_description': jobDetails
+        });
+
+        var response = await dioClient.dio?.post(EndPoint.resumeMatcherNewFull, data: formData);
+        debugPrint("StatusCode: ${response?.statusCode.toString()}");
+        debugPrint("Response: ${response?.data}");
+        if (response?.statusCode == 200) {
+          var data = response?.data as Map<String, dynamic>;
+          if (data.containsKey('score')) {
+            return (data['score'] as double).toInt();
+          } else {
+            throw Exception('Score not found');
+          }
+        } else {
+          throw Exception('Something went wrong');
+        }
+      } else {
+        throw Exception('Something went wrong');
+      }
+    } catch (e, stk) {
+      debugPrint('Error: $e');
+      debugPrintStack(stackTrace: stk);
+      return 0;
     }
   }
 }

@@ -34,14 +34,13 @@ class CandidateTile extends StatelessWidget {
     this.idDeny = false,
     required this.fullFilteredApplicantsList,
     required this.selectedIndex,
-  })
-      : super(key: key);
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var tab = context.watch<GlobalCubit>();
-    return BlocBuilder<BottomBloc, BottomInitialState>(
-        builder: (context, state) {
+    debugPrint('JobModel: ${appliedJobModel?.matchScore}');
+    return BlocBuilder<BottomBloc, BottomInitialState>(builder: (context, state) {
       return GestureDetector(
         onTap: () {
           AppRoutes.push(
@@ -126,9 +125,9 @@ class CandidateTile extends StatelessWidget {
                           animationDuration: 1000,
                           lineHeight: 22.0,
                           backgroundColor: MyColors.lightBl,
-                          percent: 0.87,
+                          percent: (appliedJobModel?.matchScore ?? 0) / 100,
                           center: Text(
-                            "90% Match",
+                            "${appliedJobModel?.matchScore}% Match",
                             style: TextStyle(fontSize: 12, color: MyColors.blue),
                           ),
                           barRadius: Radius.circular(5),

@@ -12,8 +12,6 @@ import 'package:insta_job/model/job_position_model.dart';
 import 'package:insta_job/screens/insta_recruit/new_email_screen.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/widgets/candidate_tile.dart';
-import 'package:pinput/pinput.dart';
-
 import '../../../../../utils/app_routes.dart';
 import '../../../../../utils/my_images.dart';
 import '../../../../../widgets/custom_app_bar.dart';
@@ -42,12 +40,12 @@ class _ViewCandidatesState extends State<ViewCandidates> {
   void initState() {
     super.initState();
     selectedCandidatesIndices = <int>{};
+    debugPrint("InitState: ${widget.jobPosModel?.id.toString()}");
     context.read<JobPositionBloc>().add(AppliedJobListEvent(
           jobId: widget.jobPosModel?.id.toString(),
         ));
     ;
   }
-  
 
   @override
   Widget build(BuildContext context) {
@@ -73,42 +71,36 @@ class _ViewCandidatesState extends State<ViewCandidates> {
             actions: Row(
               children: [
                 if (selectedCandidatesIndices.isNotEmpty)
-                  BlocBuilder<JobPositionBloc, JobPosState>(
-                      builder: (context, appliedState) {
+                  BlocBuilder<JobPositionBloc, JobPosState>(builder: (context, appliedState) {
                     return ImageButton(
                       image: MyImages.logout,
                       color: MyColors.blue,
                       onTap: () {
                         List<String> resumesPath = [];
                         if (appliedState is AppliedJobLoaded) {
-                          for (var currSelectedIdx
-                              in selectedCandidatesIndices) {
-                            String? currResumeUrl = appliedState
-                                .appliedOnly[currSelectedIdx].uploadResume;
+                          for (var currSelectedIdx in selectedCandidatesIndices) {
+                            String? currResumeUrl = appliedState.appliedOnly[currSelectedIdx].uploadResume;
                             if (currResumeUrl != null) {
                               resumesPath.add(currResumeUrl);
                             }
                           }
                         }
-                        AppRoutes.push(
-                            context, NewEmailScreen(resumesPath: resumesPath));
+                        AppRoutes.push(context, NewEmailScreen(resumesPath: resumesPath));
                       },
                     );
                   }),
                 // ImageButton(
                 //   image: MyImages.searchBlue,
                 // ),
-                BlocBuilder<GlobalCubit, InitialState>(
-                    builder: (context, state) {
+                BlocBuilder<GlobalCubit, InitialState>(builder: (context, state) {
                   var tab = context.read<GlobalCubit>();
                   return ImageButton(
                     onTap: () {
                       tab.changeTabValue(4);
-                      AppRoutes.push(context,
-                          SearchTrash(jobPosModel: widget.jobPosModel));
-                      context.read<JobPositionBloc>().add(AppliedJobListEvent(
-                          jobId: widget.jobPosModel!.id.toString(),
-                          status: "denied"));
+                      AppRoutes.push(context, SearchTrash(jobPosModel: widget.jobPosModel));
+                      context
+                          .read<JobPositionBloc>()
+                          .add(AppliedJobListEvent(jobId: widget.jobPosModel!.id.toString(), status: "denied"));
                     },
                     image: MyImages.delete,
                     height: 19,
@@ -126,8 +118,7 @@ class _ViewCandidatesState extends State<ViewCandidates> {
                   length: 3,
                   child: Column(
                     children: [
-                      BlocBuilder<GlobalCubit, InitialState>(
-                          builder: (context, state) {
+                      BlocBuilder<GlobalCubit, InitialState>(builder: (context, state) {
                         var tab = context.read<GlobalCubit>();
                         return TabBar(
                           labelColor: MyColors.blue,
@@ -135,27 +126,22 @@ class _ViewCandidatesState extends State<ViewCandidates> {
                           unselectedLabelColor: MyColors.tabClr,
                           onTap: (val) {
                             tab.changeTabValue(val);
-                            print("!!!!!!!!!!!!!!! $val");
-                            if (val == 0) {
-                              context
-                                  .read<JobPositionBloc>()
-                                  .add(AppliedJobListEvent(
-                                    jobId: widget.jobPosModel!.id.toString(),
-                                  ));
-                            }
-                            if (val == 1) {
-                              context
-                                  .read<JobPositionBloc>()
-                                  .add(AppliedJobListEvent(
-                                    jobId: widget.jobPosModel!.id.toString(),
-                                  ));
-                            }
-                            if (val == 3) {
-                              // context.read<JobPositionBloc>().add(
-                              //     AppliedJobListEvent(
-                              //         jobId: widget.jobPosModel!.id.toString(),
-                              //         status: "denied"));
-                            }
+                            // if (val == 0) {
+                            //   context.read<JobPositionBloc>().add(AppliedJobListEvent(
+                            //         jobId: widget.jobPosModel!.id.toString(),
+                            //       ));
+                            // }
+                            // if (val == 1) {
+                            //   context.read<JobPositionBloc>().add(AppliedJobListEvent(
+                            //         jobId: widget.jobPosModel!.id.toString(),
+                            //       ));
+                            // }
+                            // if (val == 3) {
+                            // context.read<JobPositionBloc>().add(
+                            //     AppliedJobListEvent(
+                            //         jobId: widget.jobPosModel!.id.toString(),
+                            //         status: "denied"));
+                            // }
                             selectedCandidatesIndices.clear();
                             setState(() {});
                           },
@@ -166,87 +152,10 @@ class _ViewCandidatesState extends State<ViewCandidates> {
                           ],
                         );
                       }),
-                      Expanded(child: BlocBuilder<JobPositionBloc, JobPosState>(
-                          builder: (context, appliedState) {
+                      Expanded(child: BlocBuilder<JobPositionBloc, JobPosState>(builder: (context, appliedState) {
                         return TabBarView(children: [
-                          if (appliedState is! ApplyLoading ||
-                              appliedState is! AppliedJobLoaded) ...[
-                            SizedBox()
-                          ], ///////TODO: revisit untested
-                          if (appliedState is AppliedJobLoaded) ...[
-                            ListView.builder(
-                                itemCount: appliedState.appliedOnly.length,
-                                itemBuilder: (c, i) {
-                                  return Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 15.0, vertical: 10),
-                                    child:
-                                        BlocBuilder<GlobalCubit, InitialState>(
-                                            builder: (context, state) {
-                                      return CandidateTile(
-                                        onchange: (val) {
-                                          context
-                                              .read<GlobalCubit>()
-                                              .onSelected(val, i,
-                                                  email: appliedState
-                                                      .appliedOnly[i]
-                                                      .userEmail);
-                                          if (val == true) {
-                                            selectedCandidatesIndices.add(i);
-                                          } else if (val == false &&
-                                              selectedCandidatesIndices
-                                                  .contains(i)) {
-                                            selectedCandidatesIndices.remove(i);
-                                          }
-                                          setState(() {});
-                                        },
-                                        value: selectedCandidatesIndices
-                                            .contains(i),
-                                        appliedJobModel:
-                                            appliedState.appliedOnly[i],
-                                        selectedIndex: i,
-                                        fullFilteredApplicantsList:
-                                            appliedState.appliedOnly,
-                                      );
-                                    }),
-                                  );
-                                }),
-                          ],
-                          if (appliedState is ApplyLoading) ...[
-                            Center(child: CircularProgressIndicator())
-                          ],
-                          if (appliedState is AppliedJobLoaded) ...[
-                            ListView.builder(
-                                itemCount: appliedState.shortlisted.length,
-                                itemBuilder: (c, i) {
-                                  return Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 15.0, vertical: 10),
-                                    child:
-                                        BlocBuilder<GlobalCubit, InitialState>(
-                                            builder: (context, state) {
-                                      return CandidateTile(
-                                        onchange: (val) {
-                                          context
-                                              .read<GlobalCubit>()
-                                              .onSelected(val, i);
-                                          setState(() {});
-                                        },
-                                        value: selectedCandidatesIndices
-                                            .contains(i),
-                                        appliedJobModel:
-                                            appliedState.shortlisted[i],
-                                        selectedIndex: i,
-                                        fullFilteredApplicantsList:
-                                            appliedState.shortlisted,
-                                      );
-                                    }),
-                                  );
-                                }),
-                          ],
-                          if (appliedState is ApplyLoading) ...[
-                            Center(child: CircularProgressIndicator())
-                          ],
+                          _buildAppliedList(appliedState),
+                          _buildShortlistedList(appliedState),
                           SizedBox()
                           /* BlocBuilder<JobPositionBloc, JobPosState>(
                               builder: (context, state) {
@@ -277,5 +186,66 @@ class _ViewCandidatesState extends State<ViewCandidates> {
             // ImageButton(image: ,)
           ],
         ));
+  }
+
+  _buildAppliedList(JobPosState state) {
+    if (state is AppliedJobLoaded) {
+      return ListView.builder(
+          itemCount: state.appliedOnly.length,
+          itemBuilder: (c, i) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
+              child: BlocBuilder<GlobalCubit, InitialState>(builder: (context, _state) {
+                return CandidateTile(
+                  onchange: (val) {
+                    context.read<GlobalCubit>().onSelected(val, i, email: state.appliedOnly[i].userEmail);
+                    if (val == true) {
+                      selectedCandidatesIndices.add(i);
+                    } else if (val == false && selectedCandidatesIndices.contains(i)) {
+                      selectedCandidatesIndices.remove(i);
+                    }
+                    setState(() {});
+                  },
+                  value: selectedCandidatesIndices.contains(i),
+                  appliedJobModel: state.appliedOnly[i],
+                  selectedIndex: i,
+                  fullFilteredApplicantsList: state.appliedOnly,
+                );
+              }),
+            );
+          });
+    } else {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+  }
+
+  _buildShortlistedList(JobPosState state) {
+    if (state is AppliedJobLoaded) {
+      return ListView.builder(
+          itemCount: state.shortlisted.length,
+          itemBuilder: (c, i) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
+              child: BlocBuilder<GlobalCubit, InitialState>(builder: (context, _state) {
+                return CandidateTile(
+                  onchange: (val) {
+                    context.read<GlobalCubit>().onSelected(val, i);
+                    setState(() {});
+                  },
+                  value: selectedCandidatesIndices.contains(i),
+                  appliedJobModel: state.shortlisted[i],
+                  selectedIndex: i,
+                  fullFilteredApplicantsList: state.shortlisted,
+                );
+              }),
+            );
+          });
+    } else {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    }
   }
 }

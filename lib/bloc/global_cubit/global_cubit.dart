@@ -171,8 +171,6 @@ class GlobalCubit extends Cubit<InitialState> {
       list.add(value);
       _eList.add(email ?? "");
       emailList = _eList.toSet().toList();
-      print("@@@@@@@@ $_eList");
-      print("77777777 $emailList");
       // for (int i = 0; i < emailList.length; i++) {
       //   emailList.where((element) {
       //     element==emailList[i];
