@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
+import 'package:insta_job/widgets/custom_button/custom_btn.dart';
 import 'package:intl/intl.dart';
 
 import 'package:insta_job/utils/my_colors.dart';
@@ -85,68 +86,78 @@ class _BookSlotScreenState extends State<BookSlotScreen> {
       appBar: PreferredSize(
         preferredSize: const Size(double.infinity, kToolbarHeight),
         child: CustomAppBar(
-          leadingImage: MyImages.backArrow,
+          backgroundColor: MyColors.blue,
+          useLeadingImage: false,
           onTap: () {
             Navigator.of(context).pop();
           },
           centerTitle: false,
           title: "Book Slots",
+          color: MyColors.white,
         ),
       ),
-      body: SingleChildScrollView(
-        // physics: BouncingScrollPhysics(), //revisit
-        child: Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                    icon: const Icon(
-                      Icons.arrow_back_ios,
-                      size: 20,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        selectedDate =
-                            selectedDate.subtract(const Duration(days: 1));
-                      });
-                    },
-                    splashRadius: 30,
-                  ),
-                  GestureDetector(
-                    onTap: _pickDate,
-                    child: Text(
-                      dateFormat.format(selectedDate),
-                      style: const TextStyle(fontSize: 18),
-                    ),
-                  ),
-                  IconButton(
-                    icon: const Icon(
-                      Icons.arrow_forward_ios,
-                      size: 20,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        selectedDate =
-                            selectedDate.add(const Duration(days: 1));
-                      });
-                    },
-                  ),
-                ],
-              ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                _buildActionButton(),
+              ],
             ),
+          ),
+          const SizedBox(height: 20),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                  icon: const Icon(
+                    Icons.arrow_back_ios,
+                    size: 20,
+                  ),
+                  onPressed: isSameDateAsToday(selectedDate)
+                      ? null
+                      : () {
+                          setState(() {
+                            selectedDate =
+                                selectedDate.subtract(const Duration(days: 1));
+                          });
+                        },
+                  splashRadius: 30,
+                ),
+                GestureDetector(
+                  onTap: _pickDate,
+                  child: Text(
+                    dateFormat.format(selectedDate),
+                    style: const TextStyle(fontSize: 18),
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(
+                    Icons.arrow_forward_ios,
+                    size: 20,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      selectedDate = selectedDate.add(const Duration(days: 1));
+                    });
+                  },
+                ),
+              ],
+            ),
+          ),
 
-            // Morning Slots Section
-            _buildSlotSection(slotTitle: "Morning", slots: morningSlots),
+          // Morning Slots Section
+          _buildSlotSection(slotTitle: "Morning", slots: morningSlots),
 
-            const SizedBox(height: 20),
-            // Afternoon Slots Section
-            _buildSlotSection(slotTitle: "Afternoon", slots: afternoonSlots),
-            // _buildAfternoonSlotSection(afternoonSlots),
-          ],
-        ),
+          const SizedBox(height: 20),
+          // Afternoon Slots Section
+          _buildSlotSection(slotTitle: "Afternoon", slots: afternoonSlots),
+          // _buildAfternoonSlotSection(afternoonSlots),
+        ],
       ),
     );
   }
@@ -156,48 +167,66 @@ class _BookSlotScreenState extends State<BookSlotScreen> {
     required List<TimeSlot> slots,
   }) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Morning',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          Text(
+            slotTitle,
+            textAlign: TextAlign.left,
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 16),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: slots.isEmpty
-                ? const Text("No data")
-                : GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 4, // Number of columns
-                      // crossAxisSpacing: 0.0,
-                      // mainAxisSpacing: 0.0,
-                      childAspectRatio:
-                          2.2, // Adjust this value to control the aspect ratio (width/height) of each grid item
+          Align(
+            alignment: Alignment.center,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              child: slots.isEmpty
+                  ? const Text("No data")
+                  : GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 4, // Number of columns
+                        // crossAxisSpacing: 0.0,
+                        // mainAxisSpacing: 0.0,
+                        childAspectRatio:
+                            2.2, // Adjust this value to control the aspect ratio (width/height) of each grid item
+                      ),
+                      itemCount: slots.length,
+                      itemBuilder: (context, index) {
+                        var item = slots[index];
+                        return GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              selectedTimeSlot = item;
+                            });
+                          },
+                          child: TimeSlotChip(
+                            isSelected: selectedTimeSlot == item,
+                            timeSlot: item,
+                          ),
+                        );
+                      },
                     ),
-                    itemCount: slots.length,
-                    itemBuilder: (context, index) {
-                      var item = slots[index];
-                      return GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            selectedTimeSlot = item;
-                          });
-                        },
-                        child: TimeSlotChip(
-                          isSelected: selectedTimeSlot == item,
-                          timeSlot: item,
-                        ),
-                      );
-                    },
-                  ),
+            ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildActionButton() {
+    return ElevatedButton(
+      style: ButtonStyle(
+        elevation: MaterialStateProperty.all(0),
+        backgroundColor: MaterialStateProperty.all(MyColors.blue),
+        foregroundColor: MaterialStateProperty.all(MyColors.white),
+      ),
+      onPressed: selectedTimeSlot != null ? () {} : null,
+      child: const Text(
+        "Set Interview Slot",
       ),
     );
   }

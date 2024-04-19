@@ -14,13 +14,17 @@ class CustomAppBar extends StatefulWidget {
   final double? toolbarHeight;
   final String? title;
   final Color? color;
+  final Color? backgroundColor;
   final Color? imageColor;
   final Widget? actions;
   final VoidCallback? onTap;
+  final bool
+      useLeadingImage; //use assertion for only accepting useLeadingImage(as false) or leadingImage
   const CustomAppBar({
     Key? key,
     this.title,
     this.color,
+    this.backgroundColor = Colors.white,
     this.leadingImage,
     this.onTap,
     this.height,
@@ -30,6 +34,7 @@ class CustomAppBar extends StatefulWidget {
     this.leadingWidth,
     this.toolbarHeight,
     this.imageColor,
+    this.useLeadingImage = true,
   }) : super(key: key);
 
   @override
@@ -42,7 +47,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
     return AppBar(
       elevation: 0,
       centerTitle: widget.centerTitle ?? true,
-      backgroundColor: Colors.white,
+      backgroundColor: widget.backgroundColor,
       leadingWidth: widget.leadingWidth ?? 56,
       toolbarHeight: widget.toolbarHeight ?? kToolbarHeight,
       title: Text(
@@ -57,7 +62,8 @@ class _CustomAppBarState extends State<CustomAppBar> {
               () {
                 Navigator.pop(context);
               },
-          child: Container(
+          child: widget.useLeadingImage
+              ? Container(
             color: Colors.transparent,
             alignment: Alignment.center,
             child: widget.leadingImage == ""
@@ -68,7 +74,11 @@ class _CustomAppBarState extends State<CustomAppBar> {
                     width: widget.width ?? 40,
                     color: widget.imageColor,
                   ),
-          )),
+                )
+              : Icon(
+                  Icons.arrow_back_ios,
+                  size: 22,
+                )),
       actions: [
         Padding(
           padding: const EdgeInsets.only(right: 5.0),
