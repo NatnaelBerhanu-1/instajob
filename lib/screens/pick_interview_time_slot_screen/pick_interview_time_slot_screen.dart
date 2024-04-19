@@ -1,7 +1,13 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
+import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
+import 'package:insta_job/bloc/job_position/job_pos_event.dart';
+import 'package:insta_job/globals.dart';
+import 'package:insta_job/model/job_position_model.dart';
 import 'package:insta_job/widgets/custom_button/custom_btn.dart';
+import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:intl/intl.dart';
 
 import 'package:insta_job/utils/my_colors.dart';
@@ -9,7 +15,8 @@ import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_app_bar.dart';
 
 class BookSlotScreen extends StatefulWidget {
-  const BookSlotScreen({super.key});
+  final JobPosModel? jobPosModel;
+  const BookSlotScreen({super.key, required this.jobPosModel});
 
   @override
   State<BookSlotScreen> createState() => _BookSlotScreenState();
@@ -96,68 +103,75 @@ class _BookSlotScreenState extends State<BookSlotScreen> {
           color: MyColors.white,
         ),
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                _buildActionButton(),
-              ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            const CommonText(
+              text: "Choose Time For",
+              fontWeight: FontWeight.w600,
+              fontSize: 18,
             ),
-          ),
-          const SizedBox(height: 20),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton(
-                  icon: const Icon(
-                    Icons.arrow_back_ios,
-                    size: 20,
-                  ),
-                  onPressed: isSameDateAsToday(selectedDate)
-                      ? null
-                      : () {
-                          setState(() {
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  _buildActionButton(),
+                ],
+              ),
+            ),
+            const SizedBox(height: 20),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(
+                    icon: const Icon(
+                      Icons.arrow_back_ios,
+                      size: 20,
+                    ),
+                    onPressed: isSameDateAsToday(selectedDate)
+                        ? null
+                        : () {
+                            setState(() {
                             selectedDate =
                                 selectedDate.subtract(const Duration(days: 1));
-                          });
-                        },
-                  splashRadius: 30,
-                ),
-                GestureDetector(
-                  onTap: _pickDate,
-                  child: Text(
-                    dateFormat.format(selectedDate),
-                    style: const TextStyle(fontSize: 18),
+                            });
+                          },
+                    splashRadius: 30,
                   ),
-                ),
-                IconButton(
-                  icon: const Icon(
-                    Icons.arrow_forward_ios,
-                    size: 20,
+                  GestureDetector(
+                    onTap: _pickDate,
+                    child: Text(
+                      dateFormat.format(selectedDate),
+                      style: const TextStyle(fontSize: 18),
+                    ),
                   ),
-                  onPressed: () {
-                    setState(() {
+                  IconButton(
+                    icon: const Icon(
+                      Icons.arrow_forward_ios,
+                      size: 20,
+                    ),
+                    onPressed: () {
+                      setState(() {
                       selectedDate = selectedDate.add(const Duration(days: 1));
-                    });
-                  },
-                ),
-              ],
+                      });
+                    },
+                  ),
+                ],
+              ),
             ),
-          ),
 
-          // Morning Slots Section
-          _buildSlotSection(slotTitle: "Morning", slots: morningSlots),
+            // Morning Slots Section
+            _buildSlotSection(slotTitle: "Morning", slots: morningSlots),
 
-          const SizedBox(height: 20),
-          // Afternoon Slots Section
-          _buildSlotSection(slotTitle: "Afternoon", slots: afternoonSlots),
-          // _buildAfternoonSlotSection(afternoonSlots),
-        ],
+            const SizedBox(height: 20),
+            // Afternoon Slots Section
+            _buildSlotSection(slotTitle: "Afternoon", slots: afternoonSlots),
+            // _buildAfternoonSlotSection(afternoonSlots),
+          ],
+        ),
       ),
     );
   }
@@ -219,12 +233,24 @@ class _BookSlotScreenState extends State<BookSlotScreen> {
 
   Widget _buildActionButton() {
     return ElevatedButton(
-      style: ButtonStyle(
-        elevation: MaterialStateProperty.all(0),
-        backgroundColor: MaterialStateProperty.all(MyColors.blue),
-        foregroundColor: MaterialStateProperty.all(MyColors.white),
-      ),
-      onPressed: selectedTimeSlot != null ? () {} : null,
+      onPressed: selectedTimeSlot != null
+          ? () {
+              var date = DateFormat("hh:mm").parse(
+                  "${selectedTimeSlot!.time.hour}:${selectedTimeSlot!.time.minute}");
+              var dateFormat = DateFormat("hh:mm");
+              String? formatTime = dateFormat.format(date);
+              TimeOfDay timeOfDay = TimeOfDay.now();
+
+              context.read<JobPositionBloc>().add(SetInterviewEvent(
+                    time: formatTime,
+                    timeType: timeOfDay.period.name.toUpperCase(),
+                    employeeId: Global.userModel?.id.toString(),
+                    companyId: "${widget.jobPosModel?.companyId}",
+                    jobId: widget.jobPosModel?.id.toString(),
+                    userId: widget.jobPosModel?.userId.toString(),
+                  ));
+            }
+          : null,
       child: const Text(
         "Set Interview Slot",
       ),

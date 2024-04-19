@@ -9,6 +9,8 @@ import 'package:insta_job/dialog/time_picker_dilaog.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/model/job_position_model.dart';
 import 'package:insta_job/network/end_points.dart';
+import 'package:insta_job/screens/pick_interview_time_slot_screen/pick_interview_time_slot_screen.dart';
+import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
@@ -126,9 +128,13 @@ class _ChatScreenState extends State<ChatScreen> {
                           : Expanded(
                               child: CustomCommonCard(
                                 onTap: () {
-                                  buildDialog(
+                                  // buildDialog(
+                                  //     context,
+                                  //     PickTimeDialog(
+                                  //         jobPosModel: widget.jobPosModel));
+                                  AppRoutes.push(
                                       context,
-                                      PickTimeDialog(
+                                      BookSlotScreen(
                                           jobPosModel: widget.jobPosModel));
                                 },
                                 borderRadius: BorderRadius.circular(20),
