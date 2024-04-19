@@ -19,4 +19,22 @@ class InterviewRepo {
       return ApiResponse.withError(e.response);
     }
   }
+
+  Future<ApiResponse> getUpcomingInterviews() async {
+    //todo: pass stuff (impl)
+    try {
+      var map = {
+        "job_id": "",
+        "user_id": "",
+      };
+      var response = await dioClient.post(data: map, uri: "endpoint");
+      return ApiResponse.withSuccess(response);
+    } on DioException catch (e) {
+      return ApiResponse.withError(e.response);
+    }
+  }
+
+  getPreviousInterviews() {
+    throw Exception();
+  }
 }
