@@ -87,6 +87,11 @@ class _ApplicantsState extends State<Applicants> {
       ),
       body: PageView.builder(
           controller: _pageController,
+          onPageChanged: (i) {
+            setState(() {
+              jobPosModel = widget.fullFilteredApplicantsList[i];
+            });
+          },
           itemCount: widget.fullFilteredApplicantsList.length,
           itemBuilder: (context, index) {
             return SingleChildScrollView(
