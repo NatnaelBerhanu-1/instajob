@@ -76,7 +76,7 @@ class _ApplicantsState extends State<Applicants> {
             // AppRoutes.push(
             //     context, ViewCandidates(jobPosModel: jobPosModel));
             Navigator.of(context).pop();
-            tab.changeTabValue(0);
+            // tab.changeTabValue(0);
             // context.read<JobPositionBloc>().add(AppliedJobListEvent(
             //     jobId: jobPosModel!.id.toString(), status: "applied"));
             // context.read<ResumeBloc>().resumeModel = ResumeModel();
@@ -184,7 +184,8 @@ class _ApplicantsState extends State<Applicants> {
                                         context.read<JobPositionBloc>().add(SortListOrDenyEvent(
                                             appliedListId: "${jobPosModel?.appliedId}", status: "shortlisted"));
                                         context.read<JobPositionBloc>().add(AppliedJobListEvent(
-                                            jobId: jobPosModel!.id.toString(), status: "shortlisted"));
+                                              jobId: jobPosModel!.id.toString(),
+                                            ));
                                         AppRoutes.pop(context);
                                       },
                                     )),

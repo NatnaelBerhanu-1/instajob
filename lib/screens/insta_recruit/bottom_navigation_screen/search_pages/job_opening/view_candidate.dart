@@ -156,7 +156,7 @@ class _ViewCandidatesState extends State<ViewCandidates> {
                         return TabBarView(children: [
                           _buildAppliedList(appliedState),
                           _buildShortlistedList(appliedState),
-                          SizedBox()
+                          _buildMessagesList()
                           /* BlocBuilder<JobPositionBloc, JobPosState>(
                               builder: (context, state) {
                             if (state is AppliedJobLoaded) {
@@ -247,5 +247,9 @@ class _ViewCandidatesState extends State<ViewCandidates> {
         child: CircularProgressIndicator(),
       );
     }
+  }
+
+  _buildMessagesList() {
+    return SizedBox();
   }
 }
