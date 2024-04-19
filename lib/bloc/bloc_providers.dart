@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/agora_bloc/agora_cubit.dart';
+import 'package:insta_job/bloc/attachment_download_cubit/attachment_download_cubit.dart';
 import 'package:insta_job/bloc/auth_bloc/auth_cubit.dart';
 import 'package:insta_job/bloc/career_learning_bloc/career_learning_bloc.dart';
 import 'package:insta_job/bloc/choose_image_bloc/pick_image_cubit.dart';
@@ -8,6 +9,7 @@ import 'package:insta_job/bloc/feedback_bloc/feedback_bloc.dart';
 import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
 import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
 import 'package:insta_job/bloc/location_cubit/location_cubit.dart';
+import 'package:insta_job/bloc/mask_resumes_cubit/mask_resumes_cubit.dart';
 import 'package:insta_job/bloc/resume_bloc/resume_bloc.dart';
 import 'package:insta_job/bloc/validation/validation_bloc.dart';
 import 'package:insta_job/di_container.dart' as di;
@@ -28,4 +30,6 @@ final List<SingleChildWidget> blocProviders = [
   BlocProvider(create: (_) => di.sl<LocationCubit>()),
   BlocProvider(create: (_) => di.sl<AgoraBloc>()),
   BlocProvider(create: (_) => di.sl<CareerLearningBloc>()),
+  BlocProvider(create: (_) => di.sl<AttachmentDownloadCubit>()),
+  BlocProvider(create: (_) => di.sl<MaskResumesCubit>()),
 ];

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:equatable/equatable.dart';
 
 import '../../model/job_position_model.dart';
@@ -21,6 +23,7 @@ class JobPosLoaded extends JobPosState {
 
   const JobPosLoaded(this.jobPosList);
 }
+
 class SaveJobPosLoaded extends JobPosState {
   final List<JobPosModel> jobPosList;
 
@@ -41,8 +44,17 @@ class JobDistanceLoaded extends JobPosState {
 
 class AppliedJobLoaded extends JobPosState {
   final List<JobPosModel> appliedJobList;
+  final List<JobPosModel> appliedOnly;
+  final List<JobPosModel> shortlisted;
 
-  const AppliedJobLoaded(this.appliedJobList);
+  const AppliedJobLoaded({
+    required this.appliedJobList,
+    required this.appliedOnly,
+    required this.shortlisted,
+  });
+
+  @override
+  List<Object?> get props => [appliedJobList, appliedOnly, shortlisted, Random()];
 }
 
 class JobErrorState extends JobPosState {

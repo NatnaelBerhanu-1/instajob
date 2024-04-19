@@ -1,12 +1,14 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'dart:io';
+import 'dart:math';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:insta_job/bloc/resume_bloc/resume_bloc.dart';
+import 'package:insta_job/network/end_points.dart';
 import 'package:insta_job/screens/resume_edit_screens/edit_template_screen.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:open_file_safe_plus/open_file_safe_plus.dart';
@@ -46,6 +48,130 @@ class Global {
       return pdf;
     } on DioException catch (e) {
       loading(value: false);
+      print("@@@ Error ${e.type}");
+      showToast("Something went wrong");
+      return null;
+    }
+  }
+
+  Future<List<String>?> downloadMultiplePdfsNew(
+      List<String> resumeUrlsList) async {
+    try {
+      // List to store paths of downloaded files
+      List<String> downloadedFilePaths = [];
+
+      for (var i = 0; i < resumeUrlsList.length; i++) {
+        var currUrl = resumeUrlsList[i];
+        // Get the temporary directory
+        final tempDir = await getTemporaryDirectory();
+        // Define the path for the temporary file
+        final tempFilePath =
+            '${tempDir.path}/resume${Random().nextInt(10000) + 1}.pdf';
+
+        // Download the file and save it to the temporary file path
+        final response = await Dio()
+            .download("${EndPoint.imageBaseUrl}$currUrl", tempFilePath);
+
+        if (response.statusCode == 200) {
+          // Attach the downloaded file to the email
+          downloadedFilePaths.add(tempFilePath);
+        } else if (response.statusCode == 500) {
+          print('Failed to download resume: HTTP ${response.statusCode}');
+          throw Exception();
+        } else {
+          print('Failed to download resume: HTTP ${response.statusCode}');
+        }
+      }
+      return downloadedFilePaths;
+    } on DioException catch (e) {
+      print("@@@ Error ${e.type}");
+      showToast("Something went wrong");
+      return null;
+    }
+  }
+
+  Future<List<String>?> maskMultipleResumesAndDownloadthem(
+      List<String> resumeUrlsList) async {
+    try {
+      List<String> downloadedMaskedFilePaths = [];
+
+      for (var i = 0; i < resumeUrlsList.length; i++) {
+        var currUrl = resumeUrlsList[i];
+        // Get the temporary directory
+        final tempDir = await getTemporaryDirectory();
+        // Define the path for the temporary file
+        final tempFilePath =
+            '${tempDir.path}/masked_resume${Random().nextInt(10000) + 1}.pdf';
+
+        //first mask the pdf and get downloadable link from endpoint
+        FormData formData = FormData.fromMap({
+          'resume': await MultipartFile.fromFile(currUrl),
+          'api_key': "86wbdiu23hu134jsdf", // TODO: move to ENV later
+        });
+
+        final response =
+            await Dio().post(EndPoint.maskResumeNewFull, data: formData);
+
+        if (response.statusCode == 200) {
+          String maskedUrlRes = response.data["masked_resume_url"];
+          final response2 = await Dio().download(maskedUrlRes,
+              tempFilePath); //using the response url got from mask api
+
+          if (response2.statusCode == 200) {
+            downloadedMaskedFilePaths.add(tempFilePath);
+          } else if (response2.statusCode == 500) {
+            print('Failed to download resume: HTTP ${response.statusCode}');
+            throw Exception();
+          } else {
+            print('Failed to download resume: HTTP ${response.statusCode}');
+            throw Exception();
+          }
+        } else if (response.statusCode == 500) {
+          print('Failed to download resume: HTTP ${response.statusCode}');
+          throw Exception();
+        } else {
+          print('Failed to download resume: HTTP ${response.statusCode}');
+          throw Exception();
+        }
+      }
+      return downloadedMaskedFilePaths;
+    } on DioException catch (e) {
+      print("@@@ Error ${e.type}");
+      showToast("Something went wrong");
+      return null;
+    }
+  }
+
+  Future<List<int>?> getResumesMatchingScore(
+      List<String> resumeUrlsList) async {
+    // unimplemented //TODO:(URGENT)
+    try {
+      List<int> scores = []; //score out of 100
+
+      for (var i = 0; i < resumeUrlsList.length; i++) {
+        var currUrl = resumeUrlsList[i];
+
+        FormData formData = FormData.fromMap({
+          'resume': await MultipartFile.fromFile(currUrl),
+          'api_key': "86wbdiu23hu134jsdf", // TODO: move to ENV later
+        });
+
+        final response =
+            await Dio().post(EndPoint.resumeMatcherNewFull, data: formData);
+
+        if (response.statusCode == 200) {
+          int scoreRes = response.data["score"]; //untested TODO: CHECK
+          scores.add(scoreRes);
+        } else if (response.statusCode == 500) {
+          print('Failed to get score: HTTP ${response.statusCode}');
+          throw Exception();
+        } else {
+          print('Failed to get score: HTTP ${response.statusCode}');
+          throw Exception();
+        }
+      }
+      return scores;
+    } on DioException catch (e) {
       print("@@@ Error ${e.type}");
       showToast("Something went wrong");
       return null;
@@ -200,17 +326,17 @@ Future<Uint8List> makePdf(BuildContext context, {int? color, font, String? image
                         return pw.Column(crossAxisAlignment: pw.CrossAxisAlignment.start, children: [
                           pw.Text("${data.resumeModel.workExperiences?[i].jobTitle}",
                               style: pw.TextStyle(fontSize: 15, font: font, fontWeight: pw.FontWeight.bold)),
-                          pw.SizedBox(height: 5),
-                          pw.Row(children: [
+                              pw.SizedBox(height: 5),
+                              pw.Row(children: [
                             pw.Text("${data.resumeModel.workExperiences?[i].employer}",
                                 style: pw.TextStyle(fontSize: 15, font: font)),
-                            pw.Spacer(),
-                            pw.Text(
-                                "${data.resumeModel.workExperiences?[i].workStartYear} - ${data.resumeModel.workExperiences?[i].workEndYear == "" ? "Currently Working" : data.resumeModel.workExperiences?[i].workEndYear}",
+                                pw.Spacer(),
+                                pw.Text(
+                                    "${data.resumeModel.workExperiences?[i].workStartYear} - ${data.resumeModel.workExperiences?[i].workEndYear == "" ? "Currently Working" : data.resumeModel.workExperiences?[i].workEndYear}",
                                 style: pw.TextStyle(fontSize: 11, font: font)),
-                          ]),
-                          pw.SizedBox(height: 20),
-                        ]);
+                              ]),
+                              pw.SizedBox(height: 20),
+                            ]);
                       },
                     ),
               pw.SizedBox(height: 50),
@@ -225,17 +351,17 @@ Future<Uint8List> makePdf(BuildContext context, {int? color, font, String? image
                         return pw.Column(crossAxisAlignment: pw.CrossAxisAlignment.start, children: [
                           pw.Text("${data.resumeModel.educations?[i].fieldOfStudy}",
                               style: pw.TextStyle(fontSize: 15, fontWeight: pw.FontWeight.bold, font: font)),
-                          pw.SizedBox(height: 2),
-                          pw.Row(children: [
+                              pw.SizedBox(height: 2),
+                              pw.Row(children: [
                             pw.Text("${data.resumeModel.educations?[i].institutionName}",
                                 style: pw.TextStyle(fontSize: 15, fontWeight: pw.FontWeight.bold, font: font)),
-                            pw.Spacer(),
-                            pw.Text(
-                                "${data.resumeModel.educations?[i].educationStartYear} - ${data.resumeModel.educations?[i].educationEndYear == "" ? "Currently Studying" : data.resumeModel.educations?[i].educationEndYear}",
+                                pw.Spacer(),
+                                pw.Text(
+                                    "${data.resumeModel.educations?[i].educationStartYear} - ${data.resumeModel.educations?[i].educationEndYear == "" ? "Currently Studying" : data.resumeModel.educations?[i].educationEndYear}",
                                 style: pw.TextStyle(fontSize: 12, font: font)),
-                          ]),
-                          pw.SizedBox(height: 25),
-                        ]);
+                              ]),
+                              pw.SizedBox(height: 25),
+                            ]);
                       },
                     ),
             ],

@@ -23,16 +23,32 @@ class CandidateTile extends StatelessWidget {
   final bool? value;
   final bool idDeny;
   final JobPosModel? appliedJobModel;
-  const CandidateTile({Key? key, this.onchange, this.value, this.appliedJobModel, this.idDeny = false})
-      : super(key: key);
+  final List<JobPosModel> fullFilteredApplicantsList;
+  final int selectedIndex;
+
+  const CandidateTile({
+    Key? key,
+    this.onchange,
+    this.value,
+    this.appliedJobModel,
+    this.idDeny = false,
+    required this.fullFilteredApplicantsList,
+    required this.selectedIndex,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var tab = context.watch<GlobalCubit>();
+    debugPrint('JobModel: ${appliedJobModel?.matchScore}');
     return BlocBuilder<BottomBloc, BottomInitialState>(builder: (context, state) {
       return GestureDetector(
         onTap: () {
-          AppRoutes.push(context, Applicants(jobPosModel: appliedJobModel));
+          AppRoutes.push(
+              context,
+              Applicants(
+                selectedIndex: selectedIndex,
+                fullFilteredApplicantsList: fullFilteredApplicantsList,
+              ));
           // context.read<BottomBloc>().add(SetScreenEvent(true,
           //     screenName: Applicants(jobPosModel: appliedJobModel)));
           context.read<ResumeBloc>().add(UserResumeLoadedEvent(userId: appliedJobModel?.userId.toString()));
@@ -109,9 +125,9 @@ class CandidateTile extends StatelessWidget {
                           animationDuration: 1000,
                           lineHeight: 22.0,
                           backgroundColor: MyColors.lightBl,
-                          percent: 0.87,
+                          percent: (appliedJobModel?.matchScore ?? 0) / 100,
                           center: Text(
-                            "90% Match",
+                            "${appliedJobModel?.matchScore}% Match",
                             style: TextStyle(fontSize: 12, color: MyColors.blue),
                           ),
                           barRadius: Radius.circular(5),

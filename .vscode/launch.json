@@ -9,7 +9,7 @@
             "request": "launch",
             "program": "lib/main.dart",
             "args": [
-                "-d","2134d304aa0c7ece"
+                "-d","emulator-5554"
             ],
             "type": "dart"
         },

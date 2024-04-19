@@ -34,6 +34,7 @@ class JobPosModel {
   String? shortlistedReviewContent;
   String? createdAt;
   String? updatedAt;
+  int? matchScore;
 
   JobPosModel(
       {this.id,
@@ -66,7 +67,8 @@ class JobPosModel {
       this.shortlistedReviewSubject,
       this.shortlistedReviewContent,
       this.createdAt,
-      this.updatedAt});
+      this.updatedAt,
+      this.matchScore});
 
   JobPosModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -105,6 +107,7 @@ class JobPosModel {
     shortlistedReviewContent = json['shortlisted_review_content'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    matchScore = json['match_score'] ?? 0;
   }
 
   Map<String, dynamic> toJson() {
@@ -145,6 +148,7 @@ class JobPosModel {
     data['shortlisted_review_content'] = shortlistedReviewContent;
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
+    data['match_score'] = matchScore;
     return data;
   }
 }
