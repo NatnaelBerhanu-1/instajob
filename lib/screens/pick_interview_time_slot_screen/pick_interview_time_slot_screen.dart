@@ -122,7 +122,8 @@ class _BookSlotScreenState extends State<BookSlotScreen> {
             ),
             const SizedBox(height: 20),
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              padding: const EdgeInsets.symmetric(horizontal: 20)
+                  .copyWith(top: 8, bottom: 16),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -188,9 +189,13 @@ class _BookSlotScreenState extends State<BookSlotScreen> {
           Text(
             slotTitle,
             textAlign: TextAlign.left,
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 1.04,
+            ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 12),
           Align(
             alignment: Alignment.center,
             child: Container(
@@ -241,14 +246,15 @@ class _BookSlotScreenState extends State<BookSlotScreen> {
               String? formatTime = dateFormat.format(date);
               TimeOfDay timeOfDay = TimeOfDay.now();
 
-              context.read<JobPositionBloc>().add(SetInterviewEvent(
-                    time: formatTime,
-                    timeType: timeOfDay.period.name.toUpperCase(),
-                    employeeId: Global.userModel?.id.toString(),
-                    companyId: "${widget.jobPosModel?.companyId}",
-                    jobId: widget.jobPosModel?.id.toString(),
-                    userId: widget.jobPosModel?.userId.toString(),
-                  ));
+              // context.read<JobPositionBloc>().add(SetInterviewEvent(
+              //       time: formatTime,
+              //       timeType: timeOfDay.period.name.toUpperCase(),
+              //       employeeId: Global.userModel?.id.toString(),
+              //       companyId: "${widget.jobPosModel?.companyId}",
+              //       jobId: widget.jobPosModel?.id.toString(),
+              //       userId: widget.jobPosModel?.userId.toString(),
+              //     ));
+              Navigator.of(context).pop();
             }
           : null,
       child: const Text(

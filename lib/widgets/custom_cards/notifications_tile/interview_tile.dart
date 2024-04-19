@@ -1,6 +1,10 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+
 import 'package:insta_job/screens/call_screen.dart';
 import 'package:insta_job/screens/insta_recruit/recording_screens/transcription_screen.dart';
 import 'package:insta_job/utils/app_routes.dart';
@@ -9,10 +13,60 @@ import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 
 import '../../../utils/my_colors.dart';
 
-class InterviewTile extends StatelessWidget {
+class InterviewTile extends StatefulWidget {
   final bool isRecording;
 
-  const InterviewTile({Key? key, this.isRecording = false}) : super(key: key);
+  const InterviewTile({
+    Key? key,
+    this.isRecording = false,
+  }) : super(key: key);
+
+  @override
+  State<InterviewTile> createState() => _InterviewTileState();
+}
+
+class _InterviewTileState extends State<InterviewTile> {
+  Timer? _timer;
+
+  late Duration countdownDuration;
+  late String buttonText;
+  bool interviewTimeReached = false;
+
+  @override
+  void initState() {
+    super.initState();
+    var datetime = DateTime.now();
+    var datetime2 =
+        DateTime.now().add(Duration(hours: 3, minutes: 20, seconds: 18));
+    countdownDuration = datetime2.difference(datetime);
+    buttonText = '--h | -- mins | --s';
+    // Start the countdown
+    startCountdown();
+  }
+
+  void startCountdown() {
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+        if (countdownDuration.inSeconds > 0) {
+          countdownDuration -= Duration(seconds: 1);
+          buttonText = formatDuration(countdownDuration);
+        } else {
+          // Countdown has reached zero, change button text
+          buttonText = 'Interview Now';
+          _timer?.cancel();
+        }
+      });
+    });
+  }
+
+  String formatDuration(Duration duration) {
+    // Format the duration as "Xh | Ym | Zs"
+    int hours = duration.inHours;
+    int minutes = duration.inMinutes % 60;
+    int seconds = duration.inSeconds % 60;
+
+    return '${hours}h | ${minutes} mins | ${seconds}s';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +135,7 @@ class InterviewTile extends StatelessWidget {
               ],
             ),
             SizedBox(height: 10),
-            isRecording
+            widget.isRecording
                 ? Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 50.0),
                     child: CustomButton(
@@ -111,9 +165,14 @@ class InterviewTile extends StatelessWidget {
                           flex: 2,
                           child: CustomButton(
                             height: MediaQuery.of(context).size.height * 0.048,
-                            bgColor: MyColors.blue,
+                            bgColor: interviewTimeReached
+                                ? MyColors.blue
+                                : MyColors.grey,
                             borderRadius: BorderRadius.circular(20),
-                            title: "Interview Now",
+                            title: interviewTimeReached
+                                ? "Interview Now"
+                                // : "5h | 10m | 40s",
+                                : formatDuration(countdownDuration),
                             onTap: () {
                               AppRoutes.push(context, CallScreen());
                             },
