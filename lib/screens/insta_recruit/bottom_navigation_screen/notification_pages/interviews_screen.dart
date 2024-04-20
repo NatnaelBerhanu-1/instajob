@@ -74,8 +74,7 @@ class _InterviewScreenState extends State<InterviewScreen> {
                   Expanded(
                     flex: 0,
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15.0, vertical: 0),
+                      padding: const EdgeInsets.fromLTRB(15, 40, 15, 0),
                       child: SingleChildScrollView(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -98,8 +97,7 @@ class _InterviewScreenState extends State<InterviewScreen> {
                   ),
                   SizedBox(height: 10),
                   Expanded(
-                    child: BlocBuilder<JobPositionBloc, JobPosState>(
-                        builder: (context, state) {
+                    child: BlocBuilder<JobPositionBloc, JobPosState>(builder: (context, state) {
                       if (state is AppliedJobLoaded) {
                         return ListView.builder(
                             shrinkWrap: true,
@@ -148,6 +146,7 @@ class _InterviewScreenState extends State<InterviewScreen> {
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
         itemCount: 4,
+        padding: EdgeInsets.only(bottom: 8),
         itemBuilder: (c, i) {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 0),
@@ -166,10 +165,15 @@ class _InterviewScreenState extends State<InterviewScreen> {
 
   Widget _buildUpcomingInterviewTabDetails() {
     return Padding(
-      padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
+      padding: const EdgeInsets.only(
+        left: 16,
+        right: 16,
+        top: 16,
+      ),
       child: GridView.builder(
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
+        padding: EdgeInsets.only(bottom: 8),
         itemCount: 4,
         itemBuilder: (c, i) {
           return Padding(

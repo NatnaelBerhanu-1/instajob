@@ -78,15 +78,10 @@ class _InterviewTileState extends State<InterviewTile> {
           border: Border.all(color: MyColors.lightgrey, width: 1.2),
           color: MyColors.white,
           boxShadow: [
-            BoxShadow(
-                color: Colors.grey.withOpacity(0.10),
-                spreadRadius: 2,
-                blurRadius: 4,
-                offset: Offset(2, 3)),
+            BoxShadow(color: Colors.grey.withOpacity(0.10), spreadRadius: 2, blurRadius: 4, offset: Offset(2, 3)),
           ]),
       child: Padding(
-        padding:
-            const EdgeInsets.only(right: 12, top: 15, left: 12, bottom: 10),
+        padding: const EdgeInsets.only(right: 12, top: 15, left: 12, bottom: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -141,7 +136,7 @@ class _InterviewTileState extends State<InterviewTile> {
                 ? Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 50.0),
                     child: CustomButton(
-                      height: MediaQuery.of(context).size.height * 0.048,
+                      height: MediaQuery.of(context).size.height * 0.042,
                       bgColor: MyColors.blue,
                       borderRadius: BorderRadius.circular(20),
                       title: "Recordings",
@@ -153,29 +148,33 @@ class _InterviewTileState extends State<InterviewTile> {
                 : Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      CustomButton(
-                        width:
-                            110, //revisit: TODO: consider using media queries
-                        fontSize: 14,
-                        height: MediaQuery.of(context).size.height * 0.048,
-                        borderColor: MyColors.darkRed,
-                        bgColor: MyColors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        title: "Cancel",
-                        fontColor: MyColors.darkRed,
+                      Expanded(
+                        flex: 2,
+                        child: CustomButton(
+                          fontSize: 14,
+                          height: MediaQuery.of(context).size.height * 0.042,
+                          borderColor: MyColors.darkRed,
+                          bgColor: MyColors.white,
+                          borderRadius: BorderRadius.circular(20),
+                          title: "Cancel",
+                          fontColor: MyColors.darkRed,
+                        ),
                       ),
-                      CustomButton(
-                        width: 164,
-                        fontSize: 14,
-                        height: MediaQuery.of(context).size.height * 0.048,
-                        bgColor: interviewTimeReached
-                            ? MyColors.blue
-                            : MyColors.grey,
-                        borderRadius: BorderRadius.circular(20),
-                        title: buttonText,
-                        onTap: () {
-                          AppRoutes.push(context, CallScreen());
-                        },
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Expanded(
+                        flex: 3,
+                        child: CustomButton(
+                          fontSize: 14,
+                          height: MediaQuery.of(context).size.height * 0.042,
+                          bgColor: interviewTimeReached ? MyColors.blue : MyColors.grey,
+                          borderRadius: BorderRadius.circular(20),
+                          title: buttonText,
+                          onTap: () {
+                            AppRoutes.push(context, CallScreen());
+                          },
+                        ),
                       ),
                     ],
                   ),
