@@ -145,39 +145,61 @@ class _JobOpeningScreenState extends State<JobOpeningScreen> {
                   alignment: Alignment.bottomLeft,
                   width: double.infinity,
                   decoration: BoxDecoration(
-                      // color: MyColors.green,
-                      borderRadius: BorderRadius.circular(10),
-                      image: DecorationImage(
-                          image: CachedNetworkImageProvider(
-                              "${EndPoint.imageBaseUrl}${widget.companyModel?.uploadPhoto}"),
-                          // image: AssetImage(MyImages.staffMeeting),
-                          fit: BoxFit.cover)),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CommonText(
-                          text: "${widget.companyModel?.companyName}",
-                          fontColor: MyColors.white,
-                          fontSize: 20,
-                        ),
-                        SizedBox(height: 10),
-                        CommonText(
-                          text:
-                              "It's a long established fact that reader will directly by the",
-                          fontColor: MyColors.white,
-                          fontSize: 13,
-                        ),
-                        CommonText(
-                          text:
-                              "readable content of page when looking at it's layout",
-                          fontColor: MyColors.white,
-                          fontSize: 13,
-                        ),
-                      ],
+                    borderRadius: BorderRadius.circular(10),
+                    image: DecorationImage(
+                      image: CachedNetworkImageProvider(
+                          "${EndPoint.imageBaseUrl}${widget.companyModel?.uploadPhoto}"),
+                      fit: BoxFit.cover,
                     ),
+                  ),
+                  child: Stack(
+                    children: [
+                      // Gradient overlay
+                      Container(
+                        width: double.infinity,
+                        height: double.infinity,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.bottomCenter,
+                            end: Alignment.topCenter,
+                            colors: [
+                              Colors.black.withOpacity(0.6),
+                              Colors.transparent
+                            ],
+                          ),
+                        ),
+                      ),
+                      // Text content
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Company name
+                            CommonText(
+                              text: "${widget.companyModel?.companyName}",
+                              fontColor: MyColors.white,
+                              fontSize: 20,
+                            ),
+                            SizedBox(height: 10),
+                            // Description text
+                            CommonText(
+                              text:
+                                  "It's a long established fact that reader will directly by the",
+                              fontColor: MyColors.white,
+                              fontSize: 13,
+                            ),
+                            CommonText(
+                              text:
+                                  "readable content of page when looking at it's layout",
+                              fontColor: MyColors.white,
+                              fontSize: 13,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
