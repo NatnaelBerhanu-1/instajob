@@ -59,52 +59,8 @@ class _InterviewScreenState extends State<InterviewScreen> {
                     ),
                     Expanded(
                         child: TabBarView(children: [
-                      Padding(
-                        padding:
-                            const EdgeInsets.only(left: 10, right: 10, top: 3),
-                        child: GridView.builder(
-                          shrinkWrap: true,
-                          scrollDirection: Axis.horizontal,
-                          itemCount: 4,
-                          itemBuilder: (c, i) {
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 0),
-                              child: InterviewTile(),
-                            );
-                          },
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            mainAxisSpacing: 5,
-                            crossAxisSpacing: 5,
-                            childAspectRatio: 3 / 8,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding:
-                            const EdgeInsets.only(left: 10, right: 10, top: 3),
-                        child: GridView.builder(
-                          shrinkWrap: true,
-                          scrollDirection: Axis.horizontal,
-                          itemCount: 4,
-                          itemBuilder: (c, i) {
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 2, vertical: 0),
-                              child: InterviewTile(isRecording: true),
-                            );
-                          },
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            mainAxisSpacing: 5,
-                            crossAxisSpacing: 5,
-                            childAspectRatio: 3 / 8,
-                          ),
-                        ),
-                      ),
+                      _buildUpcomingInterviewTabDetails(),
+                      _buildPreviousInterviewTabDetails(),
                     ]))
                   ],
                 ),
@@ -183,6 +139,52 @@ class _InterviewScreenState extends State<InterviewScreen> {
             ),
           ],
         ));
+  }
+
+  Widget _buildPreviousInterviewTabDetails() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 10, right: 10, top: 3),
+      child: GridView.builder(
+        shrinkWrap: true,
+        scrollDirection: Axis.horizontal,
+        itemCount: 4,
+        itemBuilder: (c, i) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 0),
+            child: InterviewTile(isRecording: true),
+          );
+        },
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          mainAxisSpacing: 5,
+          crossAxisSpacing: 5,
+          childAspectRatio: 3 / 8,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildUpcomingInterviewTabDetails() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 10, right: 10, top: 3),
+      child: GridView.builder(
+        shrinkWrap: true,
+        scrollDirection: Axis.horizontal,
+        itemCount: 4,
+        itemBuilder: (c, i) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 0),
+            child: InterviewTile(),
+          );
+        },
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          mainAxisSpacing: 5,
+          crossAxisSpacing: 5,
+          childAspectRatio: 3 / 8,
+        ),
+      ),
+    );
   }
 }
 /*if (state is AppliedJobLoaded) ...[
