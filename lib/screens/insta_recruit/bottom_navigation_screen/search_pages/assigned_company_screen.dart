@@ -13,6 +13,7 @@ import 'package:insta_job/widgets/custom_app_bar.dart';
 import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 import 'package:insta_job/widgets/custom_cards/assign_companies_tile.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
+import 'package:insta_job/widgets/custom_divider.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
 
 import '../../../../bloc/bottom_bloc/bottom_bloc.dart';
@@ -52,15 +53,13 @@ class _AssignCompanyState extends State<AssignCompany> {
               child: Container(
                 color: MyColors.white,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 10.0, horizontal: 15),
+                  padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Expanded(
-                        child: BlocBuilder<CompanyBloc, CompanyState>(
-                            builder: (context, state) {
+                        child: BlocBuilder<CompanyBloc, CompanyState>(builder: (context, state) {
                           return Column(
                             children: [
                               IconTextField(
@@ -88,9 +87,7 @@ class _AssignCompanyState extends State<AssignCompany> {
                           flex: 0,
                           child: CustomCommonCard(
                             onTap: () {
-                              context.read<BottomBloc>().add(SetScreenEvent(
-                                  true,
-                                  screenName: AddNewCompany()));
+                              context.read<BottomBloc>().add(SetScreenEvent(true, screenName: AddNewCompany()));
                               // context.read<BottomCubit>().setSelectedScreen(
                               //     true,
                               //     screenName: AddNewCompany());
@@ -118,8 +115,8 @@ class _AssignCompanyState extends State<AssignCompany> {
                 ),
               ),
             ),
-            Expanded(child: BlocBuilder<CompanyBloc, CompanyState>(
-                builder: (context, state) {
+            divider(),
+            Expanded(child: BlocBuilder<CompanyBloc, CompanyState>(builder: (context, state) {
               if (state is CompanyLoading) {
                 return Center(child: CircularProgressIndicator());
               }
@@ -135,8 +132,7 @@ class _AssignCompanyState extends State<AssignCompany> {
                       var data = context.read<CompanyBloc>();
                       data.companyModel = state.companyList[i];
                       return Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 7.0, horizontal: 12),
+                        padding: const EdgeInsets.symmetric(vertical: 7.0, horizontal: 20),
                         child: AssignCompaniesTile(
                           companyModel: data.companyModel,
                         ),

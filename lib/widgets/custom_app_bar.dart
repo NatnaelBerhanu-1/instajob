@@ -18,8 +18,7 @@ class CustomAppBar extends StatefulWidget {
   final Color? imageColor;
   final Widget? actions;
   final VoidCallback? onTap;
-  final bool
-      useLeadingImage; //use assertion for only accepting useLeadingImage(as false) or leadingImage
+  final bool useLeadingImage; //use assertion for only accepting useLeadingImage(as false) or leadingImage
   const CustomAppBar({
     Key? key,
     this.title,
@@ -52,10 +51,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
       toolbarHeight: widget.toolbarHeight ?? kToolbarHeight,
       title: Text(
         "${widget.title}",
-        style: TextStyle(
-            color: widget.color ?? MyColors.black,
-            fontWeight: FontWeight.w500,
-            fontSize: 19),
+        style: TextStyle(color: widget.color ?? MyColors.black, fontWeight: FontWeight.bold, fontSize: 19),
       ),
       leading: GestureDetector(
           onTap: widget.onTap ??
@@ -64,16 +60,16 @@ class _CustomAppBarState extends State<CustomAppBar> {
               },
           child: widget.useLeadingImage
               ? Container(
-            color: Colors.transparent,
-            alignment: Alignment.center,
-            child: widget.leadingImage == ""
-                ? SizedBox()
-                : Image.asset(
-                    widget.leadingImage ?? MyImages.backArrow,
-                    height: widget.height ?? 40,
-                    width: widget.width ?? 40,
-                    color: widget.imageColor,
-                  ),
+                  color: Colors.transparent,
+                  alignment: Alignment.center,
+                  child: widget.leadingImage == ""
+                      ? SizedBox()
+                      : Image.asset(
+                          widget.leadingImage ?? MyImages.backArrow,
+                          height: widget.height ?? 40,
+                          width: widget.width ?? 40,
+                          color: widget.imageColor,
+                        ),
                 )
               : Icon(
                   Icons.arrow_back_ios,

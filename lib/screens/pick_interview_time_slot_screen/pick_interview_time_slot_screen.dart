@@ -32,8 +32,7 @@ class _BookSlotScreenState extends State<BookSlotScreen> {
         minTime: DateTime.now(),
         maxTime: DateTime(2101, 12, 31),
         currentTime: selectedDate, onConfirm: (date) {
-      DateTime selectedDateAtMidnight =
-          DateTime(date.year, date.month, date.day, 0, 0);
+      DateTime selectedDateAtMidnight = DateTime(date.year, date.month, date.day, 0, 0);
 
       setState(() {
         // Update the selectedDate with the new date at midnight
@@ -52,12 +51,9 @@ class _BookSlotScreenState extends State<BookSlotScreen> {
       return [];
     }
 
-    while ((counterRunningTime.isBefore(endTime) ||
-        counterRunningTime.isAtSameMomentAs(endTime))) {
-      if (isSameDateAsToday(currentDateTime) &&
-          counterRunningTime.isBefore(currentDateTime)) {
-        counterRunningTime =
-            counterRunningTime.add(const Duration(minutes: 10));
+    while ((counterRunningTime.isBefore(endTime) || counterRunningTime.isAtSameMomentAs(endTime))) {
+      if (isSameDateAsToday(currentDateTime) && counterRunningTime.isBefore(currentDateTime)) {
+        counterRunningTime = counterRunningTime.add(const Duration(minutes: 10));
         continue;
       }
       var slotItem = TimeSlot(time: counterRunningTime);
@@ -72,22 +68,16 @@ class _BookSlotScreenState extends State<BookSlotScreen> {
 
   @override
   Widget build(BuildContext context) {
-    DateTime morningStartTime =
-        DateTime(selectedDate.year, selectedDate.month, selectedDate.day, 6, 0);
-    DateTime morningEndTime = DateTime(
-        selectedDate.year, selectedDate.month, selectedDate.day, 11, 50);
-    DateTime afternoonStartTime = DateTime(
-        selectedDate.year, selectedDate.month, selectedDate.day, 12, 0);
-    DateTime afternoonEndTime = DateTime(
-        selectedDate.year, selectedDate.month, selectedDate.day, 21, 50);
+    DateTime morningStartTime = DateTime(selectedDate.year, selectedDate.month, selectedDate.day, 6, 0);
+    DateTime morningEndTime = DateTime(selectedDate.year, selectedDate.month, selectedDate.day, 11, 50);
+    DateTime afternoonStartTime = DateTime(selectedDate.year, selectedDate.month, selectedDate.day, 12, 0);
+    DateTime afternoonEndTime = DateTime(selectedDate.year, selectedDate.month, selectedDate.day, 21, 50);
 
     final dateFormat = DateFormat('EEEE, dd MMMM yyyy');
 
-    List<TimeSlot> morningSlots =
-        _generateTimeSlots(morningStartTime, morningEndTime);
+    List<TimeSlot> morningSlots = _generateTimeSlots(morningStartTime, morningEndTime);
 
-    List<TimeSlot> afternoonSlots =
-        _generateTimeSlots(afternoonStartTime, afternoonEndTime);
+    List<TimeSlot> afternoonSlots = _generateTimeSlots(afternoonStartTime, afternoonEndTime);
 
     return Scaffold(
       appBar: PreferredSize(
@@ -103,76 +93,79 @@ class _BookSlotScreenState extends State<BookSlotScreen> {
           color: MyColors.white,
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const CommonText(
-              text: "Choose Time For",
-              fontWeight: FontWeight.w600,
-              fontSize: 18,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  _buildActionButton(),
-                ],
-              ),
-            ),
-            const SizedBox(height: 20),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20)
-                  .copyWith(top: 8, bottom: 16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                    icon: const Icon(
-                      Icons.arrow_back_ios,
-                      size: 20,
-                    ),
-                    onPressed: isSameDateAsToday(selectedDate)
-                        ? null
-                        : () {
-                            setState(() {
-                            selectedDate =
-                                selectedDate.subtract(const Duration(days: 1));
-                            });
-                          },
-                    splashRadius: 30,
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                const SizedBox(height: 10),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 20).copyWith(top: 8, bottom: 16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                        icon: const Icon(
+                          Icons.arrow_back_ios,
+                          size: 20,
+                        ),
+                        onPressed: isSameDateAsToday(selectedDate)
+                            ? null
+                            : () {
+                                setState(() {
+                                  selectedDate = selectedDate.subtract(const Duration(days: 1));
+                                });
+                              },
+                        splashRadius: 30,
+                      ),
+                      GestureDetector(
+                        onTap: _pickDate,
+                        child: Text(
+                          dateFormat.format(selectedDate),
+                          style: const TextStyle(fontSize: 18),
+                        ),
+                      ),
+                      IconButton(
+                        icon: const Icon(
+                          Icons.arrow_forward_ios,
+                          size: 20,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            selectedDate = selectedDate.add(const Duration(days: 1));
+                          });
+                        },
+                      ),
+                    ],
                   ),
-                  GestureDetector(
-                    onTap: _pickDate,
-                    child: Text(
-                      dateFormat.format(selectedDate),
-                      style: const TextStyle(fontSize: 18),
-                    ),
-                  ),
-                  IconButton(
-                    icon: const Icon(
-                      Icons.arrow_forward_ios,
-                      size: 20,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                      selectedDate = selectedDate.add(const Duration(days: 1));
-                      });
-                    },
-                  ),
-                ],
-              ),
-            ),
+                ),
 
-            // Morning Slots Section
-            _buildSlotSection(slotTitle: "Morning", slots: morningSlots),
+                // Morning Slots Section
+                _buildSlotSection(slotTitle: "Morning", slots: morningSlots),
 
-            const SizedBox(height: 20),
-            // Afternoon Slots Section
-            _buildSlotSection(slotTitle: "Afternoon", slots: afternoonSlots),
-            // _buildAfternoonSlotSection(afternoonSlots),
-          ],
-        ),
+                const SizedBox(height: 20),
+                // Afternoon Slots Section
+                _buildSlotSection(slotTitle: "Afternoon", slots: afternoonSlots),
+                // _buildAfternoonSlotSection(afternoonSlots),
+                const SizedBox(height: 60),
+              ],
+            ),
+          ),
+          selectedTimeSlot != null
+              ? Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _buildActionButton(),
+                      ],
+                    ),
+                  ),
+                )
+              : SizedBox(),
+        ],
       ),
     );
   }
@@ -205,8 +198,7 @@ class _BookSlotScreenState extends State<BookSlotScreen> {
                   : GridView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 4, // Number of columns
                         // crossAxisSpacing: 0.0,
                         // mainAxisSpacing: 0.0,
@@ -237,29 +229,29 @@ class _BookSlotScreenState extends State<BookSlotScreen> {
   }
 
   Widget _buildActionButton() {
-    return ElevatedButton(
-      onPressed: selectedTimeSlot != null
+    return CustomButton(
+      width: 200,
+      height: 40,
+      onTap: selectedTimeSlot != null
           ? () {
-              var date = DateFormat("hh:mm").parse(
-                  "${selectedTimeSlot!.time.hour}:${selectedTimeSlot!.time.minute}");
+              var date = DateFormat("hh:mm").parse("${selectedTimeSlot!.time.hour}:${selectedTimeSlot!.time.minute}");
               var dateFormat = DateFormat("hh:mm");
               String? formatTime = dateFormat.format(date);
               TimeOfDay timeOfDay = TimeOfDay.now();
-
-              context.read<JobPositionBloc>().add(SetInterviewEvent(
-                    time: formatTime,
-                    timeType: timeOfDay.period.name.toUpperCase(),
-                    employeeId: Global.userModel?.id.toString(),
-                    companyId: "${widget.jobPosModel?.companyId}",
-                    jobId: widget.jobPosModel?.id.toString(),
-                    userId: widget.jobPosModel?.userId.toString(),
-                  ));
+              var setupInterviewEvent = SetInterviewEvent(
+                time: formatTime,
+                timeType: timeOfDay.period.name.toUpperCase(),
+                employeeId: Global.userModel?.id.toString(),
+                companyId: "${widget.jobPosModel?.companyId}",
+                jobId: widget.jobPosModel?.jobId.toString(),
+                userId: widget.jobPosModel?.userId.toString(),
+              );
+              debugPrint('InterviewEvent: ${setupInterviewEvent.toJson()}');
+              context.read<JobPositionBloc>().add(setupInterviewEvent);
               Navigator.of(context).pop();
             }
           : null,
-      child: const Text(
-        "Set Interview Slot",
-      ),
+      title: "Set Interview Slot",
     );
   }
 }
@@ -284,26 +276,22 @@ class TimeSlotChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textColor =
-        isSelected ? MyColors.white : MyColors.black.withOpacity(0.5);
+    final textColor = isSelected ? MyColors.white : MyColors.black.withOpacity(0.5);
     final backgroundColor = isSelected ? MyColors.blue : null;
 
     DateTime currentTime = timeSlot.time;
     DateFormat timeFormat = DateFormat('h:mm a');
 
-    return Padding(
-      padding: const EdgeInsets.all(4).copyWith(bottom: 0),
-      child: Container(
-        padding: const EdgeInsets.all(4).copyWith(top: 2),
-        color: backgroundColor,
-        child: Text(
-          timeFormat.format(currentTime),
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontWeight: FontWeight.w400,
-            fontSize: 16,
-            color: textColor,
-          ),
+    return Container(
+      padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+      decoration: BoxDecoration(color: backgroundColor, borderRadius: BorderRadius.circular(6)),
+      child: Text(
+        timeFormat.format(currentTime),
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontWeight: FontWeight.w400,
+          fontSize: 16,
+          color: textColor,
         ),
       ),
     );
@@ -315,7 +303,5 @@ bool isSameDateAsToday(DateTime date) {
   DateTime today = DateTime.now();
 
   // Compare the year, month, and day of the given date with today's date
-  return date.year == today.year &&
-      date.month == today.month &&
-      date.day == today.day;
+  return date.year == today.year && date.month == today.month && date.day == today.day;
 }
