@@ -37,7 +37,8 @@ class _InterviewTileState extends State<InterviewTile> {
     super.initState();
     var datetime = DateTime.now();
     var datetime2 =
-        DateTime.now().add(Duration(hours: 3, minutes: 20, seconds: 18));
+        // DateTime.now().add(Duration(hours: 3, minutes: 20, seconds: 18));
+        DateTime.now().add(Duration(hours: 0, minutes: 0, seconds: 3));
     countdownDuration = datetime2.difference(datetime);
     buttonText = '--h | -- mins | --s';
     // Start the countdown
@@ -47,12 +48,13 @@ class _InterviewTileState extends State<InterviewTile> {
   void startCountdown() {
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() {
-        if (countdownDuration.inSeconds > 0) {
+        if (countdownDuration.inSeconds > 1) {
           countdownDuration -= Duration(seconds: 1);
           buttonText = formatDuration(countdownDuration);
         } else {
           // Countdown has reached zero, change button text
           buttonText = 'Interview Now';
+          interviewTimeReached = true;
           _timer?.cancel();
         }
       });
@@ -169,10 +171,7 @@ class _InterviewTileState extends State<InterviewTile> {
                                 ? MyColors.blue
                                 : MyColors.grey,
                             borderRadius: BorderRadius.circular(20),
-                            title: interviewTimeReached
-                                ? "Interview Now"
-                                // : "5h | 10m | 40s",
-                                : formatDuration(countdownDuration),
+                            title: buttonText,
                             onTap: () {
                               AppRoutes.push(context, CallScreen());
                             },
