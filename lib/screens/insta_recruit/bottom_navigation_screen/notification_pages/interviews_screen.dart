@@ -66,7 +66,7 @@ class _InterviewScreenState extends State<InterviewScreen> {
                 ),
               ),
             ),
-            // SizedBox(height: 15),
+            SizedBox(height: 15),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -143,7 +143,7 @@ class _InterviewScreenState extends State<InterviewScreen> {
 
   Widget _buildPreviousInterviewTabDetails() {
     return Padding(
-      padding: const EdgeInsets.only(left: 10, right: 10, top: 3),
+      padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
       child: GridView.builder(
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
@@ -156,9 +156,9 @@ class _InterviewScreenState extends State<InterviewScreen> {
         },
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
-          mainAxisSpacing: 5,
+          mainAxisSpacing: 8,
           crossAxisSpacing: 5,
-          childAspectRatio: 3 / 8,
+          childAspectRatio: 3 / 7,
         ),
       ),
     );
@@ -166,7 +166,7 @@ class _InterviewScreenState extends State<InterviewScreen> {
 
   Widget _buildUpcomingInterviewTabDetails() {
     return Padding(
-      padding: const EdgeInsets.only(left: 10, right: 10, top: 3),
+      padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
       child: GridView.builder(
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
@@ -179,9 +179,9 @@ class _InterviewScreenState extends State<InterviewScreen> {
         },
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
-          mainAxisSpacing: 5,
+          mainAxisSpacing: 8,
           crossAxisSpacing: 5,
-          childAspectRatio: 3 / 8,
+          childAspectRatio: 3 / 7,
         ),
       ),
     );
