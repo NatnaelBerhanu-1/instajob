@@ -246,14 +246,14 @@ class _BookSlotScreenState extends State<BookSlotScreen> {
               String? formatTime = dateFormat.format(date);
               TimeOfDay timeOfDay = TimeOfDay.now();
 
-              // context.read<JobPositionBloc>().add(SetInterviewEvent(
-              //       time: formatTime,
-              //       timeType: timeOfDay.period.name.toUpperCase(),
-              //       employeeId: Global.userModel?.id.toString(),
-              //       companyId: "${widget.jobPosModel?.companyId}",
-              //       jobId: widget.jobPosModel?.id.toString(),
-              //       userId: widget.jobPosModel?.userId.toString(),
-              //     ));
+              context.read<JobPositionBloc>().add(SetInterviewEvent(
+                    time: formatTime,
+                    timeType: timeOfDay.period.name.toUpperCase(),
+                    employeeId: Global.userModel?.id.toString(),
+                    companyId: "${widget.jobPosModel?.companyId}",
+                    jobId: widget.jobPosModel?.id.toString(),
+                    userId: widget.jobPosModel?.userId.toString(),
+                  ));
               Navigator.of(context).pop();
             }
           : null,

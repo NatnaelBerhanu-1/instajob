@@ -20,8 +20,7 @@ class ChatScreen extends StatefulWidget {
   final JobPosModel? jobPosModel;
   final String? oppId;
   final String? selfId;
-  const ChatScreen({Key? key, this.jobPosModel, this.oppId, this.selfId})
-      : super(key: key);
+  const ChatScreen({Key? key, this.jobPosModel, this.oppId, this.selfId}) : super(key: key);
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
@@ -67,8 +66,7 @@ class _ChatScreenState extends State<ChatScreen> {
               Expanded(
                 flex: 0,
                 child: Padding(
-                  padding:
-                      const EdgeInsets.only(right: 10, top: 10, bottom: 15),
+                  padding: const EdgeInsets.only(right: 10, top: 10, bottom: 15),
                   child: Row(
                     children: [
                       Expanded(
@@ -132,10 +130,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                   //     context,
                                   //     PickTimeDialog(
                                   //         jobPosModel: widget.jobPosModel));
-                                  AppRoutes.push(
-                                      context,
-                                      BookSlotScreen(
-                                          jobPosModel: widget.jobPosModel));
+                                  AppRoutes.push(context, BookSlotScreen(jobPosModel: widget.jobPosModel));
                                 },
                                 borderRadius: BorderRadius.circular(20),
                                 borderColor: MyColors.blue,
@@ -144,10 +139,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      CommonText(
-                                          text: "Set up interview  ",
-                                          fontColor: MyColors.blue,
-                                          fontSize: 14),
+                                      CommonText(text: "Set up interview  ", fontColor: MyColors.blue, fontSize: 14),
                                       Icon(Icons.call, color: MyColors.blue),
                                     ],
                                   ),
@@ -171,8 +163,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       builder: (context, snapshot) {
                         return snapshot.hasData
                             ? Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 5.0),
+                                padding: const EdgeInsets.symmetric(vertical: 5.0),
                                 child: ListView.builder(
                                     reverse: true,
                                     // shrinkWrap: true,
@@ -180,49 +171,34 @@ class _ChatScreenState extends State<ChatScreen> {
                                     itemBuilder: (c, i) {
                                       var data = snapshot.data?.docs[i];
                                       return Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 5.0),
+                                        padding: const EdgeInsets.symmetric(vertical: 5.0),
                                         child: Align(
-                                          alignment:
-                                              Global.userModel?.firebaseId ==
-                                                      data?['selfId']
-                                                  ? Alignment.centerRight
-                                                  : Alignment.centerLeft,
+                                          alignment: Global.userModel?.firebaseId == data?['selfId']
+                                              ? Alignment.centerRight
+                                              : Alignment.centerLeft,
                                           child: DecoratedBox(
                                             // chat bubble decoration
                                             decoration: BoxDecoration(
-                                              color: Global.userModel
-                                                          ?.firebaseId ==
-                                                      data?['selfId']
-                                                  ? MyColors.lightBlue
-                                                      .withOpacity(.25)
+                                              color: Global.userModel?.firebaseId == data?['selfId']
+                                                  ? MyColors.lightBlue.withOpacity(.25)
                                                   : MyColors.lightGrey,
-                                              borderRadius: Global.userModel
-                                                          ?.firebaseId ==
-                                                      data?['selfId']
+                                              borderRadius: Global.userModel?.firebaseId == data?['selfId']
                                                   ? BorderRadius.only(
-                                                      topLeft:
-                                                          Radius.circular(15),
-                                                      topRight:
-                                                          Radius.circular(15),
-                                                      bottomLeft:
-                                                          Radius.circular(15),
+                                                      topLeft: Radius.circular(15),
+                                                      topRight: Radius.circular(15),
+                                                      bottomLeft: Radius.circular(15),
                                                     )
                                                   : BorderRadius.only(
-                                                      topLeft:
-                                                          Radius.circular(15),
-                                                      topRight:
-                                                          Radius.circular(15),
-                                                      bottomRight:
-                                                          Radius.circular(15),
+                                                      topLeft: Radius.circular(15),
+                                                      topRight: Radius.circular(15),
+                                                      bottomRight: Radius.circular(15),
                                                     ),
                                             ),
                                             child: Padding(
                                               padding: const EdgeInsets.all(12),
                                               child: Text(
                                                 "${data?['msg']}",
-                                                style: TextStyle(
-                                                    color: Colors.black),
+                                                style: TextStyle(color: Colors.black),
                                               ),
                                             ),
                                           ),
@@ -252,11 +228,11 @@ class _ChatScreenState extends State<ChatScreen> {
                         onTap: () {
                           if (msg.text.isNotEmpty) {
                             AuthService.insertMsg(
-                              gp: gp!,
-                              msg: msg.text,
-                              oppId: widget.oppId,
-                              selfId: widget.selfId,
-                            );
+                                gp: gp!,
+                                msg: msg.text,
+                                oppId: widget.oppId,
+                                selfId: widget.selfId,
+                                jobId: widget.jobPosModel!.jobId);
                             msg.clear();
                           }
                         },
@@ -264,12 +240,9 @@ class _ChatScreenState extends State<ChatScreen> {
                           padding: const EdgeInsets.only(right: 2.0),
                           child: Container(
                             // alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                color: MyColors.blue,
-                                borderRadius: BorderRadius.circular(25)),
+                            decoration: BoxDecoration(color: MyColors.blue, borderRadius: BorderRadius.circular(25)),
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 13.5, horizontal: 18),
+                              padding: const EdgeInsets.symmetric(vertical: 13.5, horizontal: 18),
                               child: CommonText(
                                 text: "Send",
                                 fontColor: MyColors.white,
