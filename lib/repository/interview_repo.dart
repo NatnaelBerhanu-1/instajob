@@ -34,6 +34,14 @@ class InterviewRepo {
     }
   }
 
+  Future<ApiResponse> getInterviewSchedules() async {
+    //both get both upcoming and previous interview schedules
+    //todo: pass stuff (impl)
+    await Future.delayed(const Duration(seconds: 2));
+    var mockResponse = {"upcoming": [], "previous": []};
+    return ApiResponse.withSuccess(mockResponse);
+  }
+
   getPreviousInterviews() {
     throw Exception();
   }

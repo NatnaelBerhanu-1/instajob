@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
+import 'package:insta_job/bloc/interview_schedule_cubit/interview_schedule_cubit.dart';
 import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
 import 'package:insta_job/bloc/job_position/job_pos_event.dart';
 import 'package:insta_job/bloc/location_cubit/location_cubit.dart';
@@ -78,7 +79,9 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
                     bottomBloc.add(SetScreenEvent(false));
                     bottomBloc.add(GetIndexEvent(1));
                     context.read<JobPositionBloc>().add(AppliedJobListEvent());
-
+                    context
+                        .read<InterviewScheduleCubit>()
+                        .getInterviewSchedules();
                     // bottomBloc.setSelectedScreen(false);
                     // bottomBloc.getIndex(1);
                   },

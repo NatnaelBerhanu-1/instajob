@@ -1,7 +1,11 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:insta_job/auth_service.dart';
+import 'package:insta_job/bloc/interview_schedule_cubit/interview_schedule_cubit.dart';
+import 'package:insta_job/bloc/interview_schedule_cubit/interview_schedule_state.dart';
 import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
 import 'package:insta_job/bloc/job_position/job_pos_state.dart';
 import 'package:insta_job/utils/my_colors.dart';
@@ -19,6 +23,13 @@ class InterviewScreen extends StatefulWidget {
 
 class _InterviewScreenState extends State<InterviewScreen> {
   int tabIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<InterviewScheduleCubit>().getInterviewSchedules();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,6 +61,9 @@ class _InterviewScreenState extends State<InterviewScreen> {
                           indicatorColor: MyColors.blue,
                           onTap: (val) {
                             tabIndex = val;
+                            context
+                                .read<InterviewScheduleCubit>()
+                                .getInterviewSchedules();
                             setState(() {});
                           },
                           tabs: [
@@ -97,16 +111,44 @@ class _InterviewScreenState extends State<InterviewScreen> {
                   ),
                   SizedBox(height: 10),
                   Expanded(
-                    child: BlocBuilder<JobPositionBloc, JobPosState>(builder: (context, state) {
+                    child: BlocBuilder<JobPositionBloc, JobPosState>(
+                        builder: (context, state) {
                       if (state is AppliedJobLoaded) {
-                        return ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: state.appliedJobList.length,
-                            itemBuilder: (c, i) {
-                              var data = state.appliedJobList[i];
-                              return MessageTile(
-                                jobPosModel: data,
-                              );
+                        //TODO: run and check (URGENT)
+                        // return ListView.builder(
+                        //     shrinkWrap: true,
+                        //     itemCount: state.appliedJobList.length,
+                        //     itemBuilder: (c, i) {
+                        //       var data = state.appliedJobList[i];
+                        //       return MessageTile(
+                        //         jobPosModel: data,
+                        //       );
+                        //     });
+
+                        return StreamBuilder<Object>(
+                            stream: FirebaseFirestore.instance
+                                .collection(AuthService.chatCollection)
+                                // .where("jobId", isEqualTo: jobId)
+                                .snapshots(),
+                            builder:
+                                (context, AsyncSnapshot<dynamic> snapshot) {
+                              if (snapshot.hasData) {
+                                debugPrint(
+                                    'chats: ${snapshot.data.docs.map((e) => e.data() as Map<String, dynamic>)}');
+                                var chats =
+                                    (snapshot.data as QuerySnapshot).docs;
+                                return ListView.builder(
+                                    itemCount: chats.length,
+                                    itemBuilder: (context, index) =>
+                                        MessageTile(
+                                          jobPosModel: state.appliedJobList
+                                              .firstWhere((element) =>
+                                                  element.userFirebaseId
+                                                      ?.toString() ==
+                                                  chats[index].get('oppId')),
+                                        ));
+                              }
+                              return SizedBox();
                             });
                       }
                       if (state is ApplyLoading) {
@@ -140,53 +182,104 @@ class _InterviewScreenState extends State<InterviewScreen> {
   }
 
   Widget _buildPreviousInterviewTabDetails() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
-      child: GridView.builder(
-        shrinkWrap: true,
-        scrollDirection: Axis.horizontal,
-        itemCount: 4,
-        padding: EdgeInsets.only(bottom: 8),
-        itemBuilder: (c, i) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 0),
-            child: InterviewTile(isRecording: true),
-          );
-        },
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          mainAxisSpacing: 8,
-          crossAxisSpacing: 5,
-          childAspectRatio: 3 / 7,
+    return BlocBuilder<InterviewScheduleCubit, InterviewScheduleState>(
+        builder: (context, state) {
+      if (state is InterviewScheduleLoading) {
+        return _buildInterviewScheduleTabDetailsLoading();
+      }
+      return Padding(
+        padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
+        child: GridView.builder(
+          shrinkWrap: true,
+          scrollDirection: Axis.horizontal,
+          itemCount: 4,
+          padding: EdgeInsets.only(bottom: 8),
+          itemBuilder: (c, i) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 0),
+              child: InterviewTile(isRecording: true),
+            );
+          },
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            mainAxisSpacing: 8,
+            crossAxisSpacing: 5,
+            childAspectRatio: 3 / 7,
+          ),
         ),
-      ),
+      );
+    }
     );
   }
 
   Widget _buildUpcomingInterviewTabDetails() {
-    return Padding(
-      padding: const EdgeInsets.only(
-        left: 16,
-        right: 16,
-        top: 16,
-      ),
-      child: GridView.builder(
-        shrinkWrap: true,
-        scrollDirection: Axis.horizontal,
-        padding: EdgeInsets.only(bottom: 8),
-        itemCount: 4,
-        itemBuilder: (c, i) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 0),
-            child: InterviewTile(),
-          );
-        },
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          mainAxisSpacing: 8,
-          crossAxisSpacing: 5,
-          childAspectRatio: 3 / 7,
+    return BlocBuilder<InterviewScheduleCubit, InterviewScheduleState>(
+        builder: (context, state) {
+      if (state is InterviewScheduleLoading) {
+        return _buildInterviewScheduleTabDetailsLoading();
+      }
+      return Padding(
+        padding: const EdgeInsets.only(
+          left: 16,
+          right: 16,
+          top: 16,
         ),
+        child: Column(
+          children: [
+            GridView.builder(
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              padding: EdgeInsets.only(bottom: 8),
+              itemCount: 4,
+              itemBuilder: (c, i) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 0),
+                  child: InterviewTile(),
+                );
+              },
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisSpacing: 8,
+                crossAxisSpacing: 5,
+                childAspectRatio: 3 / 7,
+              ),
+            ),
+            const SizedBox(height: 12),
+            // Center(
+            // child: DotsIndicator(
+            //   dotsCount: 5,
+            //   position: 3,
+            //   decorator: const DotsDecorator(
+            //     color: ColorUtils.darkGrey,
+            //     activeColor: ColorUtils.white,
+            //     size: Size(6, 6),
+            //     activeSize: Size(8, 8),
+            //   ),
+            // ),
+            // child: DotsIndicator(
+            //   dotsCount: 4, // Total number of pages
+            //   position: _currentPage.toDouble(),
+            //   decorator: DotsDecorator(
+            //     size: const Size.square(8.0),
+            //     activeSize: const Size(20.0, 8.0),
+            //     activeShape: RoundedRectangleBorder(
+            //       borderRadius: BorderRadius.circular(5.0),
+            //     ),
+            //   ),
+            // ),
+            // ),
+          ],
+        ),
+      );
+    });
+  }
+
+  Center _buildInterviewScheduleTabDetailsLoading() {
+    return Center(
+      child: SizedBox(
+        height: 100,
+        width: 100,
+        child: CircularProgressIndicator(),
       ),
     );
   }
