@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:insta_job/globals.dart';
+import 'package:insta_job/model/resume_detail_model.dart';
 import 'package:insta_job/model/resume_model.dart';
 import 'package:insta_job/network/api_response.dart';
 import 'package:insta_job/network/dio/dio_client.dart';
@@ -177,6 +179,37 @@ class ResumeRepository {
           await dioClient.post(data: map, uri: EndPoint.deleteEducation);
       return ApiResponse.withSuccess(response);
     } on DioException catch (e) {
+      return ApiResponse.withError(e.response);
+    }
+  }
+
+  getParsedResumeDetails({required String? resumeUrl}) async {
+    try {
+      if (resumeUrl == null) {
+        return ApiResponse.withError("No resume given");
+      }
+      var fullResumeUrl = "${EndPoint.imageBaseUrl}$resumeUrl";
+      var queryParams = {"url": fullResumeUrl};
+      var fullEndpointUrlPath = "https://api.apilayer.com/resume_parser/url";
+      var response = await Dio().get(
+        fullEndpointUrlPath,
+        data: {},
+        options: Options(
+          headers: {
+            // "Content-Type": "application/json",
+            "apikey": "qBCCB5UVnBS3JDSSfxTeXAb27bg8o9Ce"
+          },
+        ),
+        queryParameters: queryParams,
+      );
+
+      if (response.statusCode == 200) {
+        ResumeDetailModel resumeDetails =
+            ResumeDetailModel.fromJson(response.data);
+        return ApiResponse.withSuccess(resumeDetails);
+      }
+      return ApiResponse.withError("Something happened when parsing resume");
+    } on DioException catch (e, s) {
       return ApiResponse.withError(e.response);
     }
   }

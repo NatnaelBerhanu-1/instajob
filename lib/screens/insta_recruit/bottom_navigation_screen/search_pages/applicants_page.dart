@@ -8,8 +8,11 @@ import 'package:insta_job/bloc/job_position/job_pos_event.dart';
 import 'package:insta_job/bloc/job_position/job_pos_state.dart';
 import 'package:insta_job/bloc/resume_bloc/resume_bloc.dart';
 import 'package:insta_job/bloc/resume_bloc/resume_state.dart';
+import 'package:insta_job/bloc/resume_details_cubit/resume_details_cubit.dart';
+import 'package:insta_job/bloc/resume_details_cubit/resume_details_state.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/model/job_position_model.dart';
+import 'package:insta_job/model/resume_detail_model.dart';
 import 'package:insta_job/network/end_points.dart';
 import 'package:insta_job/screens/chat_screen.dart';
 import 'package:insta_job/utils/app_routes.dart';
@@ -17,6 +20,7 @@ import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_app_bar.dart';
 import 'package:insta_job/widgets/custom_button/custom_btn.dart';
+import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:insta_job/widgets/custom_divider.dart';
 import 'package:insta_job/widgets/resume_tile.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
@@ -44,6 +48,11 @@ class _ApplicantsState extends State<Applicants> {
     super.initState();
     jobPosModel = widget.fullFilteredApplicantsList[widget.selectedIndex];
     _pageController = PageController(initialPage: widget.selectedIndex);
+    // context.read<ResumeBloc>().resumeModel = ResumeModel();
+    print("LOG resume link ${jobPosModel?.uploadResume}");
+    context
+        .read<ResumeDetailsCubit>()
+        .execute(resumeUrl: jobPosModel?.uploadResume);
   }
 
   @override
@@ -90,6 +99,9 @@ class _ApplicantsState extends State<Applicants> {
           onPageChanged: (i) {
             setState(() {
               jobPosModel = widget.fullFilteredApplicantsList[i];
+              context
+                  .read<ResumeDetailsCubit>()
+                  .execute(resumeUrl: jobPosModel?.uploadResume);
             });
           },
           itemCount: widget.fullFilteredApplicantsList.length,
@@ -221,91 +233,11 @@ class _ApplicantsState extends State<Applicants> {
                                   padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 15),
                                   child: TabBarView(
                                     children: [
-                                      if (state is UserResumeLoaded) ...[
-                                        Text("${state.resumeModel.tellUss?[0].tellUs}"),
-                                        ListView.builder(
-                                            itemCount: state.resumeModel.educations?.length,
-                                            shrinkWrap: true,
-                                            itemBuilder: (c, i) {
-                                              return Padding(
-                                                padding: const EdgeInsets.symmetric(vertical: 5.0),
-                                                child: ResumeTile(
-                                                  index: i + 1,
-                                                  educations: state.resumeModel.educations?[i],
-                                                ),
-                                              );
-                                            }),
-                                        ListView.builder(
-                                            itemCount: state.resumeModel.workExperiences?.length,
-                                            shrinkWrap: true,
-                                            itemBuilder: (c, i) {
-                                              return Padding(
-                                                padding: const EdgeInsets.symmetric(vertical: 5.0),
-                                                child: ResumeTile(
-                                                  index: i + 1,
-                                                  isWorkExp: true,
-                                                  workExperiences: state.resumeModel.workExperiences?[i],
-                                                ),
-                                              );
-                                            }),
-                                        ListView.builder(
-                                            shrinkWrap: true,
-                                            itemCount: state.resumeModel.skills?[0].addSkill?.length,
-                                            itemBuilder: (context, i) {
-                                              return Padding(
-                                                padding: const EdgeInsets.symmetric(vertical: .0, horizontal: 0),
-                                                child: Column(
-                                                  children: [
-                                                    Row(
-                                                      children: [
-                                                        Text(
-                                                          "${state.resumeModel.skills?[0].addSkill?[i]}",
-                                                          style: TextStyle(fontSize: 14),
-                                                        ),
-                                                        Spacer(),
-                                                        Icon(
-                                                          Icons.check_circle_outline_rounded,
-                                                          color: MyColors.blue,
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    divider()
-                                                  ],
-                                                ),
-                                              );
-                                            }),
-                                        ListView.builder(
-                                            shrinkWrap: true,
-                                            itemCount: state.resumeModel.achievements?[0].achievements?.length,
-                                            itemBuilder: (context, i) {
-                                              return Padding(
-                                                padding: const EdgeInsets.symmetric(vertical: .0, horizontal: 0),
-                                                child: Column(
-                                                  children: [
-                                                    Row(
-                                                      children: [
-                                                        Text(
-                                                          "${state.resumeModel.achievements?[0].achievements?[i]}",
-                                                          style: TextStyle(fontSize: 14),
-                                                        ),
-                                                        Spacer(),
-                                                        Icon(
-                                                          Icons.check_circle_outline_rounded,
-                                                          color: MyColors.blue,
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    divider()
-                                                  ],
-                                                ),
-                                              );
-                                            }),
-                                      ],
-                                      if (state is ErrorState) ...[Center(child: Text(state.error))],
-                                      if (state is ErrorState) ...[Center(child: Text(state.error))],
-                                      if (state is ErrorState) ...[Center(child: Text(state.error))],
-                                      if (state is ErrorState) ...[Center(child: Text(state.error))],
-                                      if (state is ErrorState) ...[Center(child: Text(state.error))],
+                                      _buildBioSection(),
+                                      _buildEducationSection(),
+                                      _buildExperienceSection(),
+                                      _buildSkillsSection(),
+                                      _buildAchievementSection(),
                                     ],
                                   ),
                                 ))
@@ -319,5 +251,251 @@ class _ApplicantsState extends State<Applicants> {
             );
           }),
     );
+  }
+
+  _buildEducationSection() {
+    return BlocBuilder<ResumeDetailsCubit, ResumeDetailsState>(
+        builder: (context, state) {
+      if (state is ResumeDetailsSuccess) {
+        ResumeDetailModel resumeDetail = state.resumeDetail;
+        List<EducationDetail>? educationDetailList =
+            resumeDetail?.educationDetail;
+        if (educationDetailList == null) {
+          return Center(
+            child: Text("No data"),
+          );
+        }
+        return ListView.builder(
+            shrinkWrap: true,
+            itemCount: educationDetailList.length,
+            itemBuilder: (context, i) {
+              var item = educationDetailList[i];
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 0),
+                child: Column(
+                  children: [
+                    Text(
+                      "${i + 1}. ${item.name}",
+                      style: TextStyle(fontSize: 14),
+                    ),
+                  ],
+                ),
+              );
+            });
+      }
+      if (state is ResumeDetailsErrorState) {
+        return Center(child: Text(state.message));
+      }
+      return SizedBox.shrink();
+    });
+  }
+
+  _buildExperienceSection() {
+    return BlocBuilder<ResumeDetailsCubit, ResumeDetailsState>(
+        builder: (context, state) {
+      if (state is ResumeDetailsSuccess) {
+        ResumeDetailModel resumeDetail = state.resumeDetail;
+        List<Experience>? experienceList = resumeDetail?.experience;
+        if (experienceList == null) {
+          return Center(
+            child: Text("No data"),
+          );
+        }
+        return ListView.builder(
+            shrinkWrap: true,
+            itemCount: experienceList.length,
+            itemBuilder: (context, i) {
+              var item = experienceList[i];
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 0),
+                child: Column(
+                  children: [
+                    Text(
+                      item.title,
+                      style: TextStyle(fontSize: 14),
+                    ),
+                  ],
+                ),
+              );
+            });
+      }
+      if (state is ResumeDetailsErrorState) {
+        return Center(child: Text(state.message));
+      }
+      return SizedBox.shrink();
+    });
+  }
+
+  _buildSkillsSection() {
+    return BlocBuilder<ResumeDetailsCubit, ResumeDetailsState>(
+        builder: (context, state) {
+      if (state is ResumeDetailsSuccess) {
+        ResumeDetailModel resumeDetail = state.resumeDetail;
+        List<String>? skillsList = resumeDetail?.skills;
+        if (skillsList == null || skillsList.isEmpty) {
+          return Center(
+            child: Text("No data"),
+          );
+        }
+        return ListView.builder(
+            shrinkWrap: true,
+            itemCount: skillsList.length,
+            itemBuilder: (context, i) {
+              var item = skillsList[i];
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 0),
+                child: Column(
+                  children: [
+                    Text(
+                      item,
+                      style: TextStyle(fontSize: 14),
+                    ),
+                  ],
+                ),
+              );
+            });
+      }
+      if (state is ResumeDetailsErrorState) {
+        return Center(child: Text(state.message));
+      }
+      return SizedBox.shrink();
+    });
+  }
+
+  _buildAchievementSection() {
+    return Center(child: Text("No Data Found"));
+  }
+
+  _buildBioSection() {
+    return BlocBuilder<ResumeDetailsCubit, ResumeDetailsState>(
+        builder: (context, state) {
+      if (state is ResumeDetailsSuccess) {
+        ResumeDetailModel resumeDetail = state.resumeDetail;
+        String? name = resumeDetail.name;
+        String? email = resumeDetail.email;
+        String? address = resumeDetail.address;
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CommonText(
+              text: "Name: $name",
+              fontSize: 18,
+            ),
+            SizedBox(height: 4),
+            CommonText(
+              text: "Email: $email",
+              fontSize: 18,
+            ),
+            SizedBox(height: 4),
+            CommonText(
+              text: "Address: $address",
+              fontSize: 18,
+            ),
+            SizedBox(height: 4),
+          ],
+        );
+      }
+      if (state is ResumeDetailsErrorState) {
+        return Center(child: Text(state.message));
+      }
+      return SizedBox.shrink();
+    });
+  }
+
+  _previousBuildMethod() {
+    //temporarily kept for reference purposes, for reference and for UI
+    return BlocBuilder<ResumeBloc, ResumeState>(builder: (context, state) {
+      var resumeData = context.read<ResumeBloc>();
+      if (state is! UserResumeLoaded) {
+        return SizedBox();
+      }
+      return Column(
+        children: [
+          ...[
+            Text("${state.resumeModel.tellUss?[0].tellUs}"),
+            ListView.builder(
+                itemCount: state.resumeModel.educations?.length,
+                shrinkWrap: true,
+                itemBuilder: (c, i) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5.0),
+                    child: ResumeTile(
+                      index: i + 1,
+                      educations: state.resumeModel.educations?[i],
+                    ),
+                  );
+                }),
+            ListView.builder(
+                itemCount: state.resumeModel.workExperiences?.length,
+                shrinkWrap: true,
+                itemBuilder: (c, i) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5.0),
+                    child: ResumeTile(
+                      index: i + 1,
+                      isWorkExp: true,
+                      workExperiences: state.resumeModel.workExperiences?[i],
+                    ),
+                  );
+                }),
+            ListView.builder(
+                shrinkWrap: true,
+                itemCount: state.resumeModel.skills?[0].addSkill?.length,
+                itemBuilder: (context, i) {
+                  return Padding(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: .0, horizontal: 0),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              "${state.resumeModel.skills?[0].addSkill?[i]}",
+                              style: TextStyle(fontSize: 14),
+                            ),
+                            Spacer(),
+                            Icon(
+                              Icons.check_circle_outline_rounded,
+                              color: MyColors.blue,
+                            ),
+                          ],
+                        ),
+                        divider()
+                      ],
+                    ),
+                  );
+                }),
+            ListView.builder(
+                shrinkWrap: true,
+                itemCount:
+                    state.resumeModel.achievements?[0].achievements?.length,
+                itemBuilder: (context, i) {
+                  return Padding(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: .0, horizontal: 0),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              "${state.resumeModel.achievements?[0].achievements?[i]}",
+                              style: TextStyle(fontSize: 14),
+                            ),
+                            Spacer(),
+                            Icon(
+                              Icons.check_circle_outline_rounded,
+                              color: MyColors.blue,
+                            ),
+                          ],
+                        ),
+                        divider()
+                      ],
+                    ),
+                  );
+                }),
+          ],
+        ],
+      );
+    });
   }
 }
