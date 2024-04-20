@@ -7,11 +7,9 @@ import 'package:insta_job/bloc/attachment_download_cubit/attachment_download_cub
 import 'package:insta_job/bloc/attachment_download_cubit/attachment_download_state.dart';
 import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
 import 'package:insta_job/bloc/validation/validation_bloc.dart';
-import 'package:insta_job/globals.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_app_bar.dart';
-import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
 
 class NewEmailScreen extends StatefulWidget {

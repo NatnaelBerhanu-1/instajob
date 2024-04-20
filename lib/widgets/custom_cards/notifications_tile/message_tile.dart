@@ -1,9 +1,11 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/model/job_position_model.dart';
+import 'package:insta_job/network/end_points.dart';
 import 'package:insta_job/screens/chat_screen.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_colors.dart';
@@ -25,7 +27,7 @@ class MessageTile extends StatelessWidget {
             context,
             ChatScreen(
               jobPosModel: jobPosModel,
-              oppId: jobPosModel!.empFirebase.toString(),
+              oppId: jobPosModel!.userFirebaseId,
               selfId: Global.userModel?.firebaseId,
             ));
       },
@@ -53,8 +55,9 @@ class MessageTile extends StatelessWidget {
                         Stack(
                           children: [
                             CircleAvatar(
-                              radius: 20,
-                            ),
+                                radius: 20,
+                                backgroundImage:
+                                    CachedNetworkImageProvider("${EndPoint.imageBaseUrl}${jobPosModel?.uploadPhoto}")),
                             Positioned(
                                 bottom: 5,
                                 left: 67,
@@ -74,7 +77,7 @@ class MessageTile extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             CommonText(
-                              text: "${jobPosModel?.empName}",
+                              text: "${jobPosModel?.userName}",
                               fontWeight: FontWeight.w500,
                             ),
                             CommonText(
@@ -85,21 +88,21 @@ class MessageTile extends StatelessWidget {
                           ],
                         ),
                         Spacer(),
-                        Container(
-                          height: 25,
-                          width: 25,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: MyColors.blue,
-                          ),
-                          child: CommonText(
-                            text: "1",
-                            fontWeight: FontWeight.w400,
-                            fontColor: MyColors.white,
-                            fontSize: 13,
-                          ),
-                        )
+                        // Container(
+                        //   height: 25,
+                        //   width: 25,
+                        //   alignment: Alignment.center,
+                        //   decoration: BoxDecoration(
+                        //     shape: BoxShape.circle,
+                        //     color: MyColors.blue,
+                        //   ),
+                        //   child: CommonText(
+                        //     text: "1",
+                        //     fontWeight: FontWeight.w400,
+                        //     fontColor: MyColors.white,
+                        //     fontSize: 13,
+                        //   ),
+                        // )
                       ],
                     ),
                     SizedBox(height: 5),

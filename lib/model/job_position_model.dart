@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 class JobPosModel {
   int? id;
   int? userId;
@@ -35,6 +36,7 @@ class JobPosModel {
   String? createdAt;
   String? updatedAt;
   int? matchScore;
+  String? jobId;
 
   JobPosModel(
       {this.id,
@@ -68,7 +70,8 @@ class JobPosModel {
       this.shortlistedReviewContent,
       this.createdAt,
       this.updatedAt,
-      this.matchScore});
+      this.matchScore,
+      this.jobId});
 
   JobPosModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -150,6 +153,82 @@ class JobPosModel {
     data['updated_at'] = updatedAt;
     data['match_score'] = matchScore;
     return data;
+  }
+
+  JobPosModel copyWith({
+    int? id,
+    int? userId,
+    int? appliedId,
+    String? userFirebaseId,
+    int? companyId,
+    String? designation,
+    String? companyName,
+    String? userName,
+    int? jobStatus,
+    int? empId,
+    String? empFirebase,
+    String? empName,
+    String? cAddress,
+    String? cLat,
+    String? cLog,
+    String? jobDetails,
+    String? requirements,
+    String? responsibilities,
+    List<String>? topSkills,
+    String? salaries,
+    String? userEmail,
+    String? areaDistance,
+    String? jobsType,
+    String? experienceLevel,
+    String? uploadPhoto,
+    String? uploadResume,
+    String? candidateStatus,
+    String? applicationReceivedSubject,
+    String? applicationReceivedContent,
+    String? disqualifiedReviewSubject,
+    String? disqualifiedReviewContent,
+    String? shortlistedReviewSubject,
+    String? shortlistedReviewContent,
+    String? createdAt,
+    String? updatedAt,
+    int? matchScore,
+    String? jobId,
+  }) {
+    return JobPosModel(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      appliedId: appliedId ?? this.appliedId,
+      userFirebaseId: userFirebaseId ?? this.userFirebaseId,
+      companyId: companyId ?? this.companyId,
+      designation: designation ?? this.designation,
+      companyName: companyName ?? this.companyName,
+      userName: userName ?? this.userName,
+      jobStatus: jobStatus ?? this.jobStatus,
+      empId: empId ?? this.empId,
+      empFirebase: empFirebase ?? this.empFirebase,
+      empName: empName ?? this.empName,
+      jobDetails: jobDetails ?? this.jobDetails,
+      requirements: requirements ?? this.requirements,
+      responsibilities: responsibilities ?? this.responsibilities,
+      topSkills: topSkills ?? this.topSkills,
+      salaries: salaries ?? this.salaries,
+      areaDistance: areaDistance ?? this.areaDistance,
+      jobsType: jobsType ?? this.jobsType,
+      experienceLevel: experienceLevel ?? this.experienceLevel,
+      uploadPhoto: uploadPhoto ?? this.uploadPhoto,
+      uploadResume: uploadResume ?? this.uploadResume,
+      candidateStatus: candidateStatus ?? this.candidateStatus,
+      applicationReceivedSubject: applicationReceivedSubject ?? this.applicationReceivedSubject,
+      applicationReceivedContent: applicationReceivedContent ?? this.applicationReceivedContent,
+      disqualifiedReviewSubject: disqualifiedReviewSubject ?? this.disqualifiedReviewSubject,
+      disqualifiedReviewContent: disqualifiedReviewContent ?? this.disqualifiedReviewContent,
+      shortlistedReviewSubject: shortlistedReviewSubject ?? this.shortlistedReviewSubject,
+      shortlistedReviewContent: shortlistedReviewContent ?? this.shortlistedReviewContent,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      matchScore: matchScore ?? this.matchScore,
+      jobId: jobId ?? this.jobId,
+    );
   }
 }
 

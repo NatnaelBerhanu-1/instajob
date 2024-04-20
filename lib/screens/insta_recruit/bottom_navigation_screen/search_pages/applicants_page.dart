@@ -108,9 +108,9 @@ class _ApplicantsState extends State<Applicants> {
                           animationDuration: 1000,
                           lineHeight: 25.0,
                           backgroundColor: MyColors.lightBl,
-                          percent: 0.87,
+                          percent: (jobPosModel?.matchScore ?? 0) / 100,
                           center: Text(
-                            "90% Match",
+                            "${jobPosModel?.matchScore ?? 0}% Match",
                             style: TextStyle(fontSize: 12, color: MyColors.blue),
                           ),
                           barRadius: Radius.circular(5),

@@ -9,21 +9,17 @@ class AuthService {
   static const chatCollection = 'chat';
   static const userCollection = 'user';
 
-  static Future<void> insertMsg({
-    String? oppId,
-    String? selfId,
-    required String gp,
-    String? msg,
-    String? userName,
-    String? profile,
-  }) async {
+  static Future<void> insertMsg(
+      {String? oppId,
+      String? selfId,
+      required String gp,
+      String? msg,
+      String? userName,
+      String? profile,
+      String? jobId}) async {
     var fcmToken = await FirebaseMessaging.instance.getToken();
-
-    var docRef = FirebaseFirestore.instance
-        .collection(chatCollection)
-        .doc(gp)
-        .collection(gp)
-        .doc(DateTime.now().millisecondsSinceEpoch.toString());
+    var chatRef = FirebaseFirestore.instance.collection(chatCollection).doc(gp);
+    var docRef = chatRef.collection(gp).doc(DateTime.now().millisecondsSinceEpoch.toString());
 
     var data = {
       "oppId": oppId,
@@ -33,7 +29,10 @@ class AuthService {
       "time": FieldValue.serverTimestamp(),
     };
 
+    var chatData = {'jobId': jobId, 'selfId': selfId, 'oppId': oppId};
+
     FirebaseFirestore.instance.runTransaction((transaction) async {
+      transaction.set(chatRef, chatData);
       transaction.set(docRef, data);
     });
     // var doc = await db.collection("recentChatUser").doc(selfId).get();
@@ -67,26 +66,17 @@ class AuthService {
   }
 
   static insertUsers() async {
-    final ref = await FirebaseFirestore.instance
-        .collection(userCollection)
-        .doc(Global.userModel?.firebaseId)
-        .get();
+    final ref = await FirebaseFirestore.instance.collection(userCollection).doc(Global.userModel?.firebaseId).get();
     if (ref.exists) {
       print('ALREADY EXIST');
-      return db
-          .collection(userCollection)
-          .doc(Global.userModel?.firebaseId)
-          .update({
+      return db.collection(userCollection).doc(Global.userModel?.firebaseId).update({
         "userId": FirebaseAuth.instance.currentUser?.uid,
         "name": Global.userModel?.name,
         "profile": Global.userModel?.uploadPhoto,
       });
     } else {
       print('NEW USER');
-      return db
-          .collection(userCollection)
-          .doc(Global.userModel?.firebaseId)
-          .set({
+      return db.collection(userCollection).doc(Global.userModel?.firebaseId).set({
         "userId": FirebaseAuth.instance.currentUser?.uid,
         "name": Global.userModel?.name,
         "profile": Global.userModel?.uploadPhoto,

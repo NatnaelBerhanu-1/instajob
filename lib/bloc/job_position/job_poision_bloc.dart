@@ -83,7 +83,8 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
       emit(const ApplyErrorState('Something went wrong'));
     }
     if (response.response.statusCode == 200) {
-      List<JobPosModel> list = (response.response.data['data'] as List).map((e) => JobPosModel.fromJson(e)).toList();
+      debugPrint('response ${response.response.data['data']}');
+      List<JobPosModel> list = (response.response.data['data'] as List).map((e) => JobPosModel.fromJson(e).copyWith(jobId: jobId)).toList();
 
       // Defining lists for filtering
       List<JobPosModel> appliedOnly = [];

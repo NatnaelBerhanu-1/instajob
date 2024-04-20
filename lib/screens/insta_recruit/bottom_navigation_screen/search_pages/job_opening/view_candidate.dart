@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:insta_job/auth_service.dart';
 import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
 import 'package:insta_job/bloc/global_cubit/global_state.dart';
 import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
@@ -12,6 +14,7 @@ import 'package:insta_job/model/job_position_model.dart';
 import 'package:insta_job/screens/insta_recruit/new_email_screen.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/widgets/candidate_tile.dart';
+import 'package:insta_job/widgets/custom_cards/notifications_tile/message_tile.dart';
 import '../../../../../utils/app_routes.dart';
 import '../../../../../utils/my_images.dart';
 import '../../../../../widgets/custom_app_bar.dart';
@@ -156,7 +159,7 @@ class _ViewCandidatesState extends State<ViewCandidates> {
                         return TabBarView(children: [
                           _buildAppliedList(appliedState),
                           _buildShortlistedList(appliedState),
-                          _buildMessagesList()
+                          _buildMessagesList(widget.jobPosModel?.id.toString(), appliedState)
                           /* BlocBuilder<JobPositionBloc, JobPosState>(
                               builder: (context, state) {
                             if (state is AppliedJobLoaded) {
@@ -223,6 +226,7 @@ class _ViewCandidatesState extends State<ViewCandidates> {
 
   _buildShortlistedList(JobPosState state) {
     if (state is AppliedJobLoaded) {
+      debugPrint('users: ${state.shortlisted.map((e) => e.toJson())}');
       return ListView.builder(
           itemCount: state.shortlisted.length,
           itemBuilder: (c, i) {
@@ -249,7 +253,27 @@ class _ViewCandidatesState extends State<ViewCandidates> {
     }
   }
 
-  _buildMessagesList() {
+  _buildMessagesList(String? jobId, JobPosState state) {
+    if (state is AppliedJobLoaded) {
+      return StreamBuilder<Object>(
+          stream: FirebaseFirestore.instance
+              .collection(AuthService.chatCollection)
+              .where("jobId", isEqualTo: jobId)
+              .snapshots(),
+          builder: (context, AsyncSnapshot<dynamic> snapshot) {
+            if (snapshot.hasData) {
+              debugPrint('chats: ${snapshot.data.docs.map((e) => e.data() as Map<String, dynamic>)}');
+              var chats = (snapshot.data as QuerySnapshot).docs;
+              return ListView.builder(
+                  itemCount: chats.length,
+                  itemBuilder: (context, index) => MessageTile(
+                        jobPosModel: state.appliedJobList
+                            .firstWhere((element) => element.userFirebaseId?.toString() == chats[index].get('oppId')),
+                      ));
+            }
+            return SizedBox();
+          });
+    }
     return SizedBox();
   }
 }
