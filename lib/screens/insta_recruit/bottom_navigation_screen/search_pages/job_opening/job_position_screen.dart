@@ -62,6 +62,7 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
               imageUrl: "${EndPoint.imageBaseUrl}${widget.jobPosModel!.uploadPhoto}",
               fit: BoxFit.cover,
               width: MediaQuery.of(context).size.width,
+              height: 300,
               errorWidget: (c, val, _) => Center(child: CircularProgressIndicator()),
             ),
             // Image.network(
@@ -69,7 +70,8 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
             //     fit: BoxFit.cover),
           ),
           Positioned(
-            top: 0,
+            top: 38,
+            left: 16,
             child: BlocBuilder<BottomBloc, BottomInitialState>(builder: (context, value) {
               return ImageButton(
                 onTap: () {
@@ -108,7 +110,8 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
           ),
           Positioned(
               left: 0,
-              top: MediaQuery.of(context).size.height * 0.36,
+              // top: MediaQuery.of(context).size.height * 0.36,
+              top: MediaQuery.of(context).size.height * 0.33,
               child: SingleChildScrollView(
                 child: Column(
                   children: [
@@ -120,7 +123,9 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                         height: MediaQuery.of(context).size.height,
                         decoration: BoxDecoration(
                           color: MyColors.white,
-                          borderRadius: BorderRadius.only(topLeft: Radius.circular(17), topRight: Radius.circular(17)),
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(20),
+                              topRight: Radius.circular(20)),
                         ),
                         child: Padding(
                             padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),

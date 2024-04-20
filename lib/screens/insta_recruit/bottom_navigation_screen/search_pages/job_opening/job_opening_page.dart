@@ -164,10 +164,23 @@ class _JobOpeningScreenState extends State<JobOpeningScreen> {
                           Colors.transparent
                         ],
                       ),
-                      image: DecorationImage(
-                        image: CachedNetworkImageProvider(
-                            "${EndPoint.imageBaseUrl}${widget.companyModel?.uploadPhoto}"),
+                      // image: DecorationImage(
+                      //   image: CachedNetworkImageProvider(
+                      //       "${EndPoint.imageBaseUrl}${widget.companyModel?.uploadPhoto}"),
+                      //   fit: BoxFit.cover,
+                      // ),
+                    ),
+                  ),
+                  Positioned.fill(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: FadeInImage.assetNetwork(
+                        placeholder: MyImages.business, // Placeholder image
+                        image:
+                            "${EndPoint.imageBaseUrl}${widget.companyModel?.uploadPhoto}",
                         fit: BoxFit.cover,
+                        fadeInDuration: Duration(milliseconds: 200),
+                        fadeOutDuration: Duration(milliseconds: 200),
                       ),
                     ),
                   ),
