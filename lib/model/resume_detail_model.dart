@@ -1,10 +1,8 @@
 import 'dart:convert';
 
-ResumeDetailModel resumeDetailsFromJson(String str) =>
-    ResumeDetailModel.fromJson(json.decode(str));
+ResumeDetailModel resumeDetailsFromJson(String str) => ResumeDetailModel.fromJson(json.decode(str));
 
-String resumeDetailsToJson(ResumeDetailModel data) =>
-    json.encode(data.toJson());
+String resumeDetailsToJson(ResumeDetailModel data) => json.encode(data.toJson());
 
 class ResumeDetailModel {
   final String? address;
@@ -44,34 +42,26 @@ class ResumeDetailModel {
         skills: skills ?? this.skills,
       );
 
-  factory ResumeDetailModel.fromJson(Map<String, dynamic> json) =>
-      ResumeDetailModel(
+  factory ResumeDetailModel.fromJson(Map<String, dynamic> json) => ResumeDetailModel(
         address: json["address"],
-        educationDetail: json["educationDetail"] == null
+        educationDetail: json["education"] == null
             ? null
-            : List<EducationDetail>.from(json["educationDetail"]
-                .map((x) => EducationDetail.fromJson(x))),
+            : List<EducationDetail>.from(json["education"].map((x) => EducationDetail.fromJson(x))),
         email: json["email"],
         phone: json["phone"],
         experience: json["experience"] == null
             ? null
-            : List<Experience>.from(
-                json["experience"].map((x) => Experience.fromJson(x))),
+            : List<Experience>.from(json["experience"].map((x) => Experience.fromJson(x))),
         name: json["name"],
-        skills: json["skills"] == null
-            ? null
-            : List<String>.from(json["skills"].map((x) => x)),
+        skills: json["skills"] == null ? null : List<String>.from(json["skills"].map((x) => x)),
       );
 
   Map<String, dynamic> toJson() => {
         "address": address,
-        if (educationDetail != null)
-          "educationDetail":
-              List<dynamic>.from(educationDetail!.map((x) => x.toJson())),
+        if (educationDetail != null) "educationDetail": List<dynamic>.from(educationDetail!.map((x) => x.toJson())),
         "email": email,
         "phone": phone,
-        if (experience != null)
-          "experience": List<dynamic>.from(experience!.map((x) => x.toJson())),
+        if (experience != null) "experience": List<dynamic>.from(experience!.map((x) => x.toJson())),
         "name": name,
         if (skills != null) "skills": List<dynamic>.from(skills!.map((x) => x)),
       };
@@ -92,8 +82,7 @@ class EducationDetail {
         name: name ?? this.name,
       );
 
-  factory EducationDetail.fromJson(Map<String, dynamic> json) =>
-      EducationDetail(
+  factory EducationDetail.fromJson(Map<String, dynamic> json) => EducationDetail(
         name: json["name"],
       );
 
@@ -125,9 +114,9 @@ class Experience {
       );
 
   factory Experience.fromJson(Map<String, dynamic> json) => Experience(
-        location: json["location"],
-        organization: json["organization"],
-        title: json["title"],
+        location: json["location"] ?? "",
+        organization: json["organization"] ?? "",
+        title: json["title"] ?? "",
       );
 
   Map<String, dynamic> toJson() => {

@@ -48,11 +48,7 @@ class _ApplicantsState extends State<Applicants> {
     super.initState();
     jobPosModel = widget.fullFilteredApplicantsList[widget.selectedIndex];
     _pageController = PageController(initialPage: widget.selectedIndex);
-    // context.read<ResumeBloc>().resumeModel = ResumeModel();
-    print("LOG resume link ${jobPosModel?.uploadResume}");
-    context
-        .read<ResumeDetailsCubit>()
-        .execute(resumeUrl: jobPosModel?.uploadResume);
+    context.read<ResumeDetailsCubit>().execute(resumeUrl: jobPosModel?.uploadResume);
   }
 
   @override
@@ -99,9 +95,7 @@ class _ApplicantsState extends State<Applicants> {
           onPageChanged: (i) {
             setState(() {
               jobPosModel = widget.fullFilteredApplicantsList[i];
-              context
-                  .read<ResumeDetailsCubit>()
-                  .execute(resumeUrl: jobPosModel?.uploadResume);
+              context.read<ResumeDetailsCubit>().execute(resumeUrl: jobPosModel?.uploadResume);
             });
           },
           itemCount: widget.fullFilteredApplicantsList.length,
@@ -254,12 +248,10 @@ class _ApplicantsState extends State<Applicants> {
   }
 
   _buildEducationSection() {
-    return BlocBuilder<ResumeDetailsCubit, ResumeDetailsState>(
-        builder: (context, state) {
+    return BlocBuilder<ResumeDetailsCubit, ResumeDetailsState>(builder: (context, state) {
       if (state is ResumeDetailsSuccess) {
         ResumeDetailModel resumeDetail = state.resumeDetail;
-        List<EducationDetail>? educationDetailList =
-            resumeDetail?.educationDetail;
+        List<EducationDetail>? educationDetailList = resumeDetail?.educationDetail;
         if (educationDetailList == null) {
           return Center(
             child: Text("No data"),
@@ -273,11 +265,13 @@ class _ApplicantsState extends State<Applicants> {
               return Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 0),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       "${i + 1}. ${item.name}",
                       style: TextStyle(fontSize: 14),
                     ),
+                    divider()
                   ],
                 ),
               );
@@ -291,11 +285,10 @@ class _ApplicantsState extends State<Applicants> {
   }
 
   _buildExperienceSection() {
-    return BlocBuilder<ResumeDetailsCubit, ResumeDetailsState>(
-        builder: (context, state) {
+    return BlocBuilder<ResumeDetailsCubit, ResumeDetailsState>(builder: (context, state) {
       if (state is ResumeDetailsSuccess) {
         ResumeDetailModel resumeDetail = state.resumeDetail;
-        List<Experience>? experienceList = resumeDetail?.experience;
+        List<Experience>? experienceList = resumeDetail.experience;
         if (experienceList == null) {
           return Center(
             child: Text("No data"),
@@ -309,11 +302,13 @@ class _ApplicantsState extends State<Applicants> {
               return Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 0),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      item.title,
+                      "${item.title}(${item.organization})",
                       style: TextStyle(fontSize: 14),
                     ),
+                    divider()
                   ],
                 ),
               );
@@ -327,8 +322,7 @@ class _ApplicantsState extends State<Applicants> {
   }
 
   _buildSkillsSection() {
-    return BlocBuilder<ResumeDetailsCubit, ResumeDetailsState>(
-        builder: (context, state) {
+    return BlocBuilder<ResumeDetailsCubit, ResumeDetailsState>(builder: (context, state) {
       if (state is ResumeDetailsSuccess) {
         ResumeDetailModel resumeDetail = state.resumeDetail;
         List<String>? skillsList = resumeDetail?.skills;
@@ -346,10 +340,20 @@ class _ApplicantsState extends State<Applicants> {
                 padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 0),
                 child: Column(
                   children: [
-                    Text(
-                      item,
-                      style: TextStyle(fontSize: 14),
+                    Row(
+                      children: [
+                        Text(
+                          item,
+                          style: TextStyle(fontSize: 14),
+                        ),
+                        Spacer(),
+                        Icon(
+                          Icons.check_circle_outline_outlined,
+                          color: MyColors.blue,
+                        )
+                      ],
                     ),
+                    divider()
                   ],
                 ),
               );
@@ -367,32 +371,30 @@ class _ApplicantsState extends State<Applicants> {
   }
 
   _buildBioSection() {
-    return BlocBuilder<ResumeDetailsCubit, ResumeDetailsState>(
-        builder: (context, state) {
+    return BlocBuilder<ResumeDetailsCubit, ResumeDetailsState>(builder: (context, state) {
       if (state is ResumeDetailsSuccess) {
         ResumeDetailModel resumeDetail = state.resumeDetail;
         String? name = resumeDetail.name;
         String? email = resumeDetail.email;
         String? address = resumeDetail.address;
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CommonText(
-              text: "Name: $name",
-              fontSize: 18,
-            ),
-            SizedBox(height: 4),
-            CommonText(
-              text: "Email: $email",
-              fontSize: 18,
-            ),
-            SizedBox(height: 4),
-            CommonText(
-              text: "Address: $address",
-              fontSize: 18,
-            ),
-            SizedBox(height: 4),
-          ],
+        return SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Name:\n$name",
+              ),
+              divider(),
+              Text(
+                "Email:\n$email",
+              ),
+              divider(),
+              Text(
+                "Address:\n$address",
+              ),
+              divider(),
+            ],
+          ),
         );
       }
       if (state is ResumeDetailsErrorState) {
@@ -443,8 +445,7 @@ class _ApplicantsState extends State<Applicants> {
                 itemCount: state.resumeModel.skills?[0].addSkill?.length,
                 itemBuilder: (context, i) {
                   return Padding(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: .0, horizontal: 0),
+                    padding: const EdgeInsets.symmetric(vertical: .0, horizontal: 0),
                     child: Column(
                       children: [
                         Row(
@@ -467,12 +468,10 @@ class _ApplicantsState extends State<Applicants> {
                 }),
             ListView.builder(
                 shrinkWrap: true,
-                itemCount:
-                    state.resumeModel.achievements?[0].achievements?.length,
+                itemCount: state.resumeModel.achievements?[0].achievements?.length,
                 itemBuilder: (context, i) {
                   return Padding(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: .0, horizontal: 0),
+                    padding: const EdgeInsets.symmetric(vertical: .0, horizontal: 0),
                     child: Column(
                       children: [
                         Row(
