@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 import '../utils/my_colors.dart';
@@ -231,9 +232,17 @@ class CustomPhonePickerTextField extends StatelessWidget {
   final ValueChanged<bool>? onInputValidated;
   final ValueChanged<PhoneNumber>? onInputChanged;
   final PhoneNumber initialValue;
+  final ImageButton? prefixIcon; //todo: define in the widget
 
   CustomPhonePickerTextField(
-      {Key? key, this.controller, this.label, this.validator, this.onInputValidated, this.onInputChanged, required this.initialValue})
+      {Key? key,
+      this.controller,
+      this.label,
+      this.validator,
+      this.onInputValidated,
+      this.onInputChanged,
+      required this.initialValue,
+      this.prefixIcon})
       : super(key: key);
   InputBorder border = OutlineInputBorder(
       borderSide: BorderSide(color: MyColors.lightgrey, width: 1), borderRadius: BorderRadius.circular(10));

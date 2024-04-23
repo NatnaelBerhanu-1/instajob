@@ -32,7 +32,7 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
           decoration: BoxDecoration(
               image: DecorationImage(
                   image: AssetImage(MyImages.bg_search_girl),
-                  fit: BoxFit.cover)),
+                  fit: BoxFit.contain)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
