@@ -423,7 +423,10 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                                       CommonText(
                                         text: "Custom Range",
                                         fontSize: 14,
-                                        fontColor: MyColors.grey,
+                                        fontColor: salariesOptionChosen ==
+                                                SalariesOptionChosen.customRange
+                                            ? MyColors.blue
+                                            : MyColors.grey,
                                       ),
                                       SizedBox(
                                         child: Row(
