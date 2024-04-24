@@ -9,11 +9,13 @@ import 'package:insta_job/bloc/global_cubit/global_state.dart';
 import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
 import 'package:insta_job/bloc/job_position/job_pos_event.dart';
 import 'package:insta_job/bloc/job_position/job_pos_state.dart';
+import 'package:insta_job/model/chat_model.dart';
 import 'package:insta_job/model/company_model.dart';
 import 'package:insta_job/model/job_position_model.dart';
 import 'package:insta_job/screens/insta_recruit/new_email_screen.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/widgets/candidate_tile.dart';
+import 'package:insta_job/widgets/custom_button/custom_btn.dart';
 import 'package:insta_job/widgets/custom_cards/notifications_tile/message_tile.dart';
 import '../../../../../utils/app_routes.dart';
 import '../../../../../utils/my_images.dart';
@@ -47,7 +49,6 @@ class _ViewCandidatesState extends State<ViewCandidates> {
     context.read<JobPositionBloc>().add(AppliedJobListEvent(
           jobId: widget.jobPosModel?.id.toString(),
         ));
-    ;
   }
 
   @override
@@ -156,6 +157,7 @@ class _ViewCandidatesState extends State<ViewCandidates> {
                         );
                       }),
                       Expanded(child: BlocBuilder<JobPositionBloc, JobPosState>(builder: (context, appliedState) {
+                        debugPrint('State:$appliedState');
                         return TabBarView(children: [
                           _buildAppliedList(appliedState),
                           _buildShortlistedList(appliedState),
@@ -217,6 +219,28 @@ class _ViewCandidatesState extends State<ViewCandidates> {
               }),
             );
           });
+    } else if (state is ApplyErrorState) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(state.error),
+            SizedBox(
+              height: 10,
+            ),
+            CustomButton(
+              title: 'Try again',
+              width: 100,
+              height: 40,
+              onTap: () {
+                context.read<JobPositionBloc>().add(AppliedJobListEvent(
+                      jobId: widget.jobPosModel?.id.toString(),
+                    ));
+              },
+            )
+          ],
+        ),
+      );
     } else {
       return Center(
         child: CircularProgressIndicator(),
@@ -246,6 +270,28 @@ class _ViewCandidatesState extends State<ViewCandidates> {
               }),
             );
           });
+    } else if (state is ApplyErrorState) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(state.error),
+            SizedBox(
+              height: 10,
+            ),
+            CustomButton(
+              title: 'Try again',
+              width: 100,
+              height: 40,
+              onTap: () {
+                context.read<JobPositionBloc>().add(AppliedJobListEvent(
+                      jobId: widget.jobPosModel?.id.toString(),
+                    ));
+              },
+            )
+          ],
+        ),
+      );
     } else {
       return Center(
         child: CircularProgressIndicator(),
@@ -263,12 +309,14 @@ class _ViewCandidatesState extends State<ViewCandidates> {
           builder: (context, AsyncSnapshot<dynamic> snapshot) {
             if (snapshot.hasData) {
               debugPrint('chats: ${snapshot.data.docs.map((e) => e.data() as Map<String, dynamic>)}');
-              var chats = (snapshot.data as QuerySnapshot).docs;
+              var chats = (snapshot.data as QuerySnapshot)
+                  .docs
+                  .map((e) => ChatModel.fromMap(e.data() as Map<String, dynamic>))
+                  .toList();
               return ListView.builder(
                   itemCount: chats.length,
                   itemBuilder: (context, index) => MessageTile(
-                        jobPosModel: state.appliedJobList
-                            .firstWhere((element) => element.userFirebaseId?.toString() == chats[index].get('oppId')),
+                        chatModel: chats[index],
                       ));
             }
             return SizedBox();

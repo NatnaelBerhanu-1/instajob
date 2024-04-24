@@ -24,7 +24,7 @@ class JobOpeningTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 15),
+      padding: const EdgeInsets.only(top: 15, left: 8, right: 8),
       child: GestureDetector(
         onTap: () {
           context
@@ -45,8 +45,8 @@ class JobOpeningTile extends StatelessWidget {
                 boxShadow: [
                   BoxShadow(
                       color: Colors.grey.withOpacity(0.10),
-                      spreadRadius: 5,
-                      blurRadius: 7,
+                      spreadRadius: 2,
+                      blurRadius: 3,
                       offset: Offset(2, 3))
                 ]),
             child: Padding(

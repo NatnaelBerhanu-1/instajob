@@ -93,15 +93,16 @@ class _BecameAnEmployerState extends State<BecameAnEmployer> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               CommonText(
-                                text: "Became An Employer",
+                                text: "Become An Employer",
                                 fontColor: MyColors.black,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20,
                               ),
                               SizedBox(height: 20),
                               CommonText(
-                                text: "Add client information and Job details",
+                                text: "Add clients information and Job Details",
                                 fontSize: 13,
+                                fontWeight: FontWeight.w600,
                               ),
                             ],
                           ),

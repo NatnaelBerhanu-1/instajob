@@ -38,12 +38,15 @@ class DioClient {
   Future<Response> get(
       {required Map<String, dynamic> data,
       required String uri,
-      Map<String, dynamic>? header}) async {
+    Map<String, dynamic>? header,
+    Map<String, dynamic>? queryParameters,
+  }) async {
     try {
       Response response = await dio!.get(uri,
           options: Options(
             headers: header,
-          ));
+          ),
+          queryParameters: queryParameters);
       return response;
     } on DioException catch (e) {
       showToast(e.message);
