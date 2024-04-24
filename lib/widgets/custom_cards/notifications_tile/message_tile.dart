@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:insta_job/globals.dart';
+import 'package:insta_job/model/chat_model.dart';
 import 'package:insta_job/model/job_position_model.dart';
 import 'package:insta_job/network/end_points.dart';
 import 'package:insta_job/screens/chat_screen.dart';
@@ -16,20 +17,14 @@ import 'package:insta_job/widgets/custom_divider.dart';
 import '../../../utils/my_images.dart';
 
 class MessageTile extends StatelessWidget {
-  final JobPosModel? jobPosModel;
-  const MessageTile({Key? key, this.jobPosModel}) : super(key: key);
+  final ChatModel chatModel;
+  const MessageTile({Key? key, required this.chatModel}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        AppRoutes.push(
-            context,
-            ChatScreen(
-              jobPosModel: jobPosModel,
-              oppId: jobPosModel!.userFirebaseId,
-              selfId: Global.userModel?.firebaseId,
-            ));
+        AppRoutes.push(context, ChatScreen(chatModel: chatModel));
       },
       child: Slidable(
         endActionPane: ActionPane(motion: ScrollMotion(), children: [
@@ -55,9 +50,7 @@ class MessageTile extends StatelessWidget {
                         Stack(
                           children: [
                             CircleAvatar(
-                                radius: 20,
-                                backgroundImage:
-                                    CachedNetworkImageProvider("${EndPoint.imageBaseUrl}${jobPosModel?.uploadPhoto}")),
+                                radius: 20, backgroundImage: CachedNetworkImageProvider("${chatModel.oppProfilePic}")),
                             Positioned(
                                 bottom: 5,
                                 left: 67,
@@ -77,7 +70,7 @@ class MessageTile extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             CommonText(
-                              text: "${jobPosModel?.userName}",
+                              text: "${chatModel.oppName}",
                               fontWeight: FontWeight.w500,
                             ),
                             CommonText(
@@ -117,7 +110,7 @@ class MessageTile extends StatelessWidget {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             CommonText(
-                              text: "${jobPosModel?.designation}",
+                              text: "${chatModel.oppTitle}",
                               fontWeight: FontWeight.w400,
                               fontSize: 13,
                               fontColor: MyColors.green,

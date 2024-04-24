@@ -11,6 +11,7 @@ import 'package:insta_job/bloc/resume_bloc/resume_state.dart';
 import 'package:insta_job/bloc/resume_details_cubit/resume_details_cubit.dart';
 import 'package:insta_job/bloc/resume_details_cubit/resume_details_state.dart';
 import 'package:insta_job/globals.dart';
+import 'package:insta_job/model/chat_model.dart';
 import 'package:insta_job/model/job_position_model.dart';
 import 'package:insta_job/model/resume_detail_model.dart';
 import 'package:insta_job/network/end_points.dart';
@@ -20,7 +21,6 @@ import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_app_bar.dart';
 import 'package:insta_job/widgets/custom_button/custom_btn.dart';
-import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:insta_job/widgets/custom_divider.dart';
 import 'package:insta_job/widgets/resume_tile.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
@@ -169,12 +169,23 @@ class _ApplicantsState extends State<Applicants> {
                                 height: MediaQuery.of(context).size.height * 0.055,
                                 title: "Contact",
                                 onTap: () {
+                                  debugPrint('jobPosModel: ${jobPosModel?.toJson()}');
                                   AppRoutes.push(
                                       context,
                                       ChatScreen(
-                                        jobPosModel: jobPosModel,
-                                        oppId: jobPosModel!.userFirebaseId,
-                                        selfId: Global.userModel?.firebaseId,
+                                        // jobPosModel: jobPosModel,
+                                        // oppId: jobPosModel!.userFirebaseId,
+                                        // selfId: Global.userModel?.firebaseId,\
+                                        chatModel: ChatModel(
+                                            gp: "${Global.userModel?.firebaseId}_${jobPosModel!.userFirebaseId}",
+                                            oppId: jobPosModel!.userFirebaseId,
+                                            selfId: Global.userModel?.firebaseId,
+                                            jobId: jobPosModel!.jobId,
+                                            oppName: "${jobPosModel?.userName}",
+                                            oppProfilePic: "${EndPoint.imageBaseUrl}${jobPosModel?.uploadPhoto}",
+                                            selfName: "${jobPosModel?.empName}",
+                                            selfProfilePic: "${EndPoint.imageBaseUrl}${jobPosModel?.uploadPhoto}",
+                                            oppTitle: "${jobPosModel?.designation}"),
                                       ));
                                 },
                               )),

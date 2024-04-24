@@ -4,6 +4,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:insta_job/model/interview_model.dart';
 
 import 'package:insta_job/screens/call_screen.dart';
 import 'package:insta_job/screens/insta_recruit/recording_screens/transcription_screen.dart';
@@ -15,11 +16,9 @@ import '../../../utils/my_colors.dart';
 
 class InterviewTile extends StatefulWidget {
   final bool isRecording;
+  final InterviewModel interviewModel;
 
-  const InterviewTile({
-    Key? key,
-    this.isRecording = false,
-  }) : super(key: key);
+  const InterviewTile({Key? key, this.isRecording = false, required this.interviewModel}) : super(key: key);
 
   @override
   State<InterviewTile> createState() => _InterviewTileState();
@@ -38,7 +37,7 @@ class _InterviewTileState extends State<InterviewTile> {
     var datetime = DateTime.now();
     var datetime2 =
         // DateTime.now().add(Duration(hours: 3, minutes: 20, seconds: 18));
-        DateTime.now().add(Duration(hours: 0, minutes: 0, seconds: 3));
+        widget.interviewModel.time.toDate();
     countdownDuration = datetime2.difference(datetime);
     buttonText = '--h | -- mins | --s';
     // Start the countdown
@@ -67,7 +66,7 @@ class _InterviewTileState extends State<InterviewTile> {
     int minutes = duration.inMinutes % 60;
     int seconds = duration.inSeconds % 60;
 
-    return '${hours}h | ${minutes} mins | ${seconds}s';
+    return '${hours}h | $minutes mins | ${seconds}s';
   }
 
   @override
@@ -110,12 +109,12 @@ class _InterviewTileState extends State<InterviewTile> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CommonText(
-                      text: "Teresa Williams",
+                      text: widget.interviewModel.user?.name,
                       fontWeight: FontWeight.w500,
                       fontSize: 14,
                     ),
                     CommonText(
-                      text: "Software engineer",
+                      text: widget.interviewModel.job?.designation,
                       fontWeight: FontWeight.w400,
                       fontColor: MyColors.grey,
                       fontSize: 12,

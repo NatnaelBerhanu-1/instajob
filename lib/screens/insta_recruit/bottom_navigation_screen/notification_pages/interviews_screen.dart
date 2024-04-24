@@ -8,6 +8,8 @@ import 'package:insta_job/bloc/interview_schedule_cubit/interview_schedule_cubit
 import 'package:insta_job/bloc/interview_schedule_cubit/interview_schedule_state.dart';
 import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
 import 'package:insta_job/bloc/job_position/job_pos_state.dart';
+import 'package:insta_job/globals.dart';
+import 'package:insta_job/model/chat_model.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/widgets/custom_cards/notifications_tile/general_message_tile.dart';
 import 'package:insta_job/widgets/custom_cards/notifications_tile/interview_tile.dart';
@@ -28,7 +30,7 @@ class _InterviewScreenState extends State<InterviewScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<InterviewScheduleCubit>().getInterviewSchedules();
+    context.read<InterviewScheduleCubit>().getInterviewSchedules(Global.userModel!.id.toString());
   }
 
   @override
@@ -52,31 +54,29 @@ class _InterviewScreenState extends State<InterviewScreen> {
                 length: 2,
                 child: Column(
                   children: [
+                    TabBar(
+                        padding: EdgeInsets.zero,
+                        labelPadding: EdgeInsets.zero,
+                        unselectedLabelColor: MyColors.tabClr,
+                        labelColor: MyColors.blue,
+                        indicatorColor: MyColors.blue,
+                        onTap: (val) {
+                          tabIndex = val;
+                          context.read<InterviewScheduleCubit>().getInterviewSchedules(Global.userModel!.id.toString());
+                          setState(() {});
+                        },
+                        tabs: [
+                          Tab(text: "Upcoming"),
+                          Tab(text: "Previous"),
+                        ]),
                     Expanded(
-                      flex: 0,
-                      child: TabBar(
-                          padding: EdgeInsets.zero,
-                          labelPadding: EdgeInsets.zero,
-                          unselectedLabelColor: MyColors.tabClr,
-                          labelColor: MyColors.blue,
-                          indicatorColor: MyColors.blue,
-                          onTap: (val) {
-                            tabIndex = val;
-                            context
-                                .read<InterviewScheduleCubit>()
-                                .getInterviewSchedules();
-                            setState(() {});
-                          },
-                          tabs: [
-                            Tab(text: "Upcoming"),
-                            Tab(text: "Previous"),
-                          ]),
-                    ),
-                    Expanded(
-                        child: TabBarView(children: [
-                      _buildUpcomingInterviewTabDetails(),
-                      _buildPreviousInterviewTabDetails(),
-                    ]))
+                      child: TabBarView(
+                        children: [
+                          _buildUpcomingInterviewTabDetails(),
+                          _buildPreviousInterviewTabDetails(),
+                        ],
+                      ),
+                    )
                   ],
                 ),
               ),
@@ -115,22 +115,23 @@ class _InterviewScreenState extends State<InterviewScreen> {
                       child: StreamBuilder<Object>(
                           stream: FirebaseFirestore.instance
                               .collection(AuthService.chatCollection)
+                              .where(Global.userModel?.type == "user" ? 'oppId' : 'selfId',
+                                  isEqualTo: Global.userModel?.firebaseId)
                               .snapshots(),
                           builder: (context, AsyncSnapshot<dynamic> snapshot) {
                             if (snapshot.hasData) {
-                              debugPrint(
-                                  'chats: ${snapshot.data.docs.map((e) => e.data() as Map<String, dynamic>)}');
+                              debugPrint('chats: ${snapshot.data.docs.map((e) => e.data() as Map<String, dynamic>)}');
                               var chats = (snapshot.data as QuerySnapshot).docs;
+                              if (chats.isEmpty) {
+                                return Center(child: Text('No Messages.'));
+                              }
                               return ListView.builder(
                                   itemCount: chats.length,
                                   itemBuilder: (context, index) {
                                     var chatItemDoc = chats[index];
-                                    Map<String, dynamic>? chatItemData =
-                                        chatItemDoc.data()
-                                            as Map<String, dynamic>?;
-                                    return GeneralMessageTile(
-                                      oppId: chatItemData?["oppId"],
-                                      selfId: chatItemData?["selfId"],
+                                    var chatModel = ChatModel.fromMap(chatItemDoc.data() as Map<String, dynamic>);
+                                    return MessageTile(
+                                      chatModel: chatModel,
                                     );
                                   });
                             }
@@ -159,74 +160,84 @@ class _InterviewScreenState extends State<InterviewScreen> {
   }
 
   Widget _buildPreviousInterviewTabDetails() {
-    return BlocBuilder<InterviewScheduleCubit, InterviewScheduleState>(
-        builder: (context, state) {
+    return BlocBuilder<InterviewScheduleCubit, InterviewScheduleState>(builder: (context, state) {
       if (state is InterviewScheduleLoading) {
         return _buildInterviewScheduleTabDetailsLoading();
+      } else if (state is InterviewScheduleSuccess) {
+        if (state.pastSchedules.isNotEmpty) {
+          return Padding(
+            padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
+            child: GridView.builder(
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              itemCount: state.pastSchedules.length,
+              padding: EdgeInsets.only(bottom: 8),
+              itemBuilder: (c, i) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 0),
+                  child: InterviewTile(isRecording: true, interviewModel: state.pastSchedules[i]),
+                );
+              },
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisSpacing: 8,
+                crossAxisSpacing: 5,
+                childAspectRatio: 3 / 7,
+              ),
+            ),
+          );
+        }
+        return Center(child: Text('No previous interviews.'));
       }
-      return Padding(
-        padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
-        child: GridView.builder(
-          shrinkWrap: true,
-          scrollDirection: Axis.horizontal,
-          itemCount: 4,
-          padding: EdgeInsets.only(bottom: 8),
-          itemBuilder: (c, i) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 0),
-              child: InterviewTile(isRecording: true),
-            );
-          },
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            mainAxisSpacing: 8,
-            crossAxisSpacing: 5,
-            childAspectRatio: 3 / 7,
-          ),
-        ),
-      );
+      return SizedBox();
     });
   }
 
   Widget _buildUpcomingInterviewTabDetails() {
-    return BlocBuilder<InterviewScheduleCubit, InterviewScheduleState>(
-        builder: (context, state) {
+    return BlocBuilder<InterviewScheduleCubit, InterviewScheduleState>(builder: (context, state) {
       if (state is InterviewScheduleLoading) {
         return _buildInterviewScheduleTabDetailsLoading();
+      } else if (state is InterviewScheduleSuccess) {
+        if (state.upcomingSchedules.isNotEmpty) {
+          return Padding(
+            padding: const EdgeInsets.only(
+              left: 16,
+              right: 16,
+              top: 16,
+            ),
+            child: GridView.builder(
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              padding: EdgeInsets.only(bottom: 8),
+              itemCount: state.upcomingSchedules.length,
+              itemBuilder: (c, i) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 0),
+                  child: InterviewTile(
+                    interviewModel: state.upcomingSchedules[i],
+                  ),
+                );
+              },
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisSpacing: 8,
+                crossAxisSpacing: 5,
+                childAspectRatio: 3 / 7,
+              ),
+            ),
+          );
+        }
+        return Center(child: Text('No upcomming interviews.'));
       }
-      return Padding(
-        padding: const EdgeInsets.only(
-          left: 16,
-          right: 16,
-          top: 16,
-        ),
-        child: GridView.builder(
-          shrinkWrap: true,
-          scrollDirection: Axis.horizontal,
-          padding: EdgeInsets.only(bottom: 8),
-          itemCount: 4,
-          itemBuilder: (c, i) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 0),
-              child: InterviewTile(),
-            );
-          },
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            mainAxisSpacing: 8,
-            crossAxisSpacing: 5,
-            childAspectRatio: 3 / 7,
-          ),
-        ),
-      );
+      return SizedBox();
     });
   }
 
   Center _buildInterviewScheduleTabDetailsLoading() {
     return Center(
       child: SizedBox(
-        height: 100,
-        width: 100,
+        height: 40,
+        width: 40,
         child: CircularProgressIndicator(),
       ),
     );

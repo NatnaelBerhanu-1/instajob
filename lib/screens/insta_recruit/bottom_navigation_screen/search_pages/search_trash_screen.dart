@@ -105,7 +105,7 @@ class _SearchTrashState extends State<SearchTrash> {
                               return Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 15, vertical: 5),
-                                child: MessageTile(),
+                                // child: MessageTile(),
                               );
                             },
                           ),

@@ -173,6 +173,7 @@ class CustomTextField extends StatelessWidget {
       borderRadius: BorderRadius.all(Radius.circular(borderRadius ?? 12)),
       borderSide: BorderSide(color: color ?? MyColors.lightgrey, width: 1),
     );
+    debugPrint('validator: $validator');
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

@@ -1,14 +1,15 @@
 class EndPoint {
-  static String baseUrl = "https://shaybani-web.flutterclone.com/api/";
+  static String baseUrl = "https://shaybani-web-crimson-water-6355.fly.dev/api/";
+  // static String baseUrl = "https://shaybani-web.flutterclone.com/api/";
   // static String baseUrl = "http://10.0.2.2:8000/api/";
   // static String baseUrl = "http://172.17.251.109:8000/api/";
 
-  static String imageBaseUrl = "https://shaybani-web.flutterclone.com";
+  static String imageBaseUrl = "https://shaybani-web-crimson-water-6355.fly.dev";
+  // static String imageBaseUrl = "https://shaybani-web.flutterclone.com";
   // static String imageBaseUrl = "http://10.0.2.2:8000";
   // static String imageBaseUrl = "http://172.17.251.109:8000";
 
   /// MASKING RESUME
-  
 
   /// Common api's
   static String checkUser = "check_user";
@@ -18,6 +19,7 @@ class EndPoint {
   static String changePassword = "changepassword";
   static String checkPhoneNumber = "check_phone_number";
   static String createVideoCall = "create_videocall";
+  static String getInterviews = "call_lists";
 
   /// ---------------- EMPLOYEE INTERFACE --------------- ///
 
@@ -64,10 +66,8 @@ class EndPoint {
   static String addResume = "resume";
   static String getResume = "list_of_resume";
   static String editResume = "edit_resume";
-  static String maskResumeNewFull =
-      "http://3.226.151.140/resume-masker"; // NOTE: this is using another baseurl
-  static String resumeMatcherNewFull =
-      "http://3.226.151.140/resume-matcher"; // NOTE: this is using another baseurl
+  static String maskResumeNewFull = "http://3.226.151.140/resume-masker"; // NOTE: this is using another baseurl
+  static String resumeMatcherNewFull = "http://3.226.151.140/resume-matcher"; // NOTE: this is using another baseurl
   static String addEducation = "education";
   static String tellUs = "tell_us_about_self";
   static String addWorkExperience = "work_experience";

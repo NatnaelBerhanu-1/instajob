@@ -30,9 +30,7 @@ class BottomNavScreen extends StatefulWidget {
 
 class _BottomNavScreenState extends State<BottomNavScreen> {
   List<Widget> pages = [
-    Global.userModel?.type == "user"
-        ? const SearchJobsScreen()
-        : const AssignCompany(),
+    Global.userModel?.type == "user" ? const SearchJobsScreen() : const AssignCompany(),
     const InterviewScreen(),
     const HomePage(),
   ];
@@ -52,6 +50,7 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
     var bottomBloc = context.read<BottomBloc>();
     return BlocBuilder<BottomBloc, BottomInitialState>(
       builder: (BuildContext context, state) {
+        debugPrint("State: $state, ${bottomBloc.screenNameVal}");
         return Scaffold(
           bottomNavigationBar: Container(
             height: 62,
@@ -79,9 +78,7 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
                     bottomBloc.add(SetScreenEvent(false));
                     bottomBloc.add(GetIndexEvent(1));
                     context.read<JobPositionBloc>().add(AppliedJobListEvent());
-                    context
-                        .read<InterviewScheduleCubit>()
-                        .getInterviewSchedules();
+                    context.read<InterviewScheduleCubit>().getInterviewSchedules(Global.userModel!.id.toString());
                     // bottomBloc.setSelectedScreen(false);
                     // bottomBloc.getIndex(1);
                   },
@@ -106,19 +103,13 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
               ],
             ),
           ),
-          body: bottomBloc.selectScreen
-              ? bottomBloc.screenNameVal
-              : pages[bottomBloc.currentIndex],
+          body: bottomBloc.selectScreen ? bottomBloc.screenNameVal : pages[bottomBloc.currentIndex],
         );
       },
     );
   }
 
-  Widget buildColumn(
-      {int? index,
-      int? selectedIndex,
-      String? image,
-      required VoidCallback onTap}) {
+  Widget buildColumn({int? index, int? selectedIndex, String? image, required VoidCallback onTap}) {
     return GestureDetector(
       onTap: onTap,
       child: Column(
@@ -128,9 +119,7 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
               ? Container(
                   height: 5,
                   width: 42,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: MyColors.blue),
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: MyColors.blue),
                 )
               : SizedBox(),
           SizedBox(height: 8),
@@ -139,18 +128,14 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
               Container(
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: index == selectedIndex
-                          ? MyColors.lightBlue.withOpacity(.20)
-                          : MyColors.transparent),
+                      color: index == selectedIndex ? MyColors.lightBlue.withOpacity(.20) : MyColors.transparent),
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: Image.asset(
                       height: 22,
                       width: 22,
                       image.toString(),
-                      color: index == selectedIndex
-                          ? MyColors.blue
-                          : MyColors.grey,
+                      color: index == selectedIndex ? MyColors.blue : MyColors.grey,
                     ),
                   )),
             ],

@@ -67,6 +67,7 @@ class _JobOpeningScreenState extends State<JobOpeningScreen> {
                         context.read<BottomBloc>().add(SetScreenEvent(false, screenName: AssignCompany()));
                         // context.read<BottomCubit>().setSelectedScreen(false,
                         //     screenName: JobOpeningScreen());
+                        // Navigator.pop(context);
                       },
                     ),
                     SizedBox(width: 5),
@@ -90,7 +91,12 @@ class _JobOpeningScreenState extends State<JobOpeningScreen> {
                               borderRadius: 25,
                               hint: "search",
                               onPressed: () {
-                                AppRoutes.push(context, SearchCompany(isJobSearch: true));
+                                AppRoutes.push(
+                                    context,
+                                    SearchCompany(
+                                      isJobSearch: true,
+                                      companyModel: widget.companyModel,
+                                    ));
                               },
                             ),
                           ),

@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
+
 class JobPosModel {
   int? id;
   int? userId;
@@ -93,14 +95,14 @@ class JobPosModel {
     cLog = json['c_log'];
     requirements = json['Requirements'];
     responsibilities = json['Responsilibites'];
-    topSkills = json['Topskills'].cast<String>() ?? [];
+    topSkills = jsonDecode(json['Topskills']).cast<String>() ?? [];
     salaries = json['salaries'];
     areaDistance = json['Area_Distance'];
     jobsType = json['jobs_Type'];
     experienceLevel = json['Experience_level'];
     uploadPhoto = json['upload_photo'];
     uploadResume = json['upload_resume'];
-    candidateStatus = json['status'];
+    candidateStatus = json['status'].toString();
     // userProfile = json['upload_photo'];
     applicationReceivedSubject = json['Application_Received_subject'];
     applicationReceivedContent = json['Application_Received_content'];

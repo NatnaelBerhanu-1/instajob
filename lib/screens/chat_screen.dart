@@ -4,10 +4,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:insta_job/auth_service.dart';
-import 'package:insta_job/dialog/custom_dialog.dart';
-import 'package:insta_job/dialog/time_picker_dilaog.dart';
 import 'package:insta_job/globals.dart';
-import 'package:insta_job/model/job_position_model.dart';
+import 'package:insta_job/model/chat_model.dart';
 import 'package:insta_job/network/end_points.dart';
 import 'package:insta_job/screens/pick_interview_time_slot_screen/pick_interview_time_slot_screen.dart';
 import 'package:insta_job/utils/app_routes.dart';
@@ -17,10 +15,11 @@ import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
 
 class ChatScreen extends StatefulWidget {
-  final JobPosModel? jobPosModel;
-  final String? oppId;
-  final String? selfId;
-  const ChatScreen({Key? key, this.jobPosModel, this.oppId, this.selfId}) : super(key: key);
+  final ChatModel chatModel;
+  const ChatScreen({
+    Key? key,
+    required this.chatModel,
+  }) : super(key: key);
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
@@ -31,18 +30,7 @@ class _ChatScreenState extends State<ChatScreen> {
   String? gp;
 
   generateGroupId() {
-    print("OPPOSITE ID:  ${widget.oppId}");
-    print("SELF ID    :  ${widget.selfId}");
-
-    if (widget.selfId == widget.jobPosModel?.userFirebaseId) {
-      gp = "${widget.oppId}_${widget.selfId}";
-      setState(() {});
-      print("IFFFFFFFFFF $gp");
-    } else {
-      gp = "${widget.selfId}_${widget.oppId}";
-      setState(() {});
-      print("ELSEEEEEEEEE $gp");
-    }
+    gp = widget.chatModel.gp;
   }
 
   @override
@@ -95,8 +83,9 @@ class _ChatScreenState extends State<ChatScreen> {
                                   padding: const EdgeInsets.only(left: 8.0),
                                   child: CircleAvatar(
                                       radius: 24,
-                                      backgroundImage: CachedNetworkImageProvider(
-                                          "${EndPoint.imageBaseUrl}${widget.jobPosModel?.uploadPhoto}")),
+                                      backgroundImage: CachedNetworkImageProvider(Global.userModel?.type == "user"
+                                          ? "${widget.chatModel.selfProfilePic}"
+                                          : "${widget.chatModel.oppProfilePic}")),
                                 )),
                             SizedBox(width: 10),
                             Expanded(
@@ -105,8 +94,8 @@ class _ChatScreenState extends State<ChatScreen> {
                                 children: [
                                   CommonText(
                                     text: Global.userModel?.type == "user"
-                                        ? "${widget.jobPosModel?.empName}"
-                                        : "${widget.jobPosModel?.userName}",
+                                        ? "${widget.chatModel.selfName}"
+                                        : "${widget.chatModel.oppName}",
                                     fontSize: 16,
                                     overflow: TextOverflow.ellipsis,
                                   ),
@@ -130,7 +119,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                   //     context,
                                   //     PickTimeDialog(
                                   //         jobPosModel: widget.jobPosModel));
-                                  AppRoutes.push(context, BookSlotScreen(jobPosModel: widget.jobPosModel));
+                                  // AppRoutes.push(context, BookSlotScreen(jobPosModel: widget.jobPosModel));
                                 },
                                 borderRadius: BorderRadius.circular(20),
                                 borderColor: MyColors.blue,
@@ -161,6 +150,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           .orderBy('time', descending: true)
                           .snapshots(),
                       builder: (context, snapshot) {
+                        debugPrint('data: ${snapshot.data?.docs.map((e) => e.data())}');
                         return snapshot.hasData
                             ? Padding(
                                 padding: const EdgeInsets.symmetric(vertical: 5.0),
@@ -227,12 +217,8 @@ class _ChatScreenState extends State<ChatScreen> {
                       suffixIcon: GestureDetector(
                         onTap: () {
                           if (msg.text.isNotEmpty) {
-                            AuthService.insertMsg(
-                                gp: gp!,
-                                msg: msg.text,
-                                oppId: widget.oppId,
-                                selfId: widget.selfId,
-                                jobId: widget.jobPosModel!.jobId);
+                            debugPrint('chatModel: ${widget.chatModel.toJson()}');
+                            AuthService.insertMsg(widget.chatModel.copyWith(msg: msg.text));
                             msg.clear();
                           }
                         },
