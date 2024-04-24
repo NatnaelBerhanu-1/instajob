@@ -260,6 +260,12 @@ class _ViewCandidatesState extends State<ViewCandidates> {
                 return CandidateTile(
                   onchange: (val) {
                     context.read<GlobalCubit>().onSelected(val, i);
+                    if (val == true) {
+                      selectedCandidatesIndices.add(i);
+                    } else if (val == false &&
+                        selectedCandidatesIndices.contains(i)) {
+                      selectedCandidatesIndices.remove(i);
+                    }
                     setState(() {});
                   },
                   value: selectedCandidatesIndices.contains(i),
