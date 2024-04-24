@@ -163,19 +163,6 @@ class _JobOpeningScreenState extends State<JobOpeningScreen> {
                           fontColor: MyColors.white,
                           fontSize: 20,
                         ),
-                        SizedBox(height: 10),
-                        CommonText(
-                          text:
-                              "It's a long established fact that reader will directly by the",
-                          fontColor: MyColors.white,
-                          fontSize: 13,
-                        ),
-                        CommonText(
-                          text:
-                              "readable content of page when looking at it's layout",
-                          fontColor: MyColors.white,
-                          fontSize: 13,
-                        ),
                       ],
                     ),
                   ),

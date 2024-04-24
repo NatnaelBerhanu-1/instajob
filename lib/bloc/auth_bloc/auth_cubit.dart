@@ -445,8 +445,12 @@ class AuthCubit extends Cubit<AuthInitialState> {
       // }
     }
     if (response.response.statusCode == 400) {
+      //todo: add else condition or make it else, after checking the status code is in 200s in the prev condition //done
       // showToast("Code not match");
       emit(ErrorState("Code Not Match"));
+    } else {
+      emit(ErrorState(
+          "Something happened please try again later")); //revisit msg
     }
   }
 

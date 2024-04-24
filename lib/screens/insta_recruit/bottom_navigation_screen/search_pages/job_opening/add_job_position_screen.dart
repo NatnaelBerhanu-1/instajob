@@ -29,6 +29,8 @@ import '../../../../../dialog/custom_dialog.dart';
 import '../../../../../utils/my_colors.dart';
 import '../../../../../utils/my_images.dart';
 
+enum SalariesOptionChosen { allSalaries, customRange }
+
 class AddJobPositionScreen extends StatefulWidget {
   final bool isUpdate;
   final JobPosModel? jobPosModel;
@@ -57,6 +59,8 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
   TextEditingController shortlistedReviewSubject = TextEditingController();
   TextEditingController shortlistedReviewContent = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  late var uploadPhoto = context.read<PickImageCubit>();
+  SalariesOptionChosen salariesOptionChosen = SalariesOptionChosen.allSalaries;
 
   updateData() {
     var value = context.read<GlobalCubit>();
@@ -372,37 +376,81 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                             padding: const EdgeInsets.all(10.0),
                             child: Column(
                               children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    CommonText(
-                                      text: "All Salaries",
-                                      fontSize: 12,
-                                      fontColor: MyColors.blue,
+                                InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      salariesOptionChosen =
+                                          SalariesOptionChosen.allSalaries;
+                                    });
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(bottom: 10),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        CommonText(
+                                          text: "All Salaries",
+                                          fontSize: 12,
+                                          fontColor: salariesOptionChosen ==
+                                                  SalariesOptionChosen
+                                                      .allSalaries
+                                              ? MyColors.blue
+                                              : MyColors.grey,
+                                        ),
+                                        if (salariesOptionChosen ==
+                                            SalariesOptionChosen.allSalaries)
+                                          ImageButton(
+                                            image: MyImages.verified,
+                                            padding: EdgeInsets.zero,
+                                          )
+                                      ],
                                     ),
-                                    ImageButton(
-                                      image: MyImages.verified,
-                                      padding: EdgeInsets.zero,
-                                    )
-                                  ],
+                                  ),
                                 ),
-                                SizedBox(height: 10),
                                 divider(color: MyColors.grey.withOpacity(.40)),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    CommonText(
-                                      text: "Custom Range",
-                                      fontSize: 14,
-                                      fontColor: MyColors.grey,
-                                    ),
-                                    CommonText(
-                                      text:
-                                          "${values.rangeValue.start.toStringAsFixed(0)}k - ${values.rangeValue.end.toStringAsFixed(0)}k",
-                                      fontSize: 14,
-                                      fontColor: MyColors.grey,
-                                    ),
-                                  ],
+                                InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      salariesOptionChosen =
+                                          SalariesOptionChosen.customRange;
+                                    });
+                                  },
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      CommonText(
+                                        text: "Custom Range",
+                                        fontSize: 14,
+                                        fontColor: MyColors.grey,
+                                      ),
+                                      SizedBox(
+                                        child: Row(
+                                          children: [
+                                            CommonText(
+                                              text:
+                                                  "${values.rangeValue.start.toStringAsFixed(0)}k - ${values.rangeValue.end.toStringAsFixed(0)}k",
+                                              fontSize: 14,
+                                              fontColor: MyColors.grey,
+                                            ),
+                                            if (salariesOptionChosen ==
+                                                SalariesOptionChosen
+                                                    .customRange)
+                                              Row(
+                                                children: [
+                                                  SizedBox(width: 10),
+                                                  ImageButton(
+                                                    image: MyImages.verified,
+                                                    padding: EdgeInsets.zero,
+                                                  )
+                                                ],
+                                              )
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                                 SizedBox(height: 10),
                                 RangeSlider(
