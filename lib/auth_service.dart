@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
 import 'package:insta_job/globals.dart';
+import 'package:insta_job/model/chat_model.dart';
 
 class AuthService {
   static final FirebaseFirestore db = FirebaseFirestore.instance;
@@ -9,27 +11,16 @@ class AuthService {
   static const chatCollection = 'chat';
   static const userCollection = 'user';
 
-  static Future<void> insertMsg(
-      {String? oppId,
-      String? selfId,
-      required String gp,
-      String? msg,
-      String? userName,
-      String? profile,
-      String? jobId}) async {
+  static Future<void> insertMsg(ChatModel chatModel) async {
     var fcmToken = await FirebaseMessaging.instance.getToken();
-    var chatRef = FirebaseFirestore.instance.collection(chatCollection).doc(gp);
-    var docRef = chatRef.collection(gp).doc(DateTime.now().millisecondsSinceEpoch.toString());
+    var chatRef = FirebaseFirestore.instance.collection(chatCollection).doc(chatModel.gp);
+    var docRef = chatRef.collection(chatModel.gp).doc(DateTime.now().millisecondsSinceEpoch.toString());
 
-    var data = {
-      "oppId": oppId,
-      "selfId": selfId,
-      "group": gp,
-      "msg": msg,
-      "time": FieldValue.serverTimestamp(),
-    };
+    var data = chatModel.getMessageData();
 
-    var chatData = {'jobId': jobId, 'selfId': selfId, 'oppId': oppId};
+    var chatData = chatModel.getChatData();
+
+    debugPrint('Chat: ${chatModel.toJson()}');
 
     FirebaseFirestore.instance.runTransaction((transaction) async {
       transaction.set(chatRef, chatData);

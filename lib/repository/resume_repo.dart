@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:insta_job/globals.dart';
+import 'package:insta_job/model/resume_detail_model.dart';
 import 'package:insta_job/model/resume_model.dart';
 import 'package:insta_job/network/api_response.dart';
 import 'package:insta_job/network/dio/dio_client.dart';
@@ -27,8 +29,7 @@ class ResumeRepository {
       "upload_resume": "test"
     };
     try {
-      Response response =
-          await dioClient.post(data: data, uri: EndPoint.addResume);
+      Response response = await dioClient.post(data: data, uri: EndPoint.addResume);
       return ApiResponse.withSuccess(response);
     } on DioException catch (e) {
       return ApiResponse.withError(e.response);
@@ -55,8 +56,7 @@ class ResumeRepository {
       "tell_us": tellUs ?? "",
     };
     try {
-      Response response =
-          await dioClient.post(data: data, uri: EndPoint.tellUs);
+      Response response = await dioClient.post(data: data, uri: EndPoint.tellUs);
       return ApiResponse.withSuccess(response);
     } on DioException catch (e) {
       return ApiResponse.withError(e.response);
@@ -80,8 +80,7 @@ class ResumeRepository {
       "education_custom_message": education.educationCustomMessage ?? "",
     };
     try {
-      Response response =
-          await dioClient.post(data: data, uri: EndPoint.addEducation);
+      Response response = await dioClient.post(data: data, uri: EndPoint.addEducation);
       return ApiResponse.withSuccess(response);
     } on DioException catch (e) {
       return ApiResponse.withError(e.response);
@@ -105,8 +104,7 @@ class ResumeRepository {
       "work_custom_message": workExpModel.workCustomMessage ?? "",
     };
     try {
-      Response response =
-          await dioClient.post(data: data, uri: EndPoint.addWorkExperience);
+      Response response = await dioClient.post(data: data, uri: EndPoint.addWorkExperience);
       return ApiResponse.withSuccess(response);
     } on DioException catch (e) {
       return ApiResponse.withError(e.response);
@@ -121,8 +119,7 @@ class ResumeRepository {
       "add_skill": skills ?? [],
     };
     try {
-      Response response =
-          await dioClient.post(data: data, uri: EndPoint.addSkills);
+      Response response = await dioClient.post(data: data, uri: EndPoint.addSkills);
       return ApiResponse.withSuccess(response);
     } on DioException catch (e) {
       return ApiResponse.withError(e.response);
@@ -137,8 +134,7 @@ class ResumeRepository {
       "achivments_skill": ach ?? [],
     };
     try {
-      Response response =
-          await dioClient.post(data: data, uri: EndPoint.addAchievement);
+      Response response = await dioClient.post(data: data, uri: EndPoint.addAchievement);
       return ApiResponse.withSuccess(response);
     } on DioException catch (e) {
       return ApiResponse.withError(e.response);
@@ -147,12 +143,10 @@ class ResumeRepository {
 
   Future<ApiResponse> showCreatedResumes({String? userId}) async {
     var data = {
-      "user_id":
-          Global.userModel?.type == "user" ? Global.userModel?.id : userId,
+      "user_id": Global.userModel?.type == "user" ? Global.userModel?.id : userId,
     };
     try {
-      Response response =
-          await dioClient.post(data: data, uri: EndPoint.showCreatedResumes);
+      Response response = await dioClient.post(data: data, uri: EndPoint.showCreatedResumes);
       return ApiResponse.withSuccess(response);
     } on DioException catch (e) {
       return ApiResponse.withError(e.response);
@@ -162,8 +156,7 @@ class ResumeRepository {
   deleteWorkExp({String? id}) async {
     try {
       var map = {"id": id};
-      var response =
-          await dioClient.post(data: map, uri: EndPoint.deleteWorkingExp);
+      var response = await dioClient.post(data: map, uri: EndPoint.deleteWorkingExp);
       return ApiResponse.withSuccess(response);
     } on DioException catch (e) {
       return ApiResponse.withError(e.response);
@@ -173,10 +166,41 @@ class ResumeRepository {
   deleteEducation({String? id}) async {
     try {
       var map = {"id": id};
-      var response =
-          await dioClient.post(data: map, uri: EndPoint.deleteEducation);
+      var response = await dioClient.post(data: map, uri: EndPoint.deleteEducation);
       return ApiResponse.withSuccess(response);
     } on DioException catch (e) {
+      return ApiResponse.withError(e.response);
+    }
+  }
+
+  getParsedResumeDetails({required String? resumeUrl}) async {
+    try {
+      if (resumeUrl == null) {
+        return ApiResponse.withError("No resume given");
+      }
+      var fullResumeUrl = "${EndPoint.imageBaseUrl}$resumeUrl";
+      var queryParams = {"url": fullResumeUrl};
+      var fullEndpointUrlPath = "https://api.apilayer.com/resume_parser/url";
+      var response = await Dio().get(
+        fullEndpointUrlPath,
+        options: Options(
+          headers: {
+            // "Content-Type": "application/json",
+            "apikey": "qBCCB5UVnBS3JDSSfxTeXAb27bg8o9Ce"
+          },
+        ),
+        queryParameters: queryParams,
+      );
+      debugPrint('resumeUrl: $fullResumeUrl');
+      debugPrint('Response: $response');
+      if (response.statusCode == 200) {
+        ResumeDetailModel resumeDetails = ResumeDetailModel.fromJson(response.data);
+        return ApiResponse.withSuccess(resumeDetails);
+      }
+      return ApiResponse.withError("Something happened when parsing resume");
+    } on DioException catch (e, s) {
+      debugPrint(e.toString());
+      debugPrintStack(stackTrace: s);
       return ApiResponse.withError(e.response);
     }
   }

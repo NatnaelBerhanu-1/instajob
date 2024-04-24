@@ -9,10 +9,12 @@ import 'package:insta_job/bloc/company_bloc/company_bloc.dart';
 import 'package:insta_job/bloc/feedback_bloc/feedback_bloc.dart';
 import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
 import 'package:insta_job/bloc/interview_cubit/interview_cubit.dart';
+import 'package:insta_job/bloc/interview_schedule_cubit/interview_schedule_cubit.dart';
 import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
 import 'package:insta_job/bloc/location_cubit/location_cubit.dart';
 import 'package:insta_job/bloc/mask_resumes_cubit/mask_resumes_cubit.dart';
 import 'package:insta_job/bloc/resume_bloc/resume_bloc.dart';
+import 'package:insta_job/bloc/resume_details_cubit/resume_details_cubit.dart';
 import 'package:insta_job/bloc/validation/validation_bloc.dart';
 import 'package:insta_job/network/dio/dio_client.dart';
 import 'package:insta_job/network/end_points.dart';
@@ -68,6 +70,8 @@ Future<void> init() async {
   sl.registerLazySingleton(() => InterviewCubit(sl()));
   sl.registerLazySingleton(() => AttachmentDownloadCubit(sl()));
   sl.registerLazySingleton(() => MaskResumesCubit(sl()));
+  sl.registerLazySingleton(() => InterviewScheduleCubit(sl()));
+  sl.registerLazySingleton(() => ResumeDetailsCubit(sl()));
 
   /// other
   final SharedPreferences preferences = await SharedPreferences.getInstance();

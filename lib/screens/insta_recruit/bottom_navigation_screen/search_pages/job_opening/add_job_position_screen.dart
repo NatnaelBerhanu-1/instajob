@@ -57,10 +57,10 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
   TextEditingController shortlistedReviewSubject = TextEditingController();
   TextEditingController shortlistedReviewContent = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  late var uploadPhoto = context.read<PickImageCubit>();
 
   updateData() {
     var value = context.read<GlobalCubit>();
-    var uploadPhoto = context.read<PickImageCubit>();
     if (widget.isUpdate) {
       var model = widget.jobPosModel!;
       designation.text = model.designation ?? "";
@@ -77,7 +77,7 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
       value.jobTypeValue = model.jobsType ?? "";
       value.experienceLevelVal = model.experienceLevel ?? "";
       uploadPhoto.imgUrl = model.uploadPhoto ?? "";
-      print('UPLOAD hudfgfhin ***************  ${uploadPhoto.imgUrl}');
+      debugPrint('uploadPhoto${uploadPhoto.imgUrl}');
     } else {
       if (Global.userModel?.automateMsgBtn == 1) {
         var model = Global.userModel!;
@@ -88,6 +88,8 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
         shortlistedReviewSubject.text = model.shortlistedReviewSubject!;
         shortlistedReviewContent.text = model.shortlistedReviewContent!;
       }
+      uploadPhoto.imgUrl = Global.userModel?.uploadPhoto ?? '';
+      debugPrint('uploadPhoto${uploadPhoto.imgUrl}');
     }
   }
 
@@ -103,128 +105,119 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       // appBar: ,
-      body: Form(
-        // autovalidateMode: AutovalidateMode.always,
-        key: formKey,
-        child: Column(
-          children: [
-            Expanded(
-              flex: 0,
-              child: Stack(
-                children: [
-                  Image.asset(
-                    MyImages.sCurve,
-                    // height: 50,
-                    width: MediaQuery.of(context).size.width,
-                    color: MyColors.lightGrey.withOpacity(.40),
-                  ),
-                  Positioned(
-                    top: 40,
-                    left: 5,
-                    child: Row(
-                      children: [
-                        BlocBuilder<BottomBloc, BottomInitialState>(builder: (context, value) {
-                          return ImageButton(
-                            onTap: () {
-                              var image = context.read<PickImageCubit>();
-                              image.clearImgUrl();
-                              context.read<GlobalCubit>().skills.clear();
-                              context.read<BottomBloc>().add(SetScreenEvent(true,
-                                  screenName: JobOpeningScreen(companyModel: widget.companyModel)));
-                              // Navigator.pop(context);
-                            },
-                            height: 28,
-                            width: 28,
-                            image: MyImages.backArrow,
-                          );
-                        }),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8.0, left: 8, right: 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                widget.isUpdate ? "Edit Listing" : "Add Job Positions",
-                                style: TextStyle(color: MyColors.black, fontSize: 16.5, fontWeight: FontWeight.w600),
-                              ),
-                              SizedBox(height: 5),
-                              Text(
-                                widget.isUpdate ? "Update job details" : "Add job details for new opening",
-                                style: TextStyle(color: MyColors.grey, fontSize: 13, fontWeight: FontWeight.w600),
-                              ),
-                            ],
-                          ),
+      body: Column(
+        children: [
+          Expanded(
+            flex: 0,
+            child: Stack(
+              children: [
+                Image.asset(
+                  MyImages.sCurve,
+                  // height: 50,
+                  width: MediaQuery.of(context).size.width,
+                  color: MyColors.lightGrey.withOpacity(.40),
+                ),
+                Positioned(
+                  top: 40,
+                  left: 5,
+                  child: Row(
+                    children: [
+                      BlocBuilder<BottomBloc, BottomInitialState>(builder: (context, value) {
+                        return ImageButton(
+                          onTap: () {
+                            var image = context.read<PickImageCubit>();
+                            image.clearImgUrl();
+                            context.read<GlobalCubit>().skills.clear();
+                            context.read<BottomBloc>().add(
+                                SetScreenEvent(true, screenName: JobOpeningScreen(companyModel: widget.companyModel)));
+                            // Navigator.pop(context);
+                          },
+                          height: 28,
+                          width: 28,
+                          image: MyImages.backArrow,
+                        );
+                      }),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8.0, left: 8, right: 10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              widget.isUpdate ? "Edit Listing" : "Add Job Positions",
+                              style: TextStyle(color: MyColors.black, fontSize: 16.5, fontWeight: FontWeight.w600),
+                            ),
+                            SizedBox(height: 5),
+                            Text(
+                              widget.isUpdate ? "Update job details" : "Add job details for new opening",
+                              style: TextStyle(color: MyColors.grey, fontSize: 13, fontWeight: FontWeight.w600),
+                            ),
+                          ],
                         ),
-                        SizedBox(width: 52),
-                        widget.isUpdate
-                            ? BlocBuilder<BottomBloc, BottomInitialState>(builder: (context, value) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    buildDialog(
-                                        context,
-                                        CustomDialog(
-                                          desc1: "You want to Remove Listing",
-                                          okOnTap: () {
-                                            context
-                                                .read<JobPositionBloc>()
-                                                .add(DeleteJobPositionEvent(jobId: "${widget.jobPosModel?.id}"));
-                                            context
-                                                .read<JobPositionBloc>()
-                                                .add(LoadJobPosListEvent(companyId: "${widget.companyModel?.id}"));
-                                            context.read<BottomBloc>().add(SetScreenEvent(true,
-                                                screenName: JobOpeningScreen(companyModel: widget.companyModel)));
-                                            AppRoutes.push(context, BottomNavScreen());
-                                          },
-                                          cancelOnTap: () {
-                                            Navigator.pop(context);
-                                          },
-                                        ));
-                                  },
-                                  child: Container(
-                                    padding: EdgeInsets.all(10),
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                        color: MyColors.white,
-                                        borderRadius: BorderRadius.circular(20),
-                                        border: Border.all(color: MyColors.darkRed)),
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(left: 10.0, right: 10),
-                                      child: Text(
-                                        "Remove Listing",
-                                        style: TextStyle(fontSize: 13, color: MyColors.darkRed),
-                                      ),
+                      ),
+                      SizedBox(width: 52),
+                      widget.isUpdate
+                          ? BlocBuilder<BottomBloc, BottomInitialState>(builder: (context, value) {
+                              return GestureDetector(
+                                onTap: () {
+                                  buildDialog(
+                                      context,
+                                      CustomDialog(
+                                        desc1: "You want to Remove Listing",
+                                        okOnTap: () {
+                                          context
+                                              .read<JobPositionBloc>()
+                                              .add(DeleteJobPositionEvent(jobId: "${widget.jobPosModel?.id}"));
+                                          context
+                                              .read<JobPositionBloc>()
+                                              .add(LoadJobPosListEvent(companyId: "${widget.companyModel?.id}"));
+                                          context.read<BottomBloc>().add(SetScreenEvent(true,
+                                              screenName: JobOpeningScreen(companyModel: widget.companyModel)));
+                                          AppRoutes.push(context, BottomNavScreen());
+                                        },
+                                        cancelOnTap: () {
+                                          Navigator.pop(context);
+                                        },
+                                      ));
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.all(10),
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                      color: MyColors.white,
+                                      borderRadius: BorderRadius.circular(20),
+                                      border: Border.all(color: MyColors.darkRed)),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 10.0, right: 10),
+                                    child: Text(
+                                      "Remove Listing",
+                                      style: TextStyle(fontSize: 13, color: MyColors.darkRed),
                                     ),
                                   ),
-                                );
-                              })
-                            : SizedBox()
-                      ],
-                    ),
+                                ),
+                              );
+                            })
+                          : SizedBox()
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-            Expanded(
+          ),
+          Expanded(
+            child: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 15),
-                child: BlocConsumer<ValidationCubit, InitialValidation>(listener: (context, state) {
-                  if (state is RequiredValidation) {
-                    showToast(state.require);
-                  }
-                }, builder: (context, state) {
-                  var validate = context.read<ValidationCubit>();
-                  return ListView(
+                child: Form(
+                  key: formKey,
+                  child: Column(
                     children: [
                       CustomTextField(
-                          controller: designation,
-                          label: "Enter Job Title",
-                          lblColor: MyColors.black,
-                          hint: "Front end developer",
-                          // validator: (val) {
-                          //   validate.requiredValidation(val!, "!!!!!!!");
-                          //   return null;
-                          // },
-                          validator: (val) => requiredValidation(val!, 'Job Title')),
+                        controller: designation,
+                        label: "Enter Job Title",
+                        lblColor: MyColors.black,
+                        hint: "Front end developer",
+                        validator: (val) => requiredValidation(val!, 'Job Title'),
+                      ),
                       SizedBox(height: 15),
                       CustomTextField(
                         controller: jobDetails,
@@ -323,9 +316,7 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                                       controller: topSkills,
                                       hint: "",
                                       textCapitalization: TextCapitalization.words,
-                                      // validator: (val) =>
-                                      //     validate.requiredValidation(
-                                      //         val!, "Skills"),
+                                      // validator: (val) => requiredValidation(val!, "Skills"),
                                     ),
                                   ),
                                   GestureDetector(
@@ -570,7 +561,7 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
 
                       /// display image
 
-                      uploadPhotoCard(context, isUpdate: widget.isUpdate, url: widget.jobPosModel?.uploadPhoto),
+                      uploadPhotoCard(context, isUpdate: widget.isUpdate, url: uploadPhoto.imgUrl),
                       SizedBox(height: 20),
                       Global.userModel?.automateMsgBtn == 0
                           ? CommonText(
@@ -697,9 +688,9 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                           fontColor: MyColors.white,
                           borderColor: MyColors.blue,
                           onclick: () async {
-                            print("ID ++++++++++++++ ||||||||||| ${context.read<CompanyBloc>().companyModel.id}");
                             FocusManager.instance.primaryFocus?.unfocus();
-                            if (formKey.currentState!.validate()) {
+                            debugPrint('State: ${formKey.currentState?.validate()}');
+                            if (formKey.currentState?.validate() == true) {
                               var value = context.read<GlobalCubit>();
                               var uploadPhoto = context.read<PickImageCubit>();
                               String salary = value.rangeValue.end.toStringAsFixed(0);
@@ -724,7 +715,7 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                                 topSkills: value.skills,
                                 uploadPhoto: uploadPhoto.imgUrl,
                               ));
-                              AppRoutes.push(context, JobOpeningScreen(companyModel: widget.companyModel));
+                              // AppRoutes.push(context, JobOpeningScreen(companyModel: widget.companyModel));
 
                               // jobPosition.add(LoadJobPosListEvent());
                             } else {
@@ -735,12 +726,12 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                       }),
                       SizedBox(height: 10)
                     ],
-                  );
-                }),
+                  ),
+                ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

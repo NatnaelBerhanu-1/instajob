@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
+import 'package:insta_job/bloc/interview_schedule_cubit/interview_schedule_cubit.dart';
 import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
 import 'package:insta_job/bloc/job_position/job_pos_event.dart';
 import 'package:insta_job/bloc/location_cubit/location_cubit.dart';
@@ -29,9 +30,7 @@ class BottomNavScreen extends StatefulWidget {
 
 class _BottomNavScreenState extends State<BottomNavScreen> {
   List<Widget> pages = [
-    Global.userModel?.type == "user"
-        ? const SearchJobsScreen()
-        : const AssignCompany(),
+    Global.userModel?.type == "user" ? const SearchJobsScreen() : const AssignCompany(),
     const InterviewScreen(),
     const HomePage(),
   ];
@@ -51,6 +50,7 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
     var bottomBloc = context.read<BottomBloc>();
     return BlocBuilder<BottomBloc, BottomInitialState>(
       builder: (BuildContext context, state) {
+        debugPrint("State: $state, ${bottomBloc.screenNameVal}");
         return Scaffold(
           bottomNavigationBar: Container(
             height: 62,
@@ -78,7 +78,7 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
                     bottomBloc.add(SetScreenEvent(false));
                     bottomBloc.add(GetIndexEvent(1));
                     context.read<JobPositionBloc>().add(AppliedJobListEvent());
-
+                    context.read<InterviewScheduleCubit>().getInterviewSchedules(Global.userModel!.id.toString());
                     // bottomBloc.setSelectedScreen(false);
                     // bottomBloc.getIndex(1);
                   },
@@ -103,19 +103,13 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
               ],
             ),
           ),
-          body: bottomBloc.selectScreen
-              ? bottomBloc.screenNameVal
-              : pages[bottomBloc.currentIndex],
+          body: bottomBloc.selectScreen ? bottomBloc.screenNameVal : pages[bottomBloc.currentIndex],
         );
       },
     );
   }
 
-  Widget buildColumn(
-      {int? index,
-      int? selectedIndex,
-      String? image,
-      required VoidCallback onTap}) {
+  Widget buildColumn({int? index, int? selectedIndex, String? image, required VoidCallback onTap}) {
     return GestureDetector(
       onTap: onTap,
       child: Column(
@@ -125,9 +119,7 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
               ? Container(
                   height: 5,
                   width: 42,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: MyColors.blue),
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: MyColors.blue),
                 )
               : SizedBox(),
           SizedBox(height: 8),
@@ -136,18 +128,14 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
               Container(
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: index == selectedIndex
-                          ? MyColors.lightBlue.withOpacity(.20)
-                          : MyColors.transparent),
+                      color: index == selectedIndex ? MyColors.lightBlue.withOpacity(.20) : MyColors.transparent),
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: Image.asset(
                       height: 22,
                       width: 22,
                       image.toString(),
-                      color: index == selectedIndex
-                          ? MyColors.blue
-                          : MyColors.grey,
+                      color: index == selectedIndex ? MyColors.blue : MyColors.grey,
                     ),
                   )),
             ],

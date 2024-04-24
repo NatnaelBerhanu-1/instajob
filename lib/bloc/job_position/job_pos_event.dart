@@ -1,4 +1,8 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
+
 import 'package:insta_job/model/filter_model.dart';
 
 abstract class JobPosEvent extends Equatable {}
@@ -127,13 +131,20 @@ class SetInterviewEvent extends JobPosEvent {
   final String? time;
   final String? timeType;
 
-  SetInterviewEvent(
-      {this.companyId,
-      this.employeeId,
-      this.jobId,
-      this.userId,
-      this.time,
-      this.timeType});
+  SetInterviewEvent({this.companyId, this.employeeId, this.jobId, this.userId, this.time, this.timeType});
   @override
   List<Object?> get props => [];
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'companyId': companyId,
+      'employeeId': employeeId,
+      'jobId': jobId,
+      'userId': userId,
+      'time': time,
+      'timeType': timeType,
+    };
+  }
+
+  String toJson() => json.encode(toMap());
 }

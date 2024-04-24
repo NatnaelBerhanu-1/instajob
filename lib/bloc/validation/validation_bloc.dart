@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/validation/validation_state.dart';
 
@@ -58,27 +59,19 @@ String? emailValidation(String s) {
 }
 
 String? requiredValidation(String s, value) {
-  if (s.isEmpty || s == "") {
-    print(">>>>>>>>>>  $s");
-    // showToast("$value is required");
-
-    // emit(RequiredValidation("$value is required"));
+  debugPrint('ValidationValue: $s');
+  if (s.trim().isEmpty) {
+    debugPrint('HERERERE');
     return "$value is required";
-  } else {
-    print(">>>>>>>>>> 1111 $s");
   }
-  // emit(ValidState("valid"));
   return null;
 }
 
 String? phoneValidation(String s) {
   if (s.isEmpty || s == "") {
     return "Phone number cannot be empty";
-  } else {
-    return "Enter valid phone number";
   }
-
-  // return null;
+  return null;
 }
 
 String? passwordValidation(String s) {

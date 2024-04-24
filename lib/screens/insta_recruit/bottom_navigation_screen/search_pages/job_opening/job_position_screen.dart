@@ -52,6 +52,7 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
     debugPrint("Image: ${EndPoint.imageBaseUrl}${widget.jobPosModel!.uploadPhoto}");
     return Scaffold(
         body: SafeArea(
+      //revisit/reconsider the safe area TODO: test without safe area for the image section
       child: Stack(
         children: [
           Positioned(
@@ -62,6 +63,7 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
               imageUrl: "${EndPoint.imageBaseUrl}${widget.jobPosModel!.uploadPhoto}",
               fit: BoxFit.cover,
               width: MediaQuery.of(context).size.width,
+              height: 300,
               errorWidget: (c, val, _) => Center(child: CircularProgressIndicator()),
             ),
             // Image.network(
@@ -69,7 +71,8 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
             //     fit: BoxFit.cover),
           ),
           Positioned(
-            top: 0,
+            top: 38,
+            left: 16,
             child: BlocBuilder<BottomBloc, BottomInitialState>(builder: (context, value) {
               return ImageButton(
                 onTap: () {
@@ -108,7 +111,8 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
           ),
           Positioned(
               left: 0,
-              top: MediaQuery.of(context).size.height * 0.36,
+              // top: MediaQuery.of(context).size.height * 0.36,
+              top: MediaQuery.of(context).size.height * 0.33,
               child: SingleChildScrollView(
                 child: Column(
                   children: [
@@ -120,16 +124,20 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                         height: MediaQuery.of(context).size.height,
                         decoration: BoxDecoration(
                           color: MyColors.white,
-                          borderRadius: BorderRadius.only(topLeft: Radius.circular(17), topRight: Radius.circular(17)),
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(20),
+                              topRight: Radius.circular(20)),
                         ),
                         child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 15, horizontal: 20),
                             child: SingleChildScrollView(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
+                                  SizedBox(height: 10),
                                   CommonText(
-                                    text: "${widget.jobPosModel?.designation}",
+                                    text: "Job Position",
                                     fontWeight: FontWeight.bold,
                                     fontSize: 19,
                                   ),
@@ -149,12 +157,28 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                                       ),
                                     ],
                                   ),*/
-                                  SizedBox(height: 10),
+                                  SizedBox(height: 8),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      ImageButton(
+                                          image: MyImages.bag,
+                                          padding: EdgeInsets.zero),
+                                      SizedBox(width: 5),
+                                      CommonText(
+                                        text:
+                                            "${widget.jobPosModel?.designation}",
+                                        fontColor: MyColors.blue,
+                                        fontSize: 15,
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 30),
                                   CommonText(
                                     text: "Job Details",
                                     fontSize: 15,
                                   ),
-                                  SizedBox(height: 15),
+                                  SizedBox(height: 10),
                                   CommonText(
                                     text: "${widget.jobPosModel?.jobDetails}",
                                     fontSize: 13,

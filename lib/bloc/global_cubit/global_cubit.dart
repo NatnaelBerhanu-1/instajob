@@ -46,7 +46,7 @@ class GlobalCubit extends Cubit<InitialState> {
   }
 
   /// job Type
-  String jobTypeValue = "";
+  String jobTypeValue = "Full Time";
   jobType(String val) {
     jobTypeValue = val;
     print("JOB TYPE $jobTypeValue");
@@ -104,7 +104,7 @@ class GlobalCubit extends Cubit<InitialState> {
   }
 
   /// Experience level
-  String experienceLevelVal = "";
+  String experienceLevelVal = "All Experience Level";
   experienceLevel(String val) {
     experienceLevelVal = val;
     print("EXPERIENCE $experienceLevelVal");
