@@ -40,7 +40,9 @@ class _JobOpeningScreenState extends State<JobOpeningScreen> {
       onPopInvoked: (val) async {
         print('============ $val');
         context.read<CompanyBloc>().add(LoadCompanyListEvent());
-        context.read<BottomBloc>().add(SetScreenEvent(false, screenName: AssignCompany()));
+        context
+            .read<BottomBloc>()
+            .add(SetScreenEvent(false, screenName: AssignCompany()));
       },
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -48,7 +50,8 @@ class _JobOpeningScreenState extends State<JobOpeningScreen> {
             preferredSize: Size(double.infinity, 90),
             child: SafeArea(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 6).copyWith(top: 28),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 6).copyWith(top: 28),
                 child: Row(
                   // elevation: 0,
                   // leadingWidth: 50,
@@ -64,7 +67,8 @@ class _JobOpeningScreenState extends State<JobOpeningScreen> {
                       padding: EdgeInsets.all(9.0),
                       onTap: () {
                         context.read<CompanyBloc>().add(LoadCompanyListEvent());
-                        context.read<BottomBloc>().add(SetScreenEvent(false, screenName: AssignCompany()));
+                        context.read<BottomBloc>().add(
+                            SetScreenEvent(false, screenName: AssignCompany()));
                         // context.read<BottomCubit>().setSelectedScreen(false,
                         //     screenName: JobOpeningScreen());
                         // Navigator.pop(context);
@@ -106,21 +110,30 @@ class _JobOpeningScreenState extends State<JobOpeningScreen> {
                             image: MyImages.searchBlue,
                             padding: EdgeInsets.only(left: 10, right: 20),
                             onTap: () {
-                              AppRoutes.push(context, SearchCompany(index: 2, companyModel: widget.companyModel));
+                              AppRoutes.push(
+                                  context,
+                                  SearchCompany(
+                                      index: 2,
+                                      companyModel: widget.companyModel));
                             },
                           )
                         : GestureDetector(
                             onTap: () {
-                              context.read<BottomBloc>().add(SetScreenEvent(true,
-                                  screenName: AddJobPositionScreen(
-                                    companyModel: widget.companyModel,
-                                  )));
+                              context
+                                  .read<BottomBloc>()
+                                  .add(SetScreenEvent(true,
+                                      screenName: AddJobPositionScreen(
+                                        companyModel: widget.companyModel,
+                                      )));
                               // AppRoutes.push(context, EditListing());
                             },
                             child: Padding(
-                              padding: const EdgeInsets.only(right: 10.0, left: 10),
+                              padding:
+                                  const EdgeInsets.only(right: 10.0, left: 10),
                               child: Container(
-                                decoration: BoxDecoration(color: MyColors.blue, shape: BoxShape.circle),
+                                decoration: BoxDecoration(
+                                    color: MyColors.blue,
+                                    shape: BoxShape.circle),
                                 child: Padding(
                                   padding: const EdgeInsets.all(9.0),
                                   child: Icon(
@@ -140,7 +153,8 @@ class _JobOpeningScreenState extends State<JobOpeningScreen> {
             SizedBox(height: 12),
             SizedBox(height: 5),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 24),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 24),
               child: Stack(
                 children: [
                   Container(
@@ -148,8 +162,8 @@ class _JobOpeningScreenState extends State<JobOpeningScreen> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16),
                       image: DecorationImage(
-                        image:
-                            CachedNetworkImageProvider("${EndPoint.imageBaseUrl}${widget.companyModel?.uploadPhoto}"),
+                        image: CachedNetworkImageProvider(
+                            "${EndPoint.imageBaseUrl}${widget.companyModel?.uploadPhoto}"),
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -183,13 +197,6 @@ class _JobOpeningScreenState extends State<JobOpeningScreen> {
                           fontSize: 20,
                         ),
                         SizedBox(height: 8),
-                        // Description text
-                        CommonText(
-                          text:
-                              "It's a long established fact that reader will directly by the readable content of page when looking at it's layout",
-                          fontColor: MyColors.white,
-                          fontSize: 13,
-                        ),
                       ],
                     ),
                   ),
@@ -198,7 +205,8 @@ class _JobOpeningScreenState extends State<JobOpeningScreen> {
             ),
             SizedBox(height: 10),
             Expanded(
-              child: BlocBuilder<JobPositionBloc, JobPosState>(builder: (context, state) {
+              child: BlocBuilder<JobPositionBloc, JobPosState>(
+                  builder: (context, state) {
                 if (state is JobPosLoading) {
                   return Center(child: CircularProgressIndicator());
                 }
@@ -207,12 +215,15 @@ class _JobOpeningScreenState extends State<JobOpeningScreen> {
                 }
                 if (state is JobPosLoaded) {
                   return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 8.0, horizontal: 15),
                     child: ListView.builder(
                         itemCount: state.jobPosList.length,
                         itemBuilder: (c, i) {
                           var data = state.jobPosList[i];
-                          return JobOpeningTile(jobPosModel: data, companyModel: widget.companyModel);
+                          return JobOpeningTile(
+                              jobPosModel: data,
+                              companyModel: widget.companyModel);
                         }),
                   );
                 }
