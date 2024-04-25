@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/get_declined_job_position/get_denied_job_poision_bloc.dart';
+import 'package:insta_job/bloc/get_declined_job_position/get_denied_job_pos_state.dart';
 import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
 import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
 import 'package:insta_job/bloc/job_position/job_pos_event.dart';
@@ -44,7 +45,7 @@ class _ApplicantsState extends State<Applicants> {
   late JobPosModel? jobPosModel;
   late PageController _pageController;
   String? jobId = "";
-  
+
   @override
   void initState() {
     // TODO: implement initState
@@ -54,9 +55,7 @@ class _ApplicantsState extends State<Applicants> {
     context
         .read<ResumeDetailsCubit>()
         .execute(resumeUrl: jobPosModel?.uploadResume);
-    if (widget.fullFilteredApplicantsList.isNotEmpty) {
-      jobId = widget.fullFilteredApplicantsList[0].jobId;
-    }
+    jobId = jobPosModel?.jobId;
   }
 
   @override
@@ -163,104 +162,126 @@ class _ApplicantsState extends State<Applicants> {
                       child: Padding(
                         padding: const EdgeInsets.only(
                             left: 15.0, right: 15, top: 10),
-                        child: BlocConsumer<JobPositionBloc, JobPosState>(
-                            listener: (context, state) {
-                          // context.read<GetDeniedJobPositionCubit>().execute(
-                          //       // jobId: widget.jobPosModel!.id.toString(),
-                          //       jobId:
-                          //           jobId, //revisit where we're getting jobId
-                          //     );
-                          if (state is SortListDenyState) {
-                            //revisit where we're getting jobId for this section
-                            context.read<GetDeniedJobPositionCubit>().execute(
-                                  // jobId: widget.jobPosModel!.id.toString(),
-                                  jobId: jobId,
-                                );
-                            context
-                                .read<JobPositionBloc>()
-                                .add(AppliedJobListEvent(
-                                  jobId: jobId,
-                                ));
-                          }
+                        child: BlocConsumer<GetDeniedJobPositionCubit,
+                                GetDeniedJobPosState>(
+                            listener: (getDeniedJobPositionCubitContext,
+                                getDeniedJobPositionCubitState) {
+                          // if (getDeniedJobPositionCubitState
+                          //     is GetDeniedJobPosLoaded) {
+                          //   //TODO:(URGENT) unsure on what context is needed for the following
+                          //   getDeniedJobPositionCubitContext
+                          //       .read<JobPositionBloc>()
+                          //       .add(AppliedJobListEvent(
+                          //         jobId:
+                          //             jobId, //TODO: revisit job id received location
+                          //       ));
+                          //   AppRoutes.pop(getDeniedJobPositionCubitContext);
+                          // }
                         }, builder: (context, state) {
-                          return Row(
-                            children: [
-                              tab.selectedTab == 4
-                                  ? SizedBox()
-                                  : Expanded(
-                                      child: CustomButton(
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.055,
-                                      bgColor: MyColors.darkRed,
-                                      title: "Deny",
-                                      onTap: () {
-                                        context.read<JobPositionBloc>().add(
-                                            SortListOrDenyEvent(
-                                                appliedListId:
-                                                    "${jobPosModel?.appliedId}",
-                                                status: "denied"));
-                                        AppRoutes.pop(context);
-                                      },
-                                    )),
-                              tab.selectedTab == 4
-                                  ? SizedBox()
-                                  : SizedBox(width: 15),
-                              Expanded(
-                                  child: CustomButton(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.055,
-                                title: "Contact",
-                                onTap: () {
-                                  debugPrint(
-                                      'jobPosModel: ${jobPosModel?.toJson()}');
-                                  AppRoutes.push(
-                                      context,
-                                      ChatScreen(
-                                        // jobPosModel: jobPosModel,
-                                        // oppId: jobPosModel!.userFirebaseId,
-                                        // selfId: Global.userModel?.firebaseId,\
-                                        chatModel: ChatModel(
-                                            gp:
-                                                "${Global.userModel?.firebaseId}_${jobPosModel!.userFirebaseId}",
-                                            oppId: jobPosModel!.userFirebaseId,
-                                            selfId:
-                                                Global.userModel?.firebaseId,
-                                            jobId: jobPosModel!.jobId,
-                                            oppName: "${jobPosModel?.userName}",
-                                            oppProfilePic:
-                                                "${EndPoint.imageBaseUrl}${jobPosModel?.uploadPhoto}",
-                                            selfName: "${jobPosModel?.empName}",
-                                            selfProfilePic:
-                                                "${EndPoint.imageBaseUrl}${jobPosModel?.uploadPhoto}",
-                                            oppTitle:
-                                                "${jobPosModel?.designation}"),
-                                      ));
-                                },
-                              )),
-                              tab.selectedTab == 1
-                                  ? SizedBox()
-                                  : SizedBox(width: 15),
-                              tab.selectedTab == 1
-                                  ? SizedBox()
-                                  : Expanded(
-                                      child: CustomButton(
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.055,
-                                      title: "Shortlist",
-                                      bgColor: MyColors.cyan,
-                                      onTap: () {
-                                        context.read<JobPositionBloc>().add(
-                                            SortListOrDenyEvent(
-                                                appliedListId:
-                                                    "${jobPosModel?.appliedId}",
-                                                status: "shortlisted"));
-                                        AppRoutes.pop(context);
-                                      },
-                                    )),
-                            ],
-                          );
+                          return BlocConsumer<JobPositionBloc, JobPosState>(
+                              listener: (context, state) {
+                            // context.read<GetDeniedJobPositionCubit>().execute(
+                            //       // jobId: widget.jobPosModel!.id.toString(),
+                            //       jobId:
+                            //           jobId, //revisit where we're getting jobId
+                            //     );
+                            if (state is SortListDenyState) {
+                              //revisit where we're getting jobId for this section
+                              context.read<GetDeniedJobPositionCubit>().execute(
+                                    // jobId: widget.jobPosModel!.id.toString(),
+                                    jobId: jobId,
+                                  );
+                              context
+                                  .read<JobPositionBloc>()
+                                  .add(AppliedJobListEvent(
+                                    jobId: jobId,
+                                  ));
+                            }
+                          }, builder: (context, state) {
+                            return Row(
+                              children: [
+                                tab.selectedTab == 4
+                                    ? SizedBox()
+                                    : Expanded(
+                                        child: CustomButton(
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.055,
+                                        bgColor: MyColors.darkRed,
+                                        title: "Deny",
+                                        loading: state is ShorlistLoading,
+                                        onTap: () {
+                                          context.read<JobPositionBloc>().add(
+                                              SortListOrDenyEvent(
+                                                  appliedListId:
+                                                      "${jobPosModel?.appliedId}",
+                                                  status: "denied"));
+                                          AppRoutes.pop(
+                                              context); //TODO: REMOVE and uncomment listener
+                                        },
+                                      )),
+                                tab.selectedTab == 4
+                                    ? SizedBox()
+                                    : SizedBox(width: 15),
+                                Expanded(
+                                    child: CustomButton(
+                                  height: MediaQuery.of(context).size.height *
+                                      0.055,
+                                  title: "Contact",
+                                  onTap: () {
+                                    debugPrint(
+                                        'jobPosModel: ${jobPosModel?.toJson()}');
+                                    AppRoutes.push(
+                                        context,
+                                        ChatScreen(
+                                          // jobPosModel: jobPosModel,
+                                          // oppId: jobPosModel!.userFirebaseId,
+                                          // selfId: Global.userModel?.firebaseId,\
+                                          chatModel: ChatModel(
+                                              gp:
+                                                  "${Global.userModel?.firebaseId}_${jobPosModel!.userFirebaseId}",
+                                              oppId:
+                                                  jobPosModel!.userFirebaseId,
+                                              selfId:
+                                                  Global.userModel?.firebaseId,
+                                              jobId: jobPosModel!.jobId,
+                                              oppName:
+                                                  "${jobPosModel?.userName}",
+                                              oppProfilePic:
+                                                  "${EndPoint.imageBaseUrl}${jobPosModel?.uploadPhoto}",
+                                              selfName:
+                                                  "${jobPosModel?.empName}",
+                                              selfProfilePic:
+                                                  "${EndPoint.imageBaseUrl}${jobPosModel?.uploadPhoto}",
+                                              oppTitle:
+                                                  "${jobPosModel?.designation}"),
+                                        ));
+                                  },
+                                )),
+                                tab.selectedTab == 1
+                                    ? SizedBox()
+                                    : SizedBox(width: 15),
+                                tab.selectedTab == 1
+                                    ? SizedBox()
+                                    : Expanded(
+                                        child: CustomButton(
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.055,
+                                        title: "Shortlist",
+                                        bgColor: MyColors.cyan,
+                                        onTap: () {
+                                          context.read<JobPositionBloc>().add(
+                                              SortListOrDenyEvent(
+                                                  appliedListId:
+                                                      "${jobPosModel?.appliedId}",
+                                                  status: "shortlisted"));
+                                          AppRoutes.pop(context);
+                                        },
+                                      )),
+                              ],
+                            );
+                          });
                         }),
                       ),
                     ),

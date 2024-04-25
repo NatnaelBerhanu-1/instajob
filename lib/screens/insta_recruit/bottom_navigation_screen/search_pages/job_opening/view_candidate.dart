@@ -277,32 +277,38 @@ class _ViewCandidatesState extends State<ViewCandidates> {
             );
           });
     } else if (state is ApplyErrorState) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(state.error),
-            SizedBox(
-              height: 10,
-            ),
-            CustomButton(
-              title: 'Try again',
-              width: 100,
-              height: 40,
-              onTap: () {
-                context.read<JobPositionBloc>().add(AppliedJobListEvent(
-                      jobId: widget.jobPosModel?.id.toString(),
-                    ));
-              },
-            )
-          ],
-        ),
-      );
+      return _buildShortlistedLoadErrorWidget(state.error);
+    } else if (state is JobErrorState) {
+      return _buildShortlistedLoadErrorWidget(state.error);
     } else {
       return Center(
         child: CircularProgressIndicator(),
       );
     }
+  }
+
+  Center _buildShortlistedLoadErrorWidget(String errorMsg) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(errorMsg),
+          SizedBox(
+            height: 10,
+          ),
+          CustomButton(
+            title: 'Try again',
+            width: 100,
+            height: 40,
+            onTap: () {
+              context.read<JobPositionBloc>().add(AppliedJobListEvent(
+                    jobId: widget.jobPosModel?.id.toString(),
+                  ));
+            },
+          )
+        ],
+      ),
+    );
   }
 
   _buildMessagesList(String? jobId, JobPosState state) {
