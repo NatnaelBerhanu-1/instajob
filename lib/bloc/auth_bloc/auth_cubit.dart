@@ -204,6 +204,7 @@ class AuthCubit extends Cubit<AuthInitialState> {
     String? phoneNumber,
     String? profilePhoto,
     String? dOB,
+    String? resumeOrCv,
   }) async {
     emit(AuthLoadingState());
     ApiResponse response = await authRepository.updateUser(
@@ -211,6 +212,7 @@ class AuthCubit extends Cubit<AuthInitialState> {
       name: name,
       dOB: dOB,
       profilePhoto: profilePhoto,
+      resumeOrCv: resumeOrCv,
     );
     if (response.response.statusCode == 500) {
       emit(ErrorState("Something went wrong"));

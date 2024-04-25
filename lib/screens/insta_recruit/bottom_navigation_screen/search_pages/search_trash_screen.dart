@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:insta_job/bloc/get_declined_job_position/get_denied_job_poision_bloc.dart';
+import 'package:insta_job/bloc/get_declined_job_position/get_denied_job_pos_state.dart';
 import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
 import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
 import 'package:insta_job/bloc/job_position/job_pos_event.dart';
@@ -48,8 +50,9 @@ class _SearchTrashState extends State<SearchTrash> {
         body: Column(
           children: [
             Expanded(
-              child: BlocBuilder<JobPositionBloc, JobPosState>(
-                  builder: (context, appliedState) {
+              child:
+                  BlocBuilder<GetDeniedJobPositionCubit, GetDeniedJobPosState>(
+                      builder: (context, state) {
                 return DefaultTabController(
                     length: 2,
                     child: Column(
@@ -59,10 +62,13 @@ class _SearchTrashState extends State<SearchTrash> {
                           indicatorColor: MyColors.blue,
                           onTap: (val) {
                             if (val == 0) {
-                              context.read<JobPositionBloc>().add(
-                                  AppliedJobListEvent(
-                                      jobId: widget.jobPosModel!.id.toString(),
-                                      status: "denied"));
+                              // context.read<JobPositionBloc>().add(
+                              //     AppliedJobListEvent(
+                              //         jobId: widget.jobPosModel!.id.toString(),
+                              //         status: "denied"));
+                              context.read<GetDeniedJobPositionCubit>().execute(
+                                    jobId: widget.jobPosModel!.id.toString(),
+                                  );
                             }
                           },
                           tabs: [
@@ -72,32 +78,7 @@ class _SearchTrashState extends State<SearchTrash> {
                         ),
                         Expanded(
                             child: TabBarView(children: [
-                          if (appliedState is AppliedJobLoaded) ...[
-                            ListView.builder(
-                                itemCount: appliedState.appliedJobList.length,
-                                itemBuilder: (c, i) {
-                                  return Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 15.0, vertical: 10),
-                                    child: CandidateTile(
-                                      idDeny: true,
-                                      appliedJobModel:
-                                          appliedState
-                                              .appliedJobList[
-                                          i], //TODO: revisit this screen & revisit this property(to remove)
-                                      selectedIndex: i,
-                                      fullFilteredApplicantsList:
-                                          appliedState.appliedOnly,
-                                    ),
-                                  );
-                                }),
-                          ],
-                          if (appliedState is ApplyLoading) ...[
-                            Center(child: CircularProgressIndicator())
-                          ],
-                          if (appliedState is ApplyErrorState) ...[
-                            Center(child: Text(appliedState.error))
-                          ],
+                          _buildDeniedTabBody(state: state),
                           ListView.builder(
                             shrinkWrap: true,
                             itemCount: 4,
@@ -117,5 +98,32 @@ class _SearchTrashState extends State<SearchTrash> {
             // ImageButton(image: ,)
           ],
         ));
+  }
+
+  Widget _buildDeniedTabBody({required GetDeniedJobPosState state}) {
+    if (state is GetDeniedJobPosLoaded) {
+      return ListView.builder(
+          itemCount: state.declinedList.length,
+          itemBuilder: (c, i) {
+            return Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
+              child: CandidateTile(
+                idDeny: true,
+                appliedJobModel: state.declinedList[
+                    i], //TODO: revisit this screen & revisit this property(to remove)
+                selectedIndex: i,
+                fullFilteredApplicantsList: state.declinedList,
+              ),
+            );
+          });
+    }
+    if (state is GetDeniedJobPosLoading) {
+      return Center(child: CircularProgressIndicator());
+    }
+    if (state is GetDeniedJobPosErrorState) {
+      return Center(child: Text(state.message));
+    }
+    return SizedBox.shrink();
   }
 }

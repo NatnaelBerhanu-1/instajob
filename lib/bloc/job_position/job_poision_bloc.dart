@@ -299,6 +299,8 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
         emit(SortListDenyState());
       } else if (response.response.statusCode == 400) {
         emit(JobErrorState(response.response.data['message']));
+      } else {
+        emit(JobErrorState(response.response.data['message']));
       }
     });
 

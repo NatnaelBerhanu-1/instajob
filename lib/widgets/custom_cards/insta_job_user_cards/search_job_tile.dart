@@ -1,6 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
+import 'package:insta_job/bloc/job_position/job_pos_event.dart';
 import 'package:insta_job/model/company_model.dart';
 import 'package:insta_job/model/job_position_model.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/job_opening/job_position_screen.dart';
@@ -135,7 +138,13 @@ class SearchJobTile extends StatelessWidget {
                 Expanded(
                   flex: 0,
                   child: IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      //TODO: implement
+                      context.read<JobPositionBloc>().add(SaveJobPositionEvent(
+                            jobId: jobPosModel!.id.toString(),
+                            jobStatus: jobPosModel!.jobStatus == 1 ? "1" : "0",
+                          ));
+                    },
                     icon: Icon(
                         jobPosModel.jobStatus == 1
                             ? Icons.favorite

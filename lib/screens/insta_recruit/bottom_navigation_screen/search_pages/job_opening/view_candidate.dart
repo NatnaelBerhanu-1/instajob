@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/auth_service.dart';
+import 'package:insta_job/bloc/get_declined_job_position/get_denied_job_poision_bloc.dart';
 import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
 import 'package:insta_job/bloc/global_cubit/global_state.dart';
 import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
@@ -101,10 +102,15 @@ class _ViewCandidatesState extends State<ViewCandidates> {
                   return ImageButton(
                     onTap: () {
                       tab.changeTabValue(4);
-                      AppRoutes.push(context, SearchTrash(jobPosModel: widget.jobPosModel));
+                      // context
+                      //     .read<JobPositionBloc>()
+                      //     .add(AppliedJobListEvent(jobId: widget.jobPosModel!.id.toString(), status: "denied"));
                       context
-                          .read<JobPositionBloc>()
-                          .add(AppliedJobListEvent(jobId: widget.jobPosModel!.id.toString(), status: "denied"));
+                          .read<GetDeniedJobPositionCubit>().execute(
+                            jobId: widget.jobPosModel!.id.toString(),
+                          );
+                      AppRoutes.push(context,
+                          SearchTrash(jobPosModel: widget.jobPosModel));
                     },
                     image: MyImages.delete,
                     height: 19,
