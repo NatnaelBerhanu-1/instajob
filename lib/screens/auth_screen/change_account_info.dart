@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/auth_bloc/auth_cubit.dart';
 import 'package:insta_job/bloc/auth_bloc/auth_state.dart';
 import 'package:insta_job/bloc/choose_image_bloc/pick_image_cubit.dart';
+import 'package:insta_job/bloc/choose_image_bloc/pick_image_state.dart';
 import 'package:insta_job/bloc/validation/validation_bloc.dart';
 import 'package:insta_job/bloc/validation/validation_state.dart';
 import 'package:insta_job/globals.dart';
@@ -259,6 +260,71 @@ class _ChangeAccInfoScreenState extends State<ChangeAccInfoScreen> {
                           uploadPhotoCard(context,
                               isUpdate: true,
                               url: context.read<PickImageCubit>().imgUrl),
+                          SizedBox(height: 12),
+                          BlocBuilder<PickImageCubit, InitialImage>(
+                              buildWhen: (c, state) {
+                            if (state is PickCVImageState ||
+                                state is ClearImageState) {
+                              return true;
+                            }
+                            return false;
+                          }, builder: (context, state) {
+                            // var image = context.read<PickImageCubit>();
+                            if (state is PickCVImageState) {
+                              return Card(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(state.cvUrl.split('/').last),
+                                      // Text(context
+                                      //     .read<PickImageCubit>()
+                                      //     .cvUrl
+                                      //     .split('/')
+                                      //     .last), //TODO: revisit
+                                      IconButton(
+                                          visualDensity: VisualDensity.compact,
+                                          onPressed: () {
+                                            context
+                                                .read<PickImageCubit>()
+                                                .clearCVUrl();
+                                            // setState(() {});
+                                          },
+                                          icon: Icon(
+                                            Icons.clear,
+                                            color: MyColors.red,
+                                          ))
+                                    ],
+                                  ),
+                                ),
+                              );
+                            }
+                            if (state is ClearImageState) {
+                              return SizedBox();
+                            }
+                            return SizedBox();
+                          }),
+                          SizedBox(height: 20),
+                          BlocBuilder<PickImageCubit, InitialImage>(
+                              //   buildWhen: (c, state) {
+                              // if (state is PickCVImageState) {
+                              //   return true;
+                              // }
+                              // return false;
+                              // },
+                              builder: (context, state) {
+                            var image = context.read<PickImageCubit>();
+                            return CustomButton(
+                              title: "Update your CV",
+                              bgColor: MyColors.white,
+                              borderColor: MyColors.blue,
+                              fontColor: MyColors.blue,
+                              onTap: () {
+                                image.getCvImage();
+                              },
+                            );
+                          }),
                           SizedBox(height: 30),
                           BlocBuilder<AuthCubit, AuthInitialState>(
                               builder: (context, state) {
@@ -278,17 +344,24 @@ class _ChangeAccInfoScreenState extends State<ChangeAccInfoScreen> {
                                       selectedDate.isEmpty) {
                                     showToast("Please fill all details");
                                   } else {
-                                    // if (isValid == true) {
                                     if (Global.userModel?.type == "user") {
+                                      var cvUrl = context
+                                          .read<PickImageCubit>()
+                                          .cvUrl
+                                          .split('/')
+                                          .last; //TODO: reconsider changing this,from state
                                       authData.updateUserData(
-                                          profilePhoto: image.imgUrl,
-                                          dOB: selectedDate,
-                                          name: name.text,
-                                          phoneNumber: phone.text);
+                                        profilePhoto: image.imgUrl,
+                                        dOB: selectedDate,
+                                        name: name.text,
+                                        phoneNumber: phone.text,
+                                        resumeOrCv: cvUrl,
+                                      );
                                     } else {
                                       authData.updateEmpData(
-                                          profilePhoto: image.imgUrl,
-                                          name: name.text);
+                                        profilePhoto: image.imgUrl,
+                                        name: name.text,
+                                      );
                                     }
                                     image.clearImgUrl();
                                     // if (widget.isUpdate) {

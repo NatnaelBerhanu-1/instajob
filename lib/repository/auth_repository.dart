@@ -100,6 +100,7 @@ class AuthRepository {
     String? phoneNumber,
     String? profilePhoto,
     String? dOB,
+    String? resumeOrCv,
   }) async {
     try {
       var map = {
@@ -108,7 +109,8 @@ class AuthRepository {
         "email": Global.userModel?.email,
         "date": dOB,
         "phone_number": phoneNumber,
-        "upload_photo": profilePhoto
+        "upload_photo": profilePhoto,
+        "cv": resumeOrCv,
       };
       Response response =
           await dioClient.post(data: map, uri: EndPoint.updateUser);
@@ -123,6 +125,7 @@ class AuthRepository {
     String? companyName,
     // String? phoneNumber,
     String? profilePhoto,
+    String? resumeOrCv,
   }) async {
     try {
       var map = {
@@ -130,7 +133,8 @@ class AuthRepository {
         "company_name": companyName,
         "phone_number": Global.userModel?.phoneNumber,
         "email": "${Global.userModel?.email}",
-        "upload_photo": profilePhoto
+        "upload_photo": profilePhoto,
+        "cv": resumeOrCv,
       };
       Response response =
           await dioClient.post(data: map, uri: EndPoint.employeeUpdate);
