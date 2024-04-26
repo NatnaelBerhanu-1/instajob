@@ -23,6 +23,7 @@ class FeedBackAndAutoMsgBloc extends Bloc<FeedBackEvent, FeedBackState> {
     });
 
     on<InertAutoMsg>((event, emit) async {
+      emit(FeedBackLoading2());
       ApiResponse response = await feedBackRepository.autoMessage(
         applicationReceivedSubject: event.applicationReceivedSubject,
         applicationReceivedContent: event.applicationReceivedContent,
@@ -37,7 +38,40 @@ class FeedBackAndAutoMsgBloc extends Bloc<FeedBackEvent, FeedBackState> {
         emit(const ErrorState("Something went wrong"));
       }
       if (response.response.statusCode == 200) {
-        emit(AutoMsgState());
+        emit(AutoMsgState(
+          enabled: event.autoButton == "0" ? false : true,
+          applicationReceivedSubject: event.applicationReceivedSubject,
+          applicationReceivedContent: event.applicationReceivedContent,
+          disqualifiedReviewSubject: event.disqualifiedReviewSubject,
+          disqualifiedReviewContent: event.disqualifiedReviewContent,
+          shortlistedReviewSubject: event.shortlistedReviewSubject,
+          shortlistedReviewContent: event.shortlistedReviewContent,
+        ));
+
+        if (event.autoButton == "0") {
+          //disabled
+          Global.userModel?.automateMsgBtn = 0;
+          Global.userModel?.applicationReceivedContent = "";
+          Global.userModel?.applicationReceivedSubject = "";
+          Global.userModel?.disqualifiedReviewSubject = "";
+          Global.userModel?.disqualifiedReviewContent = "";
+          Global.userModel?.shortlistedReviewSubject = "";
+          Global.userModel?.shortlistedReviewContent = "";
+        } else if (event.autoButton == "1") {
+          Global.userModel?.automateMsgBtn = 1;
+          Global.userModel?.applicationReceivedContent =
+              event.applicationReceivedContent;
+          Global.userModel?.applicationReceivedSubject =
+              event.applicationReceivedSubject;
+          Global.userModel?.disqualifiedReviewSubject =
+              event.disqualifiedReviewSubject;
+          Global.userModel?.disqualifiedReviewContent =
+              event.disqualifiedReviewContent;
+          Global.userModel?.shortlistedReviewSubject =
+              event.shortlistedReviewSubject;
+          Global.userModel?.shortlistedReviewContent =
+              event.shortlistedReviewContent;
+        }
       } else if (response.response.statusCode == 400) {
         emit(const ErrorState("Not Found"));
       }

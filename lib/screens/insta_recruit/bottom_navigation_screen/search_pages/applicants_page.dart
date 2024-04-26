@@ -56,6 +56,7 @@ class _ApplicantsState extends State<Applicants> {
         .read<ResumeDetailsCubit>()
         .execute(resumeUrl: jobPosModel?.uploadResume);
     jobId = jobPosModel?.jobId;
+    debugPrint("LOG jobId check $jobId");
   }
 
   @override
@@ -166,17 +167,17 @@ class _ApplicantsState extends State<Applicants> {
                                 GetDeniedJobPosState>(
                             listener: (getDeniedJobPositionCubitContext,
                                 getDeniedJobPositionCubitState) {
-                          // if (getDeniedJobPositionCubitState
-                          //     is GetDeniedJobPosLoaded) {
-                          //   //TODO:(URGENT) unsure on what context is needed for the following
-                          //   getDeniedJobPositionCubitContext
-                          //       .read<JobPositionBloc>()
-                          //       .add(AppliedJobListEvent(
-                          //         jobId:
-                          //             jobId, //TODO: revisit job id received location
-                          //       ));
-                          //   AppRoutes.pop(getDeniedJobPositionCubitContext);
-                          // }
+                          if (getDeniedJobPositionCubitState
+                              is GetDeniedJobPosLoaded) {
+                            //TODO:(URGENT) unsure on what context is needed for the following
+                            getDeniedJobPositionCubitContext
+                                .read<JobPositionBloc>()
+                                .add(AppliedJobListEvent(
+                                  jobId:
+                                      jobId, //TODO: revisit job id received location
+                                ));
+                            AppRoutes.pop(getDeniedJobPositionCubitContext);
+                          }
                         }, builder: (context, state) {
                           return BlocConsumer<JobPositionBloc, JobPosState>(
                               listener: (context, state) {

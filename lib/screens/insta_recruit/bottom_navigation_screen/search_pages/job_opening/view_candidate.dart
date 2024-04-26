@@ -200,6 +200,7 @@ class _ViewCandidatesState extends State<ViewCandidates> {
   }
 
   _buildAppliedList(JobPosState state) {
+    debugPrint("LOG another check jobId ${widget.jobPosModel?.id}");
     if (state is AppliedJobLoaded) {
       return ListView.builder(
           itemCount: state.appliedOnly.length,

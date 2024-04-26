@@ -9,6 +9,7 @@ import 'package:insta_job/bloc/choose_image_bloc/pick_image_state.dart';
 import 'package:insta_job/bloc/validation/validation_bloc.dart';
 import 'package:insta_job/bloc/validation/validation_state.dart';
 import 'package:insta_job/globals.dart';
+import 'package:insta_job/screens/auth_screen/pdf_viewing_screen.dart';
 import 'package:insta_job/screens/insta_recruit/user_type_screen.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
@@ -50,6 +51,7 @@ class _ChangeAccInfoScreenState extends State<ChangeAccInfoScreen> {
       selectedDate = model.date ?? "";
       phone.text = model.phoneNumber ?? "";
       userImage.imgUrl = model.uploadPhoto ?? "";
+      userImage.cvUrl = model.cv ?? "";
     } else {
       print("########################## ${model.companyName}");
       name.text = model.companyName ?? "";
@@ -62,8 +64,8 @@ class _ChangeAccInfoScreenState extends State<ChangeAccInfoScreen> {
 
   @override
   void initState() {
-    update();
     super.initState();
+    update();
   }
 
   @override
@@ -270,36 +272,54 @@ class _ChangeAccInfoScreenState extends State<ChangeAccInfoScreen> {
                             return false;
                           }, builder: (context, state) {
                             // var image = context.read<PickImageCubit>();
-                            if (state is PickCVImageState) {
-                              return Card(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 8.0),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text(state.cvUrl.split('/').last),
-                                      // Text(context
-                                      //     .read<PickImageCubit>()
-                                      //     .cvUrl
-                                      //     .split('/')
-                                      //     .last), //TODO: revisit
-                                      IconButton(
-                                          visualDensity: VisualDensity.compact,
-                                          onPressed: () {
-                                            context
-                                                .read<PickImageCubit>()
-                                                .clearCVUrl();
-                                            // setState(() {});
-                                          },
-                                          icon: Icon(
-                                            Icons.clear,
-                                            color: MyColors.red,
-                                          ))
-                                    ],
+                            if (state is PickCVImageState ||
+                                context
+                                    .read<PickImageCubit>()
+                                    .cvUrl
+                                    .isNotEmpty) {
+                              return GestureDetector(
+                                onTap: () {
+                                  AppRoutes.push(
+                                      context,
+                                      PdfViewingScreen(
+                                          cvUrl: context
+                                              .read<PickImageCubit>()
+                                              .cvUrl));
+                                },
+                                child: Card(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 8.0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        // Text(state.cvUrl.split('/').last),
+                                        Text(context
+                                            .read<PickImageCubit>()
+                                            .cvUrl
+                                            .split('/')
+                                            .last), //TODO: revisit
+                                        IconButton(
+                                            visualDensity:
+                                                VisualDensity.compact,
+                                            onPressed: () {
+                                              // context
+                                              //     .read<PickImageCubit>()
+                                              //     .clearCVUrl();
+                                              // setState(() {});
+                                            },
+                                            icon: Icon(
+                                              Icons.clear,
+                                              color: MyColors.red,
+                                            ))
+                                      ],
+                                    ),
                                   ),
                                 ),
                               );
                             }
+                            // if (state is ) { //TODO: REVISIT after adding loading screen
+                            //   return CircularProgressIndicator();
+                            // }
                             if (state is ClearImageState) {
                               return SizedBox();
                             }
@@ -322,6 +342,8 @@ class _ChangeAccInfoScreenState extends State<ChangeAccInfoScreen> {
                               fontColor: MyColors.blue,
                               onTap: () {
                                 image.getCvImage();
+                                debugPrint(
+                                    "LOG here cv img -> ${image.cvUrl} ORR? ${Global.userModel?.cv}");
                               },
                             );
                           }),

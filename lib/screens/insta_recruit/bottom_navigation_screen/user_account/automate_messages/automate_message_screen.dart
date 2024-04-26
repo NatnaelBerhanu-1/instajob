@@ -37,28 +37,28 @@ class _AutomateMsgScreenState extends State<AutomateMsgScreen> {
   final formKey = GlobalKey<FormState>();
 
   getData() {
-    if (Global.userModel!.automateMsgBtn == 1) {
-      applicationReceivedContent.text =
-          "${Global.userModel!.applicationReceivedContent}";
-      applicationReceivedSubject.text =
-          "${Global.userModel!.applicationReceivedSubject}";
-      disqualifiedReviewSubject.text =
-          "${Global.userModel!.disqualifiedReviewSubject}";
-      disqualifiedReviewContent.text =
-          "${Global.userModel!.disqualifiedReviewContent}";
-      shortlistedReviewSubject.text =
-          "${Global.userModel!.shortlistedReviewSubject}";
-      shortlistedReviewContent.text =
-          "${Global.userModel!.shortlistedReviewContent}";
-    }
+    // if (Global.userModel!.automateMsgBtn == 1) {
+    // applicationReceivedContent.text =
+    //     "${Global.userModel!.applicationReceivedContent}";
+    // applicationReceivedSubject.text =
+    //     "${Global.userModel!.applicationReceivedSubject}";
+    // disqualifiedReviewSubject.text =
+    //     "${Global.userModel!.disqualifiedReviewSubject}";
+    // disqualifiedReviewContent.text =
+    //     "${Global.userModel!.disqualifiedReviewContent}";
+    // shortlistedReviewSubject.text =
+    //     "${Global.userModel!.shortlistedReviewSubject}";
+    // shortlistedReviewContent.text =
+    //     "${Global.userModel!.shortlistedReviewContent}";
+    // }
     isEnable = Global.userModel!.automateMsgBtn == 1 ? true : false;
     setState(() {});
   }
 
   @override
   void initState() {
-    getData();
     super.initState();
+    getData();
   }
 
   @override
@@ -218,8 +218,18 @@ class _AutomateMsgScreenState extends State<AutomateMsgScreen> {
                       fontColor: MyColors.grey,
                     ),
                     SizedBox(height: 25),
-                    BlocBuilder<FeedBackAndAutoMsgBloc, FeedBackState>(
-                        builder: (context, snapshot) {
+                    BlocConsumer<FeedBackAndAutoMsgBloc, FeedBackState>(
+                        listener: (context, state) {
+                      debugPrint("listener hereee, feedbackAndAutoMsgBloc");
+                      if (state is AutoMsgState) {
+                        if (state.enabled == true) {
+                          Global.userModel?.automateMsgBtn = 1;
+                        } else {
+                          Global.userModel?.automateMsgBtn = 0;
+                        }
+                        AppRoutes.pop(context);
+                      }
+                    }, builder: (context, snapshot) {
                       return CustomIconButton(
                         image:
                             !isEnable ? MyImages.arrowWhite : MyImages.cancel2x,
@@ -229,8 +239,12 @@ class _AutomateMsgScreenState extends State<AutomateMsgScreen> {
                             !isEnable ? MyColors.blue : MyColors.white,
                         fontColor: !isEnable ? MyColors.white : MyColors.blue,
                         borderColor: MyColors.blue,
+                        loading: false,
+                        // loading: snapshot is FeedBackLoading2,
                         onclick: () {
-                          if (formKey.currentState!.validate()) {
+                          if (isEnable == false ||
+                              formKey.currentState!.validate()) {
+                            // if it's disabled, probably no need to validate
                             isEnable = !isEnable;
                             setState(() {});
                             context

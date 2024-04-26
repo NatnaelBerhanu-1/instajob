@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/choose_image_bloc/pick_image_cubit.dart';
 import 'package:insta_job/bloc/company_bloc/company_bloc.dart';
+import 'package:insta_job/bloc/feedback_bloc/feedback_bloc.dart';
+import 'package:insta_job/bloc/feedback_bloc/feedback_state.dart';
 import 'package:insta_job/bloc/global_cubit/global_state.dart';
 import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
 import 'package:insta_job/bloc/job_position/job_pos_event.dart';
@@ -83,13 +85,22 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
       debugPrint('uploadPhoto${uploadPhoto.imgUrl}');
     } else {
       if (Global.userModel?.automateMsgBtn == 1) {
-        var model = Global.userModel!;
-        applicationReceivedSubject.text = model.applicationReceivedSubject!;
-        applicationReceivedContent.text = model.applicationReceivedContent!;
-        disqualifiedReviewSubject.text = model.disqualifiedReviewSubject!;
-        disqualifiedReviewContent.text = model.disqualifiedReviewContent!;
-        shortlistedReviewSubject.text = model.shortlistedReviewSubject!;
-        shortlistedReviewContent.text = model.shortlistedReviewContent!;
+        // var model = Global.userModel!;
+        // applicationReceivedSubject.text = model.applicationReceivedSubject!;
+        // applicationReceivedContent.text = model.applicationReceivedContent!;
+        // disqualifiedReviewSubject.text = model.disqualifiedReviewSubject!;
+        // disqualifiedReviewContent.text = model.disqualifiedReviewContent!;
+        // shortlistedReviewSubject.text = model.shortlistedReviewSubject!;
+        // shortlistedReviewContent.text = model.shortlistedReviewContent!;
+        var model = Global.userModel;
+        applicationReceivedSubject.text =
+            model?.applicationReceivedSubject ?? "";
+        applicationReceivedContent.text =
+            model?.applicationReceivedContent ?? "";
+        disqualifiedReviewSubject.text = model?.disqualifiedReviewSubject ?? "";
+        disqualifiedReviewContent.text = model?.disqualifiedReviewContent ?? "";
+        shortlistedReviewSubject.text = model?.shortlistedReviewSubject ?? "";
+        shortlistedReviewContent.text = model?.shortlistedReviewContent ?? "";
       }
       uploadPhoto.imgUrl = Global.userModel?.uploadPhoto ?? '';
       debugPrint('uploadPhoto${uploadPhoto.imgUrl}');
@@ -99,9 +110,9 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
   @override
   void initState() {
     // if (widget.isUpdate) {
-    updateData();
     // }
     super.initState();
+    updateData();
   }
 
   @override
@@ -669,113 +680,154 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                       uploadPhotoCard(context,
                           isUpdate: widget.isUpdate, url: uploadPhoto.imgUrl),
                       SizedBox(height: 20),
-                      Global.userModel?.automateMsgBtn == 0
-                          ? CommonText(
-                              text:
-                                  "Kindly enable automate message for better experience",
-                              fontSize: 12,
-                              fontColor: MyColors.blue,
-                            )
-                          : Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                CommonText(
-                                  text: "Application Received",
-                                  fontSize: 16,
-                                ),
-                                SizedBox(height: 10),
-                                CommonText(
+                      BlocConsumer<FeedBackAndAutoMsgBloc, FeedBackState>(
+                          listener: (feedBackAndAutoMsgContext,
+                              feedBackAndAutoMsgState) {
+                        if (feedBackAndAutoMsgState is AutoMsgState &&
+                            feedBackAndAutoMsgState?.enabled == true) {
+                          applicationReceivedSubject.text =
+                              feedBackAndAutoMsgState
+                                      .applicationReceivedSubject ??
+                                  "";
+                          applicationReceivedContent.text =
+                              feedBackAndAutoMsgState
+                                      .applicationReceivedContent ??
+                                  "";
+                          disqualifiedReviewSubject.text =
+                              feedBackAndAutoMsgState
+                                      .disqualifiedReviewSubject ??
+                                  "";
+                          disqualifiedReviewContent.text =
+                              feedBackAndAutoMsgState
+                                      .disqualifiedReviewContent ??
+                                  "";
+                          shortlistedReviewSubject.text =
+                              feedBackAndAutoMsgState
+                                      .shortlistedReviewSubject ??
+                                  "";
+                          shortlistedReviewContent.text =
+                              feedBackAndAutoMsgState
+                                      .shortlistedReviewContent ??
+                                  "";
+                          setState(() {});
+                        }
+                      }, builder: (feedBackAndAutoMsgContext,
+                              feedBackAndAutoMsgState) {
+                        return Container(
+                          child: Global.userModel?.automateMsgBtn == 0
+                              // child: feedBackAndAutoMsgState is AutoMsgState &&
+                              //         feedBackAndAutoMsgState?.enabled == true
+                              ? CommonText(
                                   text:
-                                      "Automated reply sent when candidate apply",
-                                  fontSize: 13,
-                                  fontColor: MyColors.grey,
+                                      "Kindly enable automate message for better experience",
+                                  fontSize: 12,
+                                  fontColor: MyColors.blue,
+                                )
+                              : Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    CommonText(
+                                      text: "Application Received",
+                                      fontSize: 16,
+                                    ),
+                                    SizedBox(height: 10),
+                                    CommonText(
+                                      text:
+                                          "Automated reply sent when candidate apply",
+                                      fontSize: 13,
+                                      fontColor: MyColors.grey,
+                                    ),
+                                    SizedBox(height: 10),
+                                    CommonText(
+                                      text:
+                                          "Ask screening questions to speed up process",
+                                      fontSize: 13,
+                                      fontColor: MyColors.grey,
+                                    ),
+                                    SizedBox(height: 20),
+                                    CustomTextField(
+                                      controller: applicationReceivedSubject,
+                                      label: "Subject",
+                                      hint:
+                                          "Your application at [Company Name]",
+                                    ),
+                                    SizedBox(height: 20),
+                                    CustomTextField(
+                                      controller: applicationReceivedContent,
+                                      hint: "",
+                                      label: "Content",
+                                      maxLine: 5,
+                                    ),
+                                    SizedBox(height: 20),
+                                    CommonText(
+                                      text:
+                                          "To insert dynamic information,you can use [firstName],[lastName],[companyName] or [jobTitle]",
+                                      fontSize: 13,
+                                      fontColor: MyColors.grey,
+                                    ),
+                                    SizedBox(height: 25),
+                                    CommonText(
+                                      text: "Disqualified after review",
+                                      fontSize: 16,
+                                    ),
+                                    SizedBox(height: 10),
+                                    CommonText(
+                                      text:
+                                          "This will be sent the morning after rejecting a candidate",
+                                      fontSize: 13,
+                                      fontColor: MyColors.grey,
+                                    ),
+                                    SizedBox(height: 20),
+                                    CustomTextField(
+                                      controller: disqualifiedReviewSubject,
+                                      label: "Subject",
+                                      hint:
+                                          "Your application at [Company Name]",
+                                    ),
+                                    SizedBox(height: 20),
+                                    CustomTextField(
+                                      controller: disqualifiedReviewContent,
+                                      hint: "",
+                                      label: "Content",
+                                      maxLine: 5,
+                                    ),
+                                    SizedBox(height: 20),
+                                    CommonText(
+                                      text:
+                                          "To insert dynamic information,you can use [firstName],[lastName],[companyName] or [jobTitle]",
+                                      fontSize: 13,
+                                      fontColor: MyColors.grey,
+                                    ),
+                                    SizedBox(height: 25),
+                                    CommonText(
+                                      text: "Shortlisted after review",
+                                      fontSize: 16,
+                                    ),
+                                    SizedBox(height: 10),
+                                    CustomTextField(
+                                      controller: shortlistedReviewSubject,
+                                      label: "Subject",
+                                      hint:
+                                          "Your application at [Company Name]",
+                                    ),
+                                    SizedBox(height: 20),
+                                    CustomTextField(
+                                      controller: shortlistedReviewContent,
+                                      hint: "",
+                                      label: "Content",
+                                      maxLine: 5,
+                                    ),
+                                    SizedBox(height: 20),
+                                    CommonText(
+                                      text:
+                                          "To insert dynamic information,you can use [firstName],[lastName],[companyName] or [jobTitle]",
+                                      fontSize: 13,
+                                      fontColor: MyColors.grey,
+                                    ),
+                                  ],
                                 ),
-                                SizedBox(height: 10),
-                                CommonText(
-                                  text:
-                                      "Ask screening questions to speed up process",
-                                  fontSize: 13,
-                                  fontColor: MyColors.grey,
-                                ),
-                                SizedBox(height: 20),
-                                CustomTextField(
-                                  controller: applicationReceivedSubject,
-                                  label: "Subject",
-                                  hint: "Your application at [Company Name]",
-                                ),
-                                SizedBox(height: 20),
-                                CustomTextField(
-                                  controller: applicationReceivedContent,
-                                  hint: "",
-                                  label: "Content",
-                                  maxLine: 5,
-                                ),
-                                SizedBox(height: 20),
-                                CommonText(
-                                  text:
-                                      "To insert dynamic information,you can use [firstName],[lastName],[companyName] or [jobTitle]",
-                                  fontSize: 13,
-                                  fontColor: MyColors.grey,
-                                ),
-                                SizedBox(height: 25),
-                                CommonText(
-                                  text: "Disqualified after review",
-                                  fontSize: 16,
-                                ),
-                                SizedBox(height: 10),
-                                CommonText(
-                                  text:
-                                      "This will be sent the morning after rejecting a candidate",
-                                  fontSize: 13,
-                                  fontColor: MyColors.grey,
-                                ),
-                                SizedBox(height: 20),
-                                CustomTextField(
-                                  controller: disqualifiedReviewSubject,
-                                  label: "Subject",
-                                  hint: "Your application at [Company Name]",
-                                ),
-                                SizedBox(height: 20),
-                                CustomTextField(
-                                  controller: disqualifiedReviewContent,
-                                  hint: "",
-                                  label: "Content",
-                                  maxLine: 5,
-                                ),
-                                SizedBox(height: 20),
-                                CommonText(
-                                  text:
-                                      "To insert dynamic information,you can use [firstName],[lastName],[companyName] or [jobTitle]",
-                                  fontSize: 13,
-                                  fontColor: MyColors.grey,
-                                ),
-                                SizedBox(height: 25),
-                                CommonText(
-                                  text: "Shortlisted after review",
-                                  fontSize: 16,
-                                ),
-                                SizedBox(height: 10),
-                                CustomTextField(
-                                  controller: shortlistedReviewSubject,
-                                  label: "Subject",
-                                  hint: "Your application at [Company Name]",
-                                ),
-                                SizedBox(height: 20),
-                                CustomTextField(
-                                  controller: shortlistedReviewContent,
-                                  hint: "",
-                                  label: "Content",
-                                  maxLine: 5,
-                                ),
-                                SizedBox(height: 20),
-                                CommonText(
-                                  text:
-                                      "To insert dynamic information,you can use [firstName],[lastName],[companyName] or [jobTitle]",
-                                  fontSize: 13,
-                                  fontColor: MyColors.grey,
-                                ),
-                              ],
-                            ),
+                        );
+                      }),
                       SizedBox(height: 20),
                       BlocConsumer<JobPositionBloc, JobPosState>(
                           listener: (context, state) {

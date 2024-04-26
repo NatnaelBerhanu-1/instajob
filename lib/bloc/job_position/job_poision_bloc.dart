@@ -314,7 +314,7 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
       if (response.response.statusCode == 500) {
         emit(const JobErrorState("Something went wrong"));
       }
-      if (response.response.statusCode == 200) {
+      else if (response.response.statusCode == 200) {
         emit(SortListDenyState());
       } else if (response.response.statusCode == 400) {
         emit(JobErrorState(response.response.data['message']));
