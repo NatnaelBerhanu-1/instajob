@@ -317,9 +317,9 @@ class _ChangeAccInfoScreenState extends State<ChangeAccInfoScreen> {
                                 ),
                               );
                             }
-                            // if (state is ) { //TODO: REVISIT after adding loading screen
-                            //   return CircularProgressIndicator();
-                            // }
+                            if (state is LoadingImageState) {
+                              return CircularProgressIndicator();
+                            }
                             if (state is ClearImageState) {
                               return SizedBox();
                             }
