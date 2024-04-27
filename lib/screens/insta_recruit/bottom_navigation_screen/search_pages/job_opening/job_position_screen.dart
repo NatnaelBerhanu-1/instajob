@@ -268,6 +268,7 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
             }
           }, builder: (context, state) {
             if (state is JobPosLoading) {
+              //we can remove this loading widget for better UX maybe, revisit
               return Center(child: CircularProgressIndicator());
             }
             return Positioned(

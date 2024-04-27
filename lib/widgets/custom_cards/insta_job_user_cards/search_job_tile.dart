@@ -152,16 +152,17 @@ class SearchJobTile extends StatelessWidget {
                       //   );
                       // }
                       return IconButton(
-                        onPressed: () {
-                          //TODO: implement
-                          context
-                              .read<JobPositionBloc>()
-                              .add(SaveJobPositionEvent(
-                                jobId: jobPosModel!.id.toString(),
-                                jobStatus:
-                                    jobPosModel!.jobStatus == 1 ? "1" : "0",
-                              ));
-                        },
+                        onPressed: null,
+                        // onPressed: () {
+                        //   //TODO: implement
+                        //   context
+                        //       .read<JobPositionBloc>()
+                        //       .add(SaveJobPositionEvent(
+                        //         jobId: jobPosModel!.id.toString(),
+                        //         jobStatus:
+                        //             jobPosModel!.jobStatus == 1 ? "1" : "0",
+                        //       ));
+                        // },
                         icon: Icon(
                             jobPosModel.jobStatus == 1
                                 ? Icons.favorite

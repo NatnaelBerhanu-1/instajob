@@ -27,16 +27,16 @@ class ConfirmDetailsScreen extends StatefulWidget {
 
 class _ConfirmDetailsScreenState extends State<ConfirmDetailsScreen> {
   TextEditingController name =
-  TextEditingController(text: Global.userModel?.name);
+      TextEditingController(text: Global.userModel?.name);
   TextEditingController phoneNumber =
-  TextEditingController(text: "${Global.userModel?.phoneNumber}");
+      TextEditingController(text: "${Global.userModel?.phoneNumber}");
   TextEditingController previousWork = TextEditingController(
       text: "Work with software company for 2 years, Freelancing on fiverr");
   TextEditingController passion = TextEditingController(
       text:
-      "I am capable and consistent problem solver skilled at prioritizing and managing projects with proficiency");
+          "I am capable and consistent problem solver skilled at prioritizing and managing projects with proficiency");
   TextEditingController skills =
-  TextEditingController(text: "Photoshop\nAdobe XD\nUI/UX designing");
+      TextEditingController(text: "Photoshop\nAdobe XD\nUI/UX designing");
   String nameVal = "";
   String phone = "";
   String passionVal = "";
@@ -55,7 +55,7 @@ class _ConfirmDetailsScreenState extends State<ConfirmDetailsScreen> {
         padding: const EdgeInsets.all(20.0),
         child: SingleChildScrollView(
           child:
-          BlocBuilder<ResumeBloc, ResumeState>(builder: (context, state) {
+              BlocBuilder<ResumeBloc, ResumeState>(builder: (context, state) {
             var resumeData = context.read<ResumeBloc>();
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -152,14 +152,13 @@ class _ConfirmDetailsScreenState extends State<ConfirmDetailsScreen> {
                   onTap: () {
                     // upload_resume
                     CoverLetterModel coverLetterModel = CoverLetterModel(
-                        phoneNumber:
-                        phone.isEmpty ? phoneNumber.text : phone,
+                        phoneNumber: phone.isEmpty ? phoneNumber.text : phone,
                         yourName: nameVal.isEmpty ? name.text : nameVal,
                         previousWork: pWork.isEmpty ? previousWork.text : pWork,
                         yourPassion:
-                        passionVal.isEmpty ? passion.text : passionVal,
+                            passionVal.isEmpty ? passion.text : passionVal,
                         yourTop5Skills:
-                        skillVal.isEmpty ? skills.text : skillVal);
+                            skillVal.isEmpty ? skills.text : skillVal);
                     resumeData.add(AddResumeEvent(coverLetterModel));
                     AppRoutes.push(
                         context,

@@ -34,8 +34,8 @@ class _CoverLetterScreenState extends State<CoverLetterScreen> {
   @override
   void initState() {
     // TODO: implement initState
-    controller.text =
-        "Dear Hiring Manager,\nJob Title: ${widget.jobPosModel?.designation}\n${widget.coverLetterModel.previousWork}\n${widget.coverLetterModel.yourPassion}\nPlease take a moment to review my attached resume and credentials.\nSincerely\n${widget.coverLetterModel.yourName}";
+    // controller.text =
+    //     "Dear Hiring Manager,\nJob Title: ${widget.jobPosModel?.designation}\n${widget.coverLetterModel.previousWork}\n${widget.coverLetterModel.yourPassion}\nPlease take a moment to review my attached resume and credentials.\nSincerely\n${widget.coverLetterModel.yourName}";
     super.initState();
   }
 
@@ -49,18 +49,18 @@ class _CoverLetterScreenState extends State<CoverLetterScreen> {
           preferredSize: Size(double.infinity, kToolbarHeight),
           child: CustomAppBar(
             title: "Cover Letter",
-            actions: IconButton(
-                onPressed: () {
-                  String text =
-                      "Dear Hiring Manager,\nJob Title: ${widget.jobPosModel?.designation}\n${widget.coverLetterModel.previousWork}\n${widget.coverLetterModel.yourPassion}\nPlease take a moment to review my attached resume and credentials.\nSincerely\n${widget.coverLetterModel.yourName}";
-                  Clipboard.setData(ClipboardData(text: text)).then((value) {
-                    showToast("Copied", isError: false);
-                  });
-                },
-                icon: Icon(
-                  Icons.copy,
-                  color: MyColors.blue,
-                )),
+            // actions: IconButton(
+            //     onPressed: () {
+            //       String text =
+            //           "Dear Hiring Manager,\nJob Title: ${widget.jobPosModel?.designation}\n${widget.coverLetterModel.previousWork}\n${widget.coverLetterModel.yourPassion}\nPlease take a moment to review my attached resume and credentials.\nSincerely\n${widget.coverLetterModel.yourName}";
+            //       Clipboard.setData(ClipboardData(text: text)).then((value) {
+            //         showToast("Copied", isError: false);
+            //       });
+            //     },
+            //     icon: Icon(
+            //       Icons.copy,
+            //       color: MyColors.blue,
+            //     )),
           )),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -96,9 +96,10 @@ class _CoverLetterScreenState extends State<CoverLetterScreen> {
               ),*/
               TextFormField(
                 maxLines: 18,
-                controller: TextEditingController(
-                    text:
-                        "Dear Hiring Manager,\n\nJob Title: ${widget.jobPosModel?.designation}\n\n${widget.coverLetterModel.previousWork}\n\n${widget.coverLetterModel.yourPassion}\n\nPlease take a moment to review my attached resume and credentials.\n\nThank you for your consideration\n\nSincerely\n${widget.coverLetterModel.yourName}"),
+                // controller: TextEditingController(
+                //     text:
+                //         "Dear Hiring Manager,\n\nJob Title: ${widget.jobPosModel?.designation}\n\n${widget.coverLetterModel.previousWork}\n\n${widget.coverLetterModel.yourPassion}\n\nPlease take a moment to review my attached resume and credentials.\n\nThank you for your consideration\n\nSincerely\n${widget.coverLetterModel.yourName}"),
+                controller: controller,
                 decoration: InputDecoration(
                   border: border,
                   focusedBorder: border,
@@ -110,11 +111,16 @@ class _CoverLetterScreenState extends State<CoverLetterScreen> {
               ),
               SizedBox(height: 30),
               CustomButton(
-                title: "Re-Generate",
-                fontColor: MyColors.white,
+                title: "Copy Job Description",
+                bgColor: MyColors.white,
+                fontColor: MyColors.black,
                 borderColor: MyColors.blue,
                 onTap: () {
-                  Navigator.pop(context);
+                  Clipboard.setData(ClipboardData(
+                          text: widget.jobPosModel?.jobDetails ?? ""))
+                      .then((value) {
+                    showToast("Job description copied", isError: false);
+                  });
                 },
               ),
               SizedBox(height: 30),
