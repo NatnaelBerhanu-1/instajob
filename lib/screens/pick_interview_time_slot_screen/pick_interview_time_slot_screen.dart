@@ -1,22 +1,27 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
+import 'package:intl/intl.dart';
+
 import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
 import 'package:insta_job/bloc/job_position/job_pos_event.dart';
 import 'package:insta_job/globals.dart';
-import 'package:insta_job/model/job_position_model.dart';
-import 'package:insta_job/widgets/custom_button/custom_btn.dart';
-import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
-import 'package:intl/intl.dart';
-
 import 'package:insta_job/utils/my_colors.dart';
-import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_app_bar.dart';
+import 'package:insta_job/widgets/custom_button/custom_btn.dart';
 
 class BookSlotScreen extends StatefulWidget {
-  final JobPosModel? jobPosModel;
-  const BookSlotScreen({super.key, required this.jobPosModel});
+  final String companyId;
+  final String jobId;
+  final String userId;
+  const BookSlotScreen({
+    Key? key,
+    required this.companyId,
+    required this.jobId,
+    required this.userId,
+  }) : super(key: key);
 
   @override
   State<BookSlotScreen> createState() => _BookSlotScreenState();
@@ -238,13 +243,14 @@ class _BookSlotScreenState extends State<BookSlotScreen> {
               var dateFormat = DateFormat("hh:mm");
               String? formatTime = dateFormat.format(date);
               TimeOfDay timeOfDay = TimeOfDay.now();
+              debugPrint("${widget.companyId},${widget.jobId},${widget.userId} ");
               var setupInterviewEvent = SetInterviewEvent(
-                time: formatTime,
+                time: selectedTimeSlot?.time.toIso8601String(),
                 timeType: timeOfDay.period.name.toUpperCase(),
                 employeeId: Global.userModel?.id.toString(),
-                companyId: "${widget.jobPosModel?.companyId}",
-                jobId: widget.jobPosModel?.jobId.toString(),
-                userId: widget.jobPosModel?.userId.toString(),
+                companyId: widget.companyId,
+                jobId: widget.jobId.toString(),
+                userId: widget.userId.toString(),
               );
               debugPrint('InterviewEvent: ${setupInterviewEvent.toJson()}');
               context.read<JobPositionBloc>().add(setupInterviewEvent);

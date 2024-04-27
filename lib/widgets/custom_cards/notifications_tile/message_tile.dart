@@ -3,10 +3,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:insta_job/globals.dart';
 import 'package:insta_job/model/chat_model.dart';
-import 'package:insta_job/model/job_position_model.dart';
-import 'package:insta_job/network/end_points.dart';
 import 'package:insta_job/screens/chat_screen.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_colors.dart';

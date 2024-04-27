@@ -16,20 +16,23 @@ class ChatModel {
   final String? selfProfilePic;
   final String? oppProfilePic;
   final String? oppTitle;
-  ChatModel({
-    this.oppId,
-    this.selfId,
-    required this.gp,
-    this.msg,
-    this.userName,
-    this.profile,
-    this.jobId,
-    this.oppName,
-    this.selfName,
-    this.selfProfilePic,
-    this.oppProfilePic,
-    this.oppTitle,
-  });
+  final String? companyId;
+  final String? userId;
+  ChatModel(
+      {this.oppId,
+      this.selfId,
+      required this.gp,
+      this.msg,
+      this.userName,
+      this.profile,
+      this.jobId,
+      this.oppName,
+      this.selfName,
+      this.selfProfilePic,
+      this.oppProfilePic,
+      this.oppTitle,
+      this.companyId,
+      this.userId});
 
   Map<String, dynamic> getMessageData() {
     return <String, dynamic>{
@@ -40,7 +43,7 @@ class ChatModel {
       'profile': profile,
       'jobId': jobId,
       'group': gp,
-      'time': FieldValue.serverTimestamp()
+      'time': FieldValue.serverTimestamp(),
     };
   }
 
@@ -55,6 +58,8 @@ class ChatModel {
       'oppProfilePic': oppProfilePic,
       'selfProfilePic': selfProfilePic,
       'oppTitle': oppTitle,
+      'companyId': companyId,
+      'userId': userId
     };
   }
 
@@ -72,39 +77,44 @@ class ChatModel {
       selfProfilePic: map['selfProfilePic'] != null ? map['selfProfilePic'] as String : null,
       oppProfilePic: map['oppProfilePic'] != null ? map['oppProfilePic'] as String : null,
       oppTitle: map['oppTitle'] != null ? map['oppTitle'] as String : null,
+      companyId: map['companyId'] != null ? map['companyId'] as String : null,
+      userId: map['userId'] != null ? map['userId'] as String : null,
+
     );
   }
 
   factory ChatModel.fromJson(String source) => ChatModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
-  ChatModel copyWith({
-    String? oppId,
-    String? selfId,
-    String? gp,
-    String? msg,
-    String? userName,
-    String? profile,
-    String? jobId,
-    String? oppName,
-    String? selfName,
-    String? selfProfilePic,
-    String? oppProfilePic,
-    String? oppTitle,
-  }) {
+  ChatModel copyWith(
+      {String? oppId,
+      String? selfId,
+      String? gp,
+      String? msg,
+      String? userName,
+      String? profile,
+      String? jobId,
+      String? oppName,
+      String? selfName,
+      String? selfProfilePic,
+      String? oppProfilePic,
+      String? oppTitle,
+      String? companyId,
+      String? userId}) {
     return ChatModel(
-      oppId: oppId ?? this.oppId,
-      selfId: selfId ?? this.selfId,
-      gp: gp ?? this.gp,
-      msg: msg ?? this.msg,
-      userName: userName ?? this.userName,
-      profile: profile ?? this.profile,
-      jobId: jobId ?? this.jobId,
-      oppName: oppName ?? this.oppName,
-      selfName: selfName ?? this.selfName,
-      selfProfilePic: selfProfilePic ?? this.selfProfilePic,
-      oppProfilePic: oppProfilePic ?? this.oppProfilePic,
-      oppTitle: oppTitle ?? this.oppTitle,
-    );
+        oppId: oppId ?? this.oppId,
+        selfId: selfId ?? this.selfId,
+        gp: gp ?? this.gp,
+        msg: msg ?? this.msg,
+        userName: userName ?? this.userName,
+        profile: profile ?? this.profile,
+        jobId: jobId ?? this.jobId,
+        oppName: oppName ?? this.oppName,
+        selfName: selfName ?? this.selfName,
+        selfProfilePic: selfProfilePic ?? this.selfProfilePic,
+        oppProfilePic: oppProfilePic ?? this.oppProfilePic,
+        oppTitle: oppTitle ?? this.oppTitle,
+        companyId: companyId ?? this.userId,
+        userId: userId ?? this.userId);
   }
 
   Map<String, dynamic> toMap() {
@@ -121,6 +131,7 @@ class ChatModel {
       'selfProfilePic': selfProfilePic,
       'oppProfilePic': oppProfilePic,
       'oppTitle': oppTitle,
+      'companyId': companyId
     };
   }
 

@@ -10,6 +10,7 @@ import 'package:insta_job/bloc/global_cubit/global_state.dart';
 import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
 import 'package:insta_job/bloc/job_position/job_pos_event.dart';
 import 'package:insta_job/bloc/job_position/job_pos_state.dart';
+import 'package:insta_job/globals.dart';
 import 'package:insta_job/model/chat_model.dart';
 import 'package:insta_job/model/company_model.dart';
 import 'package:insta_job/model/job_position_model.dart';
@@ -164,6 +165,7 @@ class _ViewCandidatesState extends State<ViewCandidates> {
                       }),
                       Expanded(child: BlocBuilder<JobPositionBloc, JobPosState>(builder: (context, appliedState) {
                         debugPrint('State:$appliedState');
+                        debugPrint('CompanyId: ${widget.companyModel?.id}');
                         return TabBarView(children: [
                           _buildAppliedList(appliedState),
                           _buildShortlistedList(appliedState),
@@ -318,6 +320,7 @@ class _ViewCandidatesState extends State<ViewCandidates> {
           stream: FirebaseFirestore.instance
               .collection(AuthService.chatCollection)
               .where("jobId", isEqualTo: jobId)
+              .where("selfId", isEqualTo: Global.userModel?.firebaseId)
               .snapshots(),
           builder: (context, AsyncSnapshot<dynamic> snapshot) {
             if (snapshot.hasData) {

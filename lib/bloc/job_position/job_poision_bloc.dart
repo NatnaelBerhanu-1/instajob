@@ -78,6 +78,7 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
 
   _getAppliedJobs(Emitter emit, {String? jobId, String? status}) async {
     emit(ApplyLoading());
+    debugPrint('JobId:$jobId'); 
     ApiResponse response = await jobPositionRepository.getAppliedJob(jobId: jobId, status: status);
     if (response.response.statusCode == 500) {
       emit(const ApplyErrorState('Something went wrong'));

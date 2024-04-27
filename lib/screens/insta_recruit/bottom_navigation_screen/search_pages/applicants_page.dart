@@ -210,9 +210,6 @@ class _ApplicantsState extends State<Applicants> {
                                     AppRoutes.push(
                                         context,
                                         ChatScreen(
-                                          // jobPosModel: jobPosModel,
-                                          // oppId: jobPosModel!.userFirebaseId,
-                                          // selfId: Global.userModel?.firebaseId,\
                                           chatModel: ChatModel(
                                               gp: "${Global.userModel?.firebaseId}_${jobPosModel!.userFirebaseId}",
                                               oppId: jobPosModel!.userFirebaseId,
@@ -222,7 +219,9 @@ class _ApplicantsState extends State<Applicants> {
                                               oppProfilePic: "${EndPoint.imageBaseUrl}${jobPosModel?.uploadPhoto}",
                                               selfName: "${jobPosModel?.empName}",
                                               selfProfilePic: "${EndPoint.imageBaseUrl}${jobPosModel?.uploadPhoto}",
-                                              oppTitle: "${jobPosModel?.designation}"),
+                                              oppTitle: "${jobPosModel?.designation}",
+                                              companyId: jobPosModel?.companyId.toString(),
+                                              userId: jobPosModel?.userId.toString()),
                                         ));
                                   },
                                 )),
