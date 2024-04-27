@@ -119,7 +119,13 @@ class _ChatScreenState extends State<ChatScreen> {
                                   //     context,
                                   //     PickTimeDialog(
                                   //         jobPosModel: widget.jobPosModel));
-                                  // AppRoutes.push(context, BookSlotScreen(jobPosModel: widget.jobPosModel));
+                                  AppRoutes.push(
+                                      context,
+                                      BookSlotScreen(
+                                        companyId: widget.chatModel.companyId.toString(),
+                                        jobId: widget.chatModel.jobId.toString(),
+                                        userId: widget.chatModel.userId.toString(),
+                                      ));
                                 },
                                 borderRadius: BorderRadius.circular(20),
                                 borderColor: MyColors.blue,

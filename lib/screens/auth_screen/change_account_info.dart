@@ -286,26 +286,28 @@ class _ChangeAccInfoScreenState extends State<ChangeAccInfoScreen> {
                             return SizedBox();
                           }),
                           SizedBox(height: 20),
-                          BlocBuilder<PickImageCubit, InitialImage>(
-                              //   buildWhen: (c, state) {
-                              // if (state is PickCVImageState) {
-                              //   return true;
-                              // }
-                              // return false;
-                              // },
-                              builder: (context, state) {
-                            var image = context.read<PickImageCubit>();
-                            return CustomButton(
-                              title: "Update your CV",
-                              bgColor: MyColors.white,
-                              borderColor: MyColors.blue,
-                              fontColor: MyColors.blue,
-                              onTap: () {
-                                image.getCvImage();
-                                debugPrint("LOG here cv img -> ${image.cvUrl} ORR? ${Global.userModel?.cv}");
-                              },
-                            );
-                          }),
+                          Global.userModel?.type == "user"
+                              ? BlocBuilder<PickImageCubit, InitialImage>(
+                                  //   buildWhen: (c, state) {
+                                  // if (state is PickCVImageState) {
+                                  //   return true;
+                                  // }
+                                  // return false;
+                                  // },
+                                  builder: (context, state) {
+                                  var image = context.read<PickImageCubit>();
+                                  return CustomButton(
+                                    title: "Update your CV",
+                                    bgColor: MyColors.white,
+                                    borderColor: MyColors.blue,
+                                    fontColor: MyColors.blue,
+                                    onTap: () {
+                                      image.getCvImage();
+                                      debugPrint("LOG here cv img -> ${image.cvUrl} ORR? ${Global.userModel?.cv}");
+                                    },
+                                  );
+                                })
+                              : SizedBox(),
                           SizedBox(height: 30),
                           BlocBuilder<AuthCubit, AuthInitialState>(builder: (context, state) {
                             var authData = context.read<AuthCubit>();
