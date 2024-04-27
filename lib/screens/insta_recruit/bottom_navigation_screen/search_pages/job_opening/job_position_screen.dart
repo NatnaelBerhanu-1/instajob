@@ -31,8 +31,7 @@ class JobPositionScreen extends StatefulWidget {
   final JobPosModel? jobPosModel;
   final CompanyModel? companyModel;
 
-  const JobPositionScreen({Key? key, this.jobPosModel, this.companyModel})
-      : super(key: key);
+  const JobPositionScreen({Key? key, this.jobPosModel, this.companyModel}) : super(key: key);
 
   @override
   State<JobPositionScreen> createState() => _JobPositionScreenState();
@@ -84,8 +83,9 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                     //     SetScreenEvent(true, screenName: SearchJobsScreen()));
                     // context.read<GlobalCubit>().changeIndex(1);
                   } else {
-                    context.read<JobPositionBloc>().add(LoadJobPosListEvent(
-                        companyId: widget.jobPosModel!.companyId.toString()));
+                    context
+                        .read<JobPositionBloc>()
+                        .add(LoadJobPosListEvent(companyId: widget.jobPosModel!.companyId.toString()));
                     Navigator.of(context).pop();
                     // context.read<BottomBloc>().add(SetScreenEvent(true,
                     //     screenName: JobOpeningScreen(
@@ -124,13 +124,10 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                         height: MediaQuery.of(context).size.height,
                         decoration: BoxDecoration(
                           color: MyColors.white,
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(20),
-                              topRight: Radius.circular(20)),
+                          borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
                         ),
                         child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 15, horizontal: 20),
+                            padding: const EdgeInsets.fromLTRB(20, 15, 20, 0),
                             child: SingleChildScrollView(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -161,13 +158,10 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      ImageButton(
-                                          image: MyImages.bag,
-                                          padding: EdgeInsets.zero),
+                                      ImageButton(image: MyImages.bag, padding: EdgeInsets.zero),
                                       SizedBox(width: 5),
                                       CommonText(
-                                        text:
-                                            "${widget.jobPosModel?.designation}",
+                                        text: "${widget.jobPosModel?.designation}",
                                         fontColor: MyColors.blue,
                                         fontSize: 15,
                                       ),
@@ -189,17 +183,12 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                                   buildResponsibilityTile(widget.jobPosModel!),
                                   buildTopSkillsTile(widget.jobPosModel!),
                                   SizedBox(height: 15),
-                                  BlocBuilder<BottomBloc, BottomInitialState>(
-                                      builder: (context, value) {
+                                  BlocBuilder<BottomBloc, BottomInitialState>(builder: (context, value) {
                                     return Global.userModel?.type == "user"
                                         ? CustomButton(
                                             title: "Apply",
                                             onTap: () {
-                                              AppRoutes.push(
-                                                  context,
-                                                  ApplyScreen(
-                                                      jobPosModel:
-                                                          widget.jobPosModel));
+                                              AppRoutes.push(context, ApplyScreen(jobPosModel: widget.jobPosModel));
                                             },
                                           )
                                         : Row(
@@ -208,18 +197,13 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                                                   child: CustomButton(
                                                 title: "Edit Listing",
                                                 onTap: () {
-                                                  context
-                                                      .read<BottomBloc>()
-                                                      .add(SetScreenEvent(true,
-                                                          screenName: AddJobPositionScreen(
-                                                              jobPosModel: widget
-                                                                  .jobPosModel,
-                                                              companyModel: widget
-                                                                  .companyModel,
-                                                              isUpdate: true)));
+                                                  context.read<BottomBloc>().add(SetScreenEvent(true,
+                                                      screenName: AddJobPositionScreen(
+                                                          jobPosModel: widget.jobPosModel,
+                                                          companyModel: widget.companyModel,
+                                                          isUpdate: true)));
 
-                                                  AppRoutes.push(context,
-                                                      BottomNavScreen());
+                                                  AppRoutes.push(context, BottomNavScreen());
                                                 },
                                               )),
                                               SizedBox(width: 15),
@@ -230,10 +214,8 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                                                   AppRoutes.push(
                                                       context,
                                                       ViewCandidates(
-                                                          jobPosModel: widget
-                                                              .jobPosModel,
-                                                          companyModel: widget
-                                                              .companyModel));
+                                                          jobPosModel: widget.jobPosModel,
+                                                          companyModel: widget.companyModel));
                                                   // context
                                                   //     .read<BottomBloc>()
                                                   //     .add(SetScreenEvent(
@@ -245,8 +227,7 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                                                   //                 .companyModel)));
                                                   // AppRoutes.push(context,
                                                   //     BottomNavScreen());
-                                                  print(
-                                                      "JOB ID ${widget.jobPosModel?.id.toString()}");
+                                                  print("JOB ID ${widget.jobPosModel?.id.toString()}");
                                                 },
                                               )),
                                             ],
@@ -260,8 +241,7 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                   ],
                 ),
               )),
-          BlocConsumer<JobPositionBloc, JobPosState>(
-              listener: (context, state) {
+          BlocConsumer<JobPositionBloc, JobPosState>(listener: (context, state) {
             if (state is SaveJobPosLoaded) {
               context.read<JobPositionBloc>().add(
                   LoadJobPosListEvent()); //temp soln should work, but the bloc is apparently refetching data after liking anyways, so #todo: consider using it
@@ -279,9 +259,7 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                       onTap: () {
                         isSaved = !isSaved;
                         setState(() {});
-                        context
-                            .read<JobPositionBloc>()
-                            .add(SaveJobPositionEvent(
+                        context.read<JobPositionBloc>().add(SaveJobPositionEvent(
                               jobId: widget.jobPosModel!.id.toString(),
                               jobStatus: isSaved ? "1" : "0",
                             ));
@@ -290,9 +268,7 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                       borderRadius: BorderRadius.circular(10),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Icon(
-                            isSaved ? Icons.favorite : Icons.favorite_border,
-                            color: MyColors.white),
+                        child: Icon(isSaved ? Icons.favorite : Icons.favorite_border, color: MyColors.white),
                       ),
                     )
                   : SizedBox(),

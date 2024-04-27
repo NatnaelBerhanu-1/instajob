@@ -51,9 +51,7 @@ class AuthRepository {
               "fcm_token": "1234",
               "firebase_id": FirebaseAuth.instance.currentUser?.uid,
             };
-      Response response = await dioClient.post(
-          data: map,
-          uri: isUser ? EndPoint.registerUser : EndPoint.registerEmp);
+      Response response = await dioClient.post(data: map, uri: isUser ? EndPoint.registerUser : EndPoint.registerEmp);
       return ApiResponse.withSuccess(response);
     } on DioException catch (e) {
       return ApiResponse.withError(e.response);
@@ -71,8 +69,7 @@ class AuthRepository {
         "email": email,
         "password": password,
       };
-      Response response = await dioClient.post(
-          data: map, uri: isUser ? EndPoint.loginUser : EndPoint.loginEmp);
+      Response response = await dioClient.post(data: map, uri: isUser ? EndPoint.loginUser : EndPoint.loginEmp);
       return ApiResponse.withSuccess(response);
     } on DioException catch (e) {
       print(" RESPONCE 99999999999999999990 ${e.response}");
@@ -86,8 +83,7 @@ class AuthRepository {
       var map = {
         "email": email,
       };
-      Response response =
-          await dioClient.post(data: map, uri: EndPoint.checkUser);
+      Response response = await dioClient.post(data: map, uri: EndPoint.checkUser);
       return ApiResponse.withSuccess(response);
     } on DioException catch (e) {
       return ApiResponse.withError(e.response);
@@ -112,8 +108,7 @@ class AuthRepository {
         "upload_photo": profilePhoto,
         "cv": resumeOrCv,
       };
-      Response response =
-          await dioClient.post(data: map, uri: EndPoint.updateUser);
+      Response response = await dioClient.post(data: map, uri: EndPoint.updateUser);
       return ApiResponse.withSuccess(response);
     } on DioException catch (e) {
       return ApiResponse.withError(e.response);
@@ -136,8 +131,7 @@ class AuthRepository {
         "upload_photo": profilePhoto,
         "cv": resumeOrCv,
       };
-      Response response =
-          await dioClient.post(data: map, uri: EndPoint.employeeUpdate);
+      Response response = await dioClient.post(data: map, uri: EndPoint.employeeUpdate);
       return ApiResponse.withSuccess(response);
     } on DioException catch (e) {
       return ApiResponse.withError(e.response);
@@ -159,20 +153,17 @@ class AuthRepository {
   Future<ApiResponse> sendCodeOnEmail({required String email}) async {
     try {
       var map = {"email": email};
-      Response response =
-          await dioClient.post(data: map, uri: EndPoint.sendCode);
+      Response response = await dioClient.post(data: map, uri: EndPoint.sendCode);
       return ApiResponse.withSuccess(response);
     } on DioException catch (e) {
       return ApiResponse.withError(e.response);
     }
   }
 
-  Future<ApiResponse> checkEmailVerificationCode(
-      {required String email, required String code}) async {
+  Future<ApiResponse> checkEmailVerificationCode({required String email, required String code}) async {
     try {
       var map = {"email": email, "email_code": code};
-      Response response =
-          await dioClient.post(data: map, uri: EndPoint.checkVerificationCode);
+      Response response = await dioClient.post(data: map, uri: EndPoint.checkVerificationCode);
       return ApiResponse.withSuccess(response);
     } on DioException catch (e) {
       return ApiResponse.withError(e.response);
@@ -206,8 +197,7 @@ class AuthRepository {
   checkPhoneNumber(String phoneNumber) async {
     try {
       var map = {"phone_number": phoneNumber};
-      Response response =
-          await dioClient.post(data: map, uri: EndPoint.checkPhoneNumber);
+      Response response = await dioClient.post(data: map, uri: EndPoint.checkPhoneNumber);
       return ApiResponse.withSuccess(response);
     } on DioException catch (e) {
       return ApiResponse.withError(e.response);
@@ -215,12 +205,10 @@ class AuthRepository {
   }
 
   /// CHANGE PASSWORD
-  Future<ApiResponse> changePassword(
-      {required String password, required String email}) async {
+  Future<ApiResponse> changePassword({required String password, required String email}) async {
     try {
       var map = {"password": password, "email": email};
-      Response response =
-          await dioClient.post(data: map, uri: EndPoint.changePassword);
+      Response response = await dioClient.post(data: map, uri: EndPoint.changePassword);
       return ApiResponse.withSuccess(response);
     } on DioException catch (e) {
       return ApiResponse.withError(e.response);

@@ -18,9 +18,8 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
       emit(const JobErrorState("Something went wrong"));
     }
     if (response.response.statusCode == 200) {
-      List<JobPosModel> jobPosList = (response.response.data['data'] as List)
-          .map((e) => JobPosModel.fromJson(e))
-          .toList();
+      List<JobPosModel> jobPosList =
+          (response.response.data['data'] as List).map((e) => JobPosModel.fromJson(e)).toList();
       emit(JobPosLoaded(jobPosList));
       return jobPosList;
     } else {
@@ -34,9 +33,8 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
       emit(const JobErrorState("Something went wrong"));
     }
     if (response.response.statusCode == 200) {
-      List<JobPosModel> jobPosList = (response.response.data['data'] as List)
-          .map((e) => JobPosModel.fromJson(e))
-          .toList();
+      List<JobPosModel> jobPosList =
+          (response.response.data['data'] as List).map((e) => JobPosModel.fromJson(e)).toList();
       emit(SaveJobPosLoaded(jobPosList));
       return jobPosList;
     } else {
@@ -50,9 +48,7 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
       emit(const JobErrorState('Something went wrong'));
     }
     if (response.response.statusCode == 200) {
-      List<JobPosModel> list = (response.response.data['data'] as List)
-          .map((e) => JobPosModel.fromJson(e))
-          .toList();
+      List<JobPosModel> list = (response.response.data['data'] as List).map((e) => JobPosModel.fromJson(e)).toList();
       emit(JobSearchLoaded(list));
       print('LISTTT ------------            $list');
       return list;
@@ -64,17 +60,13 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
   }
 
   List<JobDistanceModel> jobDistanceList = [];
-  _getJobDistanceLocator(Emitter emit,
-      {String? designation, String? miles}) async {
-    ApiResponse response = await jobPositionRepository.jobDistanceLocator(
-        designation: designation, miles: miles);
+  _getJobDistanceLocator(Emitter emit, {String? designation, String? miles}) async {
+    ApiResponse response = await jobPositionRepository.jobDistanceLocator(designation: designation, miles: miles);
     if (response.response.statusCode == 500) {
       emit(const JobErrorState('Something went wrong'));
     }
     if (response.response.statusCode == 200) {
-      jobDistanceList = (response.response.data['data'] as List)
-          .map((e) => JobDistanceModel.fromJson(e))
-          .toList();
+      jobDistanceList = (response.response.data['data'] as List).map((e) => JobDistanceModel.fromJson(e)).toList();
       print('JOB LIST ------------            $jobDistanceList');
       return jobDistanceList;
     } else if (response.response.statusCode == 400) {
@@ -86,16 +78,14 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
 
   _getAppliedJobs(Emitter emit, {String? jobId, String? status}) async {
     emit(ApplyLoading());
-    ApiResponse response =
-        await jobPositionRepository.getAppliedJob(jobId: jobId, status: status);
+    ApiResponse response = await jobPositionRepository.getAppliedJob(jobId: jobId, status: status);
     if (response.response.statusCode == 500) {
       emit(const ApplyErrorState('Something went wrong'));
     }
     if (response.response.statusCode == 200) {
       debugPrint('response ${response.response.data['data']}');
-      List<JobPosModel> list = (response.response.data['data'] as List)
-          .map((e) => JobPosModel.fromJson(e).copyWith(jobId: jobId))
-          .toList();
+      List<JobPosModel> list =
+          (response.response.data['data'] as List).map((e) => JobPosModel.fromJson(e).copyWith(jobId: jobId)).toList();
 
       // Defining lists for filtering
       List<JobPosModel> appliedOnly = [];
@@ -122,8 +112,8 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
       // iterate over the list and get the score
       var requests = <Future<int>>[];
       for (JobPosModel job in list) {
-        requests.add(jobPositionRepository.getJobMatchScore(job.userId!,
-            job.jobDetails!, "${EndPoint.imageBaseUrl}${job.uploadResume}"));
+        requests.add(jobPositionRepository.getJobMatchScore(
+            job.userId!, job.jobDetails!, "${EndPoint.imageBaseUrl}${job.uploadResume}"));
       }
       try {
         var result = await Future.wait(requests, eagerError: true);
@@ -161,8 +151,7 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
   JobPositionBloc(this.jobPositionRepository) : super(JobPosInitialState()) {
     on<LoadJobPosListEvent>((event, emit) async {
       emit(JobPosLoading());
-      List<JobPosModel> jobPosList =
-          await _getJobPositionList(emit, id: event.companyId);
+      List<JobPosModel> jobPosList = await _getJobPositionList(emit, id: event.companyId);
       emit(JobPosLoaded(jobPosList));
       if (jobPosList.isEmpty) {
         emit(const JobErrorState("Data not found"));
@@ -195,8 +184,7 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
           emit(const JobErrorState("Something went wrong"));
         }
         if (response.response.statusCode == 200) {
-          List<JobPosModel> jobPosList =
-              await _getJobPositionList(emit, id: event.companyId);
+          List<JobPosModel> jobPosList = await _getJobPositionList(emit, id: event.companyId);
           emit(JobPosLoaded(jobPosList));
           // navigationKey.currentState?.pop();
         } else if (response.response.statusCode == 400) {
@@ -227,8 +215,7 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
           emit(const JobErrorState("Something went wrong"));
         }
         if (response.response.statusCode == 200) {
-          List<JobPosModel> jobPosList =
-              await _getJobPositionList(emit, id: event.companyId);
+          List<JobPosModel> jobPosList = await _getJobPositionList(emit, id: event.companyId);
           showToast("Job Position Updated Successfully", isError: true);
           // navigationKey.currentState?.pop();
           emit(JobPosLoaded(jobPosList));
@@ -240,8 +227,7 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
 
     on<SaveJobPositionEvent>((event, emit) async {
       emit(JobPosLoading());
-      ApiResponse response = await jobPositionRepository.saveJob(
-          jobId: event.jobId, jobStatus: event.jobStatus);
+      ApiResponse response = await jobPositionRepository.saveJob(jobId: event.jobId, jobStatus: event.jobStatus);
       if (response.response.statusCode == 500) {
         emit(const JobErrorState("Something went wrong"));
       }
@@ -260,8 +246,7 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
     });
 
     on<DeleteJobPositionEvent>((event, emit) async {
-      ApiResponse response =
-          await jobPositionRepository.deleteJobPosition(jobId: event.jobId);
+      ApiResponse response = await jobPositionRepository.deleteJobPosition(jobId: event.jobId);
       if (response.response.statusCode == 500) {
         emit(const JobErrorState("Something went wrong"));
       }
@@ -284,16 +269,14 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
 
     on<JobDistanceLocatorEvent>((event, emit) async {
       emit(JobPosLoading());
-      jobDistanceList = await _getJobDistanceLocator(emit,
-          miles: event.miles, designation: event.designation);
+      jobDistanceList = await _getJobDistanceLocator(emit, miles: event.miles, designation: event.designation);
       emit(JobDistanceLoaded(jobDistanceList));
       // emit(JobPosInitialState());
     });
 
     on<ApplyJobEvent>((event, emit) async {
       emit(JobPosLoading());
-      ApiResponse response = await jobPositionRepository.applyForJob(
-          jobId: event.jobId, resume: event.resume);
+      ApiResponse response = await jobPositionRepository.applyForJob(jobId: event.jobId, resume: event.resume);
       if (response.response.statusCode == 500) {
         emit(const JobErrorState("Something went wrong"));
       }
@@ -304,17 +287,15 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
       }
     });
 
-    on<AppliedJobListEvent>((event, emit) =>
-        _getAppliedJobs(emit, jobId: event.jobId, status: event.status));
+    on<AppliedJobListEvent>((event, emit) => _getAppliedJobs(emit, jobId: event.jobId, status: event.status));
 
     on<SortListOrDenyEvent>((event, emit) async {
       emit(ShorlistLoading());
-      ApiResponse response = await jobPositionRepository.shortlistOrDenied(
-          appliedListId: event.appliedListId, status: event.status);
+      ApiResponse response =
+          await jobPositionRepository.shortlistOrDenied(appliedListId: event.appliedListId, status: event.status);
       if (response.response.statusCode == 500) {
         emit(const JobErrorState("Something went wrong"));
-      }
-      else if (response.response.statusCode == 200) {
+      } else if (response.response.statusCode == 200) {
         emit(SortListDenyState());
       } else if (response.response.statusCode == 400) {
         emit(JobErrorState(response.response.data['message']));

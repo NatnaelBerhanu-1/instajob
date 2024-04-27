@@ -52,9 +52,7 @@ class _ApplicantsState extends State<Applicants> {
     super.initState();
     jobPosModel = widget.fullFilteredApplicantsList[widget.selectedIndex];
     _pageController = PageController(initialPage: widget.selectedIndex);
-    context
-        .read<ResumeDetailsCubit>()
-        .execute(resumeUrl: jobPosModel?.uploadResume);
+    context.read<ResumeDetailsCubit>().execute(resumeUrl: jobPosModel?.uploadResume);
     jobId = jobPosModel?.jobId;
     debugPrint("LOG jobId check $jobId");
   }
@@ -103,17 +101,14 @@ class _ApplicantsState extends State<Applicants> {
           onPageChanged: (i) {
             setState(() {
               jobPosModel = widget.fullFilteredApplicantsList[i];
-              context
-                  .read<ResumeDetailsCubit>()
-                  .execute(resumeUrl: jobPosModel?.uploadResume);
+              context.read<ResumeDetailsCubit>().execute(resumeUrl: jobPosModel?.uploadResume);
             });
           },
           itemCount: widget.fullFilteredApplicantsList.length,
           itemBuilder: (context, index) {
             return SingleChildScrollView(
               child: ConstrainedBox(
-                constraints: BoxConstraints(
-                    maxHeight: MediaQuery.of(context).size.height),
+                constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height),
                 child: Column(
                   children: [
                     Row(
@@ -128,8 +123,7 @@ class _ApplicantsState extends State<Applicants> {
                           percent: (jobPosModel?.matchScore ?? 0) / 100,
                           center: Text(
                             "${jobPosModel?.matchScore ?? 0}% Match",
-                            style:
-                                TextStyle(fontSize: 12, color: MyColors.blue),
+                            style: TextStyle(fontSize: 12, color: MyColors.blue),
                           ),
                           barRadius: Radius.circular(5),
                           progressColor: Colors.blue.shade100,
@@ -146,10 +140,7 @@ class _ApplicantsState extends State<Applicants> {
                               color: MyColors.white,
                               borderRadius: BorderRadius.circular(10),
                               boxShadow: [
-                                BoxShadow(
-                                    color: MyColors.grey.withOpacity(.10),
-                                    spreadRadius: 5,
-                                    blurRadius: 8)
+                                BoxShadow(color: MyColors.grey.withOpacity(.10), spreadRadius: 5, blurRadius: 8)
                               ]),
                           child: SfPdfViewer.network(
                             "${EndPoint.imageBaseUrl}${jobPosModel?.uploadResume}",
@@ -161,42 +152,36 @@ class _ApplicantsState extends State<Applicants> {
                     Expanded(
                       flex: 0,
                       child: Padding(
-                        padding: const EdgeInsets.only(
-                            left: 15.0, right: 15, top: 10),
-                        child: BlocConsumer<GetDeniedJobPositionCubit,
-                                GetDeniedJobPosState>(
-                            listener: (getDeniedJobPositionCubitContext,
-                                getDeniedJobPositionCubitState) {
-                          if (getDeniedJobPositionCubitState
-                              is GetDeniedJobPosLoaded) {
+                        padding: const EdgeInsets.only(left: 15.0, right: 15, top: 10),
+                        child: BlocConsumer<GetDeniedJobPositionCubit, GetDeniedJobPosState>(
+                            listener: (getDeniedJobPositionCubitContext, getDeniedJobPositionCubitState) {
+                          if (getDeniedJobPositionCubitState is SortListDenyState) {
                             //TODO:(URGENT) unsure on what context is needed for the following
-                            getDeniedJobPositionCubitContext
-                                .read<JobPositionBloc>()
-                                .add(AppliedJobListEvent(
-                                  jobId:
-                                      jobId, //TODO: revisit job id received location
+                            getDeniedJobPositionCubitContext.read<JobPositionBloc>().add(AppliedJobListEvent(
+                                  jobId: jobId, //TODO: revisit job id received location
                                 ));
+
                             AppRoutes.pop(getDeniedJobPositionCubitContext);
                           }
                         }, builder: (context, state) {
-                          return BlocConsumer<JobPositionBloc, JobPosState>(
-                              listener: (context, state) {
+                          return BlocConsumer<JobPositionBloc, JobPosState>(listener: (context, state) {
                             // context.read<GetDeniedJobPositionCubit>().execute(
                             //       // jobId: widget.jobPosModel!.id.toString(),
                             //       jobId:
                             //           jobId, //revisit where we're getting jobId
                             //     );
+                            debugPrint('State123:$state');
+
                             if (state is SortListDenyState) {
                               //revisit where we're getting jobId for this section
                               context.read<GetDeniedJobPositionCubit>().execute(
                                     // jobId: widget.jobPosModel!.id.toString(),
                                     jobId: jobId,
                                   );
-                              context
-                                  .read<JobPositionBloc>()
-                                  .add(AppliedJobListEvent(
+                              context.read<JobPositionBloc>().add(AppliedJobListEvent(
                                     jobId: jobId,
                                   ));
+                              AppRoutes.pop(context);
                             }
                           }, builder: (context, state) {
                             return Row(
@@ -205,33 +190,23 @@ class _ApplicantsState extends State<Applicants> {
                                     ? SizedBox()
                                     : Expanded(
                                         child: CustomButton(
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                0.055,
+                                        height: MediaQuery.of(context).size.height * 0.055,
                                         bgColor: MyColors.darkRed,
                                         title: "Deny",
                                         loading: state is ShorlistLoading,
                                         onTap: () {
-                                          context.read<JobPositionBloc>().add(
-                                              SortListOrDenyEvent(
-                                                  appliedListId:
-                                                      "${jobPosModel?.appliedId}",
-                                                  status: "denied"));
-                                          AppRoutes.pop(
-                                              context); //TODO: REMOVE and uncomment listener
+                                          context.read<JobPositionBloc>().add(SortListOrDenyEvent(
+                                              appliedListId: "${jobPosModel?.appliedId}", status: "denied"));
+                                          // AppRoutes.pop(context); //TODO: REMOVE and uncomment listener
                                         },
                                       )),
-                                tab.selectedTab == 4
-                                    ? SizedBox()
-                                    : SizedBox(width: 15),
+                                tab.selectedTab == 4 ? SizedBox() : SizedBox(width: 15),
                                 Expanded(
                                     child: CustomButton(
-                                  height: MediaQuery.of(context).size.height *
-                                      0.055,
+                                  height: MediaQuery.of(context).size.height * 0.055,
                                   title: "Contact",
                                   onTap: () {
-                                    debugPrint(
-                                        'jobPosModel: ${jobPosModel?.toJson()}');
+                                    debugPrint('jobPosModel: ${jobPosModel?.toJson()}');
                                     AppRoutes.push(
                                         context,
                                         ChatScreen(
@@ -239,45 +214,30 @@ class _ApplicantsState extends State<Applicants> {
                                           // oppId: jobPosModel!.userFirebaseId,
                                           // selfId: Global.userModel?.firebaseId,\
                                           chatModel: ChatModel(
-                                              gp:
-                                                  "${Global.userModel?.firebaseId}_${jobPosModel!.userFirebaseId}",
-                                              oppId:
-                                                  jobPosModel!.userFirebaseId,
-                                              selfId:
-                                                  Global.userModel?.firebaseId,
+                                              gp: "${Global.userModel?.firebaseId}_${jobPosModel!.userFirebaseId}",
+                                              oppId: jobPosModel!.userFirebaseId,
+                                              selfId: Global.userModel?.firebaseId,
                                               jobId: jobPosModel!.jobId,
-                                              oppName:
-                                                  "${jobPosModel?.userName}",
-                                              oppProfilePic:
-                                                  "${EndPoint.imageBaseUrl}${jobPosModel?.uploadPhoto}",
-                                              selfName:
-                                                  "${jobPosModel?.empName}",
-                                              selfProfilePic:
-                                                  "${EndPoint.imageBaseUrl}${jobPosModel?.uploadPhoto}",
-                                              oppTitle:
-                                                  "${jobPosModel?.designation}"),
+                                              oppName: "${jobPosModel?.userName}",
+                                              oppProfilePic: "${EndPoint.imageBaseUrl}${jobPosModel?.uploadPhoto}",
+                                              selfName: "${jobPosModel?.empName}",
+                                              selfProfilePic: "${EndPoint.imageBaseUrl}${jobPosModel?.uploadPhoto}",
+                                              oppTitle: "${jobPosModel?.designation}"),
                                         ));
                                   },
                                 )),
-                                tab.selectedTab == 1
-                                    ? SizedBox()
-                                    : SizedBox(width: 15),
+                                tab.selectedTab == 1 ? SizedBox() : SizedBox(width: 15),
                                 tab.selectedTab == 1
                                     ? SizedBox()
                                     : Expanded(
                                         child: CustomButton(
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                0.055,
+                                        height: MediaQuery.of(context).size.height * 0.055,
                                         title: "Shortlist",
                                         bgColor: MyColors.cyan,
+                                        loading: state is ShorlistLoading,
                                         onTap: () {
-                                          context.read<JobPositionBloc>().add(
-                                              SortListOrDenyEvent(
-                                                  appliedListId:
-                                                      "${jobPosModel?.appliedId}",
-                                                  status: "shortlisted"));
-                                          AppRoutes.pop(context);
+                                          context.read<JobPositionBloc>().add(SortListOrDenyEvent(
+                                              appliedListId: "${jobPosModel?.appliedId}", status: "shortlisted"));
                                         },
                                       )),
                               ],
@@ -288,8 +248,7 @@ class _ApplicantsState extends State<Applicants> {
                     ),
                     SizedBox(height: 15),
                     Expanded(
-                      child: BlocBuilder<ResumeBloc, ResumeState>(
-                          builder: (context, state) {
+                      child: BlocBuilder<ResumeBloc, ResumeState>(builder: (context, state) {
                         var resumeData = context.read<ResumeBloc>();
                         return DefaultTabController(
                             length: 5,
@@ -300,8 +259,7 @@ class _ApplicantsState extends State<Applicants> {
                                   isScrollable: true,
                                   unselectedLabelColor: MyColors.tabClr,
                                   indicatorColor: MyColors.blue,
-                                  indicatorPadding:
-                                      EdgeInsets.symmetric(horizontal: 4),
+                                  indicatorPadding: EdgeInsets.symmetric(horizontal: 4),
                                   tabs: [
                                     Tab(text: "Bio"),
                                     Tab(text: "Education"),
@@ -312,8 +270,7 @@ class _ApplicantsState extends State<Applicants> {
                                 ),
                                 Expanded(
                                     child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 15.0, horizontal: 15),
+                                  padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 15),
                                   child: TabBarView(
                                     children: [
                                       _buildBioSection(),
@@ -337,12 +294,10 @@ class _ApplicantsState extends State<Applicants> {
   }
 
   _buildEducationSection() {
-    return BlocBuilder<ResumeDetailsCubit, ResumeDetailsState>(
-        builder: (context, state) {
+    return BlocBuilder<ResumeDetailsCubit, ResumeDetailsState>(builder: (context, state) {
       if (state is ResumeDetailsSuccess) {
         ResumeDetailModel resumeDetail = state.resumeDetail;
-        List<EducationDetail>? educationDetailList =
-            resumeDetail?.educationDetail;
+        List<EducationDetail>? educationDetailList = resumeDetail?.educationDetail;
         if (educationDetailList == null) {
           return Center(
             child: Text("No data"),
@@ -376,8 +331,7 @@ class _ApplicantsState extends State<Applicants> {
   }
 
   _buildExperienceSection() {
-    return BlocBuilder<ResumeDetailsCubit, ResumeDetailsState>(
-        builder: (context, state) {
+    return BlocBuilder<ResumeDetailsCubit, ResumeDetailsState>(builder: (context, state) {
       if (state is ResumeDetailsSuccess) {
         ResumeDetailModel resumeDetail = state.resumeDetail;
         List<Experience>? experienceList = resumeDetail.experience;
@@ -414,8 +368,7 @@ class _ApplicantsState extends State<Applicants> {
   }
 
   _buildSkillsSection() {
-    return BlocBuilder<ResumeDetailsCubit, ResumeDetailsState>(
-        builder: (context, state) {
+    return BlocBuilder<ResumeDetailsCubit, ResumeDetailsState>(builder: (context, state) {
       if (state is ResumeDetailsSuccess) {
         ResumeDetailModel resumeDetail = state.resumeDetail;
         List<String>? skillsList = resumeDetail?.skills;
@@ -464,8 +417,7 @@ class _ApplicantsState extends State<Applicants> {
   }
 
   _buildBioSection() {
-    return BlocBuilder<ResumeDetailsCubit, ResumeDetailsState>(
-        builder: (context, state) {
+    return BlocBuilder<ResumeDetailsCubit, ResumeDetailsState>(builder: (context, state) {
       if (state is ResumeDetailsSuccess) {
         ResumeDetailModel resumeDetail = state.resumeDetail;
         String? name = resumeDetail.name;
@@ -539,8 +491,7 @@ class _ApplicantsState extends State<Applicants> {
                 itemCount: state.resumeModel.skills?[0].addSkill?.length,
                 itemBuilder: (context, i) {
                   return Padding(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: .0, horizontal: 0),
+                    padding: const EdgeInsets.symmetric(vertical: .0, horizontal: 0),
                     child: Column(
                       children: [
                         Row(
@@ -563,12 +514,10 @@ class _ApplicantsState extends State<Applicants> {
                 }),
             ListView.builder(
                 shrinkWrap: true,
-                itemCount:
-                    state.resumeModel.achievements?[0].achievements?.length,
+                itemCount: state.resumeModel.achievements?[0].achievements?.length,
                 itemBuilder: (context, i) {
                   return Padding(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: .0, horizontal: 0),
+                    padding: const EdgeInsets.symmetric(vertical: .0, horizontal: 0),
                     child: Column(
                       children: [
                         Row(

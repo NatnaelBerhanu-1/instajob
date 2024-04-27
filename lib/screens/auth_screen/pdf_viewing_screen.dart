@@ -13,7 +13,7 @@ class PdfViewingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint("cvUrl $cvUrl");
+    debugPrint("cvUrl ${EndPoint.imageBaseUrl}/$cvUrl");
     return Scaffold(
       backgroundColor: MyColors.white,
       body: SafeArea(
@@ -89,12 +89,7 @@ class PdfViewingScreen extends StatelessWidget {
                     decoration: BoxDecoration(
                         color: MyColors.white,
                         borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
-                          BoxShadow(
-                              color: MyColors.grey.withOpacity(.10),
-                              spreadRadius: 5,
-                              blurRadius: 8)
-                        ]),
+                        boxShadow: [BoxShadow(color: MyColors.grey.withOpacity(.10), spreadRadius: 5, blurRadius: 8)]),
                     child: SfPdfViewer.network(
                       "${EndPoint.imageBaseUrl}$cvUrl",
                     ),

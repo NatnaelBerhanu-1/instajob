@@ -35,11 +35,10 @@ class _SearchTrashState extends State<SearchTrash> {
             centerTitle: false,
             title: "Trash",
             onTap: () {
-              var tab = context.read<GlobalCubit>();
-
-              context.read<JobPositionBloc>().add(AppliedJobListEvent(
-                  jobId: widget.jobPosModel!.id.toString(), status: "applied"));
-              tab.changeTabValue(0);
+              context
+                  .read<JobPositionBloc>()
+                  .add(AppliedJobListEvent(jobId: widget.jobPosModel!.id.toString(), status: "applied"));
+              // tab.changeTabValue(0);
               Navigator.of(context).pop();
             },
             // actions: ImageButton(
@@ -50,9 +49,7 @@ class _SearchTrashState extends State<SearchTrash> {
         body: Column(
           children: [
             Expanded(
-              child:
-                  BlocBuilder<GetDeniedJobPositionCubit, GetDeniedJobPosState>(
-                      builder: (context, state) {
+              child: BlocBuilder<GetDeniedJobPositionCubit, GetDeniedJobPosState>(builder: (context, state) {
                 return DefaultTabController(
                     length: 2,
                     child: Column(
@@ -84,8 +81,7 @@ class _SearchTrashState extends State<SearchTrash> {
                             itemCount: 4,
                             itemBuilder: (c, i) {
                               return Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 15, vertical: 5),
+                                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
                                 // child: MessageTile(),
                               );
                             },
@@ -106,12 +102,10 @@ class _SearchTrashState extends State<SearchTrash> {
           itemCount: state.declinedList.length,
           itemBuilder: (c, i) {
             return Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
               child: CandidateTile(
                 idDeny: true,
-                appliedJobModel: state.declinedList[
-                    i], //TODO: revisit this screen & revisit this property(to remove)
+                appliedJobModel: state.declinedList[i], //TODO: revisit this screen & revisit this property(to remove)
                 selectedIndex: i,
                 fullFilteredApplicantsList: state.declinedList,
               ),

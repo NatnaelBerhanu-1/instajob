@@ -221,6 +221,7 @@ class AuthCubit extends Cubit<AuthInitialState> {
       await sharedPreferences.setString("user", jsonEncode(response.response.data['data']));
       var userModel = UserModel.fromJson(response.response.data['data']);
       Global.userModel = userModel;
+      debugPrint('ABEBE:${Global.userModel?.toJson()}');
       emit(AuthState(userModel: userModel));
       user.add(UserEvent());
     }
@@ -451,8 +452,7 @@ class AuthCubit extends Cubit<AuthInitialState> {
       // showToast("Code not match");
       emit(ErrorState("Code Not Match"));
     } else {
-      emit(ErrorState(
-          "Something happened please try again later")); //revisit msg
+      emit(ErrorState("Something happened please try again later")); //revisit msg
     }
   }
 

@@ -39,12 +39,12 @@ class _ChangeAccInfoScreenState extends State<ChangeAccInfoScreen> {
   final formKey = GlobalKey<FormState>();
 
   InputBorder border = OutlineInputBorder(
-      borderSide: BorderSide(color: MyColors.lightgrey, width: 1),
-      borderRadius: BorderRadius.circular(10));
+      borderSide: BorderSide(color: MyColors.lightgrey, width: 1), borderRadius: BorderRadius.circular(10));
 
   update() {
     var userImage = context.read<PickImageCubit>();
     var model = Global.userModel!;
+    debugPrint('User: ${model.toJson()}');
     if (Global.userModel?.type == "user") {
       email.text = model.email ?? "";
       name.text = model.name ?? "";
@@ -127,8 +127,7 @@ class _ChangeAccInfoScreenState extends State<ChangeAccInfoScreen> {
                 child: SingleChildScrollView(
                   child: Padding(
                     padding: const EdgeInsets.all(15),
-                    child: BlocBuilder<ValidationCubit, InitialValidation>(
-                        builder: (context, state) {
+                    child: BlocBuilder<ValidationCubit, InitialValidation>(builder: (context, state) {
                       // var validationBloc = context.read<ValidationCubit>();
 
                       return Column(
@@ -161,24 +160,15 @@ class _ChangeAccInfoScreenState extends State<ChangeAccInfoScreen> {
                               height: 10,
                               width: 10,
                             ),
-                            validator: (val) => requiredValidation(
-                                val!,
-                                Global.userModel?.type == "user"
-                                    ? "Name"
-                                    : "Company name"),
+                            validator: (val) =>
+                                requiredValidation(val!, Global.userModel?.type == "user" ? "Name" : "Company name"),
                             onChanged: (val) {
                               if (!formKey.currentState!.validate()) {
-                                requiredValidation(
-                                    val!,
-                                    Global.userModel?.type == "user"
-                                        ? "Name"
-                                        : "Company name");
+                                requiredValidation(val!, Global.userModel?.type == "user" ? "Name" : "Company name");
                               }
                             },
                             // suffixIcon: ImageButton(image: MyImages.verified),
-                            hint: Global.userModel?.type == "user"
-                                ? "FirstName"
-                                : "Company Name",
+                            hint: Global.userModel?.type == "user" ? "FirstName" : "Company Name",
                           ),
                           SizedBox(height: 15),
                           IconTextField(
@@ -199,9 +189,7 @@ class _ChangeAccInfoScreenState extends State<ChangeAccInfoScreen> {
                             // suffixIcon: ImageButton(image: MyImages.verified),
                             hint: "alexies@mygmail.com",
                           ),
-                          Global.userModel?.type != "user"
-                              ? SizedBox()
-                              : SizedBox(height: 15),
+                          Global.userModel?.type != "user" ? SizedBox() : SizedBox(height: 15),
                           Global.userModel?.type != "user"
                               ? SizedBox()
                               : IconTextField(
@@ -209,28 +197,19 @@ class _ChangeAccInfoScreenState extends State<ChangeAccInfoScreen> {
                                     chooseDate();
                                   },
                                   label: "Date of Birth",
-                                  hint: selectedDate.isEmpty
-                                      ? "DD-MM-YYY"
-                                      : selectedDate,
+                                  hint: selectedDate.isEmpty ? "DD-MM-YYY" : selectedDate,
                                   readOnly: true,
-                                  hintColor: selectedDate.isEmpty
-                                      ? MyColors.grey
-                                      : MyColors.black,
+                                  hintColor: selectedDate.isEmpty ? MyColors.grey : MyColors.black,
                                   prefixIcon: ImageButton(
                                     image: MyImages.cal,
                                     padding: EdgeInsets.all(12),
                                     height: 10,
                                     width: 10,
                                   ),
-                                  suffixIcon: Icon(Icons.arrow_drop_down_sharp,
-                                      color: MyColors.black, size: 25),
+                                  suffixIcon: Icon(Icons.arrow_drop_down_sharp, color: MyColors.black, size: 25),
                                 ),
-                          Global.userModel?.type != "user"
-                              ? SizedBox()
-                              : SizedBox(height: 15),
-                          Global.userModel?.type == "user"
-                              ? SizedBox()
-                              : SizedBox(height: 15),
+                          Global.userModel?.type != "user" ? SizedBox() : SizedBox(height: 15),
+                          Global.userModel?.type == "user" ? SizedBox() : SizedBox(height: 15),
                           // widget.isUpdate
                           //     ?
                           IconTextField(
@@ -254,37 +233,23 @@ class _ChangeAccInfoScreenState extends State<ChangeAccInfoScreen> {
                           Text(
                             "Upload Photo",
                             textAlign: TextAlign.start,
-                            style: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                color: MyColors.grey),
+                            style: TextStyle(fontWeight: FontWeight.w400, color: MyColors.grey),
                           ),
                           SizedBox(height: 10),
-                          uploadPhotoCard(context,
-                              isUpdate: true,
-                              url: context.read<PickImageCubit>().imgUrl),
+                          uploadPhotoCard(context, isUpdate: true, url: context.read<PickImageCubit>().imgUrl),
                           SizedBox(height: 12),
-                          BlocBuilder<PickImageCubit, InitialImage>(
-                              buildWhen: (c, state) {
-                            if (state is PickCVImageState ||
-                                state is ClearImageState) {
+                          BlocBuilder<PickImageCubit, InitialImage>(buildWhen: (c, state) {
+                            if (state is PickCVImageState || state is ClearImageState) {
                               return true;
                             }
                             return false;
                           }, builder: (context, state) {
                             // var image = context.read<PickImageCubit>();
-                            if (state is PickCVImageState ||
-                                context
-                                    .read<PickImageCubit>()
-                                    .cvUrl
-                                    .isNotEmpty) {
+                            if (state is PickCVImageState || context.read<PickImageCubit>().cvUrl.isNotEmpty) {
                               return GestureDetector(
                                 onTap: () {
                                   AppRoutes.push(
-                                      context,
-                                      PdfViewingScreen(
-                                          cvUrl: context
-                                              .read<PickImageCubit>()
-                                              .cvUrl));
+                                      context, PdfViewingScreen(cvUrl: context.read<PickImageCubit>().cvUrl));
                                 },
                                 child: Card(
                                   child: Padding(
@@ -293,14 +258,9 @@ class _ChangeAccInfoScreenState extends State<ChangeAccInfoScreen> {
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         // Text(state.cvUrl.split('/').last),
-                                        Text(context
-                                            .read<PickImageCubit>()
-                                            .cvUrl
-                                            .split('/')
-                                            .last), //TODO: revisit
+                                        Text(context.read<PickImageCubit>().cvUrl.split('/').last), //TODO: revisit
                                         IconButton(
-                                            visualDensity:
-                                                VisualDensity.compact,
+                                            visualDensity: VisualDensity.compact,
                                             onPressed: () {
                                               // context
                                               //     .read<PickImageCubit>()
@@ -342,14 +302,12 @@ class _ChangeAccInfoScreenState extends State<ChangeAccInfoScreen> {
                               fontColor: MyColors.blue,
                               onTap: () {
                                 image.getCvImage();
-                                debugPrint(
-                                    "LOG here cv img -> ${image.cvUrl} ORR? ${Global.userModel?.cv}");
+                                debugPrint("LOG here cv img -> ${image.cvUrl} ORR? ${Global.userModel?.cv}");
                               },
                             );
                           }),
                           SizedBox(height: 30),
-                          BlocBuilder<AuthCubit, AuthInitialState>(
-                              builder: (context, state) {
+                          BlocBuilder<AuthCubit, AuthInitialState>(builder: (context, state) {
                             var authData = context.read<AuthCubit>();
                             var image = context.read<PickImageCubit>();
                             return CustomIconButton(
@@ -362,16 +320,13 @@ class _ChangeAccInfoScreenState extends State<ChangeAccInfoScreen> {
                               iconColor: MyColors.white,
                               onclick: () {
                                 if (formKey.currentState!.validate()) {
-                                  if (phone.text.isEmpty ||
-                                      selectedDate.isEmpty) {
+                                  if (phone.text.isEmpty || selectedDate.isEmpty) {
                                     showToast("Please fill all details");
                                   } else {
                                     if (Global.userModel?.type == "user") {
-                                      var cvUrl = context
-                                          .read<PickImageCubit>()
-                                          .cvUrl
-                                          .split('/')
-                                          .last; //TODO: reconsider changing this,from state
+                                      var cvUrl = context.read<PickImageCubit>().cvUrl;
+                                      debugPrint('Image[URL]: ${image.imgUrl}');
+
                                       authData.updateUserData(
                                         profilePhoto: image.imgUrl,
                                         dOB: selectedDate,
