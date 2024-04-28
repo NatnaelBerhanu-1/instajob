@@ -15,6 +15,7 @@ import 'package:insta_job/globals.dart';
 import 'package:insta_job/model/job_position_model.dart';
 import 'package:insta_job/network/end_points.dart';
 import 'package:insta_job/screens/insta_job_user/confirm_detail_screen.dart';
+import 'package:insta_job/screens/insta_job_user/cover_letter_screen.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
@@ -193,8 +194,13 @@ class _ApplyScreenState extends State<ApplyScreen> {
                   borderColor: MyColors.blue,
                   fontColor: MyColors.blue,
                   onTap: () {
-                    AppRoutes.push(context,
-                        ConfirmDetailsScreen(jobPosModel: widget.jobPosModel));
+                    // AppRoutes.push(context,
+                    //     ConfirmDetailsScreen(jobPosModel: widget.jobPosModel));
+                    AppRoutes.push(
+                        context,
+                        CoverLetterScreen(
+                            coverLetterModel: null,
+                            jobPosModel: widget.jobPosModel));
                   },
                 ),
               )

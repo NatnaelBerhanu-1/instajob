@@ -78,6 +78,7 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                 onTap: () {
                   if (Global.userModel?.type == "user") {
                     print("##########");
+                    context.read<JobPositionBloc>().add(LoadJobPosListEvent());
                     Navigator.pop(context);
                     // context.read<BottomBloc>().add(
                     //     SetScreenEvent(true, screenName: SearchJobsScreen()));

@@ -17,7 +17,7 @@ class CareerLearningRepo {
     try {
       var response = await dioClient.get(
         uri: isDetail
-            ? "${EndPoint.getCareerCluster}${code ?? "1.0000"}"
+            ? "${EndPoint.getCareerCluster}${code ?? "1.0000"}?cluster=${code ?? "1.0000"}&start=1&end=1000"
             : EndPoint.getCareerCluster,
         data: {},
         header: {

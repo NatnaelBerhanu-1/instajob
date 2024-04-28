@@ -18,7 +18,7 @@ import '../../widgets/custom_button/custom_btn.dart';
 
 class CoverLetterScreen extends StatefulWidget {
   final JobPosModel? jobPosModel;
-  final CoverLetterModel coverLetterModel;
+  final CoverLetterModel? coverLetterModel;
 
   const CoverLetterScreen(
       {Key? key, required this.coverLetterModel, this.jobPosModel})
