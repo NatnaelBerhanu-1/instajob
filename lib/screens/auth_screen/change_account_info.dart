@@ -238,76 +238,81 @@ class _ChangeAccInfoScreenState extends State<ChangeAccInfoScreen> {
                           SizedBox(height: 10),
                           uploadPhotoCard(context, isUpdate: true, url: context.read<PickImageCubit>().imgUrl),
                           SizedBox(height: 12),
-                          BlocBuilder<PickImageCubit, InitialImage>(buildWhen: (c, state) {
-                            if (state is PickCVImageState || state is ClearImageState) {
-                              return true;
-                            }
-                            return false;
-                          }, builder: (context, state) {
-                            // var image = context.read<PickImageCubit>();
-                            if (state is PickCVImageState || context.read<PickImageCubit>().cvUrl.isNotEmpty) {
-                              return GestureDetector(
-                                onTap: () {
-                                  AppRoutes.push(
-                                      context, PdfViewingScreen(cvUrl: context.read<PickImageCubit>().cvUrl));
-                                },
-                                child: Card(
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(left: 8.0),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        // Text(state.cvUrl.split('/').last),
-                                        Text(context.read<PickImageCubit>().cvUrl.split('/').last), //TODO: revisit
-                                        IconButton(
-                                            visualDensity: VisualDensity.compact,
-                                            onPressed: () {
-                                              // context
-                                              //     .read<PickImageCubit>()
-                                              //     .clearCVUrl();
-                                              // setState(() {});
-                                            },
-                                            icon: Icon(
-                                              Icons.clear,
-                                              color: MyColors.red,
-                                            ))
-                                      ],
+
+                          Visibility(
+                            visible: Global.userModel?.type == "user",
+                            child: BlocBuilder<PickImageCubit, InitialImage>(buildWhen: (c, state) {
+                              if (state is PickCVImageState || state is ClearImageState) {
+                                return true;
+                              }
+                              return false;
+                            }, builder: (context, state) {
+                              // var image = context.read<PickImageCubit>();
+                              if (state is PickCVImageState || context.read<PickImageCubit>().cvUrl.isNotEmpty) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    AppRoutes.push(
+                                        context, PdfViewingScreen(cvUrl: context.read<PickImageCubit>().cvUrl));
+                                  },
+                                  child: Card(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(left: 8.0),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          // Text(state.cvUrl.split('/').last),
+                                          Text(context.read<PickImageCubit>().cvUrl.split('/').last), //TODO: revisit
+                                          IconButton(
+                                              visualDensity: VisualDensity.compact,
+                                              onPressed: () {
+                                                // context
+                                                //     .read<PickImageCubit>()
+                                                //     .clearCVUrl();
+                                                // setState(() {});
+                                              },
+                                              icon: Icon(
+                                                Icons.clear,
+                                                color: MyColors.red,
+                                              ))
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                              );
-                            }
-                            if (state is LoadingImageState) {
-                              return CircularProgressIndicator();
-                            }
-                            if (state is ClearImageState) {
+                                );
+                              }
+                              if (state is LoadingImageState) {
+                                return CircularProgressIndicator();
+                              }
+                              if (state is ClearImageState) {
+                                return SizedBox();
+                              }
                               return SizedBox();
-                            }
-                            return SizedBox();
-                          }),
+                            }),
+                          ),
                           SizedBox(height: 20),
-                          Global.userModel?.type == "user"
-                              ? BlocBuilder<PickImageCubit, InitialImage>(
-                                  //   buildWhen: (c, state) {
-                                  // if (state is PickCVImageState) {
-                                  //   return true;
-                                  // }
-                                  // return false;
-                                  // },
-                                  builder: (context, state) {
-                                  var image = context.read<PickImageCubit>();
-                                  return CustomButton(
-                                    title: "Update your CV",
-                                    bgColor: MyColors.white,
-                                    borderColor: MyColors.blue,
-                                    fontColor: MyColors.blue,
-                                    onTap: () {
-                                      image.getCvImage();
-                                      debugPrint("LOG here cv img -> ${image.cvUrl} ORR? ${Global.userModel?.cv}");
-                                    },
-                                  );
-                                })
-                              : SizedBox(),
+                          Visibility(
+                            visible: Global.userModel?.type == "user",
+                            child: BlocBuilder<PickImageCubit, InitialImage>(
+                                //   buildWhen: (c, state) {
+                                // if (state is PickCVImageState) {
+                                //   return true;
+                                // }
+                                // return false;
+                                // },
+                                builder: (context, state) {
+                              var image = context.read<PickImageCubit>();
+                              return CustomButton(
+                                title: "Update your CV",
+                                bgColor: MyColors.white,
+                                borderColor: MyColors.blue,
+                                fontColor: MyColors.blue,
+                                onTap: () {
+                                  image.getCvImage();
+                                  debugPrint("LOG here cv img -> ${image.cvUrl} ORR? ${Global.userModel?.cv}");
+                                },
+                              );
+                            }),
+                          ),
                           SizedBox(height: 30),
                           BlocBuilder<AuthCubit, AuthInitialState>(builder: (context, state) {
                             var authData = context.read<AuthCubit>();

@@ -224,7 +224,7 @@ class _InterviewScreenState extends State<InterviewScreen> {
                 crossAxisCount: 2,
                 mainAxisSpacing: 8,
                 crossAxisSpacing: 5,
-                childAspectRatio: 3 / 7,
+                childAspectRatio: 3 / 8,
               ),
             ),
           );

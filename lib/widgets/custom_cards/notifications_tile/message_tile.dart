@@ -51,7 +51,9 @@ class MessageTile extends StatelessWidget {
                         Stack(
                           children: [
                             CircleAvatar(
-                                radius: 20, backgroundImage: CachedNetworkImageProvider("${chatModel.oppProfilePic}")),
+                                radius: 20,
+                                backgroundImage: CachedNetworkImageProvider(
+                                    "${Global.userModel?.type == "user" ? chatModel.selfProfilePic : chatModel.oppProfilePic}")),
                             Positioned(
                                 bottom: 5,
                                 left: 67,

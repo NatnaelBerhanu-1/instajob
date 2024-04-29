@@ -4,13 +4,16 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:insta_job/globals.dart';
 import 'package:insta_job/model/interview_model.dart';
+import 'package:insta_job/network/end_points.dart';
 
 import 'package:insta_job/screens/call_screen.dart';
 import 'package:insta_job/screens/insta_recruit/recording_screens/transcription_screen.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/widgets/custom_button/custom_btn.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
+import 'package:intl/intl.dart';
 
 import '../../../utils/my_colors.dart';
 
@@ -89,6 +92,8 @@ class _InterviewTileState extends State<InterviewTile> {
               children: [
                 CircleAvatar(
                   // backgroundColor: MyColors.transparent,
+                  backgroundImage: NetworkImage(
+                      "${EndPoint.imageBaseUrl}/${Global.userModel?.type == "user" ? widget.interviewModel.recruiter?.uploadPhoto : widget.interviewModel.user?.uploadPhoto}"),
                   radius: 20,
                 ),
                 // Positioned(
@@ -109,7 +114,9 @@ class _InterviewTileState extends State<InterviewTile> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CommonText(
-                      text: widget.interviewModel.user?.name,
+                      text: Global.userModel?.type == 'user'
+                          ? widget.interviewModel.recruiter?.name
+                          : widget.interviewModel.user?.name,
                       fontWeight: FontWeight.w500,
                       fontSize: 14,
                     ),
@@ -123,7 +130,7 @@ class _InterviewTileState extends State<InterviewTile> {
                 ),
                 Spacer(),
                 CommonText(
-                  text: "Today",
+                  text: getInterviewDay(),
                   fontWeight: FontWeight.w400,
                   fontSize: 13,
                   fontColor: MyColors.grey,
@@ -181,5 +188,19 @@ class _InterviewTileState extends State<InterviewTile> {
         ),
       ),
     );
+  }
+
+  getInterviewDay() {
+    String day = DateFormat(DateFormat.YEAR_MONTH_DAY).format(widget.interviewModel.time.toDate());
+
+    var diff = DateTime.now().millisecondsSinceEpoch - widget.interviewModel.time.millisecondsSinceEpoch;
+    var days = Duration(milliseconds: diff).inDays;
+
+    if (days == 0) {
+      day = "Today";
+    } else if (days == 1) {
+      day = "Tomorrow";
+    }
+    return day;
   }
 }
