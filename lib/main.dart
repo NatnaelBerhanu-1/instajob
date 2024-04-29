@@ -16,6 +16,7 @@ Future<void> main() async {
   await Firebase.initializeApp();
 
   // await FlutterDownloader.initialize(debug: true, ignoreSsl: true);
+  
   runApp(const MyApp());
   await di.init();
 }

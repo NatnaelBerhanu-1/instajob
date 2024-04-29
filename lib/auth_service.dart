@@ -11,12 +11,14 @@ class AuthService {
   static const chatCollection = 'chat';
   static const userCollection = 'user';
 
-  static Future<void> insertMsg(ChatModel chatModel) async {
+  static Future<void> insertMsg(ChatModel chatModel, {bool isUser = false}) async {
     var fcmToken = await FirebaseMessaging.instance.getToken();
     var chatRef = FirebaseFirestore.instance.collection(chatCollection).doc(chatModel.gp);
     var docRef = chatRef.collection(chatModel.gp).doc(DateTime.now().millisecondsSinceEpoch.toString());
 
-    var data = chatModel.getMessageData();
+    var data = isUser
+        ? chatModel.copyWith(oppId: chatModel.selfId, selfId: chatModel.oppId).getMessageData()
+        : chatModel.getMessageData();
 
     var chatData = chatModel.getChatData();
 

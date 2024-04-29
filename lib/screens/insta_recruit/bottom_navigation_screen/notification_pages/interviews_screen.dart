@@ -119,6 +119,8 @@ class _InterviewScreenState extends State<InterviewScreen> {
                                   isEqualTo: Global.userModel?.firebaseId)
                               .snapshots(),
                           builder: (context, AsyncSnapshot<dynamic> snapshot) {
+                            debugPrint('Type: ${Global.userModel?.type}');
+                            debugPrint('firebaseID: ${Global.userModel?.firebaseId}');
                             if (snapshot.hasData) {
                               debugPrint('chats: ${snapshot.data.docs.map((e) => e.data() as Map<String, dynamic>)}');
                               var chats = (snapshot.data as QuerySnapshot).docs;

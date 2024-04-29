@@ -224,7 +224,8 @@ class _ChatScreenState extends State<ChatScreen> {
                         onTap: () {
                           if (msg.text.isNotEmpty) {
                             debugPrint('chatModel: ${widget.chatModel.toJson()}');
-                            AuthService.insertMsg(widget.chatModel.copyWith(msg: msg.text));
+                            AuthService.insertMsg(widget.chatModel.copyWith(msg: msg.text),
+                                isUser: Global.userModel?.type == 'user');
                             msg.clear();
                           }
                         },
