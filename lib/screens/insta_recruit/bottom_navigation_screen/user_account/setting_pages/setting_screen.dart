@@ -123,6 +123,7 @@ class _SettingScreenState extends State<SettingScreen> {
                 return CustomIconButton(
                   image: MyImages.logout,
                   title: "Log Out",
+                  loading: snapshot is AuthLoadingState,
                   backgroundColor: MyColors.darkRed,
                   fontColor: MyColors.white,
                   onclick: () {
@@ -130,6 +131,8 @@ class _SettingScreenState extends State<SettingScreen> {
                         context,
                         CustomDialog(
                           okOnTap: () async {
+                            Navigator.of(context)
+                                .pop(); //revisit, double check that it's ok to pop first and call other items below(whether everything gets executed, whether to remote the setState etc/ consider dispose method too)
                             context.read<AuthCubit>().logOut();
                             SharedPreferences pref =
                                 await SharedPreferences.getInstance();
@@ -150,5 +153,11 @@ class _SettingScreenState extends State<SettingScreen> {
             ],
           ),
         ));
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
 }

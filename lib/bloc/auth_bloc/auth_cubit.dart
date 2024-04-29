@@ -391,6 +391,8 @@ class AuthCubit extends Cubit<AuthInitialState> {
 
   ///logout
   logOut() async {
+    emit(AuthLoadingState());
+    //TODO: wrap calls in try catch
     ApiResponse response = await authRepository.logOutUser();
     GoogleSignIn googleSignIn = GoogleSignIn();
 
@@ -408,6 +410,7 @@ class AuthCubit extends Cubit<AuthInitialState> {
         await FirebaseAuth.instance.signOut();
       }
       user.add(ResetIndex());
+      emit(SuccessState());
       navigationKey.currentState
           ?.pushAndRemoveUntil(MaterialPageRoute(builder: (_) => const UserTypeScreen()), (route) => false);
     } else {
