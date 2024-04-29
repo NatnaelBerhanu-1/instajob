@@ -19,8 +19,7 @@ class JobPositionRepository {
   getJobPositions({String? id}) async {
     try {
       var map = {"company_id": id ?? "", "user_id": Global.userModel?.id};
-      var response =
-          await dioClient.post(data: map, uri: EndPoint.getJobPosition);
+      var response = await dioClient.post(data: map, uri: EndPoint.getJobPosition);
       return ApiResponse.withSuccess(response);
     } on DioException catch (e) {
       return ApiResponse.withError(e.response);
@@ -29,11 +28,9 @@ class JobPositionRepository {
 
   Future<ApiResponse> saveJob({String? jobId, String? jobStatus}) async {
     try {
-      Response response = await dioClient.post(data: {
-        "job_id": jobId,
-        "user_id": Global.userModel?.id.toString(),
-        "job_status": jobStatus
-      }, uri: EndPoint.insertSaveJob);
+      Response response = await dioClient.post(
+          data: {"job_id": jobId, "user_id": Global.userModel?.id.toString(), "job_status": jobStatus},
+          uri: EndPoint.insertSaveJob);
       return ApiResponse.withSuccess(response);
     } on DioException catch (e) {
       return ApiResponse.withError(e.response);
@@ -42,8 +39,7 @@ class JobPositionRepository {
 
   Future<ApiResponse> getSavedJob() async {
     try {
-      Response response = await dioClient.post(
-          data: {"user_id": Global.userModel?.id}, uri: EndPoint.showSaveJob);
+      Response response = await dioClient.post(data: {"user_id": Global.userModel?.id}, uri: EndPoint.showSaveJob);
       return ApiResponse.withSuccess(response);
     } on DioException catch (e) {
       return ApiResponse.withError(e.response);
@@ -51,14 +47,9 @@ class JobPositionRepository {
   }
 
   Future<ApiResponse> applyForJob({String? jobId, String? resume}) async {
-    var map = {
-      "user_id": Global.userModel?.id,
-      "job_id": jobId,
-      "upload_resume": resume
-    };
+    var map = {"user_id": Global.userModel?.id, "job_id": jobId, "upload_resume": resume};
     try {
-      Response response =
-          await dioClient.post(data: map, uri: EndPoint.applyForJob);
+      Response response = await dioClient.post(data: map, uri: EndPoint.applyForJob);
       return ApiResponse.withSuccess(response);
     } on DioException catch (e) {
       return ApiResponse.withError(e.response);
@@ -69,24 +60,22 @@ class JobPositionRepository {
     var map = {
       // "user_id": Global.userModel?.type == "user" ? Global.userModel?.id : "",
       "job_id": jobId ?? "",
-      // "status": status ?? ""
+      "status": status ?? ""
     };
-    if (jobId == null) {
-      map = {
-        // "user_id": Global.userModel?.type == "user" ? Global.userModel?.id : "",
-        "job_id": jobId ?? "",
-        "status": status ?? ""
-      };
-    }
-    // if (status != null) {
-    //   map["status"] = status;
+    // if (jobId == null) {
+    //   map = {
+    //     // "user_id": Global.userModel?.type == "user" ? Global.userModel?.id : "",
+    //     "job_id": jobId ?? "",
+    //     "status": status ?? ""
+    //   };
     // }
+    // // if (status != null) {
+    // //   map["status"] = status;
+    // // }
 
     try {
       Response response = await dioClient.post(
-          data: map,
-          uri: EndPoint
-              .getAppliedJob); //this endpoint is for all (applied, shortlisted, declined)
+          data: map, uri: EndPoint.getAppliedJob); //this endpoint is for all (applied, shortlisted, declined)
       return ApiResponse.withSuccess(response);
     } on DioException catch (e) {
       return ApiResponse.withError(e.response);
@@ -94,27 +83,22 @@ class JobPositionRepository {
   }
 
   // new -> separated denied candidates request
-  Future<ApiResponse> getDeniedCandidates(
-      {String? jobId, String? status}) async {
+  Future<ApiResponse> getDeniedCandidates({String? jobId, String? status}) async {
     var map = {"job_id": jobId ?? "", "status": status ?? ""};
     print("LOGG ${map}");
     try {
       Response response = await dioClient.post(
-          data: map,
-          uri: EndPoint
-              .getAppliedJob); //note: this endpoint is for all (applied, shortlisted, declined)
+          data: map, uri: EndPoint.getAppliedJob); //note: this endpoint is for all (applied, shortlisted, declined)
       return ApiResponse.withSuccess(response);
     } on DioException catch (e) {
       return ApiResponse.withError(e.response);
     }
   }
 
-  Future<ApiResponse> shortlistOrDenied(
-      {required String appliedListId, String? status}) async {
+  Future<ApiResponse> shortlistOrDenied({required String appliedListId, String? status}) async {
     var map = {"id": appliedListId, "status": status ?? "applied"};
     try {
-      Response response =
-          await dioClient.post(data: map, uri: EndPoint.shortlistOrDenied);
+      Response response = await dioClient.post(data: map, uri: EndPoint.shortlistOrDenied);
       return ApiResponse.withSuccess(response);
     } on DioException catch (e) {
       return ApiResponse.withError(e.response);

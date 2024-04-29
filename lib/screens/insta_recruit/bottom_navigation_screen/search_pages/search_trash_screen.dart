@@ -35,9 +35,9 @@ class _SearchTrashState extends State<SearchTrash> {
             centerTitle: false,
             title: "Trash",
             onTap: () {
-              context
-                  .read<JobPositionBloc>()
-                  .add(AppliedJobListEvent(jobId: widget.jobPosModel!.id.toString(), status: "applied"));
+              context.read<JobPositionBloc>().add(AppliedJobListEvent(
+                    jobId: widget.jobPosModel!.id.toString(),
+                  ));
               // tab.changeTabValue(0);
               Navigator.of(context).pop();
             },
