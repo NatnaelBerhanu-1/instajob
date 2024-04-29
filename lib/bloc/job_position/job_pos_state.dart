@@ -18,6 +18,8 @@ class ApplyLoading extends JobPosState {}
 
 class ShorlistLoading extends JobPosState {}
 
+class DenyLoading extends JobPosState {}
+
 class SortListDenyState extends JobPosState {}
 
 class JobPosLoaded extends JobPosState {

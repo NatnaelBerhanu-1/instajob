@@ -291,9 +291,14 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
     on<AppliedJobListEvent>((event, emit) => _getAppliedJobs(emit, jobId: event.jobId, status: event.status));
 
     on<SortListOrDenyEvent>((event, emit) async {
-      emit(ShorlistLoading());
-      ApiResponse response =
-          await jobPositionRepository.shortlistOrDenied(appliedListId: event.appliedListId, status: event.status);
+      if (event.shortListOrDenyAction == ShortListOrDenyAction.shortlist) {
+        emit(ShorlistLoading());
+      } else {
+        emit(DenyLoading());
+      }
+      ApiResponse response = await jobPositionRepository.shortlistOrDenied(
+          appliedListId: event.appliedListId,
+          status: event.status); //TODO: get status from shortListOrDenyAction
       if (response.response.statusCode == 500) {
         emit(const JobErrorState("Something went wrong"));
       } else if (response.response.statusCode == 200) {

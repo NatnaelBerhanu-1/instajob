@@ -193,10 +193,15 @@ class _ApplicantsState extends State<Applicants> {
                                         height: MediaQuery.of(context).size.height * 0.055,
                                         bgColor: MyColors.darkRed,
                                         title: "Deny",
-                                        loading: state is ShorlistLoading,
+                                        loading: state is DenyLoading,
                                         onTap: () {
                                           context.read<JobPositionBloc>().add(SortListOrDenyEvent(
-                                              appliedListId: "${jobPosModel?.appliedId}", status: "denied"));
+                                                  appliedListId:
+                                                      "${jobPosModel?.appliedId}",
+                                                  status: "denied",
+                                                  shortListOrDenyAction:
+                                                      ShortListOrDenyAction
+                                                          .denied)); //TODO: remove passing status since shortListOrDenyAction is added
                                           // AppRoutes.pop(context); //TODO: REMOVE and uncomment listener
                                         },
                                       )),
@@ -236,7 +241,12 @@ class _ApplicantsState extends State<Applicants> {
                                         loading: state is ShorlistLoading,
                                         onTap: () {
                                           context.read<JobPositionBloc>().add(SortListOrDenyEvent(
-                                              appliedListId: "${jobPosModel?.appliedId}", status: "shortlisted"));
+                                                  appliedListId:
+                                                      "${jobPosModel?.appliedId}",
+                                                  status: "shortlisted",
+                                                  shortListOrDenyAction:
+                                                      ShortListOrDenyAction
+                                                          .shortlist));
                                         },
                                       )),
                               ],

@@ -114,11 +114,20 @@ class JobDistanceLocatorEvent extends JobPosEvent {
   List<Object?> get props => [];
 }
 
+enum ShortListOrDenyAction {
+  shortlist,
+  denied,
+}
+
 class SortListOrDenyEvent extends JobPosEvent {
   final String appliedListId;
   final String? status;
+  final ShortListOrDenyAction shortListOrDenyAction;
 
-  SortListOrDenyEvent({required this.appliedListId, this.status});
+  SortListOrDenyEvent(
+      {required this.appliedListId,
+      this.status,
+      required this.shortListOrDenyAction,});
   @override
   List<Object?> get props => [];
 }
