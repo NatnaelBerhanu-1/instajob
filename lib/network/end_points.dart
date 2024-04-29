@@ -20,6 +20,7 @@ class EndPoint {
   static String checkPhoneNumber = "check_phone_number";
   static String createVideoCall = "create_videocall";
   static String getInterviews = "call_lists";
+  static String getInterviewsAsCandidate = "candidate_call_lists";
 
   /// ---------------- EMPLOYEE INTERFACE --------------- ///
 

@@ -3,6 +3,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:insta_job/auth_service.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/model/chat_model.dart';
 import 'package:insta_job/screens/chat_screen.dart';
@@ -27,7 +28,9 @@ class MessageTile extends StatelessWidget {
       child: Slidable(
         endActionPane: ActionPane(motion: ScrollMotion(), children: [
           SlidableAction(
-            onPressed: (val) {},
+            onPressed: (val) {
+              AuthService.deleteChat(chatModel);
+            },
             icon: Icons.delete_outline,
             label: "",
             backgroundColor: MyColors.darkRed,

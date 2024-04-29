@@ -46,6 +46,17 @@ class InterviewRepo {
     }
   }
 
+  Future<ApiResponse> getInterviewSchedulesAsCandidate(String candidateId) async {
+    //similar to getInterviewSchedules
+    try {
+      debugPrint('CandidateId: $candidateId');
+      var response = await dioClient.post(uri: EndPoint.getInterviewsAsCandidate, data: {'candidate_id': candidateId});
+      return ApiResponse.withSuccess(response);
+    } catch (e) {
+      return ApiResponse.withError(e);
+    }
+  }
+
   getPreviousInterviews() {
     throw Exception();
   }

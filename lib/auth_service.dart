@@ -58,6 +58,24 @@ class AuthService {
     // }
   }
 
+  static Future<void> deleteChat(ChatModel chatModel) async {
+    // var fcmToken = await FirebaseMessaging.instance.getToken();
+    var chatRef = FirebaseFirestore.instance.collection(chatCollection).doc(chatModel.gp);
+    // var docRef = chatRef.collection(chatModel.gp).doc(DateTime.now().millisecondsSinceEpoch.toString());
+
+     // Get all documents in the subcollection
+    var subcollectionSnapshot = await chatRef.collection(chatModel.gp).get();
+    
+    // Delete each document in the subcollection
+    for (var doc in subcollectionSnapshot.docs) {
+      await doc.reference.delete();
+    }
+
+    // Delete the parent document
+    await chatRef.delete();
+
+  }
+
   static insertUsers() async {
     final ref = await FirebaseFirestore.instance.collection(userCollection).doc(Global.userModel?.firebaseId).get();
     if (ref.exists) {
