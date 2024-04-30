@@ -207,16 +207,20 @@ class _LoginScreenState extends State<LoginScreen> {
                                 iconColor: MyColors.white,
                                 onclick: () async {
                                   FocusManager.instance.primaryFocus?.unfocus();
-                                  if (formKey.currentState!.validate()) {
-                                    var pref = await SharedPreferences.getInstance();
-                                    var type = pref.getString("type");
+                                  // if (formKey.currentState!.validate()) {
+                                  //   var pref = await SharedPreferences.getInstance();
+                                  //   var type = pref.getString("type");
 
-                                    if (type == "user") {
+                                  //   if (type == "user") {
+                                  //     SocialAuth.loginWithEmail(context,
+                                  //         email: email.text, password: password.text, isUser: true);
+                                  //   } else {
+                                  //     SocialAuth.loginWithEmail(context, email: email.text, password: password.text);
+                                  //   }
+                                  // }
+                                  if (formKey.currentState!.validate()) {
                                       SocialAuth.loginWithEmail(context,
-                                          email: email.text, password: password.text, isUser: true);
-                                    } else {
-                                      SocialAuth.loginWithEmail(context, email: email.text, password: password.text);
-                                    }
+                                          email: email.text, password: password.text); //checking isUser inside
                                   }
                                   // if (Global.type == "user") {
                                   //   AppRoutes.pushAndRemoveUntil(

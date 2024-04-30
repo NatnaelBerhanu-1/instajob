@@ -98,6 +98,18 @@ class AuthCubit extends Cubit<AuthInitialState> {
     }
   }
 
+  emitLoadingState() {
+    emit (AuthLoadingState());
+  }
+
+  emitSuccessState() {
+    emit (SuccessState());
+  }
+
+  emitErrorState([String errorMsg = "Error: Something happened! Try again"]) {
+    emit (ErrorState(errorMsg));
+  }
+
   login(
     BuildContext context, {
     String? email,

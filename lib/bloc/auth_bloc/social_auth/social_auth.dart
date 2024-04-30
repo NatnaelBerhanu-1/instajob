@@ -33,7 +33,19 @@ class SocialAuth {
   }
 
   static loginWithEmail(BuildContext context,
-      {required String email, required String password, bool isUser = false}) {
+      {required String email, required String password}) async {
+    var authCubit = context.read<AuthCubit>();
+
+    authCubit.emitLoadingState();
+
+    bool isUser = false;
+    var pref = authCubit.sharedPreferences;
+    var type = pref.getString("type");
+    if (type == "user") {
+      isUser = true;
+    }
+
+
     auth
         .signInWithEmailAndPassword(email: email, password: password)
         .then((value) {
@@ -46,6 +58,7 @@ class SocialAuth {
       // context.read<CompanyBloc>().add(LoadCompanyListEvent());
     }).catchError((e) {
       print("!!!!!! ${e.code}");
+      authCubit.emitErrorState();
       switch (e.code) {
         case "user-not-found":
           showToast("User does not exist, Please Register first");
