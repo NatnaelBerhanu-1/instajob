@@ -85,4 +85,14 @@ class MyImages {
   static String welcomeLogo = "$baseUrl/welcom_logo.png";
   static String sCurve = "$baseUrl/s_curve.png";
   static String download = "$baseUrl/download.png";
+  static String subtraction44A = "$baseUrl/Subtraction 44a.svg";
+  static String userMessageBtn = "$baseUrl/user_message_btn.svg";
+  static String userMoreBtn = "$baseUrl/user_more_btn.svg";
+  static String recruiterMicOpen = "$baseUrl/recruiter_mic_open.svg";
+  static String recruiterMicClosed = "$baseUrl/recruiter_mic_closed.svg";
+  static String recruiterVideoOpen = "$baseUrl/recruiter_video_open.svg";
+  static String recruiterVideoClosed = "$baseUrl/recruiter_video_closed.svg";
+  static String recruiterQuestionsBtn = "$baseUrl/recruiter_questions_btn.svg";
+  static String userBottomContainer = "$baseUrl/user_bottom_container.svg";
+  static String userBottomContainer2 = "$baseUrl/user_bottom_container2.svg";
 }

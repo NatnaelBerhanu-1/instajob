@@ -182,11 +182,11 @@ class _InterviewTileState extends State<InterviewTile> {
                             int userId;
                             int otherUserId;
                             if (Global.userModel?.type == "user") {
-                              userId = interviewModel.user!.id!;
-                              otherUserId = interviewModel.recruiter!.id!;
+                              userId = interviewModel.user?.id ?? 0;
+                              otherUserId = interviewModel.recruiter?.id ?? 1;
                             } else {
-                              userId = interviewModel.recruiter!.id!;
-                              otherUserId = interviewModel.user!.id!;
+                              userId = interviewModel.recruiter?.id ?? 1;
+                              otherUserId = interviewModel.user?.id ?? 0;
                             }
                             AppRoutes.push(context, CallScreen(currentId: userId, otherUserId: otherUserId));
                           },

@@ -14,7 +14,8 @@ import 'package:insta_job/utils/my_images.dart';
 class CallScreen extends StatefulWidget {
   int currentId;
   int otherUserId;
-  CallScreen({Key? key, required this.currentId, required this.otherUserId}) : super(key: key);
+  CallScreen({Key? key, required this.currentId, required this.otherUserId})
+      : super(key: key);
 
   @override
   State<CallScreen> createState() => _CallScreenState();
@@ -31,169 +32,137 @@ class _CallScreenState extends State<CallScreen> {
     super.initState();
   }
 
+  bool videoEnabled = true;
+  bool audioEnabled = true;
+
   @override
   Widget build(BuildContext context) {
+    var screenWidth = MediaQuery.of(context).size.width;
+    var screenHeight = MediaQuery.of(context).size.height;
+    var isUser = Global.userModel?.type == "user";
+    debugPrint("screen width $screenWidth");
+    debugPrint("screen height $screenHeight");
     return PopScope(
       // canPop: false,
       child: Scaffold(
-        backgroundColor: MyColors.grey,
+        backgroundColor: isUser ? MyColors.grey : MyColors.lightBlack,
         body: SafeArea(
-            child: BlocConsumer<AgoraBloc, AgoraInitial>(listener: (c, state) {
-          if (state is OnUserOffline) {
-            context.read<AgoraBloc>().releaseEngine();
-            Navigator.pop(context);
-          }
-        }, builder: (context, state) {
-          var agoraEngine = context.read<AgoraBloc>();
-          return Stack(
+          child: Stack(
             children: [
-              agoraEngine.engine != null && agoraEngine.isVideoEnabled
-                  ? AgoraVideoView(
-                      controller: VideoViewController(
-                          rtcEngine: agoraEngine.engine!,
-                          canvas: VideoCanvas(uid: 0)))
-                  : SizedBox(),
-              /*     Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: Align(
-                          alignment: Alignment.topRight,
-                          child: Container(
-                            height: 150,
-                            width: 150,
-                            color: MyColors.white,
-                            child: Container(
-                              height: 130,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                color: MyColors.grey,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),*/
-              // Spacer(),
-              agoraEngine.remoteVideo(),
-              
-              Global.userModel?.type == "user" ? 
-              // Positioned(
-              //   bottom: 0,
-              //   left: 0,
-              //   right: 0,
-              //   child: Container(
-              //     height: 100,
-              //     color: MyColors.white.withOpacity(.90),
-              //     padding: const EdgeInsets.fromLTRB(12, 16, 12, 20),
-              //     child: Row(
-              //       children: [
-              //         Expanded(
-              //           flex: 3,
-              //             child: CustomCallButtons(
-              //           backgroundColor: MyColors.blue,
-              //           iconColor: MyColors.white,
-              //           image:  Icons.more_horiz_outlined,
-              //           onTap: () {
-                          
-              //           },
-              //         )),
-              //         Expanded(
-              //           child: FloatingActionButton(
-              //             backgroundColor: MyColors.red,
-              //             onPressed: () {
-              //               agoraEngine.releaseEngine();
-              //               Navigator.of(context).pop();
-              //             },
-              //             child: Icon(Icons.call_end),
-              //           ),
-              //         ),
-              //         Expanded(
-              //             flex: 3,
-              //             child: CustomCallButtons(
-              //           backgroundColor: MyColors.blue,
-              //           iconColor: MyColors.white,
-              //           image:  Icons.more_vert,
-              //           onTap: () {
-              //           },
-              //         )),
-              //       ],
-              //     ),
-              //   ),
-              // )
-              Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: Container(
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: SvgPicture.asset(
-                          MyImages.subtraction44A,
-                          width: MediaQuery.of(context).size.width, 
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              )
-              : Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: Container(
-                  height: 100,
-                  color: MyColors.black.withOpacity(.90),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(12, 16, 12, 20),
+              if (!isUser)
+                Positioned(
+                  bottom: 40,
+                  left: 28,
+                  right: 28,
+                  child: SizedBox(
+                    width: screenWidth,
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Expanded(
-                            child: CustomCallButtons(
-                          onTap: () async {
-                            // await agoraEngine.engine?.muteLocalAudioStream(true);
-                            // await agoraEngine.toggleAudio();
+                        InkWell(
+                          onTap: () {
                             setState(() {
-                              
+                              audioEnabled = !audioEnabled;
                             });
                           },
-                          image: agoraEngine.isAudioEnabled ? Icons.mic : Icons.mic_off,
-                        )),
-                        Expanded(
-                            child: CustomCallButtons(
-                              onTap: () async {
-                                await agoraEngine.toggleVideo();
-                                setState(() {
-                                  
-                                });
-                              },
-                          // image: Icons.videocam_outlined,
-                          image: agoraEngine.isVideoEnabled ? Icons.videocam_outlined : Icons.videocam_off_outlined,
-                        )),
-                        Expanded(
+                          child: SvgPicture.asset(
+                            audioEnabled
+                                ? MyImages.recruiterMicOpen
+                                : MyImages.recruiterMicClosed,
+                            height: 48,
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              videoEnabled = !videoEnabled;
+                            });
+                          },
+                          child: SvgPicture.asset(
+                            videoEnabled
+                                ? MyImages.recruiterVideoOpen
+                                : MyImages.recruiterVideoClosed,
+                            height: 48,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 64,
+                          height: 64,
                           child: FloatingActionButton(
                             backgroundColor: MyColors.red,
                             onPressed: () {
-                              agoraEngine.releaseEngine();
                               Navigator.of(context).pop();
                             },
                             child: Icon(Icons.call_end),
                           ),
                         ),
-                        Expanded(child: CustomCallButtons(image: Icons.chat)),
-                        Expanded(
-                            child: CustomCallButtons(
-                          image:  Icons.paste,
-                          onTap: () {
-                            overviewBottomSheet(context);
-                          },
-                        )),
+                        SvgPicture.asset(
+                          MyImages.recruiterQuestionsBtn,
+                          height: 48,
+                        ),
+                        SvgPicture.asset(
+                          MyImages.recruiterQuestionsBtn,
+                          height: 48,
+                        ),
                       ],
                     ),
                   ),
                 ),
-              )
+              if (isUser)
+                Positioned(
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: SvgPicture.asset(
+                          MyImages.subtraction44A,
+                          // MyImages.userBottomContainer,
+                          width: MediaQuery.of(context).size.width,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              if (isUser)
+                Positioned(
+                  bottom: screenHeight * 0.1,
+                  left: screenWidth / 2 - screenWidth * 0.072,
+                  child: Center(
+                    child: FloatingActionButton(
+                      backgroundColor: MyColors.red,
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Icon(Icons.call_end),
+                    ),
+                  ),
+                ),
+              if (isUser)
+                Positioned(
+                  bottom: 40,
+                  left: 1.1 * screenWidth / 6,
+                  child: SvgPicture.asset(
+                    MyImages.userMessageBtn,
+                    height: 35,
+                  ),
+                ),
+              if (isUser)
+                Positioned(
+                  bottom: 40,
+                  left: 4.5 * screenWidth / 6,
+                  child: InkWell(
+                    onTap: () {},
+                    child: SvgPicture.asset(
+                      MyImages.userMoreBtn,
+                      height: 35,
+                    ),
+                  ),
+                ),
             ],
-          );
-        })),
+          ),
+        ),
       ),
     );
   }
@@ -220,7 +189,7 @@ class CustomCallButtons extends StatelessWidget {
   const CustomCallButtons({
     super.key,
     this.image,
-    this.onTap, 
+    this.onTap,
     this.iconColor,
     this.backgroundColor,
   });
