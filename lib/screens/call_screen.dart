@@ -3,11 +3,13 @@
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:insta_job/bloc/agora_bloc/agora_cubit.dart';
 import 'package:insta_job/bloc/agora_bloc/agora_state.dart';
 import 'package:insta_job/bottom_sheet/overview_bottom_sheet.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/utils/my_colors.dart';
+import 'package:insta_job/utils/my_images.dart';
 
 class CallScreen extends StatefulWidget {
   int currentId;
@@ -20,7 +22,7 @@ class CallScreen extends StatefulWidget {
 
 class _CallScreenState extends State<CallScreen> {
   initAgora() async {
-    await context.read<AgoraBloc>().initAgora(currentId: widget.currentId, otherUserId: widget.otherUserId,);
+    // await context.read<AgoraBloc>().initAgora();
   }
 
   @override
@@ -32,7 +34,7 @@ class _CallScreenState extends State<CallScreen> {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      canPop: false,
+      // canPop: false,
       child: Scaffold(
         backgroundColor: MyColors.grey,
         body: SafeArea(
@@ -70,48 +72,65 @@ class _CallScreenState extends State<CallScreen> {
                         ),
                       ),*/
               // Spacer(),
-              agoraEngine.remoteVideo(otherUserId: widget.otherUserId,),
+              agoraEngine.remoteVideo(),
               
               Global.userModel?.type == "user" ? 
+              // Positioned(
+              //   bottom: 0,
+              //   left: 0,
+              //   right: 0,
+              //   child: Container(
+              //     height: 100,
+              //     color: MyColors.white.withOpacity(.90),
+              //     padding: const EdgeInsets.fromLTRB(12, 16, 12, 20),
+              //     child: Row(
+              //       children: [
+              //         Expanded(
+              //           flex: 3,
+              //             child: CustomCallButtons(
+              //           backgroundColor: MyColors.blue,
+              //           iconColor: MyColors.white,
+              //           image:  Icons.more_horiz_outlined,
+              //           onTap: () {
+                          
+              //           },
+              //         )),
+              //         Expanded(
+              //           child: FloatingActionButton(
+              //             backgroundColor: MyColors.red,
+              //             onPressed: () {
+              //               agoraEngine.releaseEngine();
+              //               Navigator.of(context).pop();
+              //             },
+              //             child: Icon(Icons.call_end),
+              //           ),
+              //         ),
+              //         Expanded(
+              //             flex: 3,
+              //             child: CustomCallButtons(
+              //           backgroundColor: MyColors.blue,
+              //           iconColor: MyColors.white,
+              //           image:  Icons.more_vert,
+              //           onTap: () {
+              //           },
+              //         )),
+              //       ],
+              //     ),
+              //   ),
+              // )
               Positioned(
                 bottom: 0,
                 left: 0,
                 right: 0,
                 child: Container(
-                  height: 100,
-                  color: MyColors.white.withOpacity(.90),
-                  padding: const EdgeInsets.fromLTRB(12, 16, 12, 20),
                   child: Row(
                     children: [
                       Expanded(
-                        flex: 3,
-                          child: CustomCallButtons(
-                        backgroundColor: MyColors.blue,
-                        iconColor: MyColors.white,
-                        image:  Icons.more_horiz_outlined,
-                        onTap: () {
-                          
-                        },
-                      )),
-                      Expanded(
-                        child: FloatingActionButton(
-                          backgroundColor: MyColors.red,
-                          onPressed: () {
-                            agoraEngine.releaseEngine();
-                            Navigator.of(context).pop();
-                          },
-                          child: Icon(Icons.call_end),
+                        child: SvgPicture.asset(
+                          MyImages.subtraction44A,
+                          width: MediaQuery.of(context).size.width, 
                         ),
                       ),
-                      Expanded(
-                          flex: 3,
-                          child: CustomCallButtons(
-                        backgroundColor: MyColors.blue,
-                        iconColor: MyColors.white,
-                        image:  Icons.more_vert,
-                        onTap: () {
-                        },
-                      )),
                     ],
                   ),
                 ),
@@ -131,7 +150,7 @@ class _CallScreenState extends State<CallScreen> {
                             child: CustomCallButtons(
                           onTap: () async {
                             // await agoraEngine.engine?.muteLocalAudioStream(true);
-                            await agoraEngine.toggleAudio();
+                            // await agoraEngine.toggleAudio();
                             setState(() {
                               
                             });
