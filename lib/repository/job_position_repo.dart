@@ -215,6 +215,7 @@ class JobPositionRepository {
         "end_salary": filterModel.endSalary ?? "",
         "area_distance": filterModel.areaDistance ?? "",
         "jobs_Type": filterModel.jobsType ?? "",
+        "jobs_Source": filterModel.jobsSource ?? "",
         "Experience_level": filterModel.experienceLevel ?? "",
         "last_24": filterModel.last24 ?? "",
         "last_3": filterModel.last3 ?? "",

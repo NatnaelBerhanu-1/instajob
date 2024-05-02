@@ -4,6 +4,7 @@ class FilterModel {
   String? endSalary;
   String? areaDistance;
   String? jobsType;
+  String? jobsSource;
   String? experienceLevel;
   String? last24;
   String? last3;
@@ -17,6 +18,7 @@ class FilterModel {
       this.endSalary,
       this.areaDistance,
       this.jobsType,
+      this.jobsSource,
       this.experienceLevel,
       this.last24,
       this.last3,
@@ -30,6 +32,7 @@ class FilterModel {
     endSalary = json['end_salary'];
     areaDistance = json['area_distance'];
     jobsType = json['jobs_Type'];
+    jobsSource = json['jobsSource']; //
     experienceLevel = json['Experience_level'];
     last24 = json['last_24'];
     last3 = json['last_3'];
@@ -45,6 +48,7 @@ class FilterModel {
     data['end_salary'] = endSalary;
     data['area_distance'] = areaDistance;
     data['jobs_Type'] = jobsType;
+    data['jobs_Source'] = jobsSource;
     data['Experience_level'] = experienceLevel;
     data['last_24'] = last24;
     data['last_3'] = last3;

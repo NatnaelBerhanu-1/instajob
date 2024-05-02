@@ -8,10 +8,12 @@ import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
 import 'package:insta_job/bloc/job_position/job_pos_event.dart';
 import 'package:insta_job/bloc/job_position/job_pos_state.dart';
 import 'package:insta_job/model/filter_model.dart';
+import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/job_opening/add_job_position_screen.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_app_bar.dart';
 import 'package:insta_job/widgets/custom_button/custom_btn.dart';
+import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:insta_job/widgets/custom_cards/insta_job_user_cards/filter_tiles/custom_filter_card.dart';
 
@@ -25,6 +27,8 @@ class FilterScreen extends StatefulWidget {
 }
 
 class _FilterScreenState extends State<FilterScreen> {
+  SalariesOptionChosen salariesOptionChosen = SalariesOptionChosen.allSalaries;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -167,43 +171,120 @@ class _FilterScreenState extends State<FilterScreen> {
                     ]);
               }),
               SizedBox(height: 20),
-              BlocBuilder<GlobalCubit, InitialState>(builder: (context, state) {
+              BlocBuilder<GlobalCubit, InitialState>(
+                  builder: (context, state) {
                 var values = context.read<GlobalCubit>();
-                return CustomFilterCard(
-                    title: "All Salaries",
-                    heading: "Salaries",
+                return CustomCommonCard(
+                  borderColor: MyColors.grey.withOpacity(.30),
+                  borderRadius: BorderRadius.circular(7),
+                  child: Column(
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          CommonText(
-                            text: "Custom Range",
-                            fontSize: 14,
-                            fontColor: MyColors.grey,
+                      Container(
+                        padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                        child: InkWell(
+                          onTap: () {
+                            setState(() {
+                              salariesOptionChosen =
+                                  SalariesOptionChosen.allSalaries;
+                            });
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(bottom: 10),
+                            child: Row(
+                              mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                              children: [
+                                CommonText(
+                                  text: "All Salaries",
+                                  fontSize: 12,
+                                  fontColor: salariesOptionChosen ==
+                                          SalariesOptionChosen
+                                              .allSalaries
+                                      ? MyColors.blue
+                                      : MyColors.grey,
+                                ),
+                                if (salariesOptionChosen ==
+                                    SalariesOptionChosen.allSalaries)
+                                  ImageButton(
+                                    image: MyImages.verified,
+                                    padding: EdgeInsets.zero,
+                                  )
+                              ],
+                            ),
                           ),
-                          CommonText(
-                            text:
-                                "${values.rangeValue.start.toStringAsFixed(0)}k - ${values.rangeValue.end.toStringAsFixed(0)}k",
-                            fontSize: 14,
-                            fontColor: MyColors.grey,
-                          ),
-                        ],
+                        ),
                       ),
-                      SizedBox(height: 10),
-                      RangeSlider(
-                        values: values.rangeValue,
-                        onChanged: (val) {
-                          values.rangeValues(val);
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: divider(color: MyColors.grey.withOpacity(.40)),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            salariesOptionChosen =
+                                SalariesOptionChosen.customRange;
+                          });
                         },
-                        max: 100,
-                        min: 0,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  CommonText(
+                                    text: "Custom Range",
+                                    fontSize: 14,
+                                    fontColor: salariesOptionChosen ==
+                                            SalariesOptionChosen.customRange
+                                        ? MyColors.blue
+                                        : MyColors.grey,
+                                  ),
+                                  SizedBox(
+                                    child: Row(
+                                      children: [
+                                        CommonText(
+                                          text:
+                                              "${values.rangeValue.start.toStringAsFixed(0)}k - ${values.rangeValue.end.toStringAsFixed(0)}k",
+                                          fontSize: 14,
+                                          fontColor: MyColors.grey,
+                                        ),
+                                        if (salariesOptionChosen ==
+                                            SalariesOptionChosen
+                                                .customRange)
+                                          Row(
+                                            children: [
+                                              SizedBox(width: 10),
+                                              ImageButton(
+                                                image: MyImages.verified,
+                                                padding: EdgeInsets.zero,
+                                              )
+                                            ],
+                                          )
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 10),
+                              RangeSlider(
+                                values: values.rangeValue,
+                                onChanged: salariesOptionChosen ==
+                                              SalariesOptionChosen
+                                                  .customRange ? (val) {
+                                  values.rangeValues(val);
+                                }: null,
+                                max: 100,
+                                min: 0,
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                      // CommonText(
-                      //   text: "Last 24 Hours",
-                      //   fontSize: 13,
-                      //   fontColor: MyColors.grey,
-                      // ),
-                    ]);
+                    ],
+                  ),
+                );
               }),
               SizedBox(height: 20),
               CommonText(
@@ -260,19 +341,19 @@ class _FilterScreenState extends State<FilterScreen> {
                             children: [
                               jobTypeTile(
                                 title: "InstaJob Only",
-                                value: value.jobTypeValue,
+                                value: value.jobSourceValue,
                                 selectedValue: "InstaJob Only",
                                 onTap: () {
-                                  value.jobType("InstaJob Only");
+                                  value.jobSource("InstaJob Only");
                                 },
                               ),
                               divider(color: MyColors.grey.withOpacity(.40)),
                               jobTypeTile(
                                 title: "All Jobs",
-                                value: value.jobTypeValue,
+                                value: value.jobSourceValue,
                                 selectedValue: "All Jobs",
                                 onTap: () {
-                                  value.jobType("All Jobs");
+                                  value.jobSource("All Jobs");
                                 },
                               ),
                             ],
@@ -404,16 +485,17 @@ class _FilterScreenState extends State<FilterScreen> {
                       last14: value.last_14,
                       last7: value.last_7,
                       last3: value.last_3,
-                      startSalary: value.rangeValue.start == 0
+                      startSalary: salariesOptionChosen == SalariesOptionChosen.allSalaries
                           ? ""
                           : value.rangeValue.start.toStringAsFixed(0),
-                      endSalary: value.rangeValue.end == 0
+                      endSalary: salariesOptionChosen == SalariesOptionChosen.allSalaries
                           ? ""
                           : value.rangeValue.end.toStringAsFixed(0),
                       areaDistance: value.range == 0
                           ? ""
                           : value.range.toStringAsFixed(0),
                       jobsType: value.jobTypeValue,
+                      jobsSource: value.jobSourceValue,
                       sortbydate: value.sortByValue,
                       experienceLevel: value.experienceLevelVal,
                     );

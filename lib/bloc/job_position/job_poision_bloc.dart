@@ -43,6 +43,7 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
   }
 
   _getSearchJobs(Emitter emit, FilterModel filterModel) async {
+    emit(JobPosLoading());
     ApiResponse response = await jobPositionRepository.searchJobs(filterModel);
     if (response.response.statusCode == 500) {
       emit(const JobErrorState('Something went wrong'));

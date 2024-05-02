@@ -19,10 +19,33 @@ class AgoraBloc extends Cubit<AgoraInitial> {
   RtcEngine? engine;
   int? remoteUid;
   bool localUserJoined = false;
+  bool isVideoEnabled = false;
+  bool isAudioEnabled = false;
+
+  // Function to toggle video stream
+  Future<void> toggleVideo() async {
+    if (isVideoEnabled) {
+      await engine?.disableVideo(); // Stop video
+      isVideoEnabled = false;
+    } else {
+      await engine?.enableVideo(); // Start video
+      isVideoEnabled = true;
+    }
+  }
+
+  Future<void> toggleAudio() async {
+  if (isAudioEnabled) {
+    await engine?.muteLocalAudioStream(true); // Mute audio
+    isAudioEnabled = false;
+  } else {
+    await engine?.muteLocalAudioStream(false); // Unmute audio
+    isAudioEnabled = true;
+  }
+}
 
   // CallModel? callModel;
 
-  Future<void> initAgora() async {
+  Future<void> initAgora({required int currentId, required int otherUserId}) async {
     // retrieve permissions
     await [Permission.camera, Permission.microphone].request();
 
@@ -32,6 +55,11 @@ class AgoraBloc extends Cubit<AgoraInitial> {
       appId: appId,
       channelProfile: ChannelProfileType.channelProfileLiveBroadcasting,
     ));
+
+    //new 
+    VideoEncoderConfiguration configuration = VideoEncoderConfiguration(dimensions: VideoDimensions(width: 1920, height: 1080));
+    await engine?.setVideoEncoderConfiguration(configuration);
+    await engine?.joinChannel(token: token, channelId: channelId, uid: currentId, options: ChannelMediaOptions(),);
 
     engine?.registerEventHandler(
       RtcEngineEventHandler(
@@ -134,7 +162,8 @@ class AgoraBloc extends Cubit<AgoraInitial> {
     );
   }
 
-  Widget remoteVideo() {
+  Widget remoteVideo({required int otherUserId}) {
+    remoteUid = otherUserId; //revisit (**wip, URGENT)
     if (remoteUid != null) {
       return Padding(
         padding: const EdgeInsets.all(15.0),

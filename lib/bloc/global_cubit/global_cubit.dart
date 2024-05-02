@@ -45,6 +45,14 @@ class GlobalCubit extends Cubit<InitialState> {
     emit(FilterState(fIndex));
   }
 
+    /// job Source
+  String jobSourceValue = "InstaJob Only";
+  jobSource(String val) {
+    jobSourceValue = val;
+    print("JOB SOURCE $jobSourceValue");
+    emit(JobSourceState(jobSourceValue));
+  }
+
   /// job Type
   String jobTypeValue = "Full Time";
   jobType(String val) {

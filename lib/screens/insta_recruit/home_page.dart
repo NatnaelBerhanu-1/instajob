@@ -101,13 +101,13 @@ class _HomePageState extends State<HomePage> {
                               ),
                               SizedBox(height: 19),
                               Padding(
-                                padding: const EdgeInsets.only(left: 5.0),
+                                padding: const EdgeInsets.only(left: 15.0),
                                 child: CommonText(
                                   text: Global.userModel?.type == "user"
                                       ? "${Global.userModel?.name?[0].toUpperCase()}${Global.userModel?.name?.substring(1)}"
                                       : "${Global.userModel?.companyName?[0].toUpperCase()}${Global.userModel?.companyName?.substring(1)}",
                                   fontSize: 21,
-                                  fontWeight: FontWeight.w500,
+                                  fontWeight: FontWeight.w800,
                                   fontColor: MyColors.blue,
                                 ),
                               )

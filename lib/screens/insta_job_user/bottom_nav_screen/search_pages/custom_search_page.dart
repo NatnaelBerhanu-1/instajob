@@ -10,6 +10,7 @@ import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
 import 'package:insta_job/bloc/job_position/job_pos_event.dart';
 import 'package:insta_job/bloc/job_position/job_pos_state.dart';
 import 'package:insta_job/utils/my_images.dart';
+import 'package:insta_job/widgets/custom_button/custom_btn.dart';
 import 'package:insta_job/widgets/custom_chip.dart';
 
 import '../../../../widgets/custom_cards/assign_companies_tile.dart';
@@ -61,7 +62,7 @@ class CompanyJobChip extends StatelessWidget {
             Expanded(
                 child: selectedSearchIndex == 1
                     ? BlocBuilder<JobPositionBloc, JobPosState>(
-                  buildWhen: (previous,current)=> current is JobPosLoaded,
+                  // buildWhen: (previous,current)=> current is JobPosLoaded,
                         builder: (context, state) {
 
                         if (state is JobPosLoaded) {
@@ -103,7 +104,25 @@ class CompanyJobChip extends StatelessWidget {
                           return Center(child: CircularProgressIndicator());
                         }
                         if (state is JobErrorState) {
-                          return Center(child: Text(state.error));
+                          return Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(state.error),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                CustomButton(
+                                  title: 'Try again',
+                                  width: 100,
+                                  height: 40,
+                                  onTap: () {
+                                    context.read<JobPositionBloc>().add(LoadJobPosListEvent());
+                                  },
+                                )
+                              ],
+                            ),
+                          );
                         }
                         return SizedBox();
                       })

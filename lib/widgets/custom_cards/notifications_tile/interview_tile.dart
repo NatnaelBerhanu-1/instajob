@@ -178,7 +178,17 @@ class _InterviewTileState extends State<InterviewTile> {
                           borderRadius: BorderRadius.circular(20),
                           title: buttonText,
                           onTap: () {
-                            AppRoutes.push(context, CallScreen());
+                            var interviewModel = widget.interviewModel;
+                            int userId;
+                            int otherUserId;
+                            if (Global.userModel?.type == "user") {
+                              userId = interviewModel.user!.id!;
+                              otherUserId = interviewModel.recruiter!.id!;
+                            } else {
+                              userId = interviewModel.recruiter!.id!;
+                              otherUserId = interviewModel.user!.id!;
+                            }
+                            AppRoutes.push(context, CallScreen(currentId: userId, otherUserId: otherUserId));
                           },
                         ),
                       ),
