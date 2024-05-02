@@ -114,7 +114,7 @@ class _CallScreenState extends State<CallScreen> {
                             );
                           },
                           child: SvgPicture.asset(
-                            MyImages.recruiterQuestionsBtn,
+                            MyImages.recruiterMessageBtn,
                             height: 48,
                           ),
                         ),
@@ -147,6 +147,7 @@ class _CallScreenState extends State<CallScreen> {
                 Positioned(
                   bottom: screenHeight * 0.1,
                   left: screenWidth / 2 - screenWidth * 0.072,
+                  // left: screenWidth / 2 - 28,
                   child: Center(
                     child: FloatingActionButton(
                       backgroundColor: MyColors.red,
