@@ -175,6 +175,7 @@ class _ApplyScreenState extends State<ApplyScreen> {
                   }
                 }, builder: (context, state) {
                   return CustomButton(
+                    loading: state is JobPosLoading,
                     title: "Apply Now",
                     onTap: () {
                       var applyData = context.read<JobPositionBloc>();

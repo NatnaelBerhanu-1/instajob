@@ -93,6 +93,7 @@ class MyImages {
   static String recruiterVideoOpen = "$baseUrl/recruiter_video_open.svg";
   static String recruiterVideoClosed = "$baseUrl/recruiter_video_closed.svg";
   static String recruiterQuestionsBtn = "$baseUrl/recruiter_questions_btn.svg";
+  static String recruiterMessageBtn = "$baseUrl/recruiter_msg_btn.svg";
   static String userBottomContainer = "$baseUrl/user_bottom_container.svg";
   static String userBottomContainer2 = "$baseUrl/user_bottom_container2.svg";
 }
