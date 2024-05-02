@@ -3,8 +3,10 @@
 
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:insta_job/globals.dart';
+import 'package:insta_job/model/chat_model.dart';
 import 'package:insta_job/model/interview_model.dart';
 import 'package:insta_job/network/end_points.dart';
 
@@ -20,8 +22,14 @@ import '../../../utils/my_colors.dart';
 class InterviewTile extends StatefulWidget {
   final bool isRecording;
   final InterviewModel interviewModel;
+  final List<QueryDocumentSnapshot<Object?>> chats;
 
-  const InterviewTile({Key? key, this.isRecording = false, required this.interviewModel}) : super(key: key);
+  const InterviewTile({
+    Key? key,
+    this.isRecording = false,
+    required this.interviewModel,
+    required this.chats,
+  }) : super(key: key);
 
   @override
   State<InterviewTile> createState() => _InterviewTileState();
@@ -179,16 +187,46 @@ class _InterviewTileState extends State<InterviewTile> {
                           title: buttonText,
                           onTap: () {
                             var interviewModel = widget.interviewModel;
+                            String userFirebaseId =
+                                interviewModel.user?.firebaseId ?? "";
+                            String otherUserFirebaseId =
+                                interviewModel.recruiter?.firebaseId ?? "";
+                            String gpFound =
+                                "${otherUserFirebaseId}_$userFirebaseId";
+
                             int userId;
                             int otherUserId;
-                            if (Global.userModel?.type == "user") {
+                            bool isUser = Global.userModel?.type == "user";
+                            if (isUser) {
                               userId = interviewModel.user?.id ?? 0;
                               otherUserId = interviewModel.recruiter?.id ?? 1;
                             } else {
                               userId = interviewModel.recruiter?.id ?? 1;
                               otherUserId = interviewModel.user?.id ?? 0;
                             }
-                            AppRoutes.push(context, CallScreen(currentId: userId, otherUserId: otherUserId));
+
+                            debugPrint("LOG gpFound $gpFound");
+                            //TODO: revisit the ChatModel here
+                            ChatModel model = ChatModel(
+                              //selfId is always recruiter
+                              gp: gpFound,
+                              oppId: userFirebaseId,
+                              selfId: otherUserFirebaseId,
+                              oppName: interviewModel.user?.name,
+                              oppProfilePic:
+                                  "${EndPoint.imageBaseUrl}interviewModel.user?.uploadPhoto",
+                              selfName: interviewModel.recruiter?.name,
+                              selfProfilePic:
+                                  "${EndPoint.imageBaseUrl}interviewModel.recruiter?.uploadPhoto",
+                              userId: userId.toString(),
+                            );
+                            AppRoutes.push(
+                                context,
+                                CallScreen(
+                                  currentId: userId,
+                                  otherUserId: otherUserId,
+                                  chatModel: model,
+                                ));
                           },
                         ),
                       ),

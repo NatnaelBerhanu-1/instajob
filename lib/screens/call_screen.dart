@@ -8,13 +8,21 @@ import 'package:insta_job/bloc/agora_bloc/agora_cubit.dart';
 import 'package:insta_job/bloc/agora_bloc/agora_state.dart';
 import 'package:insta_job/bottom_sheet/overview_bottom_sheet.dart';
 import 'package:insta_job/globals.dart';
+import 'package:insta_job/model/chat_model.dart';
+import 'package:insta_job/screens/chat_screen.dart';
+import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
 
 class CallScreen extends StatefulWidget {
   int currentId;
   int otherUserId;
-  CallScreen({Key? key, required this.currentId, required this.otherUserId})
+  ChatModel chatModel;
+  CallScreen(
+      {Key? key,
+      required this.currentId,
+      required this.otherUserId,
+      required this.chatModel})
       : super(key: key);
 
   @override
@@ -96,9 +104,19 @@ class _CallScreenState extends State<CallScreen> {
                             child: Icon(Icons.call_end),
                           ),
                         ),
-                        SvgPicture.asset(
-                          MyImages.recruiterQuestionsBtn,
-                          height: 48,
+                        InkWell(
+                          onTap: () {
+                            AppRoutes.push(
+                              context,
+                              ChatScreen(
+                                chatModel: widget.chatModel,
+                              ),
+                            );
+                          },
+                          child: SvgPicture.asset(
+                            MyImages.recruiterQuestionsBtn,
+                            height: 48,
+                          ),
                         ),
                         SvgPicture.asset(
                           MyImages.recruiterQuestionsBtn,
@@ -143,9 +161,19 @@ class _CallScreenState extends State<CallScreen> {
                 Positioned(
                   bottom: 40,
                   left: 1.1 * screenWidth / 6,
-                  child: SvgPicture.asset(
-                    MyImages.userMessageBtn,
-                    height: 35,
+                  child: InkWell(
+                    onTap: () {
+                      AppRoutes.push(
+                        context,
+                        ChatScreen(
+                          chatModel: widget.chatModel,
+                        ),
+                      );
+                    },
+                    child: SvgPicture.asset(
+                      MyImages.userMessageBtn,
+                      height: 35,
+                    ),
                   ),
                 ),
               if (isUser)

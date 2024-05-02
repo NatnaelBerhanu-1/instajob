@@ -70,12 +70,29 @@ class _InterviewScreenState extends State<InterviewScreen> {
                           Tab(text: "Previous"),
                         ]),
                     Expanded(
-                      child: TabBarView(
-                        children: [
-                          _buildUpcomingInterviewTabDetails(),
-                          _buildPreviousInterviewTabDetails(),
-                        ],
-                      ),
+                      child: StreamBuilder<Object>(
+                          stream: FirebaseFirestore.instance
+                              .collection(AuthService.chatCollection)
+                              .where(
+                                  Global.userModel?.type == "user"
+                                      ? 'oppId'
+                                      : 'selfId',
+                                  isEqualTo: Global.userModel?.firebaseId)
+                              .snapshots(),
+                          builder: (context, AsyncSnapshot<dynamic> snapshot) {
+                            List<QueryDocumentSnapshot<Object?>> chats = [];
+                            if (snapshot.hasData) {
+                              debugPrint(
+                                  'chats: ${snapshot.data.docs.map((e) => e.data() as Map<String, dynamic>)}');
+                              chats = (snapshot.data as QuerySnapshot).docs;
+                            }
+                            return TabBarView(
+                              children: [
+                                _buildUpcomingInterviewTabDetails(chats: chats),
+                                _buildPreviousInterviewTabDetails(chats: chats),
+                              ],
+                            );
+                          }),
                     )
                   ],
                 ),
@@ -161,8 +178,10 @@ class _InterviewScreenState extends State<InterviewScreen> {
         ));
   }
 
-  Widget _buildPreviousInterviewTabDetails() {
-    return BlocBuilder<InterviewScheduleCubit, InterviewScheduleState>(builder: (context, state) {
+  Widget _buildPreviousInterviewTabDetails(
+      {required List<QueryDocumentSnapshot<Object?>> chats}) {
+    return BlocBuilder<InterviewScheduleCubit, InterviewScheduleState>(
+        builder: (context, state) {
       if (state is InterviewScheduleLoading) {
         return _buildInterviewScheduleTabDetailsLoading();
       } else if (state is InterviewScheduleSuccess) {
@@ -176,8 +195,13 @@ class _InterviewScreenState extends State<InterviewScreen> {
               padding: EdgeInsets.only(bottom: 8),
               itemBuilder: (c, i) {
                 return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 0),
-                  child: InterviewTile(isRecording: true, interviewModel: state.pastSchedules[i]),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 2, vertical: 0),
+                  child: InterviewTile(
+                    isRecording: true,
+                    interviewModel: state.pastSchedules[i],
+                    chats: chats,
+                  ),
                 );
               },
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -195,8 +219,10 @@ class _InterviewScreenState extends State<InterviewScreen> {
     });
   }
 
-  Widget _buildUpcomingInterviewTabDetails() {
-    return BlocBuilder<InterviewScheduleCubit, InterviewScheduleState>(builder: (context, state) {
+  Widget _buildUpcomingInterviewTabDetails(
+      {required List<QueryDocumentSnapshot<Object?>> chats}) {
+    return BlocBuilder<InterviewScheduleCubit, InterviewScheduleState>(
+        builder: (context, state) {
       if (state is InterviewScheduleLoading) {
         return _buildInterviewScheduleTabDetailsLoading();
       } else if (state is InterviewScheduleSuccess) {
@@ -217,6 +243,7 @@ class _InterviewScreenState extends State<InterviewScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 0),
                   child: InterviewTile(
                     interviewModel: state.upcomingSchedules[i],
+                    chats: chats,
                   ),
                 );
               },
