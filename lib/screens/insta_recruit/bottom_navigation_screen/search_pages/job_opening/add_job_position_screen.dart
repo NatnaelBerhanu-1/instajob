@@ -504,9 +504,12 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                                 SizedBox(height: 10),
                                 RangeSlider(
                                   values: values.rangeValue,
-                                  onChanged: (val) {
-                                    values.rangeValues(val);
-                                  },
+                                  onChanged: salariesOptionChosen ==
+                                          SalariesOptionChosen.customRange
+                                      ? (val) {
+                                          values.rangeValues(val);
+                                        }
+                                      : null,
                                   max: 100,
                                   min: 0,
                                 ),
