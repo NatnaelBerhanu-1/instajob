@@ -303,11 +303,16 @@ class _ApplicantsState extends State<Applicants> {
   }
 
   _buildEducationSection() {
-    return BlocBuilder<ResumeDetailsCubit, ResumeDetailsState>(builder: (context, state) {
+    return BlocBuilder<ResumeDetailsCubit, ResumeDetailsState>(
+        builder: (context, state) {
+      if (state is ResumeDetailsLoading) {
+        return Center(child: CircularProgressIndicator());
+      }
       if (state is ResumeDetailsSuccess) {
         ResumeDetailModel resumeDetail = state.resumeDetail;
-        List<EducationDetail>? educationDetailList = resumeDetail?.educationDetail;
-        if (educationDetailList == null) {
+        List<EducationDetail>? educationDetailList =
+            resumeDetail?.educationDetail;
+        if (educationDetailList == null || educationDetailList.isEmpty) {
           return Center(
             child: Text("No data"),
           );
@@ -340,11 +345,12 @@ class _ApplicantsState extends State<Applicants> {
   }
 
   _buildExperienceSection() {
-    return BlocBuilder<ResumeDetailsCubit, ResumeDetailsState>(builder: (context, state) {
+    return BlocBuilder<ResumeDetailsCubit, ResumeDetailsState>(
+        builder: (context, state) {
       if (state is ResumeDetailsSuccess) {
         ResumeDetailModel resumeDetail = state.resumeDetail;
         List<Experience>? experienceList = resumeDetail.experience;
-        if (experienceList == null) {
+        if (experienceList == null || experienceList.isEmpty) {
           return Center(
             child: Text("No data"),
           );
@@ -369,6 +375,9 @@ class _ApplicantsState extends State<Applicants> {
               );
             });
       }
+      if (state is ResumeDetailsLoading) {
+        return Center(child: CircularProgressIndicator());
+      }
       if (state is ResumeDetailsErrorState) {
         return Center(child: Text(state.message));
       }
@@ -377,7 +386,8 @@ class _ApplicantsState extends State<Applicants> {
   }
 
   _buildSkillsSection() {
-    return BlocBuilder<ResumeDetailsCubit, ResumeDetailsState>(builder: (context, state) {
+    return BlocBuilder<ResumeDetailsCubit, ResumeDetailsState>(
+        builder: (context, state) {
       if (state is ResumeDetailsSuccess) {
         ResumeDetailModel resumeDetail = state.resumeDetail;
         List<String>? skillsList = resumeDetail?.skills;
@@ -414,6 +424,9 @@ class _ApplicantsState extends State<Applicants> {
               );
             });
       }
+      if (state is ResumeDetailsLoading) {
+        return Center(child: CircularProgressIndicator());
+      }
       if (state is ResumeDetailsErrorState) {
         return Center(child: Text(state.message));
       }
@@ -422,11 +435,18 @@ class _ApplicantsState extends State<Applicants> {
   }
 
   _buildAchievementSection() {
-    return Center(child: Text("No Data Found"));
+    return BlocBuilder<ResumeDetailsCubit, ResumeDetailsState>(
+        builder: (context, state) {
+      if (state is ResumeDetailsLoading) {
+        return Center(child: CircularProgressIndicator());
+      }
+      return Center(child: Text("No Data Found"));
+    });
   }
 
   _buildBioSection() {
-    return BlocBuilder<ResumeDetailsCubit, ResumeDetailsState>(builder: (context, state) {
+    return BlocBuilder<ResumeDetailsCubit, ResumeDetailsState>(
+        builder: (context, state) {
       if (state is ResumeDetailsSuccess) {
         ResumeDetailModel resumeDetail = state.resumeDetail;
         String? name = resumeDetail.name;
@@ -437,20 +457,23 @@ class _ApplicantsState extends State<Applicants> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Name:\n$name",
+                "Name:\n${name ?? "\t\t\t---"}",
               ),
               divider(),
               Text(
-                "Email:\n$email",
+                "Email:\n${email ?? "\t\t\t---"}",
               ),
               divider(),
               Text(
-                "Address:\n$address",
+                "Address:\n${address ?? "\t\t\t\t\t---"}",
               ),
               divider(),
             ],
           ),
         );
+      }
+      if (state is ResumeDetailsLoading) {
+        return Center(child: CircularProgressIndicator());
       }
       if (state is ResumeDetailsErrorState) {
         return Center(child: Text(state.message));

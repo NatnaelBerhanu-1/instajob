@@ -76,7 +76,8 @@ class _SaveJobsScreenState extends State<SaveJobsScreen>
                                 } else {
                                   context
                                       .read<JobPositionBloc>()
-                                      .add(AppliedJobListEvent());
+                                      .add(
+                                      AppliedJobListEvent(status: "applied"));
                                 }
                               },
                               tabs: [
@@ -128,8 +129,11 @@ class _SaveJobsScreenState extends State<SaveJobsScreen>
                                     )
                                   : state is JobErrorState
                                       ? Center(child: Text(state.error))
-                                      : Center(
-                                          child: CircularProgressIndicator()),
+                                      : state is JobPosLoading
+                                          ? Center(
+                                              child:
+                                                  CircularProgressIndicator())
+                                          : SizedBox.shrink(),
                             ),
                             Padding(
                               padding: const EdgeInsets.all(8.0),
@@ -166,10 +170,16 @@ class _SaveJobsScreenState extends State<SaveJobsScreen>
                                               mainAxisSpacing: 0,
                                               childAspectRatio: 5.1 / 4.5),
                                     )
-                                  : state is ApplyErrorState
-                                      ? Center(child: Text(state.error))
-                                      : Center(
-                                          child: CircularProgressIndicator()),
+                                  : (state is ApplyErrorState ||
+                                          state is JobErrorState)
+                                      ? Center(
+                                          child: Text(
+                                              "${state is ApplyErrorState ? state.error : ""}${state is JobErrorState ? state.error : ""}"))
+                                      : state is ApplyLoading
+                                          ? Center(
+                                              child:
+                                                  CircularProgressIndicator())
+                                          : SizedBox.shrink(),
                             ),
                           ]);
                         }),

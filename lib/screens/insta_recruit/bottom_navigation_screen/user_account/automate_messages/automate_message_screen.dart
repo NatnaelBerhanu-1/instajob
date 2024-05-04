@@ -242,9 +242,9 @@ class _AutomateMsgScreenState extends State<AutomateMsgScreen> {
                         loading: false,
                         // loading: snapshot is FeedBackLoading2,
                         onclick: () {
-                          if (isEnable == false ||
+                          if (isEnable == true ||
                               formKey.currentState!.validate()) {
-                            // if it's disabled, probably no need to validate
+                            // if it's **being** disabled(meaning it's enabled right now), probably no need to validate
                             isEnable = !isEnable;
                             setState(() {});
                             context

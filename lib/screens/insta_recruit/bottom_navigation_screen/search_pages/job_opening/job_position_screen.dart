@@ -49,234 +49,277 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint("Image: ${EndPoint.imageBaseUrl}${widget.jobPosModel!.uploadPhoto}");
-    return Scaffold(
-        body: SafeArea(
-      //revisit/reconsider the safe area TODO: test without safe area for the image section
-      child: Stack(
-        children: [
-          Positioned(
-            right: 0,
-            top: 0,
-            left: 0,
-            child: CachedNetworkImage(
-              imageUrl: "${EndPoint.imageBaseUrl}${widget.jobPosModel!.uploadPhoto}",
-              fit: BoxFit.cover,
-              width: MediaQuery.of(context).size.width,
-              height: 300,
-              errorWidget: (c, val, _) => Center(child: CircularProgressIndicator()),
-            ),
-            // Image.network(
-            //     "${EndPoint.imageBaseUrl}${widget.jobPosModel!.uploadPhoto}",
-            //     fit: BoxFit.cover),
-          ),
-          Positioned(
-            top: 38,
-            left: 16,
-            child: BlocBuilder<BottomBloc, BottomInitialState>(builder: (context, value) {
-              return ImageButton(
-                onTap: () {
-                  if (Global.userModel?.type == "user") {
-                    print("##########");
-                    context.read<JobPositionBloc>().add(LoadJobPosListEvent());
-                    Navigator.pop(context);
-                    // context.read<BottomBloc>().add(
-                    //     SetScreenEvent(true, screenName: SearchJobsScreen()));
-                    // context.read<GlobalCubit>().changeIndex(1);
-                  } else {
-                    context
-                        .read<JobPositionBloc>()
-                        .add(LoadJobPosListEvent(companyId: widget.jobPosModel!.companyId.toString()));
-                    Navigator.of(context).pop();
-                    // context.read<BottomBloc>().add(SetScreenEvent(true,
-                    //     screenName: JobOpeningScreen(
-                    //         companyModel: widget.companyModel)));
-                  }
-                  // AppRoutes.pushAndRemoveUntil(context, BottomNavScreen());
-                },
-                image: MyImages.backArrow,
-                height: 40,
-                width: 40,
-              );
-            }),
-          ),
-          Positioned(
-            top: 0,
-            right: 10,
-            child: Global.userModel?.type == "user"
-                ? IconButton(
-                    icon: Icon(Icons.share, color: MyColors.white),
-                    onPressed: () {},
-                  )
-                : SizedBox(),
-          ),
-          Positioned(
+    debugPrint(
+        "Image: ${EndPoint.imageBaseUrl}${widget.jobPosModel!.uploadPhoto}");
+    return PopScope(
+      canPop: true,
+      onPopInvoked: (val) {
+        if (Global.userModel?.type == "user") {
+          context.read<JobPositionBloc>().add(LoadJobPosListEvent());
+        } else {
+          context.read<JobPositionBloc>().add(LoadJobPosListEvent(
+              companyId: widget.jobPosModel!.companyId.toString()));
+        }
+      },
+      child: Scaffold(
+          body: SafeArea(
+        //revisit/reconsider the safe area TODO: test without safe area for the image section
+        child: Stack(
+          children: [
+            Positioned(
+              right: 0,
+              top: 0,
               left: 0,
-              // top: MediaQuery.of(context).size.height * 0.36,
-              top: MediaQuery.of(context).size.height * 0.33,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    // SizedBox(height: MediaQuery.of(context).size.height * 0.35),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.6,
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height,
-                        decoration: BoxDecoration(
-                          color: MyColors.white,
-                          borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
-                        ),
-                        child: Padding(
-                            padding: const EdgeInsets.fromLTRB(20, 15, 20, 0),
-                            child: SingleChildScrollView(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(height: 10),
-                                  CommonText(
-                                    text: "Job Position",
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 19,
-                                  ),
-                                  /*SizedBox(height: 10),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.start,
-                                    children: [
-                                      ImageButton(
-                                          image: MyImages.bag,
-                                          padding: EdgeInsets.zero),
-                                      SizedBox(width: 5),
-                                      CommonText(
-                                        text: "Job Name",
-                                        fontColor: MyColors.blue,
-                                        fontSize: 15,
-                                      ),
-                                    ],
-                                  ),*/
-                                  SizedBox(height: 8),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      ImageButton(image: MyImages.bag, padding: EdgeInsets.zero),
-                                      SizedBox(width: 5),
-                                      CommonText(
-                                        text: "${widget.jobPosModel?.designation}",
-                                        fontColor: MyColors.blue,
-                                        fontSize: 15,
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 30),
-                                  CommonText(
-                                    text: "Job Details",
-                                    fontSize: 15,
-                                  ),
-                                  SizedBox(height: 10),
-                                  CommonText(
-                                    text: "${widget.jobPosModel?.jobDetails}",
-                                    fontSize: 13,
-                                    fontColor: MyColors.grey,
-                                  ),
-                                  SizedBox(height: 15),
-                                  buildRequirementTile(widget.jobPosModel!),
-                                  buildResponsibilityTile(widget.jobPosModel!),
-                                  buildTopSkillsTile(widget.jobPosModel!),
-                                  SizedBox(height: 15),
-                                  BlocBuilder<BottomBloc, BottomInitialState>(builder: (context, value) {
-                                    return Global.userModel?.type == "user"
-                                        ? CustomButton(
-                                            title: "Apply",
-                                            onTap: () {
-                                              AppRoutes.push(context, ApplyScreen(jobPosModel: widget.jobPosModel));
-                                            },
-                                          )
-                                        : Row(
-                                            children: [
-                                              Expanded(
-                                                  child: CustomButton(
-                                                title: "Edit Listing",
-                                                onTap: () {
-                                                  context.read<BottomBloc>().add(SetScreenEvent(true,
-                                                      screenName: AddJobPositionScreen(
-                                                          jobPosModel: widget.jobPosModel,
-                                                          companyModel: widget.companyModel,
-                                                          isUpdate: true)));
-
-                                                  AppRoutes.push(context, BottomNavScreen());
-                                                },
-                                              )),
-                                              SizedBox(width: 15),
-                                              Expanded(
-                                                  child: CustomButton(
-                                                title: "View Candidates",
-                                                onTap: () {
-                                                  AppRoutes.push(
-                                                      context,
-                                                      ViewCandidates(
-                                                          jobPosModel: widget.jobPosModel,
-                                                          companyModel: widget.companyModel));
-                                                  // context
-                                                  //     .read<BottomBloc>()
-                                                  //     .add(SetScreenEvent(
-                                                  //         true,
-                                                  //         screenName: ViewCandidates(
-                                                  //             jobPosModel: widget
-                                                  //                 .jobPosModel,
-                                                  //             companyModel: widget
-                                                  //                 .companyModel)));
-                                                  // AppRoutes.push(context,
-                                                  //     BottomNavScreen());
-                                                  print("JOB ID ${widget.jobPosModel?.id.toString()}");
-                                                },
-                                              )),
-                                            ],
-                                          );
-                                  }),
-                                ],
-                              ),
-                            )),
-                      ),
-                    ),
-                  ],
-                ),
-              )),
-          BlocConsumer<JobPositionBloc, JobPosState>(listener: (context, state) {
-            if (state is SaveJobPosLoaded) {
-              context.read<JobPositionBloc>().add(
-                  LoadJobPosListEvent()); //temp soln should work, but the bloc is apparently refetching data after liking anyways, so #todo: consider using it
-            }
-          }, builder: (context, state) {
-            if (state is JobPosLoading) {
-              //we can remove this loading widget for better UX maybe, revisit
-              return Center(child: CircularProgressIndicator());
-            }
-            return Positioned(
-              top: MediaQuery.of(context).size.height * 0.334,
-              right: 20,
+              child: CachedNetworkImage(
+                imageUrl:
+                    "${EndPoint.imageBaseUrl}${widget.jobPosModel!.uploadPhoto}",
+                fit: BoxFit.cover,
+                width: MediaQuery.of(context).size.width,
+                height: 300,
+                errorWidget: (c, val, _) =>
+                    Center(child: CircularProgressIndicator()),
+              ),
+              // Image.network(
+              //     "${EndPoint.imageBaseUrl}${widget.jobPosModel!.uploadPhoto}",
+              //     fit: BoxFit.cover),
+            ),
+            Positioned(
+              top: 38,
+              left: 16,
+              child: BlocBuilder<BottomBloc, BottomInitialState>(
+                  builder: (context, value) {
+                return ImageButton(
+                  onTap: () {
+                    if (Global.userModel?.type == "user") {
+                      print("##########");
+                      context
+                          .read<JobPositionBloc>()
+                          .add(LoadJobPosListEvent());
+                      Navigator.pop(context);
+                      // context.read<BottomBloc>().add(
+                      //     SetScreenEvent(true, screenName: SearchJobsScreen()));
+                      // context.read<GlobalCubit>().changeIndex(1);
+                    } else {
+                      context.read<JobPositionBloc>().add(LoadJobPosListEvent(
+                          companyId: widget.jobPosModel!.companyId.toString()));
+                      Navigator.of(context).pop();
+                      // context.read<BottomBloc>().add(SetScreenEvent(true,
+                      //     screenName: JobOpeningScreen(
+                      //         companyModel: widget.companyModel)));
+                    }
+                    // AppRoutes.pushAndRemoveUntil(context, BottomNavScreen());
+                  },
+                  image: MyImages.backArrow,
+                  height: 40,
+                  width: 40,
+                );
+              }),
+            ),
+            Positioned(
+              top: 0,
+              right: 10,
               child: Global.userModel?.type == "user"
-                  ? CustomCommonCard(
-                      onTap: () {
-                        isSaved = !isSaved;
-                        setState(() {});
-                        context.read<JobPositionBloc>().add(SaveJobPositionEvent(
-                              jobId: widget.jobPosModel!.id.toString(),
-                              jobStatus: isSaved ? "1" : "0",
-                            ));
-                      },
-                      bgColor: MyColors.blue,
-                      borderRadius: BorderRadius.circular(10),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Icon(isSaved ? Icons.favorite : Icons.favorite_border, color: MyColors.white),
-                      ),
+                  ? IconButton(
+                      icon: Icon(Icons.share, color: MyColors.white),
+                      onPressed: () {},
                     )
                   : SizedBox(),
-            );
-          }),
-        ],
-      ),
-    ));
+            ),
+            Positioned(
+                left: 0,
+                // top: MediaQuery.of(context).size.height * 0.36,
+                top: MediaQuery.of(context).size.height * 0.33,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      // SizedBox(height: MediaQuery.of(context).size.height * 0.35),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.6,
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height,
+                          decoration: BoxDecoration(
+                            color: MyColors.white,
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(20)),
+                          ),
+                          child: Padding(
+                              padding: const EdgeInsets.fromLTRB(20, 15, 20, 0),
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(height: 10),
+                                    CommonText(
+                                      text: "Job Position",
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 19,
+                                    ),
+                                    /*SizedBox(height: 10),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        ImageButton(
+                                            image: MyImages.bag,
+                                            padding: EdgeInsets.zero),
+                                        SizedBox(width: 5),
+                                        CommonText(
+                                          text: "Job Name",
+                                          fontColor: MyColors.blue,
+                                          fontSize: 15,
+                                        ),
+                                      ],
+                                    ),*/
+                                    SizedBox(height: 8),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        ImageButton(
+                                            image: MyImages.bag,
+                                            padding: EdgeInsets.zero),
+                                        SizedBox(width: 5),
+                                        CommonText(
+                                          text:
+                                              "${widget.jobPosModel?.designation}",
+                                          fontColor: MyColors.blue,
+                                          fontSize: 15,
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 30),
+                                    CommonText(
+                                      text: "Job Details",
+                                      fontSize: 15,
+                                    ),
+                                    SizedBox(height: 10),
+                                    CommonText(
+                                      text: "${widget.jobPosModel?.jobDetails}",
+                                      fontSize: 13,
+                                      fontColor: MyColors.grey,
+                                    ),
+                                    SizedBox(height: 15),
+                                    buildRequirementTile(widget.jobPosModel!),
+                                    buildResponsibilityTile(
+                                        widget.jobPosModel!),
+                                    buildTopSkillsTile(widget.jobPosModel!),
+                                    SizedBox(height: 15),
+                                    BlocBuilder<BottomBloc, BottomInitialState>(
+                                        builder: (context, value) {
+                                      return Global.userModel?.type == "user"
+                                          ? CustomButton(
+                                              title: "Apply",
+                                              onTap: () {
+                                                AppRoutes.push(
+                                                    context,
+                                                    ApplyScreen(
+                                                        jobPosModel: widget
+                                                            .jobPosModel));
+                                              },
+                                            )
+                                          : Row(
+                                              children: [
+                                                Expanded(
+                                                    child: CustomButton(
+                                                  title: "Edit Listing",
+                                                  onTap: () {
+                                                    context
+                                                        .read<BottomBloc>()
+                                                        .add(SetScreenEvent(
+                                                            true,
+                                                            screenName: AddJobPositionScreen(
+                                                                jobPosModel: widget
+                                                                    .jobPosModel,
+                                                                companyModel: widget
+                                                                    .companyModel,
+                                                                isUpdate:
+                                                                    true)));
+
+                                                    AppRoutes.push(context,
+                                                        BottomNavScreen());
+                                                  },
+                                                )),
+                                                SizedBox(width: 15),
+                                                Expanded(
+                                                    child: CustomButton(
+                                                  title: "View Candidates",
+                                                  onTap: () {
+                                                    AppRoutes.push(
+                                                        context,
+                                                        ViewCandidates(
+                                                            jobPosModel: widget
+                                                                .jobPosModel,
+                                                            companyModel: widget
+                                                                .companyModel));
+                                                    // context
+                                                    //     .read<BottomBloc>()
+                                                    //     .add(SetScreenEvent(
+                                                    //         true,
+                                                    //         screenName: ViewCandidates(
+                                                    //             jobPosModel: widget
+                                                    //                 .jobPosModel,
+                                                    //             companyModel: widget
+                                                    //                 .companyModel)));
+                                                    // AppRoutes.push(context,
+                                                    //     BottomNavScreen());
+                                                    print(
+                                                        "JOB ID ${widget.jobPosModel?.id.toString()}");
+                                                  },
+                                                )),
+                                              ],
+                                            );
+                                    }),
+                                  ],
+                                ),
+                              )),
+                        ),
+                      ),
+                    ],
+                  ),
+                )),
+            BlocConsumer<JobPositionBloc, JobPosState>(
+                listener: (context, state) {
+              if (state is SaveJobPosLoaded) {
+                context.read<JobPositionBloc>().add(
+                    LoadJobPosListEvent()); //temp soln should work, but the bloc is apparently refetching data after liking anyways, so #todo: consider using it
+              }
+            }, builder: (context, state) {
+              if (state is JobPosLoading) {
+                //we can remove this loading widget for better UX maybe, revisit
+                return Center(child: CircularProgressIndicator());
+              }
+              return Positioned(
+                top: MediaQuery.of(context).size.height * 0.334,
+                right: 20,
+                child: Global.userModel?.type == "user"
+                    ? CustomCommonCard(
+                        onTap: () {
+                          isSaved = !isSaved;
+                          setState(() {});
+                          context
+                              .read<JobPositionBloc>()
+                              .add(SaveJobPositionEvent(
+                                jobId: widget.jobPosModel!.id.toString(),
+                                jobStatus: isSaved ? "1" : "0",
+                              ));
+                        },
+                        bgColor: MyColors.blue,
+                        borderRadius: BorderRadius.circular(10),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Icon(
+                              isSaved ? Icons.favorite : Icons.favorite_border,
+                              color: MyColors.white),
+                        ),
+                      )
+                    : SizedBox(),
+              );
+            }),
+          ],
+        ),
+      )),
+    );
   }
 }

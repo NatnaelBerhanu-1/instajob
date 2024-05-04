@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
 import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
 import 'package:insta_job/bloc/job_position/job_pos_event.dart';
 import 'package:insta_job/utils/my_colors.dart';
@@ -37,6 +38,8 @@ class AppliedSuccessDialog extends StatelessWidget {
             CustomButton(
               title: "Thanks!",
               onTap: () {
+                context.read<GlobalCubit>().changeIndex(1);
+                context.read<JobPositionBloc>().add(LoadJobPosListEvent());
                 if (isCoverLetter) {
                   Navigator.of(context).pop();
                   Navigator.of(context).pop();
@@ -49,7 +52,7 @@ class AppliedSuccessDialog extends StatelessWidget {
                   Navigator.of(context).pop();
                   Navigator.of(context).pop();
                 }
-                context.read<JobPositionBloc>().add(LoadJobPosListEvent());
+                // context.read<JobPositionBloc>().add(LoadJobPosListEvent());
                 // AppRoutes.pushReplacement(
                 //     context,
                 //     JobPositionScreen(

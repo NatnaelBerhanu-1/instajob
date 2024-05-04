@@ -58,7 +58,7 @@ class JobPositionRepository {
 
   Future<ApiResponse> getAppliedJob({String? jobId, String? status}) async {
     var map = {
-      // "user_id": Global.userModel?.type == "user" ? Global.userModel?.id : "",
+      "user_id": Global.userModel?.type == "user" ? Global.userModel?.id : "",
       "job_id": jobId ?? "",
       "status": status ?? ""
     };

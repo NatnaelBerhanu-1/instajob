@@ -35,6 +35,7 @@ class _SearchTrashState extends State<SearchTrash> {
             centerTitle: false,
             title: "Trash",
             onTap: () {
+              //TODO(urgent): consider adding PopScope and passing the event call there as well. It's working now tho(with android backbutton too)
               context.read<JobPositionBloc>().add(AppliedJobListEvent(
                     jobId: widget.jobPosModel!.id.toString(),
                   ));
