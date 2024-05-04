@@ -9,6 +9,7 @@ import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
 import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
 import 'package:insta_job/bloc/job_position/job_pos_event.dart';
 import 'package:insta_job/bloc/job_position/job_pos_state.dart';
+import 'package:insta_job/globals.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_button/custom_btn.dart';
 import 'package:insta_job/widgets/custom_chip.dart';
@@ -61,10 +62,18 @@ class CompanyJobChip extends StatelessWidget {
             SizedBox(height: 20),
             Expanded(
                 child: selectedSearchIndex == 1
-                    ? BlocBuilder<JobPositionBloc, JobPosState>(
-                  // buildWhen: (previous,current)=> current is JobPosLoaded,
+                    ? BlocConsumer<JobPositionBloc, JobPosState>(
+                        listener: (context, state) {
+                        if (state is SaveJobPosLoaded) {
+                          if (Global.userModel?.type == "user") {
+                            context
+                                .read<JobPositionBloc>()
+                                .add(LoadJobPosListEvent());
+                          }
+                        }
+                      },
+                        // buildWhen: (previous,current)=> current is JobPosLoaded,
                         builder: (context, state) {
-
                         if (state is JobPosLoaded) {
                           print('&&&&&&&&&&&&&&&&&&&&&&& ${state.jobPosList.length}');
                           return ListView.builder(

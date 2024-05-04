@@ -25,8 +25,11 @@ import '../../../../../bloc/bottom_bloc/bottom_bloc.dart';
 
 class JobOpeningScreen extends StatefulWidget {
   final CompanyModel? companyModel;
+  final bool fromCompany;
 
-  const JobOpeningScreen({Key? key, this.companyModel}) : super(key: key);
+  const JobOpeningScreen(
+      {Key? key, this.companyModel, this.fromCompany = false})
+      : super(key: key);
 
   @override
   State<JobOpeningScreen> createState() => _JobOpeningScreenState();
@@ -223,7 +226,9 @@ class _JobOpeningScreenState extends State<JobOpeningScreen> {
                           var data = state.jobPosList[i];
                           return JobOpeningTile(
                               jobPosModel: data,
-                              companyModel: widget.companyModel);
+                            companyModel: widget.companyModel,
+                            fromCompany: widget.fromCompany,
+                          );
                         }),
                   );
                 }

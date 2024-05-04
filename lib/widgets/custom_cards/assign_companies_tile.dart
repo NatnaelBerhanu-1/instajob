@@ -39,7 +39,11 @@ class AssignCompaniesTile extends StatelessWidget {
           context.read<JobPositionBloc>().add(LoadJobPosListEvent(companyId: companyModel!.id.toString()));
           context
               .read<BottomBloc>()
-              .add(SetScreenEvent(true, screenName: JobOpeningScreen(companyModel: companyModel)));
+              .add(SetScreenEvent(true,
+              screenName: JobOpeningScreen(
+                companyModel: companyModel,
+                fromCompany: true,
+              )));
           // context
           //     .read<JobPositionBloc>()
           //     .add(AppliedJobListEvent(jobId: widget.jobPosModel.id.toString()));

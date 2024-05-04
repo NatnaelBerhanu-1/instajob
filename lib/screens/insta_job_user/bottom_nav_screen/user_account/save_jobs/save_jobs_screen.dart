@@ -105,6 +105,7 @@ class _SaveJobsScreenState extends State<SaveJobsScreen>
                                                 JobPositionScreen(
                                                   jobPosModel:
                                                       state.jobPosList[i],
+                                                  fromSavedJobs: true,
                                                   // companyModel: context
                                                   //     .read<CompanyBloc>()
                                                   //     .companyModel,

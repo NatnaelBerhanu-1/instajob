@@ -18,7 +18,12 @@ import '../custom_button/custom_img_button.dart';
 class JobOpeningTile extends StatelessWidget {
   final JobPosModel jobPosModel;
   final CompanyModel? companyModel;
-  const JobOpeningTile({Key? key, required this.jobPosModel, this.companyModel})
+  final bool fromCompany;
+  const JobOpeningTile(
+      {Key? key,
+      required this.jobPosModel,
+      this.companyModel,
+      this.fromCompany = false})
       : super(key: key);
 
   @override
@@ -35,7 +40,9 @@ class JobOpeningTile extends StatelessWidget {
           AppRoutes.push(
               context,
               JobPositionScreen(
-                  jobPosModel: jobPosModel, companyModel: companyModel));
+                  jobPosModel: jobPosModel,
+                  companyModel: companyModel,
+                  fromCompany: fromCompany));
         },
         child: Container(
             decoration: BoxDecoration(

@@ -30,9 +30,16 @@ import 'view_candidate.dart';
 class JobPositionScreen extends StatefulWidget {
   final JobPosModel? jobPosModel;
   final CompanyModel? companyModel;
+  final bool fromSavedJobs;
+  final bool fromCompany;
 
-  const JobPositionScreen({Key? key, this.jobPosModel, this.companyModel})
-      : super(key: key);
+  const JobPositionScreen({
+    Key? key,
+    this.jobPosModel,
+    this.companyModel,
+    this.fromSavedJobs = false,
+    this.fromCompany = false,
+  }) : super(key: key);
 
   @override
   State<JobPositionScreen> createState() => _JobPositionScreenState();
@@ -43,9 +50,9 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
 
   @override
   void initState() {
+    super.initState();
     isSaved = widget.jobPosModel?.jobStatus == 1 ? true : false;
     setState(() {});
-    super.initState();
   }
 
   @override
@@ -56,14 +63,18 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
       canPop: true,
       onPopInvoked: (val) {
         if (Global.userModel?.type == "user") {
-          // context.read<JobPositionBloc>().add(LoadJobPosListEvent());
-          var companyId = widget.jobPosModel?.companyId.toString();
-          if (companyId != null) {
-            context.read<JobPositionBloc>().add(LoadJobPosListEvent(
-                  companyId: widget.jobPosModel!.companyId.toString(),
-                ));
+          if (widget.fromSavedJobs == true) {
+            context.read<JobPositionBloc>().add(SavedJobPositionListEvent());
           } else {
-            context.read<JobPositionBloc>().add(LoadJobPosListEvent());
+            // context.read<JobPositionBloc>().add(LoadJobPosListEvent());
+            var companyId = widget.jobPosModel?.companyId.toString();
+            if (widget.fromCompany == true) {
+              context.read<JobPositionBloc>().add(LoadJobPosListEvent(
+                    companyId: widget.jobPosModel!.companyId.toString(),
+                  ));
+            } else {
+              context.read<JobPositionBloc>().add(LoadJobPosListEvent());
+            }
           }
         } else {
           context.read<JobPositionBloc>().add(LoadJobPosListEvent(
@@ -229,8 +240,8 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                                                 AppRoutes.push(
                                                     context,
                                                     ApplyScreen(
-                                                        jobPosModel: widget
-                                                            .jobPosModel,
+                                                      jobPosModel:
+                                                          widget.jobPosModel,
                                                       companyModel: widget
                                                           .companyModel, //this is passed to check if job is found from company's job list (to be used for refreshing data)
                                                     ));
@@ -299,6 +310,7 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
             BlocConsumer<JobPositionBloc, JobPosState>(
                 listener: (context, state) {
               if (state is SaveJobPosLoaded) {
+                // TODO(URGENT**): revisit
                 context.read<JobPositionBloc>().add(
                     LoadJobPosListEvent()); //temp soln should work, but the bloc is apparently refetching data after liking anyways, so #todo: consider using it
               }
