@@ -99,29 +99,29 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                   builder: (context, value) {
                 return ImageButton(
                   onTap: () {
-                    if (Global.userModel?.type == "user") {
-                      print("##########");
-                      var companyId = widget.jobPosModel?.companyId.toString();
-                      if (companyId != null) {
-                        context.read<JobPositionBloc>().add(LoadJobPosListEvent(
-                              companyId:
-                                  widget.jobPosModel!.companyId.toString(),
-                            ));
-                      } else {
-                        context
-                            .read<JobPositionBloc>()
-                            .add(LoadJobPosListEvent());
-                      }
-                      Navigator.of(context).pop();
-                    } else {
-                      context.read<JobPositionBloc>().add(LoadJobPosListEvent(
-                          companyId: widget.jobPosModel!.companyId.toString()));
-                      Navigator.of(context).pop();
-                      // context.read<BottomBloc>().add(SetScreenEvent(true,
-                      //     screenName: JobOpeningScreen(
-                      //         companyModel: widget.companyModel)));
-                    }
+                    // if (Global.userModel?.type == "user") {
+                    //   print("##########");
+                    //   var companyId = widget.jobPosModel?.companyId.toString();
+                    //   if (companyId != null) {
+                    //     context.read<JobPositionBloc>().add(LoadJobPosListEvent(
+                    //           companyId:
+                    //               widget.jobPosModel!.companyId.toString(),
+                    //         ));
+                    //   } else {
+                    //     context
+                    //         .read<JobPositionBloc>()
+                    //         .add(LoadJobPosListEvent());
+                    //   }
+                    //   Navigator.of(context).pop();
+                    // } else {
+                    //   context.read<JobPositionBloc>().add(LoadJobPosListEvent(
+                    //       companyId: widget.jobPosModel!.companyId.toString()));
+                    //   // context.read<BottomBloc>().add(SetScreenEvent(true,
+                    //   //     screenName: JobOpeningScreen(
+                    //   //         companyModel: widget.companyModel)));
+                    // }
                     // AppRoutes.pushAndRemoveUntil(context, BottomNavScreen());
+                    Navigator.of(context).pop();
                   },
                   image: MyImages.backArrow,
                   height: 40,
