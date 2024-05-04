@@ -31,7 +31,8 @@ class JobPositionScreen extends StatefulWidget {
   final JobPosModel? jobPosModel;
   final CompanyModel? companyModel;
 
-  const JobPositionScreen({Key? key, this.jobPosModel, this.companyModel}) : super(key: key);
+  const JobPositionScreen({Key? key, this.jobPosModel, this.companyModel})
+      : super(key: key);
 
   @override
   State<JobPositionScreen> createState() => _JobPositionScreenState();
@@ -55,7 +56,15 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
       canPop: true,
       onPopInvoked: (val) {
         if (Global.userModel?.type == "user") {
-          context.read<JobPositionBloc>().add(LoadJobPosListEvent());
+          // context.read<JobPositionBloc>().add(LoadJobPosListEvent());
+          var companyId = widget.jobPosModel?.companyId.toString();
+          if (companyId != null) {
+            context.read<JobPositionBloc>().add(LoadJobPosListEvent(
+                  companyId: widget.jobPosModel!.companyId.toString(),
+                ));
+          } else {
+            context.read<JobPositionBloc>().add(LoadJobPosListEvent());
+          }
         } else {
           context.read<JobPositionBloc>().add(LoadJobPosListEvent(
               companyId: widget.jobPosModel!.companyId.toString()));
@@ -92,13 +101,18 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                   onTap: () {
                     if (Global.userModel?.type == "user") {
                       print("##########");
-                      context
-                          .read<JobPositionBloc>()
-                          .add(LoadJobPosListEvent());
-                      Navigator.pop(context);
-                      // context.read<BottomBloc>().add(
-                      //     SetScreenEvent(true, screenName: SearchJobsScreen()));
-                      // context.read<GlobalCubit>().changeIndex(1);
+                      var companyId = widget.jobPosModel?.companyId.toString();
+                      if (companyId != null) {
+                        context.read<JobPositionBloc>().add(LoadJobPosListEvent(
+                              companyId:
+                                  widget.jobPosModel!.companyId.toString(),
+                            ));
+                      } else {
+                        context
+                            .read<JobPositionBloc>()
+                            .add(LoadJobPosListEvent());
+                      }
+                      Navigator.of(context).pop();
                     } else {
                       context.read<JobPositionBloc>().add(LoadJobPosListEvent(
                           companyId: widget.jobPosModel!.companyId.toString()));
