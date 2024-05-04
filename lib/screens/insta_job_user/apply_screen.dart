@@ -12,6 +12,7 @@ import 'package:insta_job/bloc/job_position/job_pos_state.dart';
 import 'package:insta_job/dialog/applied_successful_dialog.dart';
 import 'package:insta_job/dialog/custom_dialog.dart';
 import 'package:insta_job/globals.dart';
+import 'package:insta_job/model/company_model.dart';
 import 'package:insta_job/model/job_position_model.dart';
 import 'package:insta_job/network/end_points.dart';
 import 'package:insta_job/screens/insta_job_user/confirm_detail_screen.dart';
@@ -28,7 +29,9 @@ import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class ApplyScreen extends StatefulWidget {
   final JobPosModel? jobPosModel;
-  const ApplyScreen({Key? key, this.jobPosModel}) : super(key: key);
+  final CompanyModel? companyModel;
+  const ApplyScreen({Key? key, this.jobPosModel, this.companyModel})
+      : super(key: key);
 
   @override
   State<ApplyScreen> createState() => _ApplyScreenState();
@@ -171,7 +174,10 @@ class _ApplyScreenState extends State<ApplyScreen> {
                     showToast(state.error);
                   }
                   if (state is JobAppliedSuccessState) {
-                    buildDialog(context, AppliedSuccessDialog());
+                    buildDialog(
+                        context,
+                        AppliedSuccessDialog(
+                            companyModel: widget.companyModel));
                   }
                 }, builder: (context, state) {
                   return CustomButton(

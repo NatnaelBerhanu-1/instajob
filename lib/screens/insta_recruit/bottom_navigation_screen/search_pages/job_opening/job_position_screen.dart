@@ -230,7 +230,10 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                                                     context,
                                                     ApplyScreen(
                                                         jobPosModel: widget
-                                                            .jobPosModel));
+                                                            .jobPosModel,
+                                                      companyModel: widget
+                                                          .companyModel, //this is passed to check if job is found from company's job list (to be used for refreshing data)
+                                                    ));
                                               },
                                             )
                                           : Row(
