@@ -34,7 +34,13 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
     }
     if (response.response.statusCode == 200) {
       List<JobPosModel> jobPosList =
-          (response.response.data['data'] as List).map((e) => JobPosModel.fromJson(e)).toList();
+          (response.response.data['data'] as List).map((e) {
+        // var jobIdPossibility = response.response.data['data']["job_id"];
+        var jobIdPossibility =
+            response.response.data['data']; //TODO:(super urgent):
+        var item = JobPosModel.fromJson(e);
+        return item.copyWith(id: jobIdPossibility ?? item.id);
+      }).toList();
       emit(SaveJobPosLoaded(jobPosList));
       return jobPosList;
     } else {
