@@ -13,6 +13,7 @@ import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
+import 'package:intl/intl.dart';
 
 class ChatScreen extends StatefulWidget {
   final ChatModel chatModel;
@@ -160,10 +161,22 @@ class _ChatScreenState extends State<ChatScreen> {
                         return snapshot.hasData
                             ? Padding(
                                 padding: const EdgeInsets.symmetric(vertical: 5.0),
-                                child: ListView.builder(
+                                child: ListView.separated(
                                     reverse: true,
                                     // shrinkWrap: true,
-                                    itemCount: snapshot.data?.docs.length,
+                                    itemCount: snapshot.data?.docs.length ?? 0,
+                                    separatorBuilder: (c, i) {
+                                      var len = snapshot.data?.docs.length ?? 0;
+                                      var currData = snapshot.data?.docs[i];
+                                      var prevInTimeData = snapshot.data?.docs[i + 1];
+                                      var currDate = (currData?['time'] as Timestamp).toDate().toLocal();
+                                      var prevInTimeDate = (prevInTimeData?['time'] as Timestamp).toDate().toLocal();
+                                      Widget separatorWidget = SizedBox.shrink();
+                                      if (!isSameDate(currDate, prevInTimeDate)) {
+                                        separatorWidget = Center(child: Text(DateFormat.yMMMd().format(currDate!).toString()));
+                                      }
+                                      return separatorWidget;
+                                    },
                                     itemBuilder: (c, i) {
                                       var data = snapshot.data?.docs[i];
                                       return Padding(
@@ -192,9 +205,18 @@ class _ChatScreenState extends State<ChatScreen> {
                                             ),
                                             child: Padding(
                                               padding: const EdgeInsets.all(12),
-                                              child: Text(
-                                                "${data?['msg']}",
-                                                style: TextStyle(color: Colors.black),
+                                              child: Column(
+                                                children: [
+                                                  Text(
+                                                    "${data?['msg']}",
+                                                    style: TextStyle(color: Colors.black),
+                                                  ),
+                                                  SizedBox(height: 4.0),
+                                                  Text(
+                                                    DateFormat.Hm().format((data?['time'] as Timestamp).toDate().toLocal()),
+                                                    style: TextStyle(color: Colors.grey),
+                                                  ),
+                                                ],
                                               ),
                                             ),
                                           ),
@@ -253,5 +275,12 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
       ),
     );
+  }
+  
+  bool isSameDate(DateTime? date1, DateTime date2) {
+
+    return date1 != null && date1.year == date2.year &&
+      date1.month == date2.month &&
+      date1.day == date2.day;
   }
 }
