@@ -19,8 +19,7 @@ class SaveJobsScreen extends StatefulWidget {
   State<SaveJobsScreen> createState() => _SaveJobsScreenState();
 }
 
-class _SaveJobsScreenState extends State<SaveJobsScreen>
-    with SingleTickerProviderStateMixin {
+class _SaveJobsScreenState extends State<SaveJobsScreen> with SingleTickerProviderStateMixin {
   // TabController? tabController;
 
   @override
@@ -70,14 +69,9 @@ class _SaveJobsScreenState extends State<SaveJobsScreen>
                               indicatorColor: MyColors.blue,
                               onTap: (val) {
                                 if (val == 0) {
-                                  context
-                                      .read<JobPositionBloc>()
-                                      .add(SavedJobPositionListEvent());
+                                  context.read<JobPositionBloc>().add(SavedJobPositionListEvent());
                                 } else {
-                                  context
-                                      .read<JobPositionBloc>()
-                                      .add(
-                                      AppliedJobListEvent(status: "applied"));
+                                  context.read<JobPositionBloc>().add(AppliedJobListEvent(status: "applied"));
                                 }
                               },
                               tabs: [
@@ -90,7 +84,6 @@ class _SaveJobsScreenState extends State<SaveJobsScreen>
                         child: BlocBuilder<JobPositionBloc, JobPosState>(
                             // buildWhen: (p,c)=>c is SaveJobPosLoaded   ,
                             builder: (context, state) {
-                          print('QQQQQQQQQQ $state');
                           return TabBarView(children: [
                             Padding(
                               padding: const EdgeInsets.all(8.0),
@@ -103,8 +96,7 @@ class _SaveJobsScreenState extends State<SaveJobsScreen>
                                             AppRoutes.push(
                                                 context,
                                                 JobPositionScreen(
-                                                  jobPosModel:
-                                                      state.jobPosList[i],
+                                                  jobPosModel: state.jobPosList[i],
                                                   fromSavedJobs: true,
                                                   // companyModel: context
                                                   //     .read<CompanyBloc>()
@@ -112,28 +104,21 @@ class _SaveJobsScreenState extends State<SaveJobsScreen>
                                                 ));
                                           },
                                           child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 5, vertical: 8),
-                                            child: AppliedTile(
-                                                isFav: true,
-                                                jobPosModel:
-                                                    state.jobPosList[i]),
+                                            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
+                                            child: AppliedTile(isFav: true, jobPosModel: state.jobPosList[i]),
                                           ),
                                         );
                                       },
-                                      gridDelegate:
-                                          SliverGridDelegateWithFixedCrossAxisCount(
-                                              crossAxisCount: 2,
-                                              crossAxisSpacing: 0,
-                                              mainAxisSpacing: 0,
-                                              childAspectRatio: 5.1 / 4.5),
+                                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 2,
+                                          crossAxisSpacing: 0,
+                                          mainAxisSpacing: 0,
+                                          childAspectRatio: 5.1 / 4.5),
                                     )
                                   : state is JobErrorState
                                       ? Center(child: Text(state.error))
                                       : state is JobPosLoading
-                                          ? Center(
-                                              child:
-                                                  CircularProgressIndicator())
+                                          ? Center(child: CircularProgressIndicator())
                                           : SizedBox.shrink(),
                             ),
                             Padding(
@@ -147,39 +132,30 @@ class _SaveJobsScreenState extends State<SaveJobsScreen>
                                             AppRoutes.push(
                                                 context,
                                                 JobPositionScreen(
-                                                  jobPosModel:
-                                                      state.appliedJobList[i],
+                                                  jobPosModel: state.appliedJobList[i],
                                                   // companyModel: context
                                                   //     .read<CompanyBloc>()
                                                   //     .companyModel,
                                                 ));
                                           },
                                           child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 5, vertical: 8),
-                                            child: AppliedTile(
-                                                isFav: true,
-                                                jobPosModel:
-                                                    state.appliedJobList[i]),
+                                            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
+                                            child: AppliedTile(isFav: true, jobPosModel: state.appliedJobList[i]),
                                           ),
                                         );
                                       },
-                                      gridDelegate:
-                                          SliverGridDelegateWithFixedCrossAxisCount(
-                                              crossAxisCount: 2,
-                                              crossAxisSpacing: 0,
-                                              mainAxisSpacing: 0,
-                                              childAspectRatio: 5.1 / 4.5),
+                                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 2,
+                                          crossAxisSpacing: 0,
+                                          mainAxisSpacing: 0,
+                                          childAspectRatio: 5.1 / 4.5),
                                     )
-                                  : (state is ApplyErrorState ||
-                                          state is JobErrorState)
+                                  : (state is ApplyErrorState || state is JobErrorState)
                                       ? Center(
                                           child: Text(
                                               "${state is ApplyErrorState ? state.error : ""}${state is JobErrorState ? state.error : ""}"))
                                       : state is ApplyLoading
-                                          ? Center(
-                                              child:
-                                                  CircularProgressIndicator())
+                                          ? Center(child: CircularProgressIndicator())
                                           : SizedBox.shrink(),
                             ),
                           ]);

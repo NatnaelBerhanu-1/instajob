@@ -77,6 +77,7 @@ class JobPosModel {
 
   JobPosModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    jobId = json['id'].toString();
     userId = json['user_id'];
     companyId = json['company_id'];
     appliedId = json['applied_id'];

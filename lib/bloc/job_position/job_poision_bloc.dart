@@ -33,13 +33,11 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
       emit(const JobErrorState("Something went wrong"));
     }
     if (response.response.statusCode == 200) {
-      List<JobPosModel> jobPosList =
-          (response.response.data['data'] as List).map((e) {
-        // var jobIdPossibility = response.response.data['data']["job_id"];
-        var jobIdPossibility =
-            response.response.data['data']; //TODO:(super urgent):
-        var item = JobPosModel.fromJson(e);
-        return item.copyWith(id: jobIdPossibility ?? item.id);
+      List<JobPosModel> jobPosList = (response.response.data['data'] as List).map((e) {
+        debugPrint('Data: $e');
+        var item = JobPosModel.fromJson(e).copyWith(jobStatus: 1, jobId: e['job_id'].toString(), id: e['job_id']);
+        debugPrint('ID:${item.id}, ${item.jobId}');
+        return item;
       }).toList();
       emit(SaveJobPosLoaded(jobPosList));
       return jobPosList;
@@ -85,7 +83,7 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
 
   _getAppliedJobs(Emitter emit, {String? jobId, String? status}) async {
     emit(ApplyLoading());
-    debugPrint('JobId:$jobId'); 
+    debugPrint('JobId:$jobId');
     ApiResponse response = await jobPositionRepository.getAppliedJob(jobId: jobId, status: status);
     if (response.response.statusCode == 500) {
       emit(const ApplyErrorState('Something went wrong'));
@@ -304,8 +302,7 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
         emit(DenyLoading());
       }
       ApiResponse response = await jobPositionRepository.shortlistOrDenied(
-          appliedListId: event.appliedListId,
-          status: event.status); //TODO: get status from shortListOrDenyAction
+          appliedListId: event.appliedListId, status: event.status); //TODO: get status from shortListOrDenyAction
       if (response.response.statusCode == 500) {
         emit(const JobErrorState("Something went wrong"));
       } else if (response.response.statusCode == 200) {
