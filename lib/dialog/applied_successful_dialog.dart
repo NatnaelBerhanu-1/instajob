@@ -15,9 +15,7 @@ import '../utils/my_images.dart';
 class AppliedSuccessDialog extends StatelessWidget {
   final bool isCoverLetter;
   final CompanyModel? companyModel;
-  const AppliedSuccessDialog(
-      {Key? key, this.isCoverLetter = false, this.companyModel})
-      : super(key: key);
+  const AppliedSuccessDialog({Key? key, this.isCoverLetter = false, this.companyModel}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -52,18 +50,8 @@ class AppliedSuccessDialog extends StatelessWidget {
                 } else {
                   context.read<JobPositionBloc>().add(LoadJobPosListEvent());
                 }
-                if (isCoverLetter) {
-                  Navigator.of(context).pop();
-                  Navigator.of(context).pop();
-                  Navigator.of(context).pop();
-                  Navigator.of(context).pop();
-                  Navigator.of(context).pop();
-                  Navigator.of(context).pop();
-                } else {
-                  Navigator.of(context).pop();
-                  Navigator.of(context).pop();
-                  Navigator.of(context).pop();
-                }
+                Navigator.of(context).popUntil((route) => route.isFirst);
+
                 // context.read<JobPositionBloc>().add(LoadJobPosListEvent());
                 // AppRoutes.pushReplacement(
                 //     context,

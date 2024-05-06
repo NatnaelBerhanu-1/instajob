@@ -62,13 +62,10 @@ class CompanyJobChip extends StatelessWidget {
             SizedBox(height: 20),
             Expanded(
                 child: selectedSearchIndex == 1
-                    ? BlocConsumer<JobPositionBloc, JobPosState>(
-                        listener: (context, state) {
+                    ? BlocConsumer<JobPositionBloc, JobPosState>(listener: (context, state) {
                         if (state is SaveJobPosLoaded) {
                           if (Global.userModel?.type == "user") {
-                            context
-                                .read<JobPositionBloc>()
-                                .add(LoadJobPosListEvent());
+                            context.read<JobPositionBloc>().add(LoadJobPosListEvent());
                           }
                         }
                       },
@@ -83,13 +80,8 @@ class CompanyJobChip extends StatelessWidget {
                                 var data = state.jobPosList[i];
                                 context.read<JobPositionBloc>().jobModel = data;
                                 return Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 7, horizontal: 5),
-                                    child: SearchJobTile(
-                                        companyModel: context
-                                            .read<CompanyBloc>()
-                                            .companyModel,
-                                        jobPosModel: data));
+                                    padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 5),
+                                    child: SearchJobTile(jobPosModel: data));
                               });
                         }
                         if (state is JobSearchLoaded) {
@@ -100,13 +92,8 @@ class CompanyJobChip extends StatelessWidget {
                                 var data = state.searchJobPosList[i];
                                 context.read<JobPositionBloc>().jobModel = data;
                                 return Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 7, horizontal: 5),
-                                    child: SearchJobTile(
-                                        companyModel: context
-                                            .read<CompanyBloc>()
-                                            .companyModel,
-                                        jobPosModel: data));
+                                    padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 5),
+                                    child: SearchJobTile(jobPosModel: data));
                               });
                         }
                         if (state is JobPosLoading) {
@@ -135,8 +122,7 @@ class CompanyJobChip extends StatelessWidget {
                         }
                         return SizedBox();
                       })
-                    : BlocBuilder<CompanyBloc, CompanyState>(
-                        builder: (context, state) {
+                    : BlocBuilder<CompanyBloc, CompanyState>(builder: (context, state) {
                         if (state is CompanyLoaded) {
                           var companyData = context.read<CompanyBloc>();
                           return ListView.builder(
@@ -145,10 +131,8 @@ class CompanyJobChip extends StatelessWidget {
                               itemBuilder: (c, i) {
                                 companyData.companyModel = state.companyList[i];
                                 return Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 7, horizontal: 5),
-                                  child: AssignCompaniesTile(
-                                      companyModel: companyData.companyModel
+                                  padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 5),
+                                  child: AssignCompaniesTile(companyModel: companyData.companyModel
                                       // leadingImage:
                                       //     MyImages.businessAndTrade,
                                       // title: "Ford",
