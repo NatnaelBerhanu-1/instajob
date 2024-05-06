@@ -8,6 +8,7 @@ import 'package:insta_job/bloc/job_position/job_pos_state.dart';
 import 'package:insta_job/dialog/applied_successful_dialog.dart';
 import 'package:insta_job/dialog/custom_dialog.dart';
 import 'package:insta_job/globals.dart';
+import 'package:insta_job/model/company_model.dart';
 import 'package:insta_job/model/cover_letter_model.dart';
 import 'package:insta_job/model/job_position_model.dart';
 import 'package:insta_job/utils/my_colors.dart';
@@ -19,9 +20,10 @@ import '../../widgets/custom_button/custom_btn.dart';
 class CoverLetterScreen extends StatefulWidget {
   final JobPosModel? jobPosModel;
   final CoverLetterModel? coverLetterModel;
+  final CompanyModel? companyModel;
 
   const CoverLetterScreen(
-      {Key? key, required this.coverLetterModel, this.jobPosModel})
+      {Key? key, required this.coverLetterModel, this.jobPosModel, this.companyModel})
       : super(key: key);
 
   @override
@@ -131,7 +133,7 @@ class _CoverLetterScreenState extends State<CoverLetterScreen> {
                 }
                 if (state is JobAppliedSuccessState) {
                   buildDialog(
-                      context, AppliedSuccessDialog(isCoverLetter: true));
+                      context, AppliedSuccessDialog(isCoverLetter: true, companyModel: widget.companyModel));
                 }
               }, builder: (context, state) {
                 return CustomButton(

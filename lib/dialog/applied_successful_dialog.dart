@@ -42,7 +42,7 @@ class AppliedSuccessDialog extends StatelessWidget {
                 //TODO: add onSuccess or similar function to this widget instead
                 context.read<GlobalCubit>().changeIndex(1);
                 // context.read<JobPositionBloc>().add(LoadJobPosListEvent());
-                var companyId = companyModel?.id.toString();
+                var companyId = companyModel?.id != null ? companyModel!.id.toString() : null;
                 if (companyId != null) {
                   context.read<JobPositionBloc>().add(LoadJobPosListEvent(
                         companyId: companyId,

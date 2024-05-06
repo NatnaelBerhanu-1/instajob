@@ -160,7 +160,7 @@ class _ApplyScreenState extends State<ApplyScreen> {
                 child: BlocConsumer<JobPositionBloc, JobPosState>(listener: (context, state) {
                   if (state is JobErrorState) {
                     showToast(state.error);
-                    buildDialog(context, AppliedSuccessDialog(companyModel: widget.companyModel));
+                    // buildDialog(context, AppliedSuccessDialog(companyModel: widget.companyModel));
                   }
                   if (state is JobAppliedSuccessState) {
                     buildDialog(context, AppliedSuccessDialog(companyModel: widget.companyModel));
@@ -188,7 +188,7 @@ class _ApplyScreenState extends State<ApplyScreen> {
                   onTap: () {
                     // AppRoutes.push(context,
                     //     ConfirmDetailsScreen(jobPosModel: widget.jobPosModel));
-                    AppRoutes.push(context, CoverLetterScreen(coverLetterModel: null, jobPosModel: widget.jobPosModel));
+                    AppRoutes.push(context, CoverLetterScreen(coverLetterModel: null, jobPosModel: widget.jobPosModel, companyModel: widget.companyModel));
                   },
                 ),
               )
