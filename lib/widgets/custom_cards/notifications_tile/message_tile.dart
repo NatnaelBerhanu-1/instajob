@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:insta_job/auth_service.dart';
@@ -21,123 +22,140 @@ class MessageTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        AppRoutes.push(context, ChatScreen(chatModel: chatModel));
-      },
-      child: Slidable(
-        endActionPane: ActionPane(motion: ScrollMotion(), children: [
-          SlidableAction(
-            onPressed: (val) {
-              AuthService.deleteChat(chatModel);
-            },
-            icon: Icons.delete_outline,
-            label: "",
-            backgroundColor: MyColors.darkRed,
-          )
-        ]),
-        direction: Axis.horizontal,
-        child: Column(
-          children: [
-            CustomCommonCard(
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
+    return StreamBuilder<DocumentSnapshot>(
+      stream: FirebaseFirestore.instance
+      .collection(AuthService.chatCollection)
+      .doc(chatModel.gp)
+      .snapshots(),
+      builder: (context1, snapshot1) {
+        if (!snapshot1.hasData) {
+          return SizedBox.shrink();
+          // return Text("NO DATA");
+        }
+        var updatedChatModelAsMap = snapshot1.data?.data();
+        ChatModel updatedChatModel = ChatModel.fromMap(updatedChatModelAsMap as Map<String, dynamic>);
+        int? unreadCount = Global.userModel?.type == "user" ? updatedChatModel.selfUnreadCount : updatedChatModel.oppUnreadCount;
+        return GestureDetector(
+          onTap: () {
+            AppRoutes.push(context, ChatScreen(chatModel: updatedChatModel));
+          },
+          child: Slidable(
+            endActionPane: ActionPane(motion: ScrollMotion(), children: [
+              SlidableAction(
+                onPressed: (val) {
+                  AuthService.deleteChat(updatedChatModel);
+                },
+                icon: Icons.delete_outline,
+                label: "",
+                backgroundColor: MyColors.darkRed,
+              )
+            ]),
+            direction: Axis.horizontal,
+            child: Column(
+              children: [
+                CustomCommonCard(
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Stack(
-                          children: [
-                            CircleAvatar(
-                                radius: 20,
-                                backgroundImage: CachedNetworkImageProvider(
-                                    "${Global.userModel?.type == "user" ? chatModel.selfProfilePic : chatModel.oppProfilePic}")),
-                            Positioned(
-                                bottom: 5,
-                                left: 67,
-                                child: Container(
-                                  padding: EdgeInsets.all(3.5),
-                                  decoration: BoxDecoration(color: MyColors.blue, shape: BoxShape.circle),
-                                  child: Icon(
-                                    Icons.camera_alt_outlined,
-                                    size: 13,
-                                    color: MyColors.blue,
-                                  ),
-                                )),
-                          ],
-                        ),
-                        SizedBox(width: 10),
-                        Column(
+                        Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            CommonText(
-                              // text: "${chatModel.oppName}",
-                              text: Global.userModel?.type == "user" ? "${chatModel.selfName}" : "${chatModel.oppName}",
-                              fontWeight: FontWeight.w500,
-                            ),
-                            CommonText(
-                              text: "1 Minute ago",
-                              fontWeight: FontWeight.w400,
-                              fontSize: 13,
-                            ),
-                          ],
-                        ),
-                        Spacer(),
-                        // Container(
-                        //   height: 25,
-                        //   width: 25,
-                        //   alignment: Alignment.center,
-                        //   decoration: BoxDecoration(
-                        //     shape: BoxShape.circle,
-                        //     color: MyColors.blue,
-                        //   ),
-                        //   child: CommonText(
-                        //     text: "1",
-                        //     fontWeight: FontWeight.w400,
-                        //     fontColor: MyColors.white,
-                        //     fontSize: 13,
-                        //   ),
-                        // )
-                      ],
-                    ),
-                    SizedBox(height: 5),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: MyColors.lightGreen,
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            CommonText(
-                              text: "${chatModel.oppTitle}",
-                              fontWeight: FontWeight.w400,
-                              fontSize: 13,
-                              fontColor: MyColors.green,
+                            Stack(
+                              children: [
+                                CircleAvatar(
+                                    radius: 20,
+                                    backgroundImage: CachedNetworkImageProvider(
+                                        "${Global.userModel?.type == "user" ? updatedChatModel.selfProfilePic : updatedChatModel.oppProfilePic}")),
+                                Positioned(
+                                    bottom: 5,
+                                    left: 67,
+                                    child: Container(
+                                      padding: EdgeInsets.all(3.5),
+                                      decoration: BoxDecoration(color: MyColors.blue, shape: BoxShape.circle),
+                                      child: Icon(
+                                        Icons.camera_alt_outlined,
+                                        size: 13,
+                                        color: MyColors.blue,
+                                      ),
+                                    )),
+                              ],
                             ),
                             SizedBox(width: 10),
-                            ImageButton(
-                              image: MyImages.cancelGreen,
-                              padding: EdgeInsets.zero,
-                              height: 17,
-                              width: 17,
-                            )
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                CommonText(
+                                  // text: "${updatedChatModel.oppName}",
+                                  text: Global.userModel?.type == "user" ? "${updatedChatModel.selfName}" : "${updatedChatModel.oppName}",
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                CommonText(
+                                  text: "1 Minute ago",
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 13,
+                                ),
+                              ],
+                            ),
+                            Spacer(),
+                            // if((unreadCount ?? 0) > 0)
+                            Container(
+                              height: 25,
+                              width: 25,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: MyColors.blue,
+                              ),
+                              child: CommonText(
+                                // text: "1",
+                                text: (unreadCount ?? 0).toString(),
+                                fontWeight: FontWeight.w400,
+                                fontColor: MyColors.white,
+                                fontSize: 13,
+                              ),
+                            ),
                           ],
                         ),
-                      ),
+                        SizedBox(height: 5),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: MyColors.lightGreen,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                CommonText(
+                                  text: "${updatedChatModel.oppTitle}",
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 13,
+                                  fontColor: MyColors.green,
+                                ),
+                                SizedBox(width: 10),
+                                ImageButton(
+                                  image: MyImages.cancelGreen,
+                                  padding: EdgeInsets.zero,
+                                  height: 17,
+                                  width: 17,
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
+                divider()
+              ],
             ),
-            divider()
-          ],
-        ),
-      ),
+          ),
+        );
+      }
     );
   }
 }

@@ -1,9 +1,10 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:equatable/equatable.dart';
 
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-class ChatModel {
+class ChatModel extends Equatable {
   final String? oppId;
   final String? selfId;
   final String gp;
@@ -15,6 +16,8 @@ class ChatModel {
   final String? selfName;
   final String? selfProfilePic;
   final String? oppProfilePic;
+  final int? selfUnreadCount;
+  final int? oppUnreadCount;
   final String? oppTitle;
   final String? companyId;
   final String? userId;
@@ -30,6 +33,8 @@ class ChatModel {
       this.selfName,
       this.selfProfilePic,
       this.oppProfilePic,
+      this.selfUnreadCount,
+      this.oppUnreadCount,
       this.oppTitle,
       this.companyId,
       this.userId});
@@ -38,6 +43,8 @@ class ChatModel {
     return <String, dynamic>{
       'oppId': oppId,
       'selfId': selfId,
+      // 'selfUnreadCount': selfUnreadCount,
+      // 'oppUnreadCount': oppUnreadCount,
       'msg': msg,
       'userName': userName,
       'profile': profile,
@@ -52,6 +59,8 @@ class ChatModel {
       'gp': gp,
       'oppId': oppId,
       'selfId': selfId,
+      'selfUnreadCount': selfUnreadCount,
+      'oppUnreadCount': oppUnreadCount,
       'jobId': jobId,
       'oppName': oppName,
       'selfName': selfName,
@@ -76,6 +85,8 @@ class ChatModel {
       selfName: map['selfName'] != null ? map['selfName'] as String : null,
       selfProfilePic: map['selfProfilePic'] != null ? map['selfProfilePic'] as String : null,
       oppProfilePic: map['oppProfilePic'] != null ? map['oppProfilePic'] as String : null,
+      selfUnreadCount: map['selfUnreadCount'] != null ? map['selfUnreadCount'] as int : null,
+      oppUnreadCount: map['oppUnreadCount'] != null ? map['oppUnreadCount'] as int : null,
       oppTitle: map['oppTitle'] != null ? map['oppTitle'] as String : null,
       companyId: map['companyId'] != null ? map['companyId'] as String : null,
       userId: map['userId'] != null ? map['userId'] as String : null,
@@ -97,6 +108,8 @@ class ChatModel {
       String? selfName,
       String? selfProfilePic,
       String? oppProfilePic,
+      int? selfUnreadCount,
+      int? oppUnreadCount,
       String? oppTitle,
       String? companyId,
       String? userId}) {
@@ -112,6 +125,8 @@ class ChatModel {
         selfName: selfName ?? this.selfName,
         selfProfilePic: selfProfilePic ?? this.selfProfilePic,
         oppProfilePic: oppProfilePic ?? this.oppProfilePic,
+        selfUnreadCount: selfUnreadCount ?? this.selfUnreadCount,
+        oppUnreadCount: oppUnreadCount ?? this.oppUnreadCount,
         oppTitle: oppTitle ?? this.oppTitle,
         companyId: companyId ?? this.userId,
         userId: userId ?? this.userId);
@@ -130,10 +145,32 @@ class ChatModel {
       'selfName': selfName,
       'selfProfilePic': selfProfilePic,
       'oppProfilePic': oppProfilePic,
+      'selfUnreadCount': selfUnreadCount,
+      'oppUnreadCount': oppUnreadCount,
       'oppTitle': oppTitle,
       'companyId': companyId
     };
   }
 
   String toJson() => json.encode(toMap());
+  
+  @override
+  List<Object?> get props => [
+    oppId,
+    selfId,
+    gp,
+    msg,
+    userName,
+    profile,
+    jobId,
+    oppName,
+    selfName,
+    selfProfilePic,
+    oppProfilePic,
+    selfUnreadCount,
+    oppUnreadCount,
+    oppTitle,
+    companyId,
+    userId,
+  ];
 }

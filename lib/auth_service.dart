@@ -19,8 +19,18 @@ class AuthService {
     var data = isUser
         ? chatModel.copyWith(oppId: chatModel.selfId, selfId: chatModel.oppId).getMessageData()
         : chatModel.getMessageData();
+      
+    // var data = isUser
+    //   ? chatModel.copyWith(oppId: chatModel.selfId, selfId: chatModel.oppId, oppUnreadCount: chatModel.oppUnreadCount ?? 0 + 1).getMessageData()
+    //   : chatModel.copyWith(selfUnreadCount: chatModel.selfUnreadCount ?? 0 + 1).getMessageData();
 
-    var chatData = chatModel.getChatData();
+    var chatData;
+    if (isUser) {
+      chatData = chatModel.copyWith(oppUnreadCount: (chatModel.oppUnreadCount ?? 0) + 1).getChatData();
+    } else { 
+      chatData = chatModel.copyWith(selfUnreadCount: (chatModel.selfUnreadCount ?? 0) + 1).getChatData();
+    }
+    // var chatData = chatModel.getChatData();
 
     debugPrint('Chat: ${chatModel.toJson()}');
 
@@ -74,6 +84,17 @@ class AuthService {
     // Delete the parent document
     await chatRef.delete();
 
+  }
+
+  //untested
+  static Future<void> updateUnreadCount(ChatModel updatedChatModel, {bool isUser = false}) async {
+    var chatRef = FirebaseFirestore.instance.collection(chatCollection).doc(updatedChatModel.gp);
+
+    debugPrint('Chat: ${updatedChatModel.toJson()}');
+
+    FirebaseFirestore.instance.runTransaction((transaction) async {
+      transaction.set(chatRef, updatedChatModel);
+    });
   }
 
   static insertUsers() async {
