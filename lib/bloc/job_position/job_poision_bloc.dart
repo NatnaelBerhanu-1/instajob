@@ -135,11 +135,14 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
             _shortlisted.add(list[i]);
           }
         }
-        emit(AppliedJobLoaded(
-          appliedJobList: list,
-          appliedOnly: _appliedOnly,
-          shortlisted: _shortlisted,
-        ));
+        debugPrint('State[NewState]: $state');
+        if (state is AppliedJobLoaded) {
+          emit(AppliedJobLoaded(
+            appliedJobList: list,
+            appliedOnly: _appliedOnly,
+            shortlisted: _shortlisted,
+          ));
+        }
       } catch (e, stk) {
         debugPrintStack(stackTrace: stk);
         emit(const ApplyErrorState('Something went wrong'));

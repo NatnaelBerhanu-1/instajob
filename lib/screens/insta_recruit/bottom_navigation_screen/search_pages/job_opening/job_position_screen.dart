@@ -31,7 +31,7 @@ class JobPositionScreen extends StatefulWidget {
   final JobPosModel? jobPosModel;
   final CompanyModel? companyModel;
   final bool fromSavedJobs;
-  final bool fromCompany;
+  final bool fromCompany; 
 
   const JobPositionScreen({
     Key? key,
