@@ -15,11 +15,11 @@ import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 
 class SearchJobTile extends StatelessWidget {
   final JobPosModel jobPosModel;
-  final CompanyModel companyModel;
 
-  const SearchJobTile(
-      {Key? key, required this.jobPosModel, required this.companyModel})
-      : super(key: key);
+  const SearchJobTile({
+    Key? key,
+    required this.jobPosModel,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,8 @@ class SearchJobTile extends StatelessWidget {
         AppRoutes.push(
             context,
             JobPositionScreen(
-                jobPosModel: jobPosModel, companyModel: companyModel));
+              jobPosModel: jobPosModel,
+            ));
       },
       child: Container(
           decoration: BoxDecoration(
@@ -36,11 +37,7 @@ class SearchJobTile extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               border: Border.all(color: MyColors.lightgrey),
               boxShadow: [
-                BoxShadow(
-                    color: Colors.grey.withOpacity(0.10),
-                    spreadRadius: 5,
-                    blurRadius: 7,
-                    offset: Offset(2, 3))
+                BoxShadow(color: Colors.grey.withOpacity(0.10), spreadRadius: 5, blurRadius: 7, offset: Offset(2, 3))
               ]),
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10),
@@ -163,13 +160,8 @@ class SearchJobTile extends StatelessWidget {
                         //             jobPosModel!.jobStatus == 1 ? "1" : "0",
                         //       ));
                         // },
-                        icon: Icon(
-                            jobPosModel.jobStatus == 1
-                                ? Icons.favorite
-                                : Icons.favorite_border,
-                            color: jobPosModel.jobStatus == 1
-                                ? MyColors.darkRed
-                                : MyColors.grey),
+                        icon: Icon(jobPosModel.jobStatus == 1 ? Icons.favorite : Icons.favorite_border,
+                            color: jobPosModel.jobStatus == 1 ? MyColors.darkRed : MyColors.grey),
                       );
                     },
                   ),

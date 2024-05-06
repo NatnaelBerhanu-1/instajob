@@ -30,8 +30,7 @@ import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 class ApplyScreen extends StatefulWidget {
   final JobPosModel? jobPosModel;
   final CompanyModel? companyModel;
-  const ApplyScreen({Key? key, this.jobPosModel, this.companyModel})
-      : super(key: key);
+  const ApplyScreen({Key? key, this.jobPosModel, this.companyModel}) : super(key: key);
 
   @override
   State<ApplyScreen> createState() => _ApplyScreenState();
@@ -58,10 +57,8 @@ class _ApplyScreenState extends State<ApplyScreen> {
 
     //Dispose the document.
     final PdfPage page = document.pages[0];
-    page.graphics.drawString(
-        'Hello World!', PdfStandardFont(PdfFontFamily.helvetica, 12),
-        brush: PdfSolidBrush(PdfColor(0, 0, 0)),
-        bounds: const Rect.fromLTWH(0, 0, 150, 20));
+    page.graphics.drawString('Hello World!', PdfStandardFont(PdfFontFamily.helvetica, 12),
+        brush: PdfSolidBrush(PdfColor(0, 0, 0)), bounds: const Rect.fromLTWH(0, 0, 150, 20));
     final Directory directory = await getApplicationDocumentsDirectory();
     final String path = directory.path;
     final File file = File('$path/dummy.pdf');
@@ -73,13 +70,10 @@ class _ApplyScreenState extends State<ApplyScreen> {
   }
 
   edit() async {
-    final PdfDocument document =
-        PdfDocument(inputBytes: File("input.pdf").readAsBytesSync());
+    final PdfDocument document = PdfDocument(inputBytes: File("input.pdf").readAsBytesSync());
     final PdfPage page = document.pages[0];
-    page.graphics.drawString(
-        'Hello World!', PdfStandardFont(PdfFontFamily.helvetica, 12),
-        brush: PdfSolidBrush(PdfColor(0, 0, 0)),
-        bounds: const Rect.fromLTWH(0, 0, 150, 20));
+    page.graphics.drawString('Hello World!', PdfStandardFont(PdfFontFamily.helvetica, 12),
+        brush: PdfSolidBrush(PdfColor(0, 0, 0)), bounds: const Rect.fromLTWH(0, 0, 150, 20));
     File('output.pdf').writeAsBytes(await document.save());
     document.dispose();
   }
@@ -153,12 +147,7 @@ class _ApplyScreenState extends State<ApplyScreen> {
                   decoration: BoxDecoration(
                       color: MyColors.white,
                       borderRadius: BorderRadius.circular(10),
-                      boxShadow: [
-                        BoxShadow(
-                            color: MyColors.grey.withOpacity(.10),
-                            spreadRadius: 5,
-                            blurRadius: 8)
-                      ]),
+                      boxShadow: [BoxShadow(color: MyColors.grey.withOpacity(.10), spreadRadius: 5, blurRadius: 8)]),
                   child: SfPdfViewer.network(
                     "${EndPoint.imageBaseUrl}${Global.userModel?.cv}",
                   ),
@@ -168,16 +157,13 @@ class _ApplyScreenState extends State<ApplyScreen> {
               // Spacer(),
               Expanded(
                 flex: 0,
-                child: BlocConsumer<JobPositionBloc, JobPosState>(
-                    listener: (context, state) {
+                child: BlocConsumer<JobPositionBloc, JobPosState>(listener: (context, state) {
                   if (state is JobErrorState) {
                     showToast(state.error);
+                    buildDialog(context, AppliedSuccessDialog(companyModel: widget.companyModel));
                   }
                   if (state is JobAppliedSuccessState) {
-                    buildDialog(
-                        context,
-                        AppliedSuccessDialog(
-                            companyModel: widget.companyModel));
+                    buildDialog(context, AppliedSuccessDialog(companyModel: widget.companyModel));
                   }
                 }, builder: (context, state) {
                   return CustomButton(
@@ -185,9 +171,8 @@ class _ApplyScreenState extends State<ApplyScreen> {
                     title: "Apply Now",
                     onTap: () {
                       var applyData = context.read<JobPositionBloc>();
-                      applyData.add(ApplyJobEvent(
-                          Global.userModel!.cv.toString(),
-                          jobId: widget.jobPosModel!.id.toString()));
+                      applyData.add(
+                          ApplyJobEvent(Global.userModel!.cv.toString(), jobId: widget.jobPosModel!.id.toString()));
                     },
                   );
                 }),
@@ -203,11 +188,7 @@ class _ApplyScreenState extends State<ApplyScreen> {
                   onTap: () {
                     // AppRoutes.push(context,
                     //     ConfirmDetailsScreen(jobPosModel: widget.jobPosModel));
-                    AppRoutes.push(
-                        context,
-                        CoverLetterScreen(
-                            coverLetterModel: null,
-                            jobPosModel: widget.jobPosModel));
+                    AppRoutes.push(context, CoverLetterScreen(coverLetterModel: null, jobPosModel: widget.jobPosModel));
                   },
                 ),
               )

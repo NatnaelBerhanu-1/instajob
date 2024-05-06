@@ -37,20 +37,14 @@ class _AutomateMsgScreenState extends State<AutomateMsgScreen> {
   final formKey = GlobalKey<FormState>();
 
   getData() {
-    // if (Global.userModel!.automateMsgBtn == 1) {
-    // applicationReceivedContent.text =
-    //     "${Global.userModel!.applicationReceivedContent}";
-    // applicationReceivedSubject.text =
-    //     "${Global.userModel!.applicationReceivedSubject}";
-    // disqualifiedReviewSubject.text =
-    //     "${Global.userModel!.disqualifiedReviewSubject}";
-    // disqualifiedReviewContent.text =
-    //     "${Global.userModel!.disqualifiedReviewContent}";
-    // shortlistedReviewSubject.text =
-    //     "${Global.userModel!.shortlistedReviewSubject}";
-    // shortlistedReviewContent.text =
-    //     "${Global.userModel!.shortlistedReviewContent}";
-    // }
+    if (Global.userModel!.automateMsgBtn == 1) {
+      applicationReceivedContent.text = "${Global.userModel!.applicationReceivedContent}";
+      applicationReceivedSubject.text = "${Global.userModel!.applicationReceivedSubject}";
+      disqualifiedReviewSubject.text = "${Global.userModel!.disqualifiedReviewSubject}";
+      disqualifiedReviewContent.text = "${Global.userModel!.disqualifiedReviewContent}";
+      shortlistedReviewSubject.text = "${Global.userModel!.shortlistedReviewSubject}";
+      shortlistedReviewContent.text = "${Global.userModel!.shortlistedReviewContent}";
+    }
     isEnable = Global.userModel!.automateMsgBtn == 1 ? true : false;
     setState(() {});
   }
@@ -160,8 +154,7 @@ class _AutomateMsgScreenState extends State<AutomateMsgScreen> {
                     ),
                     SizedBox(height: 10),
                     CommonText(
-                      text:
-                          "This will be sent the morning after rejecting a candidate",
+                      text: "This will be sent the morning after rejecting a candidate",
                       fontSize: 13,
                       fontColor: MyColors.grey,
                     ),
@@ -218,8 +211,7 @@ class _AutomateMsgScreenState extends State<AutomateMsgScreen> {
                       fontColor: MyColors.grey,
                     ),
                     SizedBox(height: 25),
-                    BlocConsumer<FeedBackAndAutoMsgBloc, FeedBackState>(
-                        listener: (context, state) {
+                    BlocConsumer<FeedBackAndAutoMsgBloc, FeedBackState>(listener: (context, state) {
                       debugPrint("listener hereee, feedbackAndAutoMsgBloc");
                       if (state is AutoMsgState) {
                         if (state.enabled == true) {
@@ -231,44 +223,31 @@ class _AutomateMsgScreenState extends State<AutomateMsgScreen> {
                       }
                     }, builder: (context, snapshot) {
                       return CustomIconButton(
-                        image:
-                            !isEnable ? MyImages.arrowWhite : MyImages.cancel2x,
+                        image: !isEnable ? MyImages.arrowWhite : MyImages.cancel2x,
                         iconColor: !isEnable ? MyColors.white : MyColors.blue,
                         title: !isEnable ? "Enable" : "Disable",
-                        backgroundColor:
-                            !isEnable ? MyColors.blue : MyColors.white,
+                        backgroundColor: !isEnable ? MyColors.blue : MyColors.white,
                         fontColor: !isEnable ? MyColors.white : MyColors.blue,
                         borderColor: MyColors.blue,
                         loading: false,
                         // loading: snapshot is FeedBackLoading2,
                         onclick: () {
-                          if (isEnable == true ||
-                              formKey.currentState!.validate()) {
+                          if (isEnable == true || formKey.currentState!.validate()) {
                             // if it's **being** disabled(meaning it's enabled right now), probably no need to validate
                             isEnable = !isEnable;
                             setState(() {});
-                            context
-                                .read<FeedBackAndAutoMsgBloc>()
-                                .add(InertAutoMsg(
+                            context.read<FeedBackAndAutoMsgBloc>().add(InertAutoMsg(
                                   autoButton: isEnable ? "1" : "0",
-                                  applicationReceivedContent:
-                                      applicationReceivedContent.text,
-                                  applicationReceivedSubject:
-                                      applicationReceivedSubject.text,
-                                  disqualifiedReviewContent:
-                                      disqualifiedReviewContent.text,
-                                  disqualifiedReviewSubject:
-                                      disqualifiedReviewSubject.text,
-                                  shortlistedReviewContent:
-                                      shortlistedReviewContent.text,
-                                  shortlistedReviewSubject:
-                                      shortlistedReviewSubject.text,
+                                  applicationReceivedContent: applicationReceivedContent.text,
+                                  applicationReceivedSubject: applicationReceivedSubject.text,
+                                  disqualifiedReviewContent: disqualifiedReviewContent.text,
+                                  disqualifiedReviewSubject: disqualifiedReviewSubject.text,
+                                  shortlistedReviewContent: shortlistedReviewContent.text,
+                                  shortlistedReviewSubject: shortlistedReviewSubject.text,
                                 ));
                           } else {
                             showToast("Please fill details");
-                            context
-                                .read<JobPositionBloc>()
-                                .add(LoadJobPosListEvent());
+                            context.read<JobPositionBloc>().add(LoadJobPosListEvent());
                           }
                         },
                       );
