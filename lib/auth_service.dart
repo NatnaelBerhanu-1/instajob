@@ -19,15 +19,15 @@ class AuthService {
     var data = isUser
         ? chatModel.copyWith(oppId: chatModel.selfId, selfId: chatModel.oppId).getMessageData()
         : chatModel.getMessageData();
-      
+
     // var data = isUser
     //   ? chatModel.copyWith(oppId: chatModel.selfId, selfId: chatModel.oppId, oppUnreadCount: chatModel.oppUnreadCount ?? 0 + 1).getMessageData()
     //   : chatModel.copyWith(selfUnreadCount: chatModel.selfUnreadCount ?? 0 + 1).getMessageData();
 
     var chatData;
-    if (isUser) {
+    if (!isUser) {
       chatData = chatModel.copyWith(oppUnreadCount: (chatModel.oppUnreadCount ?? 0) + 1).getChatData();
-    } else { 
+    } else {
       chatData = chatModel.copyWith(selfUnreadCount: (chatModel.selfUnreadCount ?? 0) + 1).getChatData();
     }
     // var chatData = chatModel.getChatData();
@@ -73,9 +73,9 @@ class AuthService {
     var chatRef = FirebaseFirestore.instance.collection(chatCollection).doc(chatModel.gp);
     // var docRef = chatRef.collection(chatModel.gp).doc(DateTime.now().millisecondsSinceEpoch.toString());
 
-     // Get all documents in the subcollection
+    // Get all documents in the subcollection
     var subcollectionSnapshot = await chatRef.collection(chatModel.gp).get();
-    
+
     // Delete each document in the subcollection
     for (var doc in subcollectionSnapshot.docs) {
       await doc.reference.delete();
@@ -83,7 +83,6 @@ class AuthService {
 
     // Delete the parent document
     await chatRef.delete();
-
   }
 
   //untested
