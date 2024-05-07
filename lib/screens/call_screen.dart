@@ -1,6 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:io';
+
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -10,18 +13,20 @@ import 'package:insta_job/bottom_sheet/overview_bottom_sheet.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/model/chat_model.dart';
 import 'package:insta_job/screens/chat_screen.dart';
+import 'package:insta_job/screens/prejoining_dialog.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class CallScreen extends StatefulWidget {
-  int currentId;
-  int otherUserId;
+  final String token;
+  final String channelName;
   ChatModel chatModel;
   CallScreen(
       {Key? key,
-      required this.currentId,
-      required this.otherUserId,
+      required this.token, 
+      required this.channelName,
       required this.chatModel})
       : super(key: key);
 
@@ -30,18 +35,47 @@ class CallScreen extends StatefulWidget {
 }
 
 class _CallScreenState extends State<CallScreen> {
-  initAgora() async {
-    // await context.read<AgoraBloc>().initAgora();
-  }
 
   @override
   void initState() {
-    initAgora();
     super.initState();
   }
 
-  bool videoEnabled = true;
-  bool audioEnabled = true;
+    bool _isMicEnabled = false;
+  bool _isCameraEnabled = false;
+  bool _isJoining = false;
+
+  void openSettings() {
+    openAppSettings();
+  }
+
+  Future<void> getMicPermissions() async {
+    if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
+      final micPermission = await Permission.microphone.request();
+      if (micPermission == PermissionStatus.granted) {
+        setState(() => _isMicEnabled = true);
+      }
+    } else {
+      setState(() => _isMicEnabled = !_isMicEnabled);
+    }
+  }
+
+  Future<void> getCameraPermissions() async {
+    if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
+      final cameraPermission = await Permission.camera.request();
+      if (cameraPermission == PermissionStatus.granted) {
+        setState(() => _isCameraEnabled = true);
+      }
+    } else {
+      setState(() => _isCameraEnabled = !_isCameraEnabled);
+    }
+  }
+
+
+  Future<void> getPermissions() async {
+    await getMicPermissions();
+    await getCameraPermissions();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,12 +103,14 @@ class _CallScreenState extends State<CallScreen> {
                       children: [
                         InkWell(
                           onTap: () {
-                            setState(() {
-                              audioEnabled = !audioEnabled;
-                            });
+                            if (_isMicEnabled) {
+                              setState(() => _isMicEnabled = false);
+                            } else {
+                              getMicPermissions();
+                            }
                           },
                           child: SvgPicture.asset(
-                            audioEnabled
+                            _isMicEnabled
                                 ? MyImages.recruiterMicOpen
                                 : MyImages.recruiterMicClosed,
                             height: 48,
@@ -82,12 +118,14 @@ class _CallScreenState extends State<CallScreen> {
                         ),
                         InkWell(
                           onTap: () {
-                            setState(() {
-                              videoEnabled = !videoEnabled;
-                            });
+                           if (_isCameraEnabled) {
+                             setState(() => _isCameraEnabled = false);
+                           } else {
+                            getCameraPermissions();
+                           }
                           },
                           child: SvgPicture.asset(
-                            videoEnabled
+                            _isCameraEnabled
                                 ? MyImages.recruiterVideoOpen
                                 : MyImages.recruiterVideoClosed,
                             height: 48,
@@ -98,7 +136,7 @@ class _CallScreenState extends State<CallScreen> {
                           height: 64,
                           child: FloatingActionButton(
                             backgroundColor: MyColors.red,
-                            onPressed: () {
+                            onPressed: () async {
                               Navigator.of(context).pop();
                             },
                             child: Icon(Icons.call_end),

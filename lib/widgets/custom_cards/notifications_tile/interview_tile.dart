@@ -223,8 +223,8 @@ class _InterviewTileState extends State<InterviewTile> {
                             AppRoutes.push(
                                 context,
                                 CallScreen(
-                                  currentId: userId,
-                                  otherUserId: otherUserId,
+                                  channelName: "",
+                                  token: "",
                                   chatModel: model,
                                 ));
                           },
