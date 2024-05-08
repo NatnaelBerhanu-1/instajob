@@ -295,6 +295,35 @@ class _CallScreenState extends State<CallScreen> {
         // setState(() => _isMicEnabled = true);
         return true;
       } else {
+        final check =await Permission.microphone.status;
+        if (check == PermissionStatus.denied || check == PermissionStatus.permanentlyDenied) {
+          if (mounted) {
+            await showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text("Permission Required"),
+                content: Text("Please grant microphone permission to use this feature."),
+                actions: <Widget>[
+                  TextButton(
+                    child: Text("Cancel"),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                  TextButton(
+                    child: Text("Open Settings"),
+                    onPressed: () async {
+                      await openAppSettings(); // Opens app settings
+                      if (mounted) {
+                        Navigator.of(context).pop();
+                      }
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+          }
+        }
         return false;
       }
     } else {
@@ -303,14 +332,47 @@ class _CallScreenState extends State<CallScreen> {
     }
   }
 
-  Future<void> getCameraPermissions() async {
+  Future<bool> getCameraPermissions() async {
     if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
       final cameraPermission = await Permission.camera.request();
       if (cameraPermission == PermissionStatus.granted) {
-        setState(() => _isCameraEnabled = true);
+        // setState(() => _isCameraEnabled = true);
+        return true;
+      } else {
+        final check =await Permission.microphone.status;
+        if (check == PermissionStatus.denied || check == PermissionStatus.permanentlyDenied) {
+          if (mounted) {
+            await showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text("Permission Required"),
+                content: Text("Please grant microphone permission to use this feature."),
+                actions: <Widget>[
+                  TextButton(
+                    child: Text("Cancel"),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                  TextButton(
+                    child: Text("Open Settings"),
+                    onPressed: () async {
+                      await openAppSettings(); // Opens app settings
+                      if (mounted) {
+                        Navigator.of(context).pop();
+                      }
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+          }
+        }
+        return false;
       }
     } else {
-      setState(() => _isCameraEnabled = !_isCameraEnabled);
+      // setState(() => _isCameraEnabled = !_isCameraEnabled);
+      return false;
     }
   }
 
@@ -349,7 +411,8 @@ class _CallScreenState extends State<CallScreen> {
     return PopScope(
       // canPop: false,
       child: Scaffold(
-        backgroundColor: isUser ? MyColors.grey : MyColors.lightBlack,
+        // backgroundColor: isUser ? MyColors.grey : MyColors.lightBlack,
+        backgroundColor: MyColors.lightBlack,
         appBar: AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: Colors.black,
@@ -488,7 +551,7 @@ class _CallScreenState extends State<CallScreen> {
                                 }
                               }
                             } else {
-                              final res = await getMicPermissions();
+                              final res = await getCameraPermissions();
                               if (res == true) {
                                 setState(() => _isCameraEnabled = true);
                                 for (AgoraUser user in _users) {
