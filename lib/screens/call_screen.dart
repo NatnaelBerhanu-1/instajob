@@ -288,14 +288,18 @@ class _CallScreenState extends State<CallScreen> {
     return layout;
   }
 
-  Future<void> getMicPermissions() async {
+  Future<bool> getMicPermissions() async {
     if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
       final micPermission = await Permission.microphone.request();
       if (micPermission == PermissionStatus.granted) {
-        setState(() => _isMicEnabled = true);
+        // setState(() => _isMicEnabled = true);
+        return true;
+      } else {
+        return false;
       }
     } else {
-      setState(() => _isMicEnabled = !_isMicEnabled);
+      // setState(() => _isMicEnabled = !_isMicEnabled);
+      return false;
     }
   }
 
@@ -341,6 +345,7 @@ class _CallScreenState extends State<CallScreen> {
     var isUser = Global.userModel?.type == "user";
     debugPrint("screen width $screenWidth");
     debugPrint("screen height $screenHeight");
+    debugPrint("now is Mic enabled $_isMicEnabled &&&&&&&& video camera enabled $_isCameraEnabled");
     return PopScope(
       // canPop: false,
       child: Scaffold(
@@ -437,7 +442,27 @@ class _CallScreenState extends State<CallScreen> {
                           //     getMicPermissions();
                           //   }
                           // },
-                          onTap: _onToggleAudio,
+                          // onTap: _onToggleAudio,
+                          onTap: () async {
+                            if (_isMicEnabled) {
+                              setState(() => _isMicEnabled = false);
+                              for (AgoraUser user in _users) {
+                                if (user.uid == _currentUid) {
+                                  user.isAudioEnabled = _isMicEnabled;
+                                }
+                              }
+                            } else {
+                              final res = await getMicPermissions();
+                              if (res == true) {
+                                setState(() => _isMicEnabled = true);
+                                for (AgoraUser user in _users) {
+                                  if (user.uid == _currentUid) {
+                                    user.isAudioEnabled = _isMicEnabled;
+                                  }
+                                }
+                              }
+                            }
+                          },
                           child: SvgPicture.asset(
                             _isMicEnabled
                                 ? MyImages.recruiterMicOpen
@@ -453,7 +478,27 @@ class _CallScreenState extends State<CallScreen> {
                           //   getCameraPermissions();
                           //  }
                           // },
-                          onTap: _onToggleCamera,
+                          // onTap: _onToggleCamera,
+                          onTap: () async {
+                            if (_isCameraEnabled) {
+                              setState(() => _isCameraEnabled = false);
+                              for (AgoraUser user in _users) {
+                                if (user.uid == _currentUid) {
+                                  user.isVideoEnabled = _isCameraEnabled;
+                                }
+                              }
+                            } else {
+                              final res = await getMicPermissions();
+                              if (res == true) {
+                                setState(() => _isCameraEnabled = true);
+                                for (AgoraUser user in _users) {
+                                  if (user.uid == _currentUid) {
+                                    user.isVideoEnabled = _isCameraEnabled;
+                                  }
+                                }
+                              }
+                            }
+                          },
                           child: SvgPicture.asset(
                             _isCameraEnabled
                                 ? MyImages.recruiterVideoOpen
