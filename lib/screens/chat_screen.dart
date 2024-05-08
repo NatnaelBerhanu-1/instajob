@@ -48,259 +48,239 @@ class _ChatScreenState extends State<ChatScreen> {
       //     preferredSize: Size.fromHeight(kToolbarHeight),
       //     child: CustomAppBar()),
       body: SafeArea(
-        child: StreamBuilder<DocumentSnapshot>(
-            stream: FirebaseFirestore.instance.collection(AuthService.chatCollection).doc(gp!).snapshots(),
-            builder: (context1, snapshot1) {
-              if (!snapshot1.hasData) {
-                return SizedBox.shrink();
-              }
-              var updatedChatModelAsMap = snapshot1.data?.data();
-              ChatModel updatedChatModel = ChatModel.fromMap(updatedChatModelAsMap as Map<String, dynamic>);
-              // bool isUser = Global.userModel?.type == "user";
-              // int? unreadCount = isUser ? updatedChatModel.selfUnreadCount : updatedChatModel.oppUnreadCount;
-              // if (unreadCount != null && unreadCount > 0) {
-              //   ChatModel resettedModel;
-              //   if (isUser) {
-              //     resettedModel = updatedChatModel.copyWith(selfUnreadCount: 0);
-              //   } else {
-              //     resettedModel = updatedChatModel.copyWith(oppUnreadCount: 0);
-              //   }
-              //   AuthService.updateUnreadCount(resettedModel);
-              // }
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 10.0),
-                child: Column(
-                  children: [
-                    Expanded(
-                      flex: 0,
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 10, top: 10, bottom: 15),
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 10.0),
+          child: Column(
+            children: [
+              Expanded(
+                flex: 0,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 10, top: 10, bottom: 15),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 0,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Container(
+                            color: Colors.transparent,
+                            alignment: Alignment.center,
+                            child: Image.asset(
+                              MyImages.backArrow,
+                              height: 40,
+                              width: 35,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
                         child: Row(
                           children: [
                             Expanded(
-                              flex: 0,
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: Container(
-                                  color: Colors.transparent,
-                                  alignment: Alignment.center,
-                                  child: Image.asset(
-                                    MyImages.backArrow,
-                                    height: 40,
-                                    width: 35,
-                                  ),
-                                ),
-                              ),
-                            ),
+                                flex: 0,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: CircleAvatar(
+                                      radius: 24,
+                                      backgroundImage: CachedNetworkImageProvider(Global.userModel?.type == "user"
+                                          ? "${widget.chatModel.selfProfilePic}"
+                                          : "${widget.chatModel.oppProfilePic}")),
+                                )),
+                            SizedBox(width: 10),
                             Expanded(
-                              child: Row(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Expanded(
-                                      flex: 0,
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(left: 8.0),
-                                        child: CircleAvatar(
-                                            radius: 24,
-                                            backgroundImage: CachedNetworkImageProvider(Global.userModel?.type == "user"
-                                                ? "${updatedChatModel.selfProfilePic}"
-                                                : "${updatedChatModel.oppProfilePic}")),
-                                      )),
-                                  SizedBox(width: 10),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        CommonText(
-                                          text: Global.userModel?.type == "user"
-                                              ? "${updatedChatModel.selfName}"
-                                              : "${updatedChatModel.oppName}",
-                                          fontSize: 16,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                        CommonText(
-                                          text: "Active",
-                                          fontColor: MyColors.greyTxt,
-                                          fontSize: 11,
-                                        ),
-                                      ],
-                                    ),
+                                  CommonText(
+                                    text: Global.userModel?.type == "user"
+                                        ? "${widget.chatModel.selfName}"
+                                        : "${widget.chatModel.oppName}",
+                                    fontSize: 16,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  CommonText(
+                                    text: "Active",
+                                    fontColor: MyColors.greyTxt,
+                                    fontSize: 11,
                                   ),
                                 ],
                               ),
                             ),
-                            Global.userModel?.type == "user"
-                                ? SizedBox()
-                                : Expanded(
-                                    child: CustomCommonCard(
-                                      onTap: () {
-                                        // buildDialog(
-                                        //     context,
-                                        //     PickTimeDialog(
-                                        //         jobPosModel: widget.jobPosModel));
-                                        AppRoutes.push(
-                                            context,
-                                            BookSlotScreen(
-                                              companyId: updatedChatModel.companyId.toString(),
-                                              jobId: updatedChatModel.jobId.toString(),
-                                              userId: updatedChatModel.userId.toString(),
-                                            ));
-                                      },
-                                      borderRadius: BorderRadius.circular(20),
-                                      borderColor: MyColors.blue,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(6.0),
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            CommonText(
-                                                text: "Set up interview  ", fontColor: MyColors.blue, fontSize: 14),
-                                            Icon(Icons.call, color: MyColors.blue),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  )
                           ],
                         ),
                       ),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 10, top: 10, left: 12),
-                        child: StreamBuilder<QuerySnapshot>(
-                            stream: FirebaseFirestore.instance
-                                .collection(AuthService.chatCollection)
-                                .doc(gp!)
-                                .collection(gp!)
-                                .orderBy('time', descending: true)
-                                .snapshots(),
-                            builder: (context, snapshot) {
-                              debugPrint('data: ${snapshot.data?.docs.map((e) => e.data())}');
-                              if (snapshot.hasData) {
-                                _checkAndClearUnreadCount();
-                                return Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 5.0),
-                                  child: ListView.separated(
-                                      reverse: true,
-                                      // shrinkWrap: true,
-                                      itemCount: snapshot.data?.docs.length ?? 0,
-                                      separatorBuilder: (c, i) {
-                                        var len = snapshot.data?.docs.length ?? 0;
-                                        // debugPrint("[LOG] i $i len $len");
-                                        var currData = snapshot.data?.docs[i];
-                                        var prevInTimeData = snapshot.data?.docs[i + 1];
-                                        var currDate = (currData?['time'] as Timestamp).toDate().toLocal();
-                                        var prevInTimeDate = (prevInTimeData?['time'] as Timestamp).toDate().toLocal();
-                                        Widget separatorWidget = SizedBox.shrink();
-                                        if (!isSameDate(currDate, prevInTimeDate)) {
-                                          separatorWidget =
-                                              Center(child: Text(DateFormat.yMMMd().format(currDate!).toString()));
-                                        }
-                                        return separatorWidget;
-                                      },
-                                      itemBuilder: (c, i) {
-                                        var data = snapshot.data?.docs[i];
-                                        return Padding(
-                                          padding: const EdgeInsets.symmetric(vertical: 5.0),
-                                          child: Align(
-                                            alignment: Global.userModel?.firebaseId == data?['selfId']
-                                                ? Alignment.centerRight
-                                                : Alignment.centerLeft,
-                                            child: DecoratedBox(
-                                              // chat bubble decoration
-                                              decoration: BoxDecoration(
-                                                color: Global.userModel?.firebaseId == data?['selfId']
-                                                    ? MyColors.lightBlue.withOpacity(.25)
-                                                    : MyColors.lightGrey,
-                                                borderRadius: Global.userModel?.firebaseId == data?['selfId']
-                                                    ? BorderRadius.only(
-                                                        topLeft: Radius.circular(15),
-                                                        topRight: Radius.circular(15),
-                                                        bottomLeft: Radius.circular(15),
-                                                      )
-                                                    : BorderRadius.only(
-                                                        topLeft: Radius.circular(15),
-                                                        topRight: Radius.circular(15),
-                                                        bottomRight: Radius.circular(15),
-                                                      ),
-                                              ),
-                                              child: Padding(
-                                                padding: const EdgeInsets.all(12),
-                                                child: Column(
-                                                  children: [
-                                                    Text(
-                                                      "${data?['msg']}",
-                                                      style: TextStyle(color: Colors.black),
-                                                    ),
-                                                    SizedBox(height: 4.0),
-                                                    Text(
-                                                      DateFormat.Hm()
-                                                          .format((data?['time'] as Timestamp).toDate().toLocal()),
-                                                      style: TextStyle(color: Colors.grey),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        );
-                                      }),
-                                );
-                              }
-                              return SizedBox();
-                            }),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 0,
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 10, top: 10, left: 12),
-                        child: Align(
-                          alignment: FractionalOffset.bottomCenter,
-                          child: IconTextField(
-                            controller: msg,
-                            textCapitalization: TextCapitalization.sentences,
-                            // color: MyColors.lightGrey,
-                            prefixIcon: Icon(Icons.mic),
-                            color: MyColors.lightGrey,
-                            borderRadius: 25,
-                            hint: "Write message here..",
-                            suffixIcon: GestureDetector(
-                              onTap: () {
-                                if (msg.text.isNotEmpty) {
-                                  debugPrint(
-                                      'chatModel(abt to send msg, without msg text): ${updatedChatModel.toJson()}');
-                                  AuthService.insertMsg(updatedChatModel.copyWith(msg: msg.text),
-                                      isUser: Global.userModel?.type == 'user');
-                                  msg.clear();
-                                }
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.only(right: 2.0),
-                                child: Container(
-                                  // alignment: Alignment.center,
-                                  decoration:
-                                      BoxDecoration(color: MyColors.blue, borderRadius: BorderRadius.circular(25)),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(vertical: 13.5, horizontal: 18),
-                                    child: CommonText(
-                                      text: "Send",
-                                      fontColor: MyColors.white,
-                                    ),
+                      Global.userModel?.type == "user"
+                          ? SizedBox()
+                          : Expanded(
+                              child: CustomCommonCard(
+                                onTap: () {
+                                  // buildDialog(
+                                  //     context,
+                                  //     PickTimeDialog(
+                                  //         jobPosModel: widget.jobPosModel));
+                                  AppRoutes.push(
+                                      context,
+                                      BookSlotScreen(
+                                        companyId: widget.chatModel.companyId.toString(),
+                                        jobId: widget.chatModel.jobId.toString(),
+                                        userId: widget.chatModel.userId.toString(),
+                                      ));
+                                },
+                                borderRadius: BorderRadius.circular(20),
+                                borderColor: MyColors.blue,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(6.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      CommonText(
+                                          text: "Set up interview  ", fontColor: MyColors.blue, fontSize: 14),
+                                      Icon(Icons.call, color: MyColors.blue),
+                                    ],
                                   ),
                                 ),
+                              ),
+                            )
+                    ],
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 10, top: 10, left: 12),
+                  child: StreamBuilder<QuerySnapshot>(
+                      stream: FirebaseFirestore.instance
+                          .collection(AuthService.chatCollection)
+                          .doc(gp!)
+                          .collection(gp!)
+                          .orderBy('time', descending: true)
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        debugPrint('data: ${snapshot.data?.docs.map((e) => e.data())}');
+                        if (snapshot.hasData) {
+                          _checkAndClearUnreadCount();
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 5.0),
+                            child: ListView.separated(
+                                reverse: true,
+                                // shrinkWrap: true,
+                                itemCount: snapshot.data?.docs.length ?? 0,
+                                separatorBuilder: (c, i) {
+                                  var len = snapshot.data?.docs.length ?? 0;
+                                  // debugPrint("[LOG] i $i len $len");
+                                  var currData = snapshot.data?.docs[i];
+                                  var prevInTimeData = snapshot.data?.docs[i + 1];
+                                  var currDate = (currData?['time'] as Timestamp).toDate().toLocal();
+                                  var prevInTimeDate = (prevInTimeData?['time'] as Timestamp).toDate().toLocal();
+                                  Widget separatorWidget = SizedBox.shrink();
+                                  if (!isSameDate(currDate, prevInTimeDate)) {
+                                    separatorWidget =
+                                        Center(child: Text(DateFormat.yMMMd().format(currDate!).toString()));
+                                  }
+                                  return separatorWidget;
+                                },
+                                itemBuilder: (c, i) {
+                                  var data = snapshot.data?.docs[i];
+                                  return Padding(
+                                    padding: const EdgeInsets.symmetric(vertical: 5.0),
+                                    child: Align(
+                                      alignment: Global.userModel?.firebaseId == data?['selfId']
+                                          ? Alignment.centerRight
+                                          : Alignment.centerLeft,
+                                      child: DecoratedBox(
+                                        // chat bubble decoration
+                                        decoration: BoxDecoration(
+                                          color: Global.userModel?.firebaseId == data?['selfId']
+                                              ? MyColors.lightBlue.withOpacity(.25)
+                                              : MyColors.lightGrey,
+                                          borderRadius: Global.userModel?.firebaseId == data?['selfId']
+                                              ? BorderRadius.only(
+                                                  topLeft: Radius.circular(15),
+                                                  topRight: Radius.circular(15),
+                                                  bottomLeft: Radius.circular(15),
+                                                )
+                                              : BorderRadius.only(
+                                                  topLeft: Radius.circular(15),
+                                                  topRight: Radius.circular(15),
+                                                  bottomRight: Radius.circular(15),
+                                                ),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(12),
+                                          child: Column(
+                                            children: [
+                                              Text(
+                                                "${data?['msg']}",
+                                                style: TextStyle(color: Colors.black),
+                                              ),
+                                              SizedBox(height: 4.0),
+                                              Text(
+                                                DateFormat.Hm()
+                                                    .format((data?['time'] as Timestamp).toDate().toLocal()),
+                                                style: TextStyle(color: Colors.grey),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }),
+                          );
+                        }
+                        return SizedBox();
+                      }),
+                ),
+              ),
+              Expanded(
+                flex: 0,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 10, top: 10, left: 12),
+                  child: Align(
+                    alignment: FractionalOffset.bottomCenter,
+                    child: IconTextField(
+                      controller: msg,
+                      textCapitalization: TextCapitalization.sentences,
+                      // color: MyColors.lightGrey,
+                      prefixIcon: Icon(Icons.mic),
+                      color: MyColors.lightGrey,
+                      borderRadius: 25,
+                      hint: "Write message here..",
+                      suffixIcon: GestureDetector(
+                        onTap: () {
+                          if (msg.text.isNotEmpty) {
+                            debugPrint(
+                                'chatModel(abt to send msg, without msg text): ${widget.chatModel.toJson()}');
+                            AuthService.insertMsg(widget.chatModel.copyWith(msg: msg.text),
+                                isUser: Global.userModel?.type == 'user');
+                            msg.clear();
+                          }
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 2.0),
+                          child: Container(
+                            // alignment: Alignment.center,
+                            decoration:
+                                BoxDecoration(color: MyColors.blue, borderRadius: BorderRadius.circular(25)),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 13.5, horizontal: 18),
+                              child: CommonText(
+                                text: "Send",
+                                fontColor: MyColors.white,
                               ),
                             ),
                           ),
                         ),
                       ),
                     ),
-                  ],
+                  ),
                 ),
-              );
-            }),
+              ),
+            ],
+          ),
+              )
       ),
     );
   }
