@@ -18,13 +18,14 @@ import 'package:insta_job/model/agora_user.dart';
 import 'package:insta_job/model/chat_model.dart';
 import 'package:insta_job/screens/chat_screen.dart';
 import 'package:insta_job/screens/prejoining_dialog.dart';
+import 'package:insta_job/utils/agora_credentials.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class CallScreen extends StatefulWidget {
-  final String token;
+  final String? token;
   final String channelName;
   ChatModel chatModel;
   CallScreen(
@@ -44,14 +45,11 @@ class _CallScreenState extends State<CallScreen> {
   late double _viewAspectRatio;
   int? _currentUid;
 
-  String appId = '181c4f5ccf6a49bda4f5bbcf36bc3f92';
-  String channelId = 'instaJob_channel';
-  String token =
-      "007eJxTYGDe3OHjYc1xRHOH+3rmyusufxfGqFiz95TfPu7qGT97R6QCg6WFeYqpRZKBsYmZkUlyclqSoWmKUWpimoGlgZmpZbLlffvtqQ2BjAxydj6MjAwQCOILMGTmFZckeuUnxSdnJOblpeYwMAAAIoAh0A==";
 
 
   @override
   void initState() {
+    _isJoining = true;
     _initialize();
     super.initState();
   }
@@ -107,7 +105,7 @@ class _CallScreenState extends State<CallScreen> {
 
   Future<void> _initAgoraRtcEngine() async {
     // _agoraEngine = await RtcEngine.create(widget.appId);
-    _agoraEngine = await RtcEngine.create(appId);
+    _agoraEngine = await RtcEngine.create(AgoraCredentials.APP_ID);
     VideoEncoderConfiguration configuration = VideoEncoderConfiguration();
     configuration.orientationMode = VideoOutputOrientationMode.Adaptative;
     await _agoraEngine.setVideoEncoderConfiguration(configuration);
@@ -181,6 +179,7 @@ class _CallScreenState extends State<CallScreen> {
                 ),
               ),
             );
+            print("LOG:: users ${_users.toString()}");
           },
           userOffline: (uid, elapsed) {
             final info = 'LOG::userOffline: $uid';
@@ -693,12 +692,19 @@ class AgoraVideoLayout extends StatelessWidget {
           );
         }
       }
+      // var item = rowChildren;
+      // rowsList.add(
+      //   Flexible(
+      //     child: Row(
+      //       mainAxisAlignment: MainAxisAlignment.center,
+      //       children: rowChildren,
+      //     ),
+      //   ),
+      // );
       rowsList.add(
-        Flexible(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: rowChildren,
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: rowChildren,
         ),
       );
     }
@@ -723,38 +729,42 @@ class AgoraVideoView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Flexible(
-      child: Padding(
-        padding: const EdgeInsets.all(2.0),
-        child: AspectRatio(
-          aspectRatio: _viewAspectRatio,
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.grey.shade900,
-              borderRadius: BorderRadius.circular(8.0),
-              border: Border.all(
-                color: _user.isAudioEnabled ?? false ? Colors.blue : Colors.red,
-                width: 2.0,
+      child: SizedBox(
+        height: 250,
+        width: 250,
+        child: Padding(
+          padding: const EdgeInsets.all(2.0),
+          child: AspectRatio(
+            aspectRatio: _viewAspectRatio,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.grey.shade900,
+                borderRadius: BorderRadius.circular(8.0),
+                border: Border.all(
+                  color: _user.isAudioEnabled ?? false ? Colors.blue : Colors.red,
+                  width: 2.0,
+                ),
               ),
-            ),
-            child: Stack(
-              children: [
-                Center(
-                  child: CircleAvatar(
-                    backgroundColor: Colors.grey.shade800,
-                    maxRadius: 18,
-                    child: Icon(
-                      Icons.person,
-                      color: Colors.grey.shade600,
-                      size: 24.0,
+              child: Stack(
+                children: [
+                  Center(
+                    child: CircleAvatar(
+                      backgroundColor: Colors.grey.shade800,
+                      maxRadius: 18,
+                      child: Icon(
+                        Icons.person,
+                        color: Colors.grey.shade600,
+                        size: 24.0,
+                      ),
                     ),
                   ),
-                ),
-                if (_user.isVideoEnabled ?? false)
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(8 - 2),
-                    child: _user.view,
-                  ),
-              ],
+                  if (_user.isVideoEnabled ?? false)
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8 - 2),
+                      child: _user.view,
+                    ),
+                ],
+              ),
             ),
           ),
         ),
