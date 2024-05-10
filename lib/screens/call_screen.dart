@@ -113,8 +113,8 @@ class _CallScreenState extends State<CallScreen> {
     await _agoraEngine.enableVideo();
     await _agoraEngine.setChannelProfile(ChannelProfile.LiveBroadcasting);
     await _agoraEngine.setClientRole(ClientRole.Broadcaster);
-    await _agoraEngine.muteLocalAudioStream(_isMicEnabled);
-    await _agoraEngine.muteLocalVideoStream(_isCameraEnabled);
+    await _agoraEngine.muteLocalAudioStream(!_isMicEnabled);
+    await _agoraEngine.muteLocalVideoStream(!_isCameraEnabled);
   }
 
     void _addAgoraEventHandlers() => _agoraEngine.setEventHandler(
@@ -467,141 +467,152 @@ class _CallScreenState extends State<CallScreen> {
         body: SafeArea(
           child: Column(
             children: [
-              Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: OrientationBuilder(
-                    builder: (context, orientation) {
-                      final isPortrait = orientation == Orientation.portrait;
-                      if (_users.isEmpty) {
-                        return const SizedBox();
-                      }
-                      WidgetsBinding.instance.addPostFrameCallback(
-                        (_) => setState(
-                            () => _viewAspectRatio = isPortrait ? 2 / 3 : 3 / 2),
-                      );
-                      final layoutViews = _createLayout(_users.length);
-                      return AgoraVideoLayout(
-                        users: _users,
-                        views: layoutViews,
-                        viewAspectRatio: _viewAspectRatio,
-                      );
-                    },
+              Expanded(
+                child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Builder(
+                      builder: (context) {
+                        // final isPortrait = orientation == Orientation.portrait;
+                        final isPortrait = true;
+                        if (_users.isEmpty) {
+                          return const SizedBox();
+                        }
+                        // WidgetsBinding.instance.addPostFrameCallback(
+                        //   (_) => setState(
+                        //       () => _viewAspectRatio = isPortrait ? 2 / 3 : 3 / 2),
+                        // );
+                        // final layoutViews = _createLayout(_users.length);
+                        return AgoraVideoLayout(
+                          users: _users,
+                          // views: layoutViews,
+                          views: [],
+                          viewAspectRatio: _viewAspectRatio,
+                        );
+                      },
+                    ),
                   ),
-                ),
-                Expanded(flex: 1, child: Container(),),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 24),
-                  child: SizedBox(
-                    width: screenWidth,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        InkWell(
-                          // onTap: () {
-                          //   if (_isMicEnabled) {
-                          //     setState(() => _isMicEnabled = false);
-                          //   } else {
-                          //     getMicPermissions();
-                          //   }
-                          // },
-                          // onTap: _onToggleAudio,
-                          onTap: () async {
-                            if (_isMicEnabled) {
-                              setState(() => _isMicEnabled = false);
+              ),
+              // Expanded(flex: 1, child: Container(),),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 24),
+                child: SizedBox(
+                  width: screenWidth,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      InkWell(
+                        // onTap: () {
+                        //   if (_isMicEnabled) {
+                        //     setState(() => _isMicEnabled = false);
+                        //   } else {
+                        //     getMicPermissions();
+                        //   }
+                        // },
+                        // onTap: _onToggleAudio,
+                        onTap: () async {
+                          if (_isMicEnabled) {
+                            setState(() => _isMicEnabled = false);
+                            for (AgoraUser user in _users) {
+                              if (user.uid == _currentUid) {
+                                user.isAudioEnabled = _isMicEnabled;
+                              }
+                            }
+                          } else {
+                            final res = await getMicPermissions();
+                            if (res == true) {
+                              setState(() => _isMicEnabled = true);
                               for (AgoraUser user in _users) {
                                 if (user.uid == _currentUid) {
                                   user.isAudioEnabled = _isMicEnabled;
                                 }
                               }
-                            } else {
-                              final res = await getMicPermissions();
-                              if (res == true) {
-                                setState(() => _isMicEnabled = true);
-                                for (AgoraUser user in _users) {
-                                  if (user.uid == _currentUid) {
-                                    user.isAudioEnabled = _isMicEnabled;
-                                  }
-                                }
+                            }
+                          }
+                          await _agoraEngine.muteLocalAudioStream(!_isMicEnabled);
+                        },
+                        child: SvgPicture.asset(
+                          _isMicEnabled
+                              ? MyImages.recruiterMicOpen
+                              : MyImages.recruiterMicClosed,
+                          height: 48,
+                        ),
+                      ),
+                      InkWell(
+                        // onTap: () {
+                        //  if (_isCameraEnabled) {
+                        //    setState(() => _isCameraEnabled = false);
+                        //  } else {
+                        //   getCameraPermissions();
+                        //  }
+                        // },
+                        // onTap: _onToggleCamera,
+                        onTap: () async {
+                          if (_isCameraEnabled) {
+                            setState(() => _isCameraEnabled = false);
+                            for (AgoraUser user in _users) {
+                              if (user.uid == _currentUid) {
+                                user.isVideoEnabled = _isCameraEnabled;
                               }
                             }
-                          },
-                          child: SvgPicture.asset(
-                            _isMicEnabled
-                                ? MyImages.recruiterMicOpen
-                                : MyImages.recruiterMicClosed,
-                            height: 48,
-                          ),
-                        ),
-                        InkWell(
-                          // onTap: () {
-                          //  if (_isCameraEnabled) {
-                          //    setState(() => _isCameraEnabled = false);
-                          //  } else {
-                          //   getCameraPermissions();
-                          //  }
-                          // },
-                          // onTap: _onToggleCamera,
-                          onTap: () async {
-                            if (_isCameraEnabled) {
-                              setState(() => _isCameraEnabled = false);
+                          } else {
+                            final res = await getCameraPermissions();
+                            if (res == true) {
+                              setState(() => _isCameraEnabled = true);
                               for (AgoraUser user in _users) {
                                 if (user.uid == _currentUid) {
                                   user.isVideoEnabled = _isCameraEnabled;
                                 }
                               }
-                            } else {
-                              final res = await getCameraPermissions();
-                              if (res == true) {
-                                setState(() => _isCameraEnabled = true);
-                                for (AgoraUser user in _users) {
-                                  if (user.uid == _currentUid) {
-                                    user.isVideoEnabled = _isCameraEnabled;
-                                  }
-                                }
-                              }
                             }
+                          }
+                          await _agoraEngine.muteLocalVideoStream(!_isCameraEnabled);
+                        },
+                        child: SvgPicture.asset(
+                          _isCameraEnabled
+                              ? MyImages.recruiterVideoOpen
+                              : MyImages.recruiterVideoClosed,
+                          height: 48,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 64,
+                        height: 64,
+                        child: FloatingActionButton(
+                          backgroundColor: MyColors.red,
+                          onPressed: () async {
+                            // Navigator.of(context).pop();
+                            _onCallEnd(context);
                           },
-                          child: SvgPicture.asset(
-                            _isCameraEnabled
-                                ? MyImages.recruiterVideoOpen
-                                : MyImages.recruiterVideoClosed,
-                            height: 48,
-                          ),
+                          child: Icon(Icons.call_end),
                         ),
-                        SizedBox(
-                          width: 64,
-                          height: 64,
-                          child: FloatingActionButton(
-                            backgroundColor: MyColors.red,
-                            onPressed: () async {
-                              // Navigator.of(context).pop();
-                              _onCallEnd(context);
-                            },
-                            child: Icon(Icons.call_end),
-                          ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          AppRoutes.push(
+                            context,
+                            ChatScreen(
+                              chatModel: widget.chatModel,
+                            ),
+                          );
+                        },
+                        child: SvgPicture.asset(
+                          MyImages.recruiterMessageBtn,
+                          height: 48,
                         ),
-                        InkWell(
-                          onTap: () {
-                            AppRoutes.push(
-                              context,
-                              ChatScreen(
-                                chatModel: widget.chatModel,
-                              ),
-                            );
-                          },
-                          child: SvgPicture.asset(
-                            MyImages.recruiterMessageBtn,
-                            height: 48,
-                          ),
-                        ),
-                        SvgPicture.asset(
+                      ),
+                      InkWell(
+                        onTap: () {
+                          _onSwitchCamera();
+                        },
+                        child: SvgPicture.asset(
                           MyImages.recruiterQuestionsBtn,
                           height: 48,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
+              ),
             ],
           ),
         ),
@@ -670,48 +681,67 @@ class AgoraVideoLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int totalCount = _views.reduce((value, element) => value + element);
-    int rows = _views.length;
-    int columns = _views.reduce(max);
+    // int totalCount = _views.reduce((value, element) => value + element);
+    // int rows = _views.length;
+    // int columns = _views.reduce(max);
 
-    List<Widget> rowsList = [];
-    for (int i = 0; i < rows; i++) {
-      List<Widget> rowChildren = [];
-      for (int j = 0; j < columns; j++) {
-        int index = i * columns + j;
-        if (index < totalCount) {
-          rowChildren.add(
-            AgoraVideoView(
-              user: _users.elementAt(index),
-              viewAspectRatio: _viewAspectRatio,
-            ),
-          );
-        } else {
-          rowChildren.add(
-            const SizedBox.shrink(),
-          );
-        }
-      }
-      // var item = rowChildren;
-      // rowsList.add(
-      //   Flexible(
-      //     child: Row(
-      //       mainAxisAlignment: MainAxisAlignment.center,
-      //       children: rowChildren,
-      //     ),
-      //   ),
-      // );
-      rowsList.add(
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: rowChildren,
+    // List<Widget> rowsList = [];
+    // for (int i = 0; i < rows; i++) {
+    //   List<Widget> rowChildren = [];
+    //   for (int j = 0; j < columns; j++) {
+    //     int index = i * columns + j;
+    //     if (index < totalCount) {
+    //       rowChildren.add(
+    //         AgoraVideoView(
+    //           user: _users.elementAt(index),
+    //           viewAspectRatio: _viewAspectRatio,
+    //         ),
+    //       );
+    //     } else {
+    //       rowChildren.add(
+    //         const SizedBox.shrink(),
+    //       );
+    //     }
+    //   }
+    //   // var item = rowChildren;
+    //   // rowsList.add(
+    //   //   Flexible(
+    //   //     child: Row(
+    //   //       mainAxisAlignment: MainAxisAlignment.center,
+    //   //       children: rowChildren,
+    //   //     ),
+    //   //   ),
+    //   // );
+    //   rowsList.add(
+    //     Row(
+    //       mainAxisAlignment: MainAxisAlignment.center,
+    //       children: rowChildren,
+    //     ),
+    //   );
+    // }
+    // // return Container(width: 300, height: 400, color: Colors.amber);
+    // return Column(
+    //   mainAxisAlignment: MainAxisAlignment.center,
+    //   children: rowsList,
+    // );
+
+    var res = [];
+    var usersLen = _users.length;
+
+    for (int i = 0; i < _users.length; i++) {
+      res.add(Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        child: AgoraVideoView(
+          user: _users.elementAt(i),
+          viewAspectRatio: _viewAspectRatio,
         ),
-      );
+      ));
     }
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: rowsList,
-    );
+    return Wrap(children: [
+      // res.isNotEmpty ? res[0] : Text("empty"),
+      // res.isNotEmpty ? res[0] : Text("empty"),
+      ...res,
+    ],);
   }
 }
 
@@ -728,43 +758,45 @@ class AgoraVideoView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-      child: SizedBox(
-        height: 250,
-        width: 250,
-        child: Padding(
-          padding: const EdgeInsets.all(2.0),
-          child: AspectRatio(
-            aspectRatio: _viewAspectRatio,
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.grey.shade900,
-                borderRadius: BorderRadius.circular(8.0),
-                border: Border.all(
-                  color: _user.isAudioEnabled ?? false ? Colors.blue : Colors.red,
-                  width: 2.0,
-                ),
+    return SizedBox(
+      height: 280,
+      width: 280,
+      child: Padding(
+        padding: const EdgeInsets.all(2.0),
+        child: AspectRatio(
+          aspectRatio: _viewAspectRatio,
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.grey.shade900,
+              borderRadius: BorderRadius.circular(8.0),
+              border: Border.all(
+                color: _user.isAudioEnabled ?? false ? Colors.blue : Colors.red,
+                width: 2.0,
               ),
-              child: Stack(
-                children: [
-                  Center(
-                    child: CircleAvatar(
-                      backgroundColor: Colors.grey.shade800,
-                      maxRadius: 18,
-                      child: Icon(
-                        Icons.person,
-                        color: Colors.grey.shade600,
-                        size: 24.0,
-                      ),
+            ),
+            child: Stack(
+              children: [
+                if (_user.isVideoEnabled != true)
+                Center(
+                  child: CircleAvatar(
+                    backgroundColor: Colors.grey.shade800,
+                    maxRadius: 18,
+                    child: Icon(
+                      Icons.person,
+                      color: Colors.grey.shade600,
+                      size: 24.0,
                     ),
                   ),
-                  if (_user.isVideoEnabled ?? false)
-                    ClipRRect(
+                ),
+                if (_user.isVideoEnabled ?? false)
+                  Center(
+                    child: ClipRRect(
                       borderRadius: BorderRadius.circular(8 - 2),
                       child: _user.view,
                     ),
-                ],
-              ),
+                  ),
+                Text("userrr ${_user.name} ${_user.uid}"),
+              ],
             ),
           ),
         ),

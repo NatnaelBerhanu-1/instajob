@@ -1,7 +1,8 @@
 
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
-class AgoraUser {
+class AgoraUser extends Equatable {
   final int uid;
   String? name;
   bool? isAudioEnabled;
@@ -15,4 +16,7 @@ class AgoraUser {
     this.isVideoEnabled,
     this.view,
   });
+  
+  @override
+  List<Object?> get props => [uid, name, isAudioEnabled, isVideoEnabled];
 }

@@ -12,6 +12,7 @@ import 'package:insta_job/network/end_points.dart';
 
 import 'package:insta_job/screens/call_screen.dart';
 import 'package:insta_job/screens/insta_recruit/recording_screens/transcription_screen.dart';
+import 'package:insta_job/utils/agora_credentials.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/widgets/custom_button/custom_btn.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
@@ -223,8 +224,8 @@ class _InterviewTileState extends State<InterviewTile> {
                             AppRoutes.push(
                                 context,
                                 CallScreen(
-                                  channelName: "",
-                                  token: "",
+                                  channelName: AgoraCredentials.CHANNEL_ID,
+                                  token: AgoraCredentials.TOKEN,
                                   chatModel: model,
                                 ));
                           },
