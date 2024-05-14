@@ -109,9 +109,11 @@ class JobSearchEvent extends JobPosEvent {
 class JobDistanceLocatorEvent extends JobPosEvent {
   final String? designation;
   final String? miles;
-  JobDistanceLocatorEvent({this.designation, this.miles});
+  final double? lat;
+  final double? long;
+  JobDistanceLocatorEvent({this.designation, this.miles, this.lat, this.long});
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [designation, miles, lat, long];
 }
 
 enum ShortListOrDenyAction {

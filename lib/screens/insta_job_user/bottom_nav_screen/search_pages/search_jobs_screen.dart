@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -143,7 +145,7 @@ class _SearchJobsScreenState extends State<SearchJobsScreen> {
                               // width: MediaQuery.of(context).size.width - 30,
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(30),
-                                  border: Border.all(color: MyColors.blue),
+                                  border: Border.all(color: MyColors.blue, width: 0.5),
                                   color: MyColors.white),
                               child: Row(
                                 children: List.generate(
@@ -203,25 +205,34 @@ class _SearchJobsScreenState extends State<SearchJobsScreen> {
                     ),
                   ),
                   jobDistanceIndex == 1 || jobDistanceIndex == 2
-                      ? Slider(
-                          value: value.range,
-                          onChanged: (val) {
-                            value.rangeVal(val);
-                            context.read<LocationCubit>().onMapCreated(context);
-                            // setState(() {});
-                          },
-                          onChangeEnd: (val) {
-                            print("END $val");
-                            context.read<JobPositionBloc>().add(JobDistanceLocatorEvent(
-                                  miles: val.toStringAsFixed(0),
-                                  designation: "",
-                                ));
-                            context.read<LocationCubit>().onMapCreated(context);
-                            // setState(() {});
-                          },
-                          max: 100,
-                          min: 0,
-                        )
+                      ? SliderTheme(
+                        data: SliderThemeData(
+                          thumbShape: CircleThumbShape(),
+                          trackHeight: 1,
+                        ),
+                        child: Slider(
+                            value: value.range,
+                            onChanged: (val) {
+                              value.rangeVal(val);
+                              context.read<LocationCubit>().onMapCreated(context);
+                              // setState(() {});
+                            },
+                            onChangeEnd: (val) {
+                              print("END $val");
+                              var locationCubit = context.read<LocationCubit>();
+                              context.read<JobPositionBloc>().add(JobDistanceLocatorEvent(
+                                    miles: val.toStringAsFixed(0),
+                                    designation: "",
+                                    lat: locationCubit.latitude,
+                                    long: locationCubit.longitude,
+                                  ));
+                              context.read<LocationCubit>().onMapCreated(context);
+                              // setState(() {});
+                            },
+                            max: 100,
+                            min: 0,
+                          ),
+                      )
                       : SizedBox(),
                   jobDistanceIndex == 1 || jobDistanceIndex == 2 ? SizedBox(height: 0) : SizedBox(height: 25),
                   if (jobDistanceIndex == 0) ...[
@@ -242,11 +253,17 @@ class _SearchJobsScreenState extends State<SearchJobsScreen> {
                               children: [
                                 Container(
                                   height: MediaQuery.of(context).size.height * 0.74,
-                                  color: MyColors.grey,
+                                  // color: MyColors.grey,
                                   child: GoogleMap(
                                     initialCameraPosition: CameraPosition(
                                         target: LatLng(locationData.latitude, locationData.longitude), zoom: 8),
+                                        // target: LatLng(8.983342816463459, 38.79632785767291), zoom: 120),
+                                        // target: LatLng(8.983342816463459, 38.79632785767291)),
                                     zoomControlsEnabled: true,
+                                    //   ..add(Factory<TapGestureRecognizer>(() => TapGestureRecognizer())),
+                                    gestureRecognizers: Set()
+                                    ..add(Factory<EagerGestureRecognizer>(
+                                        () => EagerGestureRecognizer())),
                                     padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.32),
                                     markers: state is OnMapCreate ? state.setOfMarker : {},
                                     onMapCreated: (GoogleMapController controller) {
@@ -284,15 +301,27 @@ class _SearchJobsScreenState extends State<SearchJobsScreen> {
                                       }
                                       setState(() {});*/
                                     },
+                                    circles: {
+                                      Circle(
+                                        circleId: CircleId('circle_1'),
+                                        // center: LatLng(37.42796133580664, -122.085749655962),
+                                        // center: LatLng(locationData.latitude, locationData.longitude),
+                                        center: LatLng(8.983342816463459, 38.79632785767291),
+                                        radius: context.read<GlobalCubit>().range, // in meters
+                                        fillColor: MyColors.blue.withOpacity(0.63),
+                                        strokeWidth: 2,
+                                        strokeColor: MyColors.blue,
+                                      ),
+                                    },
                                   ),
                                 ),
                                 // if (jobState is JobDistanceLoaded) ...[
                                 Positioned(
-                                  bottom: 20,
+                                  bottom: 40,
                                   left: 0,
                                   right: 0,
                                   child: SizedBox(
-                                      height: 220,
+                                      height: 204,
                                       width: MediaQuery.of(context).size.width,
                                       child: ListView.builder(
                                           scrollDirection: Axis.horizontal,
@@ -334,4 +363,36 @@ class _SearchJobsScreenState extends State<SearchJobsScreen> {
           )),
     );
   }
+}
+
+
+class CircleThumbShape implements SliderComponentShape {
+  final double thumbRadius;
+
+  CircleThumbShape({this.thumbRadius = 11.0});
+  
+  @override
+  Size getPreferredSize(bool isEnabled, bool isDiscrete) {
+    return Size.fromRadius(thumbRadius);
+  }
+
+  @override
+  void paint(
+      PaintingContext context, Offset center, {required Animation<double> activationAnimation, required Animation<double> enableAnimation, required bool isDiscrete, required TextPainter labelPainter, required RenderBox parentBox, required SliderThemeData sliderTheme, required TextDirection textDirection, required double value, required double textScaleFactor, required Size sizeWithOverflow}) {
+    final Canvas canvas = context.canvas;
+
+    final Paint fillPaint = Paint()
+      ..color = Colors.white
+      ..style = PaintingStyle.fill;
+
+    final Paint borderPaint = Paint()
+      ..color = Colors.blue
+      ..strokeWidth = 2
+      ..style = PaintingStyle.stroke;
+
+    canvas
+      ..drawCircle(center, thumbRadius, fillPaint)
+      ..drawCircle(center, thumbRadius, borderPaint);
+  }
+
 }

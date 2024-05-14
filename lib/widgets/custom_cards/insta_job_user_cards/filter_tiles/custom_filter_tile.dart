@@ -28,9 +28,10 @@ class CustomFilterTile extends StatelessWidget {
                   style: TextStyle(
                       fontSize: 10,
                       overflow: TextOverflow.ellipsis,
+                      fontWeight: FontWeight.w500,
                       color: index == selectedIndex
                           ? MyColors.white
-                          : MyColors.blue)),
+                          : MyColors.greyTxt)),
             ),
           )),
     );

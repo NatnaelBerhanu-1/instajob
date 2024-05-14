@@ -17,8 +17,7 @@ class MapTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // height: 230,
-      width: MediaQuery.of(context).size.width * 0.8,
+      width: MediaQuery.of(context).size.width * 0.6,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         color: MyColors.white,
@@ -38,7 +37,7 @@ class MapTile extends StatelessWidget {
             fit: BoxFit.cover,
             imageBuilder: (c, val) {
               return Container(
-                height: 120,
+                height: 100,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
                   color: MyColors.white,
@@ -51,7 +50,7 @@ class MapTile extends StatelessWidget {
             },
             placeholder: (val, _) {
               return SizedBox(
-                  height: 120,
+                  height: 100,
                   child: Center(child: CircularProgressIndicator()));
             },
           ),
@@ -70,37 +69,49 @@ class MapTile extends StatelessWidget {
             ),
           ),
           Positioned(
-            right: 10,
-            top: MediaQuery.of(context).size.height * 0.12,
+            right: 8,
+            top: 80,
             child: Container(
+              height: 36,
+              width: 36,
               decoration: BoxDecoration(
                 color: MyColors.blue,
                 borderRadius: BorderRadius.circular(10),
               ),
               child: IconButton(
                   // padding: EdgeInsets.zero,
+                  // visualDensity: VisualDensity.comfortable,
                   visualDensity: VisualDensity.comfortable,
                   onPressed: () {},
                   icon: Icon(
                     Icons.favorite_border,
                     color: MyColors.white,
+                    size: 20,
                   )),
             ),
           ),
           Positioned(
             left: 0,
-            top: MediaQuery.of(context).size.height * 0.14,
-            child: Wrap(
-              crossAxisAlignment: WrapCrossAlignment.center,
+            bottom: 52,
+            child: Row(              
               children: [
                 ImageButton(
                     image: MyImages.locationBlue, height: 18, width: 12),
-                Text(
-                  "${jobDistanceModel.cAddress}",
-                  style: TextStyle(
-                      color: MyColors.blue,
-                      fontSize: 11,
-                      overflow: TextOverflow.ellipsis),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.44,
+                  child: Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: [
+                      Text(
+                        "${jobDistanceModel.cAddress}",
+                        style: TextStyle(
+                            color: MyColors.blue,
+                            fontSize: 9,
+                            // overflow: TextOverflow.ellipsis,
+                            ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),

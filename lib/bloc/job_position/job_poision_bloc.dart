@@ -65,8 +65,8 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
   }
 
   List<JobDistanceModel> jobDistanceList = [];
-  _getJobDistanceLocator(Emitter emit, {String? designation, String? miles}) async {
-    ApiResponse response = await jobPositionRepository.jobDistanceLocator(designation: designation, miles: miles);
+  _getJobDistanceLocator(Emitter emit, {String? designation, String? miles, double? lat, double? long}) async {
+    ApiResponse response = await jobPositionRepository.jobDistanceLocator(designation: designation, miles: miles, lat: lat, long: long);
     if (response.response.statusCode == 500) {
       emit(const JobErrorState('Something went wrong'));
     }
@@ -278,7 +278,7 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
 
     on<JobDistanceLocatorEvent>((event, emit) async {
       emit(JobPosLoading());
-      jobDistanceList = await _getJobDistanceLocator(emit, miles: event.miles, designation: event.designation);
+      jobDistanceList = await _getJobDistanceLocator(emit, miles: event.miles, designation: event.designation, lat: event.lat, long: event.long);
       emit(JobDistanceLoaded(jobDistanceList));
       // emit(JobPosInitialState());
     });

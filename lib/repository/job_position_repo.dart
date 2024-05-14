@@ -231,9 +231,9 @@ class JobPositionRepository {
     }
   }
 
-  jobDistanceLocator({String? designation, String? miles}) async {
+  jobDistanceLocator({String? designation, String? miles, double? lat, double? long}) async {
     try {
-      var map = {"designation": designation, "Area_Distance": miles};
+      var map = {"designation": designation, "Area_Distance": miles, "lat": lat, "long": long};
       var response = await dioClient.post(data: map, uri: EndPoint.jobDistanceLocator);
       return ApiResponse.withSuccess(response);
     } on DioException catch (e) {
