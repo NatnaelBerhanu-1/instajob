@@ -17,7 +17,6 @@ import 'package:agora_rtc_engine/rtc_remote_view.dart' as rtc_remote_view;
 import 'package:insta_job/model/agora_user.dart';
 import 'package:insta_job/model/chat_model.dart';
 import 'package:insta_job/screens/chat_screen.dart';
-import 'package:insta_job/screens/prejoining_dialog.dart';
 import 'package:insta_job/utils/agora_credentials.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_colors.dart';
