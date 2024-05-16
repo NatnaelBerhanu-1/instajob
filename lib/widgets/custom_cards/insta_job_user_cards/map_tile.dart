@@ -62,7 +62,7 @@ class MapTile extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(5.0),
                 child: Text(
-                  "${jobDistanceModel.areaDistance} mi",
+                  "${jobDistanceModel.distanceFromCurrUser} mi",
                   style: TextStyle(color: MyColors.blue, fontSize: 13),
                 ),
               ),

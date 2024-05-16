@@ -73,7 +73,7 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
       emit(const JobErrorState('Something went wrong'));
     }
     if (response.response.statusCode == 200) {
-      List<JobDistanceModel> jobDistanceListInitial = (response.response.data['data'] as List).map((e) => JobPosModel.fromJson(e)).toList().map((item) {
+      List<JobDistanceModel> jobDistanceList = (response.response.data['data'] as List).map((e) => JobPosModel.fromJson(e)).toList().map((item) {
         return JobDistanceModel(
           id: item.id,
           jobSaved: item.jobStatus,
@@ -386,7 +386,7 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
       // if (distance <= milesDouble * 1.60934) { //radius
       // if (distance <= milesDouble) { //radius
       if (distance <= milesDouble && distance <= currJobAreaDistanceDouble!) { //radius, //TODO: 
-        filteredPositions.add(currJob.copyWith(distanceFromCurrUser: distance));
+        filteredPositions.add(currJob.copyWith(distanceFromCurrUser: double.parse(distance.toStringAsFixed(2))));
       }
     }
 
