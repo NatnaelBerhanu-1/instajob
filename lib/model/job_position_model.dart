@@ -250,6 +250,7 @@ class JobDistanceModel extends Equatable {
   String? areaDistance;
   String? jobsType;
   String? experienceLevel;
+  double? distanceFromCurrUser;
 
   JobDistanceModel(
       {this.id,
@@ -263,7 +264,41 @@ class JobDistanceModel extends Equatable {
       this.salaries,
       this.areaDistance,
       this.jobsType,
-      this.experienceLevel});
+      this.experienceLevel,
+      this.distanceFromCurrUser});
+
+  JobDistanceModel copyWith(
+      {
+      int? id,
+      int? jobSaved,
+      String? companyname,
+      String? companyUploadPhoto,
+      String? cAddress,
+      String? cLat,
+      String? cLog,
+      String? designation,
+      String? salaries,
+      String? areaDistance,
+      String? jobsType,
+      String? experienceLevel,
+      double? distanceFromCurrUser,
+      }) {
+    return JobDistanceModel(
+        id: id ?? id,
+        jobSaved: jobSaved ?? this.jobSaved,
+        companyname: companyname ?? this.companyname,
+        companyUploadPhoto: companyUploadPhoto ?? this.companyUploadPhoto,
+        cAddress: cAddress ?? this.cAddress,
+        cLat: cLat ?? this.cLat,
+        cLog: cLog ?? this.cLog,
+        designation: designation ?? this.designation,
+        salaries: salaries ?? this.salaries,
+        areaDistance: areaDistance ?? this.areaDistance,
+        jobsType: jobsType ?? this.jobsType,
+        experienceLevel: experienceLevel ?? this.experienceLevel,
+        distanceFromCurrUser: distanceFromCurrUser ?? this.distanceFromCurrUser,
+        );
+  }
 
   JobDistanceModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];

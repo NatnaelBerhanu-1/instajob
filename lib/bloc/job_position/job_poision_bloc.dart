@@ -376,15 +376,17 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
 
       final currJobLatDouble = double.tryParse(currJob.cLat!);
       final currJobLongDouble = double.tryParse(currJob.cLog!);
+      final currJobAreaDistanceDouble = double.tryParse(currJob.areaDistance!); //TODO: double check
       if (currJobLatDouble == null || currJobLongDouble == null) {
         continue;
       }
 
       double distance = calculateDistance(
          currLat, currLong, currJobLatDouble, currJobLongDouble);
-      // if (distance <= milesDouble * 1.6) { //radius
-      if (distance <= milesDouble) { //radius
-        filteredPositions.add(currJob);
+      // if (distance <= milesDouble * 1.60934) { //radius
+      // if (distance <= milesDouble) { //radius
+      if (distance <= milesDouble && distance <= currJobAreaDistanceDouble!) { //radius, //TODO: 
+        filteredPositions.add(currJob.copyWith(distanceFromCurrUser: distance));
       }
     }
 
