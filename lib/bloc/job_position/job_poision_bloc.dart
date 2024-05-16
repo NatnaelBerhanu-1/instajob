@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/job_position/job_pos_event.dart';
@@ -71,7 +73,25 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
       emit(const JobErrorState('Something went wrong'));
     }
     if (response.response.statusCode == 200) {
-      jobDistanceList = (response.response.data['data'] as List).map((e) => JobDistanceModel.fromJson(e)).toList();
+      List<JobDistanceModel> jobDistanceListInitial = (response.response.data['data'] as List).map((e) => JobPosModel.fromJson(e)).toList().map((item) {
+        return JobDistanceModel(
+          id: item.id,
+          jobSaved: item.jobStatus,
+          companyname: item.companyName,
+          companyUploadPhoto: item.uploadPhoto,
+          cAddress: item.cAddress,
+          cLat: item.cLat,
+          cLog: item.cLog,
+          designation: item.designation,
+          salaries: item.salaries,
+          areaDistance: item.areaDistance,
+          jobsType: item.jobsType,
+          experienceLevel: item.experienceLevel,
+
+        );
+      }).toList();
+      List<JobDistanceModel> filteredJobs = filterJobPositionsByRadius(jobDistanceList, lat, long, miles);
+      jobDistanceList = filteredJobs;
       print('JOB LIST ------------            $jobDistanceList');
       return jobDistanceList;
     } else if (response.response.statusCode == 400) {
@@ -335,5 +355,62 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
         emit(JobErrorState(response.response.data['message']));
       }
     });
+  }
+  
+  List<JobDistanceModel> filterJobPositionsByRadius(List<JobDistanceModel> jobDistanceList, double? currLat, double? currLong, String? miles) {    
+    if (miles == null) {
+      return jobDistanceList;
+    }
+
+    final milesDouble = double.tryParse(miles);
+    if (milesDouble == null) {
+      return jobDistanceList;
+    }
+
+    List<JobDistanceModel> filteredPositions = [];
+
+    for (var currJob in jobDistanceList) {
+      if (currLat == null || currLong == null || currJob.cLat == null || currJob.cLog == null) {
+        continue;
+      }
+
+      final currJobLatDouble = double.tryParse(currJob.cLat!);
+      final currJobLongDouble = double.tryParse(currJob.cLog!);
+      if (currJobLatDouble == null || currJobLongDouble == null) {
+        continue;
+      }
+
+      double distance = calculateDistance(
+         currLat, currLong, currJobLatDouble, currJobLongDouble);
+      // if (distance <= milesDouble * 1.6) { //radius
+      if (distance <= milesDouble) { //radius
+        filteredPositions.add(currJob);
+      }
+    }
+
+    var res = filteredPositions;
+
+    return filteredPositions;
+  }
+
+  double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+    const R = 6371.0; // Earth radius in kilometers
+    final lat1Radians = degreesToRadians(lat1);
+    final lon1Radians = degreesToRadians(lon1);
+    final lat2Radians = degreesToRadians(lat2);
+    final lon2Radians = degreesToRadians(lon2);
+    
+    final dLat = lat2Radians - lat1Radians;
+    final dLon = lon2Radians - lon1Radians;
+    
+    final a = pow(sin(dLat / 2), 2) +
+        cos(lat1Radians) * cos(lat2Radians) * pow(sin(dLon / 2), 2);
+    final c = 2 * atan2(sqrt(a), sqrt(1 - a));
+    
+    return R * c;
+  }
+
+  double degreesToRadians(double degrees) {
+    return degrees * pi / 180;
   }
 }

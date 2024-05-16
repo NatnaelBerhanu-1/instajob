@@ -14,8 +14,10 @@ class OnMapCreate extends LocationInitial {
 
 class CurrentLocation extends LocationInitial {
   final String location;
+  final double? lat;
+  final double? long;
 
-  CurrentLocation(this.location);
+  CurrentLocation(this.location, {this.lat, this.long});
 }
 
 class AddressLoaded extends LocationInitial {

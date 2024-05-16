@@ -17,7 +17,7 @@ class MapTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.6,
+      width: MediaQuery.of(context).size.width * 0.72,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         color: MyColors.white,

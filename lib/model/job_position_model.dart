@@ -1,6 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:equatable/equatable.dart';
+
 class JobPosModel {
   int? id;
   int? userId;
@@ -235,7 +237,7 @@ class JobPosModel {
   }
 }
 
-class JobDistanceModel {
+class JobDistanceModel extends Equatable {
   int? id;
   int? jobSaved;
   String? companyname;
@@ -294,4 +296,20 @@ class JobDistanceModel {
     data['Experience_level'] = experienceLevel;
     return data;
   }
+  
+  @override
+  List<Object?> get props => [
+    id,
+    jobSaved,
+    companyname,
+    companyUploadPhoto,
+    cAddress,
+    cLat,
+    cLog,
+    designation,
+    salaries,
+    areaDistance,
+    jobsType,
+    experienceLevel,
+  ];
 }

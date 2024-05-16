@@ -265,7 +265,7 @@ class _SearchJobsScreenState extends State<SearchJobsScreen> {
                                     ..add(Factory<EagerGestureRecognizer>(
                                         () => EagerGestureRecognizer())),
                                     padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.32),
-                                    markers: state is OnMapCreate ? state.setOfMarker : {},
+                                    // markers: state is OnMapCreate ? state.setOfMarker : {},
                                     onMapCreated: (GoogleMapController controller) {
                                       locationData.onMapCreated(context);
                                       // setState(() {});
@@ -305,9 +305,9 @@ class _SearchJobsScreenState extends State<SearchJobsScreen> {
                                       Circle(
                                         circleId: CircleId('circle_1'),
                                         // center: LatLng(37.42796133580664, -122.085749655962),
-                                        // center: LatLng(locationData.latitude, locationData.longitude),
-                                        center: LatLng(8.983342816463459, 38.79632785767291),
-                                        radius: context.read<GlobalCubit>().range, // in meters
+                                        // center: LatLng(8.983342816463459, 38.79632785767291),
+                                        center: LatLng(locationData.latitude, locationData.longitude),
+                                        radius: context.read<GlobalCubit>().range * 1000, // in meters
                                         fillColor: MyColors.blue.withOpacity(0.63),
                                         strokeWidth: 2,
                                         strokeColor: MyColors.blue,

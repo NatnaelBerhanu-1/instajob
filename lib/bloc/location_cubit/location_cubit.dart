@@ -94,7 +94,7 @@ class LocationCubit extends Cubit<LocationInitial> {
         await placemarkFromCoordinates(position.latitude, position.longitude);
     // log(" ${placeMarks}");
     // log(" ${placeMarks[0].name}");
-    emit(CurrentLocation(placeMarks.first.name.toString()));
+    emit(CurrentLocation(placeMarks.first.name.toString(), lat: latitude, long: longitude));
 
     print("############## $latitude");
     print("############## $longitude");
