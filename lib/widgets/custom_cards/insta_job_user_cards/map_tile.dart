@@ -53,6 +53,23 @@ class MapTile extends StatelessWidget {
                   height: 100,
                   child: Center(child: CircularProgressIndicator()));
             },
+            errorWidget: (
+              BuildContext context,
+              String url,
+              Object error,
+            ) {
+              return Container(
+                height: 100,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: MyColors.white,
+                  image: DecorationImage(
+                      image: AssetImage(
+                          MyImages.business),
+                      fit: BoxFit.cover),
+                ),
+              );
+            },
           ),
           Positioned(
             right: 10,
