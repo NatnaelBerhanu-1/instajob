@@ -411,87 +411,89 @@ class _CallScreenState extends State<CallScreen> {
       child: Scaffold(
         // backgroundColor: isUser ? MyColors.grey : MyColors.lightBlack,
         backgroundColor: MyColors.lightBlack,
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          backgroundColor: Colors.black,
-          surfaceTintColor: Colors.black,
-          centerTitle: false,
-          title: Row(
-            children: [
-              const Icon(
-                Icons.meeting_room_rounded,
-                color: Colors.white54,
-              ),
-              const SizedBox(width: 6.0),
-              const Text(
-                'Channel name: ',
-                style: TextStyle(
-                  color: Colors.white54,
-                  fontSize: 16.0,
-                ),
-              ),
-              Text(
-                widget.channelName,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(
-                    Icons.people_alt_rounded,
-                    color: Colors.white54,
-                  ),
-                  const SizedBox(width: 6.0),
-                  Text(
-                    _users.length.toString(),
-                    style: const TextStyle(
-                      color: Colors.white54,
-                      fontSize: 16.0,
-                    ),
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
+        // appBar: AppBar(
+        //   automaticallyImplyLeading: false,
+        //   backgroundColor: Colors.black,
+        //   surfaceTintColor: Colors.black,
+        //   centerTitle: false,
+        //   title: Row(
+        //     children: [
+        //       const Icon(
+        //         Icons.meeting_room_rounded,
+        //         color: Colors.white54,
+        //       ),
+        //       const SizedBox(width: 6.0),
+        //       const Text(
+        //         'Channel name: ',
+        //         style: TextStyle(
+        //           color: Colors.white54,
+        //           fontSize: 16.0,
+        //         ),
+        //       ),
+        //       Text(
+        //         widget.channelName,
+        //         style: const TextStyle(
+        //           color: Colors.white,
+        //           fontSize: 16.0,
+        //           fontWeight: FontWeight.bold,
+        //         ),
+        //       ),
+        //     ],
+        //   ),
+        //   actions: [
+        //     Padding(
+        //       padding: const EdgeInsets.only(right: 8.0),
+        //       child: Row(
+        //         mainAxisSize: MainAxisSize.min,
+        //         children: [
+        //           const Icon(
+        //             Icons.people_alt_rounded,
+        //             color: Colors.white54,
+        //           ),
+        //           const SizedBox(width: 6.0),
+        //           Text(
+        //             _users.length.toString(),
+        //             style: const TextStyle(
+        //               color: Colors.white54,
+        //               fontSize: 16.0,
+        //             ),
+        //           ),
+        //         ],
+        //       ),
+        //     )
+        //   ],
+        // ),
         body: SafeArea(
           child: Column(
             children: [
               Expanded(
-                child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Builder(
-                      builder: (context) {
-                        // final isPortrait = orientation == Orientation.portrait;
-                        final isPortrait = true;
-                        if (_users.isEmpty) {
-                          return const SizedBox();
-                        }
-                        // WidgetsBinding.instance.addPostFrameCallback(
-                        //   (_) => setState(
-                        //       () => _viewAspectRatio = isPortrait ? 2 / 3 : 3 / 2),
-                        // );
-                        // final layoutViews = _createLayout(_users.length);
-                        return AgoraVideoLayout(
-                          users: _users,
-                          // views: layoutViews,
-                          views: [],
-                          viewAspectRatio: _viewAspectRatio,
-                        );
-                      },
-                    ),
-                  ),
+                child: Builder(
+                  builder: (context) {
+                    // final isPortrait = orientation == Orientation.portrait;
+                    final isPortrait = true;
+                    if (_users.isEmpty) {
+                      return const SizedBox();
+                    }
+                    // WidgetsBinding.instance.addPostFrameCallback(
+                    //   (_) => setState(
+                    //       () => _viewAspectRatio = isPortrait ? 2 / 3 : 3 / 2),
+                    // );
+                    // final layoutViews = _createLayout(_users.length);
+                    return AgoraVideoLayout(
+                      users: _users,
+                      // views: layoutViews,
+                      views: [],
+                      viewAspectRatio: _viewAspectRatio,
+                      currentUserId: _currentUid,
+                      onSwitchCamera: _onSwitchCamera,
+                    );
+                  },
+                ),
               ),
               // Expanded(flex: 1, child: Container(),),
+              // Text("HI"),
+              // Container(width: 200,height: 20, color: Colors.red),
+              SizedBox(height: 16),
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 10, horizontal: 24),
                 child: SizedBox(
@@ -669,14 +671,19 @@ class AgoraVideoLayout extends StatelessWidget {
     super.key,
     required Set<AgoraUser> users,
     required List<int> views,
-    required double viewAspectRatio,
+    required double viewAspectRatio, 
+    required int? currentUserId, required void Function() onSwitchCamera,
   })  : _users = users,
         _views = views,
-        _viewAspectRatio = viewAspectRatio;
+        _viewAspectRatio = viewAspectRatio,
+        _currentUserId = currentUserId,
+        _onSwitchCamera = onSwitchCamera;
 
   final Set<AgoraUser> _users;
   final List<int> _views;
   final double _viewAspectRatio;
+  final int? _currentUserId;
+  final void Function() _onSwitchCamera;
 
   @override
   Widget build(BuildContext context) {
@@ -727,20 +734,75 @@ class AgoraVideoLayout extends StatelessWidget {
     var res = [];
     var usersLen = _users.length;
 
-    for (int i = 0; i < _users.length; i++) {
-      res.add(Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        child: AgoraVideoView(
-          user: _users.elementAt(i),
-          viewAspectRatio: _viewAspectRatio,
+    // for (int i = 0; i < _users.length; i++) {
+    //   res.add(Padding(
+    //     padding: const EdgeInsets.symmetric(vertical: 10),
+    //     child: AgoraVideoView(
+    //       user: _users.elementAt(i),
+    //       viewAspectRatio: _viewAspectRatio,
+    //     ),
+    //   ));
+    // }
+    // return Wrap(children: [
+    //   // res.isNotEmpty ? res[0] : Text("empty"),
+    //   // res.isNotEmpty ? res[0] : Text("empty"),
+    //   ...res,
+    // ],);
+    var fallBackAgoraUser = AgoraUser(uid: 100000321, isAudioEnabled: false, isVideoEnabled: false, name: "", view: null); //just default agora user, to avoid bad state 
+    var currAgoraUser = getCurrentAgoraUser(_users, _currentUserId, fallBackAgoraUser);
+    var otherAgoraUser = getOtherAgoraUser(_users, _currentUserId, fallBackAgoraUser);
+    return Stack(
+      children: [
+        Positioned(
+          top: 0,
+          bottom: 0,
+          child: AgoraVideoView(
+            user: _users.length > 1 ? otherAgoraUser: currAgoraUser,
+            viewAspectRatio: _viewAspectRatio,
+            onSwitchCamera: _users.length > 1 ? null: _onSwitchCamera,
+            users: _users,
+            isCurrentUser: _users.length > 1 ? false : true,
+          ),
         ),
-      ));
+        if (getOtherAgoraUsers(_users, _currentUserId).isNotEmpty)
+        Positioned(
+          top: 20,
+          right: 20,
+          child: AgoraVideoView(
+            user: currAgoraUser,
+            viewAspectRatio: _viewAspectRatio,
+            height: 200,
+            width: 200,
+            onSwitchCamera: _onSwitchCamera,
+            isCurrentUser: true,
+            users: _users,
+          ),
+        ),
+      ],
+    );    
+  }
+
+  static AgoraUser getCurrentAgoraUser(Set<AgoraUser> users, int? currentUserId, AgoraUser fallBackAgoraUser) {
+    var filteredAgoraUsersList = users.where((element) => element.uid == currentUserId).toList();
+    if (filteredAgoraUsersList.isNotEmpty) {
+      return filteredAgoraUsersList[0];
     }
-    return Wrap(children: [
-      // res.isNotEmpty ? res[0] : Text("empty"),
-      // res.isNotEmpty ? res[0] : Text("empty"),
-      ...res,
-    ],);
+    // return null;
+    return fallBackAgoraUser;
+  }
+
+  static List<AgoraUser> getOtherAgoraUsers(Set<AgoraUser> users, int? currentUserId) {
+    var filteredAgoraUsersList = users.where((element) => element.uid != currentUserId).toList();
+    return filteredAgoraUsersList;
+  }
+
+  static AgoraUser getOtherAgoraUser(Set<AgoraUser> users, int? currentUserId, AgoraUser fallBackAgoraUser) {
+    var filteredAgoraUsersList = getOtherAgoraUsers(users, currentUserId);
+    if (filteredAgoraUsersList.isNotEmpty) {
+      return filteredAgoraUsersList[0];
+    }
+    // return null;
+    return fallBackAgoraUser;
   }
 }
 
@@ -748,18 +810,31 @@ class AgoraVideoView extends StatelessWidget {
   const AgoraVideoView({
     super.key,
     required double viewAspectRatio,
-    required AgoraUser user,
+    required AgoraUser user, double? width, double? height, void Function()? onSwitchCamera, required bool isCurrentUser, required Set<AgoraUser> users,
   })  : _viewAspectRatio = viewAspectRatio,
-        _user = user;
+        _user = user,
+        _height = height,
+        _width = width,
+        _onSwitchCamera = onSwitchCamera,
+        _isCurrentUser = isCurrentUser,
+        _users = users;
 
   final double _viewAspectRatio;
   final AgoraUser _user;
+  final double? _width;
+  final double? _height;
+  final void Function()? _onSwitchCamera;
+  final bool _isCurrentUser;
+  final Set<AgoraUser> _users;
 
   @override
   Widget build(BuildContext context) {
+    var mediaQueryData = MediaQuery.of(context);
     return SizedBox(
-      height: 280,
-      width: 280,
+      // height: 280,
+      // width: 280,
+      height: _height,
+      width: _width,
       child: Padding(
         padding: const EdgeInsets.all(2.0),
         child: AspectRatio(
@@ -775,18 +850,18 @@ class AgoraVideoView extends StatelessWidget {
             ),
             child: Stack(
               children: [
-                if (_user.isVideoEnabled != true)
-                Center(
-                  child: CircleAvatar(
-                    backgroundColor: Colors.grey.shade800,
-                    maxRadius: 18,
-                    child: Icon(
-                      Icons.person,
-                      color: Colors.grey.shade600,
-                      size: 24.0,
-                    ),
-                  ),
-                ),
+                // if (_user.isVideoEnabled != true)
+                // Center(
+                //   child: CircleAvatar(
+                //     backgroundColor: Colors.grey.shade800,
+                //     maxRadius: 18,
+                //     child: Icon(
+                //       Icons.person,
+                //       color: Colors.grey.shade600,
+                //       size: 24.0,
+                //     ),
+                //   ),
+                // ),
                 if (_user.isVideoEnabled ?? false)
                   Center(
                     child: ClipRRect(
@@ -794,7 +869,24 @@ class AgoraVideoView extends StatelessWidget {
                       child: _user.view,
                     ),
                   ),
-                Text("userrr ${_user.name} ${_user.uid}"),
+                // Text("userrr ${_user.name} ${_user.uid}"),
+                if (_isCurrentUser && _users.length > 1)
+                  Positioned(
+                    right: 60,
+                    bottom: 0,
+                    child: GestureDetector(
+                      onTap: () {
+                        if (_onSwitchCamera != null) {
+                          _onSwitchCamera!();
+                        }
+                      },
+                      child: Container(
+                        color: Colors.transparent,
+                        alignment: Alignment.center,
+                        child: Image.asset(MyImages.camera, height: 70, width: 70),
+                      ),
+                    ),
+                  ),
               ],
             ),
           ),
