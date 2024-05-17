@@ -486,6 +486,7 @@ class _CallScreenState extends State<CallScreen> {
                       viewAspectRatio: _viewAspectRatio,
                       currentUserId: _currentUid,
                       onSwitchCamera: _onSwitchCamera,
+                      chatModel: widget.chatModel,
                     );
                   },
                 ),
@@ -672,18 +673,22 @@ class AgoraVideoLayout extends StatelessWidget {
     required Set<AgoraUser> users,
     required List<int> views,
     required double viewAspectRatio, 
-    required int? currentUserId, required void Function() onSwitchCamera,
+    required int? currentUserId, 
+    required void Function() onSwitchCamera, 
+    required ChatModel chatModel,
   })  : _users = users,
         _views = views,
         _viewAspectRatio = viewAspectRatio,
         _currentUserId = currentUserId,
-        _onSwitchCamera = onSwitchCamera;
+        _onSwitchCamera = onSwitchCamera,
+        _chatModel = chatModel;
 
   final Set<AgoraUser> _users;
   final List<int> _views;
   final double _viewAspectRatio;
   final int? _currentUserId;
   final void Function() _onSwitchCamera;
+  final ChatModel _chatModel;
 
   @override
   Widget build(BuildContext context) {
@@ -761,7 +766,8 @@ class AgoraVideoLayout extends StatelessWidget {
             viewAspectRatio: _viewAspectRatio,
             onSwitchCamera: _users.length > 1 ? null: _onSwitchCamera,
             users: _users,
-            isCurrentUser: _users.length > 1 ? false : true,
+            isSmallerScreen: false,
+            chatModel: _chatModel,
           ),
         ),
         if (getOtherAgoraUsers(_users, _currentUserId).isNotEmpty)
@@ -774,8 +780,9 @@ class AgoraVideoLayout extends StatelessWidget {
             height: 200,
             width: 200,
             onSwitchCamera: _onSwitchCamera,
-            isCurrentUser: true,
             users: _users,
+            isSmallerScreen: true,
+            chatModel: _chatModel,
           ),
         ),
       ],
@@ -810,22 +817,30 @@ class AgoraVideoView extends StatelessWidget {
   const AgoraVideoView({
     super.key,
     required double viewAspectRatio,
-    required AgoraUser user, double? width, double? height, void Function()? onSwitchCamera, required bool isCurrentUser, required Set<AgoraUser> users,
+    required AgoraUser user, 
+    double? width, 
+    double? height, 
+    void Function()? onSwitchCamera, 
+    required Set<AgoraUser> users, 
+    required bool isSmallerScreen, 
+    required ChatModel chatModel,
   })  : _viewAspectRatio = viewAspectRatio,
         _user = user,
         _height = height,
         _width = width,
         _onSwitchCamera = onSwitchCamera,
-        _isCurrentUser = isCurrentUser,
-        _users = users;
+        _users = users,
+        _isSmallerScreen = isSmallerScreen,
+        _chatModel = chatModel;
 
   final double _viewAspectRatio;
   final AgoraUser _user;
   final double? _width;
   final double? _height;
   final void Function()? _onSwitchCamera;
-  final bool _isCurrentUser;
   final Set<AgoraUser> _users;
+  final bool _isSmallerScreen;
+  final ChatModel _chatModel;
 
   @override
   Widget build(BuildContext context) {
@@ -870,7 +885,7 @@ class AgoraVideoView extends StatelessWidget {
                     ),
                   ),
                 // Text("userrr ${_user.name} ${_user.uid}"),
-                if (_isCurrentUser && _users.length > 1)
+                if (_isSmallerScreen && _users.length > 1)
                   Positioned(
                     right: 60,
                     bottom: 0,
@@ -887,6 +902,41 @@ class AgoraVideoView extends StatelessWidget {
                       ),
                     ),
                   ),
+                if (!_isSmallerScreen && _users.length > 1)
+                  Positioned(
+                    left: 40,
+                    bottom: 100,
+                    child: Container(
+                      // color: Colors.transparent,
+                      color: Colors.black54,  // Semi-transparent background for text
+                      alignment: Alignment.center,
+                      child: Text(
+                        Global.userModel?.type == "user" ? "${_chatModel.selfName}" : "${_chatModel.oppName}", 
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20.0,
+                        ),
+                      ),
+                    ),
+                  ),
+                if (!_isSmallerScreen)
+                  Positioned(
+                    left: 40,
+                    bottom: 70,
+                    child: Container(
+                      // color: Colors.transparent,
+                      color: Colors.black54,  // Semi-transparent background for text
+                      alignment: Alignment.center,
+                      child: Text(
+                        _chatModel.oppTitle ?? "",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20.0,
+                        ),
+                      ),
+                    ),
+                  ),
+
               ],
             ),
           ),
