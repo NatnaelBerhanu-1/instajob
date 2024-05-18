@@ -851,139 +851,190 @@ class AgoraVideoView extends StatelessWidget {
       height: _height,
       width: _width,
       child: Padding(
-        padding: const EdgeInsets.all(2.0),
-        child: AspectRatio(
-          aspectRatio: _viewAspectRatio,
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.grey.shade900,
-              borderRadius: BorderRadius.circular(8.0),
-              border: Border.all(
-                color: _user.isAudioEnabled ?? false ? Colors.blue : Colors.red,
-                width: 2.0,
-              ),
+        padding: const EdgeInsets.symmetric(vertical: 2),
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            color: Colors.grey.shade900,
+            borderRadius: BorderRadius.circular(8.0),
+            border: Border.all(
+              color: _user.isAudioEnabled ?? false ? Colors.blue : Colors.red,
+              width: 2.0,
             ),
-            child: Stack(
-              children: [
-                // if (_user.isVideoEnabled != true)
-                // Center(
-                //   child: CircleAvatar(
-                //     backgroundColor: Colors.grey.shade800,
-                //     maxRadius: 18,
-                //     child: Icon(
-                //       Icons.person,
-                //       color: Colors.grey.shade600,
-                //       size: 24.0,
-                //     ),
-                //   ),
-                // ),
-                if (_user.isVideoEnabled ?? false)
-                  Center(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8 - 2),
-                      child: _user.view,
+          ),
+          child: Stack(
+            children: [
+              // if (_user.isVideoEnabled != true)
+              // Center(
+              //   child: CircleAvatar(
+              //     backgroundColor: Colors.grey.shade800,
+              //     maxRadius: 18,
+              //     child: Icon(
+              //       Icons.person,
+              //       color: Colors.grey.shade600,
+              //       size: 24.0,
+              //     ),
+              //   ),
+              // ),
+              if (_user.isVideoEnabled ?? false)
+                Center(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8 - 2),
+                    child: _user.view,
+                  ),
+                ),
+              // Text("userrr ${_user.name} ${_user.uid}"),
+              if (_isSmallerScreen && _users.length > 1)
+                Positioned(
+                  right: 60,
+                  bottom: 0,
+                  child: GestureDetector(
+                    onTap: () {
+                      if (_onSwitchCamera != null) {
+                        _onSwitchCamera!(); //TODO(urgent): revisit
+                      }
+                    },
+                    child: Container(
+                      color: Colors.transparent,
+                      alignment: Alignment.center,
+                      child: Image.asset(MyImages.camera, height: 70, width: 70),
                     ),
                   ),
-                // Text("userrr ${_user.name} ${_user.uid}"),
-                if (_isSmallerScreen && _users.length > 1)
-                  Positioned(
-                    right: 60,
-                    bottom: 0,
-                    child: GestureDetector(
-                      onTap: () {
-                        if (_onSwitchCamera != null) {
-                          _onSwitchCamera!(); //TODO(urgent): revisit
-                        }
-                      },
-                      child: Container(
-                        color: Colors.transparent,
+                ),
+              if (!_isSmallerScreen && _users.length > 1 && Global.userModel?.type == "user")
+                Positioned(
+                  left: 40,
+                  bottom: 100,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        // color: Colors.transparent,
+                        color: MyColors.grey.withOpacity(0.2),
+                        // color: Colors.black54,  // Semi-transparent background for text
                         alignment: Alignment.center,
-                        child: Image.asset(MyImages.camera, height: 70, width: 70),
+                        child: Text(
+                          "${_chatModel.selfName}", 
+                          style: TextStyle(
+                            color: MyColors.white,
+                            fontSize: 20.0,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                if (!_isSmallerScreen && _users.length > 1 && Global.userModel?.type == "user")
-                  Positioned(
-                    left: 40,
-                    bottom: 100,
-                    child: Column(
-                      children: [
-                        Container(
-                          // color: Colors.transparent,
-                          color: Colors.black54,  // Semi-transparent background for text
-                          alignment: Alignment.center,
-                          child: Text(
-                            "${_chatModel.selfName}", 
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20.0,
-                            ),
+                      SizedBox(height: 16),
+                      Container(
+                        // color: Colors.transparent,
+                        // color: Colors.black26,  // Semi-transparent background for text
+                        color: MyColors.grey.withOpacity(0.2),
+                        // alignment: Alignment.centerLeft,
+                        child: Text(
+                          "${_chatModel.oppTitle}",
+                          style: TextStyle(
+                            color: MyColors.white,
+                            fontSize: 16.0,
                           ),
                         ),
-                        SizedBox(height: 24),
-                        Container(
-                          // color: Colors.transparent,
-                          color: Colors.black38,  // Semi-transparent background for text
-                          alignment: Alignment.center,
-                          child: Text(
-                            _chatModel.oppTitle ?? "",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20.0,
-                            ),
+                      ),
+                      SizedBox(height: 10),
+                       Container(
+                        // width: 56,
+                        height: 32,
+                        padding: EdgeInsets.symmetric(horizontal: 8),
+                        decoration: BoxDecoration(
+                        color: MyColors.grey.withOpacity(0.2),
+                        borderRadius:BorderRadius.circular(12),
+                        border: Border.all(
+                            color: MyColors.transparent, width: 1.2)),
+                        alignment: Alignment.center,
+                        child: Text(
+                          "00:23s",
+                          // "1:00:23s",
+                          style: TextStyle(
+                            color: MyColors.white,
+                            fontSize: 16,
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                if (!_isSmallerScreen && _users.length > 1 && Global.userModel?.type != "user")
-                  Positioned(
-                    left: 30,
-                    bottom: 64,
-                    child: Column(
-                      children: [
-                        Center(
-                          child: Container(
-                            width: MediaQuery.of(context).size.width * 0.84,
-                            height: 56,
-                            decoration: BoxDecoration(
-                            color: MyColors.lightBlack,
-                            borderRadius:BorderRadius.circular(28),
-                            border: Border.all(
-                                color: MyColors.transparent, width: 1.2)),
-                            alignment: Alignment.center,
-                            child: Row(children: [
-                              SizedBox(width: 8,),
-                              CircleAvatar(backgroundColor: Colors.blue,radius: 22),
-                              SizedBox(width: 8,),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                Text("${_chatModel.selfName}",style: TextStyle(color: MyColors.white, fontSize: 16),),
-                                SizedBox(height: 2),
-                                Text("${_chatModel.oppTitle}",style: TextStyle(color: MyColors.greyTxt, fontSize: 14),),
-                              ],),
+                ),
+              if (!_isSmallerScreen && _users.length > 1 && Global.userModel?.type != "user")
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 64,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.08),
+                        child: Container(
+                          // width: MediaQuery.of(context).size.width * 0.36,
+                          width: 112,
+                          height: 32,
+                          decoration: BoxDecoration(
+                          color: MyColors.lightBlack,
+                          borderRadius:BorderRadius.circular(24),
+                          border: Border.all(
+                              color: MyColors.transparent, width: 1.2)),
+                          alignment: Alignment.center,
+                          child: Row(children: [
+                            SizedBox(width: 4,),
+                            CircleAvatar(backgroundColor: MyColors.lightBlue,radius: 12),
+                            SizedBox(width: 4,),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                              Text("Recording",style: TextStyle(color: MyColors.white, fontSize: 13),),
                             ],),
-                          ),
+                          ],),
                         ),
-                        SizedBox(height: 24),
-                        Container(
-                          color: Colors.black38,  // Semi-transparent background for text
+                      ),
+                      SizedBox(height: 16),
+                      Center(
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * 0.84,
+                          height: 56,
+                          decoration: BoxDecoration(
+                          color: MyColors.lightBlack,
+                          borderRadius:BorderRadius.circular(28),
+                          border: Border.all(
+                              color: MyColors.transparent, width: 1.2)),
                           alignment: Alignment.center,
-                          child: Text(
-                            _chatModel.oppTitle ?? "",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20.0,
+                          child: Row(children: [
+                            SizedBox(width: 8,),
+                            CircleAvatar(backgroundColor: Colors.blue,radius: 22),
+                            SizedBox(width: 8,),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                              Text("${_chatModel.selfName}",style: TextStyle(color: MyColors.white, fontSize: 16),),
+                              SizedBox(height: 2),
+                              Text("${_chatModel.oppTitle}",style: TextStyle(color: MyColors.greyTxt, fontSize: 14),),
+                            ],),
+                            Spacer(),
+                            Container(
+                              // width: 56,
+                              height: 38,
+                              padding: EdgeInsets.symmetric(horizontal: 6),
+                              decoration: BoxDecoration(
+                              color: MyColors.greyTxt,
+                              borderRadius:BorderRadius.circular(28),
+                              border: Border.all(
+                                  color: MyColors.transparent, width: 1.2)),
+                              alignment: Alignment.center,
+                              child: Text("00:23s"),
                             ),
-                          ),
+                            SizedBox(width: 8,),
+                          ],),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-              ],
-            ),
+                ),
+            ],
           ),
         ),
       ),
