@@ -90,6 +90,7 @@ class _SearchJobsScreenState extends State<SearchJobsScreen> {
                         child: GestureDetector(
                           onTap: () {
                             context.read<GlobalCubit>().changeFilterIndex(0);
+                            context.read<JobPositionBloc>().add(LoadJobPosListEvent());
                           },
                           child: Image.asset(
                             MyImages.backArrow,
