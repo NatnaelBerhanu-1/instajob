@@ -21,6 +21,7 @@ class EndPoint {
   static String createVideoCall = "create_videocall";
   static String getInterviews = "call_lists";
   static String getInterviewsAsCandidate = "candidate_call_lists";
+  static String cancelInterviewSchedule = "change_status_video_call";
 
   /// ---------------- EMPLOYEE INTERFACE --------------- ///
 

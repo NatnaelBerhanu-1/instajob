@@ -18,6 +18,9 @@ class CustomButton extends StatelessWidget {
   final double? width;
   final VoidCallback? onTap;
   final bool loading;
+  final Color? loadingIndicatorColor;
+  final double? loadingIndicatorWidth;
+  final double? loadingIndicatorHeight;
 
   final BorderRadius? borderRadius;
   const CustomButton(
@@ -32,7 +35,10 @@ class CustomButton extends StatelessWidget {
       this.bgColor,
       this.fontColor,
       this.borderColor,
-      this.loading = false})
+      this.loading = false,
+      this.loadingIndicatorColor = Colors.white,
+      this.loadingIndicatorWidth,
+      this.loadingIndicatorHeight})
       : super(key: key);
 
   @override
@@ -49,12 +55,26 @@ class CustomButton extends StatelessWidget {
                 color: borderColor ?? MyColors.transparent, width: 1.2)),
         child: Center(
           child: loading
-              ? Center(
-                  heightFactor: 0,
-                  widthFactor: 0,
-                  child: CircularProgressIndicator(
-                      color: MyColors.white, strokeWidth: 2),
-                )
+              ? Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: loadingIndicatorWidth,
+                    height: loadingIndicatorHeight,
+                    child: CircularProgressIndicator(
+                        color: loadingIndicatorColor ?? MyColors.white, strokeWidth: 2),
+                  ),
+                    SizedBox(width: 2),
+                    Text(
+                      "$title",
+                      style: TextStyle(
+                        fontSize: fontSize ?? 16,
+                        fontWeight: fontWeight ?? FontWeight.w500,
+                        color: fontColor ?? MyColors.white,
+                      ),
+                    )
+                ],
+              )
               : Text(
                   "$title",
                   style: TextStyle(

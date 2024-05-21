@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:insta_job/bloc/agora_bloc/agora_cubit.dart';
 import 'package:insta_job/bloc/attachment_download_cubit/attachment_download_cubit.dart';
 import 'package:insta_job/bloc/auth_bloc/auth_cubit.dart';
+import 'package:insta_job/bloc/cancel_interview_schedule_cubit/cancel_interview_schedule_cubit.dart';
 import 'package:insta_job/bloc/career_learning_bloc/career_learning_bloc.dart';
 import 'package:insta_job/bloc/choose_image_bloc/pick_image_cubit.dart';
 import 'package:insta_job/bloc/company_bloc/company_bloc.dart';
@@ -72,6 +73,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => AttachmentDownloadCubit(sl()));
   sl.registerLazySingleton(() => MaskResumesCubit(sl()));
   sl.registerLazySingleton(() => InterviewScheduleCubit(sl()));
+  sl.registerLazySingleton(() => CancelInterviewScheduleCubit(sl()));
   sl.registerLazySingleton(() => ResumeDetailsCubit(sl()));
   sl.registerLazySingleton(() => GetDeniedJobPositionCubit(sl()));
 

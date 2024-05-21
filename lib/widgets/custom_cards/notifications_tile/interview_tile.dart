@@ -5,6 +5,10 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:insta_job/bloc/cancel_interview_schedule_cubit/cancel_interview_schedule_cubit.dart';
+import 'package:insta_job/bloc/cancel_interview_schedule_cubit/cancel_interview_schedule_state.dart';
+import 'package:insta_job/bloc/interview_schedule_cubit/interview_schedule_cubit.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/model/chat_model.dart';
 import 'package:insta_job/model/interview_model.dart';
@@ -165,14 +169,32 @@ class _InterviewTileState extends State<InterviewTile> {
                     children: [
                       Expanded(
                         flex: 2,
-                        child: CustomButton(
-                          fontSize: 14,
-                          height: MediaQuery.of(context).size.height * 0.042,
-                          borderColor: MyColors.darkRed,
-                          bgColor: MyColors.white,
-                          borderRadius: BorderRadius.circular(20),
-                          title: "Cancel",
-                          fontColor: MyColors.darkRed,
+                        child: BlocConsumer<CancelInterviewScheduleCubit, CancelInterviewScheduleState>(
+                            builder: (context, state) {
+                            return CustomButton(
+                              fontSize: 14,
+                              height: MediaQuery.of(context).size.height * 0.042,
+                              borderColor: MyColors.darkRed,
+                              bgColor: MyColors.white,
+                              borderRadius: BorderRadius.circular(20),
+                              title: "Cancel",
+                              loading: state is CancelInterviewScheduleLoading,
+                              loadingIndicatorColor: MyColors.black,
+                              loadingIndicatorHeight: 22,
+                              loadingIndicatorWidth: 22,
+                              fontColor: MyColors.darkRed,
+                              onTap: () {
+                                context.read<CancelInterviewScheduleCubit>().cancelInterviewSchedule(callId: widget.interviewModel.id.toString(), statusCall: "cancelled");
+                              },
+                            );
+                          }, 
+                          listener: (context, state) { 
+                            if (state is CancelInterviewScheduleSuccess) {
+                              context.read<InterviewScheduleCubit>().getInterviewSchedules(Global.userModel!.id.toString());
+                            } else if (state is CancelInterviewScheduleErrorState) {
+                              showToast(state.message);
+                            }
+                          },
                         ),
                       ),
                       SizedBox(

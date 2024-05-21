@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/agora_bloc/agora_cubit.dart';
 import 'package:insta_job/bloc/attachment_download_cubit/attachment_download_cubit.dart';
 import 'package:insta_job/bloc/auth_bloc/auth_cubit.dart';
+import 'package:insta_job/bloc/cancel_interview_schedule_cubit/cancel_interview_schedule_cubit.dart';
 import 'package:insta_job/bloc/career_learning_bloc/career_learning_bloc.dart';
 import 'package:insta_job/bloc/choose_image_bloc/pick_image_cubit.dart';
 import 'package:insta_job/bloc/company_bloc/company_bloc.dart';
@@ -36,6 +37,7 @@ final List<SingleChildWidget> blocProviders = [
   BlocProvider(create: (_) => di.sl<AttachmentDownloadCubit>()),
   BlocProvider(create: (_) => di.sl<MaskResumesCubit>()),
   BlocProvider(create: (_) => di.sl<InterviewScheduleCubit>()),
+  BlocProvider(create: (_) => di.sl<CancelInterviewScheduleCubit>()),
   BlocProvider(create: (_) => di.sl<ResumeDetailsCubit>()),
   BlocProvider(create: (_) => di.sl<GetDeniedJobPositionCubit>()),
 ];

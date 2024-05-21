@@ -57,7 +57,17 @@ class InterviewRepo {
     }
   }
 
-  getPreviousInterviews() {
+  getPreviousInterviews() { //TODO: revisit (most likely remove this)
     throw Exception();
+  }
+
+  Future<ApiResponse> cancelInterviewSchedule({required String callId, required String statusCall}) async {
+    try {
+      var map = {"call_id": callId, "status_call": statusCall};
+      var response = await dioClient.post(uri: EndPoint.cancelInterviewSchedule, data: map);
+      return ApiResponse.withSuccess(response);
+    } catch (e) {
+      return ApiResponse.withError(e);
+    }
   }
 }
