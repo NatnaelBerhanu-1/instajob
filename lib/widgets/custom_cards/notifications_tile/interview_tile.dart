@@ -184,7 +184,7 @@ class _InterviewTileState extends State<InterviewTile> {
                               loadingIndicatorWidth: 22,
                               fontColor: MyColors.darkRed,
                               onTap: () {
-                                context.read<CancelInterviewScheduleCubit>().cancelInterviewSchedule(callId: widget.interviewModel.id.toString(), statusCall: "cancelled");
+                                context.read<CancelInterviewScheduleCubit>().cancelInterviewSchedule(callId: widget.interviewModel.id.toString(), statusCall: "cancel");
                               },
                             );
                           }, 
