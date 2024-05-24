@@ -8,7 +8,7 @@ class CancelInterviewScheduleCubit extends Cubit<CancelInterviewScheduleState> {
   CancelInterviewScheduleCubit(this.repo) : super(CancelInterviewScheduleInitial());
 
   Future<void> cancelInterviewSchedule({required String callId, required String statusCall}) async {
-    emit(CancelInterviewScheduleLoading());
+    emit(CancelInterviewScheduleLoading(callId: callId));
     ApiResponse response = await repo.cancelInterviewSchedule(callId: callId, statusCall: statusCall);
       // await Future.delayed(Duration(seconds: 3));
       // emit(CancelInterviewScheduleSuccess());

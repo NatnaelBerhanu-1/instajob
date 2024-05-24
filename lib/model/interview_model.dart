@@ -19,6 +19,8 @@ class InterviewModel {
   final UserModel? user;
   final UserModel? recruiter;
   final JobPosModel? job;
+  final String? token;
+  final String? channelName;
   InterviewModel({
     required this.id,
     required this.companyId,
@@ -28,6 +30,8 @@ class InterviewModel {
     required this.time,
     required this.timeType,
     required this.statusCall,
+    required this.token,
+    required this.channelName,
     this.callRecording,
     this.user,
     this.recruiter,
@@ -47,7 +51,9 @@ class InterviewModel {
       'callRecording': callRecording,
       'user': user?.toJson(),
       'recruiter': recruiter?.toJson(),
-      'job': job?.toJson()
+      'job': job?.toJson(),
+      'token': token,
+      'channelName': channelName,
     };
   }
 
@@ -64,7 +70,9 @@ class InterviewModel {
         callRecording: map['call_recording'] != null ? map['call_ecording'] as String : null,
         user: map['user'] != null ? UserModel.fromJson(map['user'] as Map<String, dynamic>) : null,
         recruiter: map['recruiter'] != null ? UserModel.fromJson(map['recruiter'] as Map<String, dynamic>) : null,
-        job: map['job'] != null ? JobPosModel.fromJson(map['job'] as Map<String, dynamic>) : null);
+        job: map['job'] != null ? JobPosModel.fromJson(map['job'] as Map<String, dynamic>) : null,
+        token: map['token'] != null ? map['token'] as String: "",
+        channelName: map['channel_name'] != null ? map['channel_name'] as String : "");
   }
 
   String toJson() => json.encode(toMap());

@@ -17,6 +17,7 @@ class CustomDialog extends StatefulWidget {
   final String? desc1;
   final String? title;
   final Color? cancelTxtFontClr;
+  final String? headerImagePath;
   const CustomDialog({
     Key? key,
     this.okOnTap,
@@ -25,6 +26,7 @@ class CustomDialog extends StatefulWidget {
     this.desc1,
     this.cancelOnTap,
     this.cancelTxtFontClr,
+    this.headerImagePath,
   }) : super(key: key);
 
   @override
@@ -34,6 +36,13 @@ class CustomDialog extends StatefulWidget {
 class _CustomDialogState extends State<CustomDialog> {
   // int? selectedIndex;
   int? index;
+  String headerImagePath = ''; //TODO: revisit
+  @override
+  void initState() {
+    super.initState();
+    headerImagePath = widget.headerImagePath ?? MyImages.logout;
+  }
+
   @override
   Widget build(BuildContext context) {
     // var size = MediaQuery.of(context).size;
@@ -54,7 +63,7 @@ class _CustomDialogState extends State<CustomDialog> {
             mainAxisSize: MainAxisSize.min,
             children: [
               ImageButton(
-                image: MyImages.logout,
+                image: headerImagePath,
                 padding: EdgeInsets.zero,
                 height: 60,
                 width: 70,

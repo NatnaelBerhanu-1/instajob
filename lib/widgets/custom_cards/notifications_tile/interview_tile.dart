@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/cancel_interview_schedule_cubit/cancel_interview_schedule_cubit.dart';
 import 'package:insta_job/bloc/cancel_interview_schedule_cubit/cancel_interview_schedule_state.dart';
 import 'package:insta_job/bloc/interview_schedule_cubit/interview_schedule_cubit.dart';
+import 'package:insta_job/dialog/custom_dialog.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/model/chat_model.dart';
 import 'package:insta_job/model/interview_model.dart';
@@ -18,6 +19,7 @@ import 'package:insta_job/screens/call_screen.dart';
 import 'package:insta_job/screens/insta_recruit/recording_screens/transcription_screen.dart';
 import 'package:insta_job/utils/agora_credentials.dart';
 import 'package:insta_job/utils/app_routes.dart';
+import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_button/custom_btn.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:intl/intl.dart';
@@ -178,13 +180,26 @@ class _InterviewTileState extends State<InterviewTile> {
                               bgColor: MyColors.white,
                               borderRadius: BorderRadius.circular(20),
                               title: "Cancel",
-                              loading: state is CancelInterviewScheduleLoading,
+                              loading: state is CancelInterviewScheduleLoading && state.callId == widget.interviewModel.id.toString(),
                               loadingIndicatorColor: MyColors.black,
                               loadingIndicatorHeight: 22,
                               loadingIndicatorWidth: 22,
                               fontColor: MyColors.darkRed,
                               onTap: () {
-                                context.read<CancelInterviewScheduleCubit>().cancelInterviewSchedule(callId: widget.interviewModel.id.toString(), statusCall: "cancel");
+                                buildDialog(
+                                  context,
+                                  CustomDialog(
+                                    desc1: "You want to cancel this interview",
+                                    okOnTap: () async {
+                                      Navigator.of(context)
+                                          .pop(); //revisit, double check that it's ok to pop first and call other items below(whether everything gets executed, whether to remote the setState etc/ consider dispose method too)
+                                      context.read<CancelInterviewScheduleCubit>().cancelInterviewSchedule(callId: widget.interviewModel.id.toString(), statusCall: "cancel");
+                                    },
+                                    cancelOnTap: () {
+                                      Navigator.pop(context);
+                                    },
+                                    headerImagePath: MyImages.delete,
+                                  ));
                               },
                             );
                           }, 
@@ -246,8 +261,10 @@ class _InterviewTileState extends State<InterviewTile> {
                             AppRoutes.push(
                                 context,
                                 CallScreen(
-                                  channelName: AgoraCredentials.CHANNEL_ID,
-                                  token: AgoraCredentials.TOKEN,
+                                  // channelName: AgoraCredentials.CHANNEL_ID,
+                                  // token: AgoraCredentials.TOKEN,
+                                  channelName: widget.interviewModel.channelName ?? "",
+                                  token: widget.interviewModel.token ?? "",
                                   chatModel: model,
                                 ));
                           },

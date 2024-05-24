@@ -7,7 +7,12 @@ abstract class CancelInterviewScheduleState extends Equatable {
 
 class CancelInterviewScheduleInitial extends CancelInterviewScheduleState {}
 
-class CancelInterviewScheduleLoading extends CancelInterviewScheduleState {}
+class CancelInterviewScheduleLoading extends CancelInterviewScheduleState {
+  final String callId;
+
+  CancelInterviewScheduleLoading({required this.callId});
+
+}
 
 class CancelInterviewScheduleSuccess extends CancelInterviewScheduleState {}
 
