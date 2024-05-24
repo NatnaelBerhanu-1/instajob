@@ -11,6 +11,7 @@ import 'package:insta_job/model/job_position_model.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:intl/intl.dart';
+import 'package:uuid/uuid.dart';
 
 import '../bloc/job_position/job_pos_event.dart';
 
@@ -121,6 +122,7 @@ class _PickTimeDialogState extends State<PickTimeDialog> {
                                 companyId: "${widget.jobPosModel?.companyId}",
                                 jobId: widget.jobPosModel?.id.toString(),
                                 userId: widget.jobPosModel?.userId.toString(),
+                                channelName: Uuid().v4(),
                               ));
                         } else {
                           showToast("Please choose time");

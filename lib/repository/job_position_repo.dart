@@ -247,7 +247,8 @@ class JobPositionRepository {
     String? jobId,
     String? userId,
     String? time,
-    String? timeType,
+    String? timeType, 
+    String? channelName,
   }) async {
     try {
       var map = {
@@ -256,7 +257,8 @@ class JobPositionRepository {
         "job_id": jobId,
         "user_id": userId,
         "time": time,
-        "time_type": timeType
+        "time_type": timeType,
+        "channel_name": channelName,
       };
       var response = await dioClient.post(data: map, uri: EndPoint.createVideoCall);
       return ApiResponse.withSuccess(response);

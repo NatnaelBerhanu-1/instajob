@@ -344,7 +344,9 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
           companyId: event.companyId,
           employeeId: event.employeeId,
           time: event.time,
-          timeType: event.timeType);
+          timeType: event.timeType,
+          channelName:event.channelName,
+          );
       if (response.response.statusCode == 500) {
         emit(const JobErrorState("Something went wrong"));
       }

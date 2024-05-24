@@ -11,6 +11,7 @@ import 'package:insta_job/globals.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/widgets/custom_app_bar.dart';
 import 'package:insta_job/widgets/custom_button/custom_btn.dart';
+import 'package:uuid/uuid.dart';
 
 class BookSlotScreen extends StatefulWidget {
   final String companyId;
@@ -251,6 +252,7 @@ class _BookSlotScreenState extends State<BookSlotScreen> {
                 companyId: widget.companyId,
                 jobId: widget.jobId.toString(),
                 userId: widget.userId.toString(),
+                channelName: const Uuid().v4()
               );
               debugPrint('InterviewEvent: ${setupInterviewEvent.toJson()}');
               context.read<JobPositionBloc>().add(setupInterviewEvent);

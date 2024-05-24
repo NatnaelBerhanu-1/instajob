@@ -141,8 +141,9 @@ class SetInterviewEvent extends JobPosEvent {
   final String? userId;
   final String? time;
   final String? timeType;
+  final String? channelName;
 
-  SetInterviewEvent({this.companyId, this.employeeId, this.jobId, this.userId, this.time, this.timeType});
+  SetInterviewEvent({this.companyId, this.employeeId, this.jobId, this.userId, this.time, this.timeType, this.channelName});
   @override
   List<Object?> get props => [];
 
@@ -154,6 +155,7 @@ class SetInterviewEvent extends JobPosEvent {
       'userId': userId,
       'time': time,
       'timeType': timeType,
+      'channelName': channelName,
     };
   }
 
