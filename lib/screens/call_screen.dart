@@ -40,7 +40,7 @@ class CallScreen extends StatefulWidget {
 
 class _CallScreenState extends State<CallScreen> {
   late final RtcEngine _agoraEngine;
-  late final _users = <AgoraUser>{};
+  var _users = <AgoraUser>{};
   late double _viewAspectRatio;
   int? _currentUid;
 
@@ -167,18 +167,38 @@ class _CallScreenState extends State<CallScreen> {
           userJoined: (uid, elapsed) {
             final info = 'LOG::userJoined: $uid';
             debugPrint(info);
-            setState(
-              () => _users.add(
+            debugPrint("${_users.map((e) => "${e.uid}: ${e.uid != _currentUid}")}");
+            // _users.removeWhere((element) => element.uid != _currentUid);
+            //     debugPrint('Users[userJoined]: $_users, $_currentUid');
+            //     _users.add(
+            //     AgoraUser(
+            //       uid: uid,
+            //       view: rtc_remote_view.SurfaceView(
+            //         channelId: widget.channelName,
+            //         uid: uid,
+            //       ),
+            //     ),
+            //   );
+            _users = {
+              AgoraUser(
+                  uid: _currentUid!,
+                  isAudioEnabled: _isMicEnabled,
+                  isVideoEnabled: _isCameraEnabled,
+                  view: const rtc_local_view.SurfaceView(),
+                ),
                 AgoraUser(
                   uid: uid,
                   view: rtc_remote_view.SurfaceView(
                     channelId: widget.channelName,
                     uid: uid,
                   ),
-                ),
-              ),
+                )
+            };
+            setState(
+              () {
+              }
             );
-            print("LOG:: users ${_users.toString()}");
+            print("LOG:: users ${_users.map((e) => e.uid)}");
           },
           userOffline: (uid, elapsed) {
             final info = 'LOG::userOffline: $uid';
