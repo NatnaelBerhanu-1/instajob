@@ -338,6 +338,7 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
     });
 
     on<SetInterviewEvent>((event, emit) async {
+      emit(SetInterviewSlotLoading());
       ApiResponse response = await jobPositionRepository.setInterview(
           userId: event.userId,
           jobId: event.jobId,
@@ -355,6 +356,8 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
         emit(const SetInterviewSuccess());
       } else if (response.response.statusCode == 400) {
         emit(JobErrorState(response.response.data['message']));
+      } else {
+        emit(const JobErrorState("Error! Something went wrong"));
       }
     });
   }

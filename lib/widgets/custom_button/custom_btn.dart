@@ -21,6 +21,7 @@ class CustomButton extends StatelessWidget {
   final Color? loadingIndicatorColor;
   final double? loadingIndicatorWidth;
   final double? loadingIndicatorHeight;
+  final double? loadingIndicatorSeparatorWidth;
 
   final BorderRadius? borderRadius;
   const CustomButton(
@@ -38,7 +39,8 @@ class CustomButton extends StatelessWidget {
       this.loading = false,
       this.loadingIndicatorColor = Colors.white,
       this.loadingIndicatorWidth,
-      this.loadingIndicatorHeight})
+      this.loadingIndicatorHeight,
+      this.loadingIndicatorSeparatorWidth = 2})
       : super(key: key);
 
   @override
@@ -64,7 +66,7 @@ class CustomButton extends StatelessWidget {
                     child: CircularProgressIndicator(
                         color: loadingIndicatorColor ?? MyColors.white, strokeWidth: 2),
                   ),
-                    SizedBox(width: 2),
+                    SizedBox(width: loadingIndicatorSeparatorWidth),
                     Text(
                       "$title",
                       style: TextStyle(

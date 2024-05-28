@@ -28,7 +28,8 @@ class InterviewScheduleCubit extends Cubit<InterviewScheduleState> {
           (response.response.data['data'] as List).map((e) => InterviewModel.fromMap(e)).toList();
       emit(InterviewScheduleSuccess(
           upcomingSchedules: interviews.where((element) => element.statusCall == 'upcoming').toList(),
-          pastSchedules: interviews.where((element) => element.statusCall == 'previous').toList()));
+          pastSchedules: interviews.where((element) => element.statusCall == 'previous').toList())); // REVISIT
+          // pastSchedules: interviews.where((element) => element.statusCall == 'cancel').toList()));
     } else {
       emit(InterviewScheduleErrorState(message: "Data not found"));
     }

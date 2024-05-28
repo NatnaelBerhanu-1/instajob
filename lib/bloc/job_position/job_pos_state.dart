@@ -14,6 +14,8 @@ class JobPosInitialState extends JobPosState {}
 
 class JobPosLoading extends JobPosState {}
 
+class SetInterviewSlotLoading extends JobPosState {}
+
 class ApplyLoading extends JobPosState {}
 
 class ShorlistLoading extends JobPosState {}

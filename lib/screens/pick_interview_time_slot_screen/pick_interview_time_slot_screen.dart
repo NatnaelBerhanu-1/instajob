@@ -3,6 +3,8 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
+import 'package:insta_job/bloc/interview_schedule_cubit/interview_schedule_cubit.dart';
+import 'package:insta_job/bloc/job_position/job_pos_state.dart';
 import 'package:intl/intl.dart';
 
 import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
@@ -78,6 +80,7 @@ class _BookSlotScreenState extends State<BookSlotScreen> {
     DateTime morningEndTime = DateTime(selectedDate.year, selectedDate.month, selectedDate.day, 11, 50);
     DateTime afternoonStartTime = DateTime(selectedDate.year, selectedDate.month, selectedDate.day, 12, 0);
     DateTime afternoonEndTime = DateTime(selectedDate.year, selectedDate.month, selectedDate.day, 21, 50);
+    // DateTime afternoonEndTime = DateTime(selectedDate.year, selectedDate.month, selectedDate.day, 23, 50);
 
     final dateFormat = DateFormat('EEEE, dd MMMM yyyy');
 
@@ -235,31 +238,46 @@ class _BookSlotScreenState extends State<BookSlotScreen> {
   }
 
   Widget _buildActionButton() {
-    return CustomButton(
-      width: 200,
-      height: 40,
-      onTap: selectedTimeSlot != null
-          ? () {
-              var date = DateFormat("hh:mm").parse("${selectedTimeSlot!.time.hour}:${selectedTimeSlot!.time.minute}");
-              var dateFormat = DateFormat("hh:mm");
-              String? formatTime = dateFormat.format(date);
-              TimeOfDay timeOfDay = TimeOfDay.now();
-              debugPrint("${widget.companyId},${widget.jobId},${widget.userId} ");
-              var setupInterviewEvent = SetInterviewEvent(
-                time: selectedTimeSlot?.time.toIso8601String(),
-                timeType: timeOfDay.period.name.toUpperCase(),
-                employeeId: Global.userModel?.id.toString(),
-                companyId: widget.companyId,
-                jobId: widget.jobId.toString(),
-                userId: widget.userId.toString(),
-                channelName: const Uuid().v4()
-              );
-              debugPrint('InterviewEvent: ${setupInterviewEvent.toJson()}');
-              context.read<JobPositionBloc>().add(setupInterviewEvent);
-              Navigator.of(context).pop();
-            }
-          : null,
-      title: "Set Interview Slot",
+    return BlocConsumer<JobPositionBloc, JobPosState>(
+      listener: (context, state) {
+        if (state is JobErrorState) {
+          showToast(state.error);
+        } else if (state is SetInterviewSuccess) {
+          context.read<InterviewScheduleCubit>().getInterviewSchedules(Global.userModel!.id.toString());
+          Navigator.of(context).pop();
+        }
+      },
+      builder: (context, state) {
+        return CustomButton(
+          width: 200,
+          height: 40,
+          loading: state is SetInterviewSlotLoading,
+          loadingIndicatorHeight: 22,
+          loadingIndicatorWidth: 22,
+          loadingIndicatorSeparatorWidth: 8,
+          onTap: selectedTimeSlot != null
+              ? () {
+                  var date = DateFormat("hh:mm").parse("${selectedTimeSlot!.time.hour}:${selectedTimeSlot!.time.minute}");
+                  var dateFormat = DateFormat("hh:mm");
+                  String? formatTime = dateFormat.format(date);
+                  TimeOfDay timeOfDay = TimeOfDay.now();
+                  debugPrint("${widget.companyId},${widget.jobId},${widget.userId} ");
+                  var setupInterviewEvent = SetInterviewEvent(
+                    time: selectedTimeSlot?.time.toIso8601String(),
+                    timeType: timeOfDay.period.name.toUpperCase(),
+                    employeeId: Global.userModel?.id.toString(),
+                    companyId: widget.companyId,
+                    jobId: widget.jobId.toString(),
+                    userId: widget.userId.toString(),
+                    channelName: const Uuid().v4()
+                  );
+                  debugPrint('InterviewEvent: ${setupInterviewEvent.toJson()}');
+                  context.read<JobPositionBloc>().add(setupInterviewEvent);
+                }
+              : null,
+          title: "Set Interview Slot",
+        );
+      }
     );
   }
 }
