@@ -6,6 +6,7 @@ import 'package:insta_job/bloc/company_bloc/company_bloc.dart';
 import 'package:insta_job/bloc/company_bloc/company_event.dart';
 import 'package:insta_job/bloc/company_bloc/company_state.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/add_new_company.dart';
+import 'package:insta_job/screens/insta_recruit/send_money/send_money_bottom_sheet_child.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
@@ -140,8 +141,34 @@ class _AssignCompanyState extends State<AssignCompany> {
                     });
               }
               return Container();
-            }))
+            })),
+            TextButton(onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                // isDismissible: true,  
+                showDragHandle: true,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(20),
+                  ),
+                ),
+                builder: (context) {
+                  return Builder(
+                  // return DraggableScrollableSheet(
+                    // initialChildSize: 0.75,
+                    // maxChildSize: 0.75,
+                    // minChildSize: 0.75,
+                    // builder: (BuildContext context, ScrollController scrollController) {
+                    builder: (BuildContext context) {
+                      return SafeArea(child: SendMoneyBottomSheetChild());
+                    }
+                  );
+                },
+              );
+            }, child: Text("Payment related screens"),),
           ],
         ));
   }
+
 }

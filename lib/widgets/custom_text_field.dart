@@ -226,6 +226,117 @@ class CustomTextField extends StatelessWidget {
   }
 }
 
+
+class CustomMoneyTextField extends StatelessWidget {
+  final String? label;
+  final String? hint;
+  final Color? color;
+  final Color? fillColor;
+  final Color? lblColor;
+  final Color? hintColor;
+  final Widget? suffixIcon;
+  final double? borderRadius;
+  final int? maxLine;
+  final int? maxLength;
+  final TextEditingController? controller;
+  final bool? autofocus;
+  final TextCapitalization? textCapitalization;
+  final FormFieldValidator<String>? validator;
+  final List<TextInputFormatter>? inputFormatter;
+  final ValueChanged? onChanged;
+  final bool? obscureText;
+  final bool? readOnly;
+  final VoidCallback? onPressed;
+  final TextInputType? keyboardType;
+
+  const CustomMoneyTextField({
+    Key? key,
+    this.label,
+    this.hint,
+    this.controller,
+    this.autofocus = false,
+    this.obscureText,
+    this.onPressed,
+    this.color,
+    this.validator,
+    this.inputFormatter,
+    this.onChanged,
+    this.keyboardType,
+    this.maxLine,
+    this.hintColor,
+    this.fillColor,
+    this.readOnly,
+    this.lblColor,
+    this.maxLength,
+    this.suffixIcon,
+    this.borderRadius,
+    this.textCapitalization,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    OutlineInputBorder border = OutlineInputBorder(
+      borderRadius: BorderRadius.all(Radius.circular(borderRadius ?? 12)),
+      borderSide: BorderSide(color: color ?? MyColors.lightgrey, width: 1),
+    );
+    debugPrint('validator: $validator');
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        label == null
+            ? SizedBox()
+            : Text(
+                "$label",
+                style: TextStyle(color: lblColor ?? MyColors.grey, fontSize: 13.5, fontWeight: FontWeight.w400),
+              ),
+        if (label != null && label!.isNotEmpty) SizedBox(height: 5),
+        TextFormField(
+          style: TextStyle(
+            color: MyColors.black,
+            fontWeight: FontWeight.w700,
+            fontSize: 28,
+          ),
+          onChanged: onChanged,
+          onTap: onPressed,
+          maxLines: maxLine,
+          validator: validator,
+          readOnly: readOnly ?? false,
+          inputFormatters: inputFormatter,
+          maxLength: maxLength,
+          controller: controller,
+          textCapitalization: textCapitalization ?? TextCapitalization.sentences,
+          autofocus: autofocus!,
+          obscureText: obscureText ?? false,
+          cursorColor: MyColors.black,
+          // keyboardType: keyboardType ?? TextInputType.text,
+          keyboardType: TextInputType.numberWithOptions(decimal: true),
+          textAlign: TextAlign.center,
+          decoration: InputDecoration(
+            counterText: "",
+            contentPadding: EdgeInsets.only(left: 15, top: 25, bottom: 10),
+            fillColor: fillColor ?? Colors.white,
+            filled: true,
+            isDense: true,
+            border: border,
+            // errorStyle: TextStyle(height: 0),
+            // prefixText: "+973",
+            hintText: "$hint",
+            hintStyle: TextStyle(
+              color: hintColor ?? MyColors.grey,
+              fontWeight: FontWeight.w700,
+              fontSize: 28,
+            ),
+            focusedErrorBorder: border,
+            enabledBorder: border,
+            focusedBorder: border,
+            errorBorder: border,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class CustomPhonePickerTextField extends StatelessWidget {
   final String? label;
   final TextEditingController? controller;
