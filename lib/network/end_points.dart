@@ -9,6 +9,7 @@ class EndPoint {
   // static String imageBaseUrl = "http://10.0.2.2:8000";
   // static String imageBaseUrl = "http://172.17.251.109:8000";
 
+  static String recordingBaseUrl = "http://ec2-54-226-134-73.compute-1.amazonaws.com/api/";
   /// MASKING RESUME
 
   /// Common api's
@@ -78,6 +79,15 @@ class EndPoint {
   static String showCreatedResumes = "show_created_resumes";
   static String deleteWorkingExp = "working_exp_delete";
   static String deleteEducation = "eduction_delete";
+
+
+  //agora recording
+  static String acquireRecording = "agora/acquire_recording";
+  static String startRecording = "agora/start_recording";
+  static String stopRecording = "agora/stop_recording";
+  // /agora/acquire_recording  -- aquire resource id, params (channel_name, uid (0))
+  // /agora/start_recording -- start a recording session, params (channel, uid (0), resource)
+  // /agora/stop_recording -- stops a recording session, params (resource, sid, channel, uid (0) )
 
   ///search
   static String searchJob = "search_job";

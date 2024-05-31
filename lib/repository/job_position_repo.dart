@@ -267,6 +267,69 @@ class JobPositionRepository {
     }
   }
 
+  acquireRecordingResource({
+    String? channelName,
+    String? uid,
+  }) async {
+    try {
+      var map = {
+        "channel_name": channelName,
+        "uid": uid,
+      };
+      var urlPath = "${EndPoint.recordingBaseUrl}${EndPoint.acquireRecording}";
+      var response = await Dio().post(urlPath, data: map);
+      return ApiResponse.withSuccess(response);
+    // } on DioException catch (e) {
+    } catch (e) {
+      return ApiResponse.withError("e.response");
+    }
+  }
+
+  
+  startRecordingResource({
+    String? channelName,
+    String? uid,
+    String? resourceId,
+  }) async {
+    try {
+      var map = {
+        "channel": channelName,
+        "uid": uid,
+        "resource": resourceId,
+      };
+      var urlPath = "${EndPoint.recordingBaseUrl}${EndPoint.startRecording}";
+      var response = await Dio().post(urlPath, data: map);
+      // var response = await dioClient.post(data: map, uri: EndPoint.startRecording);
+      return ApiResponse.withSuccess(response);
+    } on DioException catch (e) {
+      return ApiResponse.withError(e.response);
+    } catch (e) {
+      return ApiResponse.withError("e.response");
+    }
+  }
+
+    
+  stopRecordingResource({
+    String? channelName,
+    String? sid,
+    String? resourceId,
+    String? uid,
+  }) async {
+    try {
+      var map = {
+        "resource": resourceId,
+        "sid": sid,
+        "channel": channelName,
+        "uid": uid,
+      };
+      var urlPath = "${EndPoint.recordingBaseUrl}${EndPoint.stopRecording}";
+      var response = await Dio().post(urlPath, data: map);
+      return ApiResponse.withSuccess(response);
+    } on DioException catch (e) {
+      return ApiResponse.withError(e.response);
+    }
+  }
+
   String kGoogleApiKey = "AIzaSyAwEmv3whQry4abe7SnIuPS4ttniNdkLuI";
 
   Future<ApiResponse> getPlaceById(String placeId) async {

@@ -10,6 +10,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:insta_job/bloc/agora_bloc/agora_cubit.dart';
 import 'package:insta_job/bloc/agora_bloc/agora_state.dart';
+import 'package:insta_job/bloc/interview_recording_cubit/interview_recording_cubit.dart';
+import 'package:insta_job/bloc/interview_recording_cubit/interview_recording_state.dart';
 import 'package:insta_job/bottom_sheet/overview_bottom_sheet.dart';
 import 'package:insta_job/globals.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as rtc_local_view;
@@ -48,6 +50,7 @@ class _CallScreenState extends State<CallScreen> {
 
   @override
   void initState() {
+    context.read<InterviewRecordingCubit>().resetState();
     _isJoining = true;
     _initialize();
     super.initState();
@@ -259,7 +262,10 @@ class _CallScreenState extends State<CallScreen> {
         ),
       );
 
-  Future<void> _onCallEnd(BuildContext context) async {
+  Future<void> _onCallEnd(BuildContext context, {required String channelName}) async {
+     context.read<InterviewRecordingCubit>().stopRecording(
+      channelName: channelName,
+    );
     await _agoraEngine.leaveChannel();
     if (context.mounted) {
       Navigator.of(context).pop();
@@ -507,6 +513,7 @@ class _CallScreenState extends State<CallScreen> {
                       currentUserId: _currentUid,
                       onSwitchCamera: _onSwitchCamera,
                       chatModel: widget.chatModel,
+                      channelName: widget.channelName,
                     );
                   },
                 ),
@@ -603,7 +610,7 @@ class _CallScreenState extends State<CallScreen> {
                           backgroundColor: MyColors.red,
                           onPressed: () async {
                             // Navigator.of(context).pop();
-                            _onCallEnd(context);
+                            _onCallEnd(context, channelName: widget.channelName);
                           },
                           child: Icon(Icons.call_end),
                         ),
@@ -695,13 +702,15 @@ class AgoraVideoLayout extends StatelessWidget {
     required double viewAspectRatio, 
     required int? currentUserId, 
     required void Function() onSwitchCamera, 
-    required ChatModel chatModel,
+    required ChatModel chatModel, 
+    required String channelName,
   })  : _users = users,
         _views = views,
         _viewAspectRatio = viewAspectRatio,
         _currentUserId = currentUserId,
         _onSwitchCamera = onSwitchCamera,
-        _chatModel = chatModel;
+        _chatModel = chatModel,
+        _channelName = channelName;
 
   final Set<AgoraUser> _users;
   final List<int> _views;
@@ -709,6 +718,7 @@ class AgoraVideoLayout extends StatelessWidget {
   final int? _currentUserId;
   final void Function() _onSwitchCamera;
   final ChatModel _chatModel;
+  final String _channelName;
 
   @override
   Widget build(BuildContext context) {
@@ -788,6 +798,7 @@ class AgoraVideoLayout extends StatelessWidget {
             users: _users,
             isSmallerScreen: false,
             chatModel: _chatModel,
+            channelName: _channelName,
           ),
         ),
         if (getOtherAgoraUsers(_users, _currentUserId).isNotEmpty)
@@ -803,6 +814,7 @@ class AgoraVideoLayout extends StatelessWidget {
             users: _users,
             isSmallerScreen: true,
             chatModel: _chatModel,
+            channelName: _channelName,
           ),
         ),
       ],
@@ -843,7 +855,8 @@ class AgoraVideoView extends StatelessWidget {
     void Function()? onSwitchCamera, 
     required Set<AgoraUser> users, 
     required bool isSmallerScreen, 
-    required ChatModel chatModel,
+    required ChatModel chatModel, 
+    required String channelName,
   })  : _viewAspectRatio = viewAspectRatio,
         _user = user,
         _height = height,
@@ -851,7 +864,8 @@ class AgoraVideoView extends StatelessWidget {
         _onSwitchCamera = onSwitchCamera,
         _users = users,
         _isSmallerScreen = isSmallerScreen,
-        _chatModel = chatModel;
+        _chatModel = chatModel,
+        _channelName = channelName;
 
   final double _viewAspectRatio;
   final AgoraUser _user;
@@ -861,6 +875,7 @@ class AgoraVideoView extends StatelessWidget {
   final Set<AgoraUser> _users;
   final bool _isSmallerScreen;
   final ChatModel _chatModel;
+  final String _channelName;
 
   @override
   Widget build(BuildContext context) {
@@ -983,75 +998,126 @@ class AgoraVideoView extends StatelessWidget {
                   left: 0,
                   right: 0,
                   bottom: 64,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.08),
-                        child: Container(
-                          // width: MediaQuery.of(context).size.width * 0.36,
-                          width: 112,
-                          height: 32,
-                          decoration: BoxDecoration(
-                          color: MyColors.lightBlack,
-                          borderRadius:BorderRadius.circular(24),
-                          border: Border.all(
-                              color: MyColors.transparent, width: 1.2)),
-                          alignment: Alignment.center,
-                          child: Row(children: [
-                            SizedBox(width: 4,),
-                            CircleAvatar(backgroundColor: MyColors.lightBlue,radius: 12),
-                            SizedBox(width: 4,),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                              Text("Recording",style: TextStyle(color: MyColors.white, fontSize: 13),),
-                            ],),
-                          ],),
-                        ),
-                      ),
-                      SizedBox(height: 16),
-                      Center(
-                        child: Container(
-                          width: MediaQuery.of(context).size.width * 0.84,
-                          height: 56,
-                          decoration: BoxDecoration(
-                          color: MyColors.lightBlack,
-                          borderRadius:BorderRadius.circular(28),
-                          border: Border.all(
-                              color: MyColors.transparent, width: 1.2)),
-                          alignment: Alignment.center,
-                          child: Row(children: [
-                            SizedBox(width: 8,),
-                            CircleAvatar(backgroundColor: Colors.blue,radius: 22),
-                            SizedBox(width: 8,),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                              Text("${_chatModel.selfName}",style: TextStyle(color: MyColors.white, fontSize: 16),),
-                              SizedBox(height: 2),
-                              Text("${_chatModel.oppTitle}",style: TextStyle(color: MyColors.greyTxt, fontSize: 14),),
-                            ],),
-                            Spacer(),
-                            Container(
-                              // width: 56,
-                              height: 38,
-                              padding: EdgeInsets.symmetric(horizontal: 6),
-                              decoration: BoxDecoration(
-                              color: MyColors.greyTxt,
-                              borderRadius:BorderRadius.circular(28),
-                              border: Border.all(
-                                  color: MyColors.transparent, width: 1.2)),
-                              alignment: Alignment.center,
-                              child: Text("00:23s"),
+                  child: BlocConsumer<InterviewRecordingCubit, InterviewRecordingState>(
+                    listener: (context, state) {
+                      if (state is InterviewStartRecordingSuccess) {
+                        showToast("Recording started");
+                      } else if (state is InterviewStartRecordingErrorState) {
+                        showToast("Something went wrong: start recording failed");
+                      } else if (state is InterviewStopRecordingSuccess) {
+                        showToast("Recording stopped");
+                      } else if (state is InterviewStopRecordingErrorState) {
+                        showToast("Something went wrong: stop recording failed");
+                      }
+                    },
+                    builder: (context, state) {
+                      var text = "Record";
+                      var interviewRecordingCubit = context.read<InterviewRecordingCubit>();
+                      if (interviewRecordingCubit.recordingStatus == RecordingStatus.notRecording) {
+                        text = "Record";
+                      } else if (interviewRecordingCubit.recordingStatus == RecordingStatus.recording) {
+                        text = "Recording";
+                      }
+                  
+                      return InkWell(
+                        onTap: () {
+                          var interviewRecordingCubit = context.read<InterviewRecordingCubit>();
+                          if (interviewRecordingCubit.recordingStatus == RecordingStatus.notRecording) {
+                             context.read<InterviewRecordingCubit>().startRecording(
+                              channelName: _channelName,
+                            );
+                  
+                          } else if (interviewRecordingCubit.recordingStatus == RecordingStatus.recording) {
+                             context.read<InterviewRecordingCubit>().stopRecording(
+                              channelName: _channelName,
+                            );
+                          }
+                          
+                        },
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.08),
+                              child: Container(
+                                // width: MediaQuery.of(context).size.width * 0.36,
+                                // width: 112,
+                                width: interviewRecordingCubit.recordingStatus == RecordingStatus.notRecording ? 112 : 132,
+                                height: 32,
+                                decoration: BoxDecoration(
+                                color: MyColors.lightBlack,
+                                borderRadius:BorderRadius.circular(24),
+                                border: Border.all(
+                                    color: MyColors.transparent, width: 1.2)),
+                                alignment: Alignment.center,
+                                child: Row(children: [
+                                  SizedBox(width: 4,),
+                                  CircleAvatar(backgroundColor: MyColors.lightBlue,radius: 12),
+                                  SizedBox(width: 4,),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                    Text(text,style: TextStyle(color: MyColors.white, fontSize: 13),),
+                                  ],),
+                                  if (state is InterviewRecordingLoading) 
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 4),
+                                      child: SizedBox(
+                                        width: 16,
+                                        height: 16,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 2,
+                                        ),
+                                      ),
+                                    ),
+                                ],),
+                              ),
                             ),
-                            SizedBox(width: 8,),
-                          ],),
+                            SizedBox(height: 16),
+                            Center(
+                              child: Container(
+                                width: MediaQuery.of(context).size.width * 0.84,
+                                height: 56,
+                                decoration: BoxDecoration(
+                                color: MyColors.lightBlack,
+                                borderRadius:BorderRadius.circular(28),
+                                border: Border.all(
+                                    color: MyColors.transparent, width: 1.2)),
+                                alignment: Alignment.center,
+                                child: Row(children: [
+                                  SizedBox(width: 8,),
+                                  CircleAvatar(backgroundColor: Colors.blue,radius: 22),
+                                  SizedBox(width: 8,),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                    Text("${_chatModel.selfName}",style: TextStyle(color: MyColors.white, fontSize: 16),),
+                                    SizedBox(height: 2),
+                                    Text("${_chatModel.oppTitle}",style: TextStyle(color: MyColors.greyTxt, fontSize: 14),),
+                                  ],),
+                                  Spacer(),
+                                  Container(
+                                    // width: 56,
+                                    height: 38,
+                                    padding: EdgeInsets.symmetric(horizontal: 6),
+                                    decoration: BoxDecoration(
+                                    color: MyColors.greyTxt,
+                                    borderRadius:BorderRadius.circular(28),
+                                    border: Border.all(
+                                        color: MyColors.transparent, width: 1.2)),
+                                    alignment: Alignment.center,
+                                    child: Text("00:23s"),
+                                  ),
+                                  SizedBox(width: 8,),
+                                ],),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
+                      );
+                    }
                   ),
                 ),
             ],

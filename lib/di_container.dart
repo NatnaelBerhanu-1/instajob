@@ -11,6 +11,7 @@ import 'package:insta_job/bloc/feedback_bloc/feedback_bloc.dart';
 import 'package:insta_job/bloc/get_declined_job_position/get_denied_job_poision_bloc.dart';
 import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
 import 'package:insta_job/bloc/interview_cubit/interview_cubit.dart';
+import 'package:insta_job/bloc/interview_recording_cubit/interview_recording_cubit.dart';
 import 'package:insta_job/bloc/interview_schedule_cubit/interview_schedule_cubit.dart';
 import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
 import 'package:insta_job/bloc/location_cubit/location_cubit.dart';
@@ -76,6 +77,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => CancelInterviewScheduleCubit(sl()));
   sl.registerLazySingleton(() => ResumeDetailsCubit(sl()));
   sl.registerLazySingleton(() => GetDeniedJobPositionCubit(sl()));
+  sl.registerLazySingleton(() => InterviewRecordingCubit(sl()));
 
   /// other
   final SharedPreferences preferences = await SharedPreferences.getInstance();
