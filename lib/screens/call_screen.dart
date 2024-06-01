@@ -13,6 +13,7 @@ import 'package:insta_job/bloc/agora_bloc/agora_state.dart';
 import 'package:insta_job/bloc/interview_recording_cubit/interview_recording_cubit.dart';
 import 'package:insta_job/bloc/interview_recording_cubit/interview_recording_state.dart';
 import 'package:insta_job/bottom_sheet/overview_bottom_sheet.dart';
+import 'package:insta_job/dialog/custom_dialog.dart';
 import 'package:insta_job/globals.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as rtc_local_view;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as rtc_remote_view;
@@ -53,7 +54,7 @@ class _CallScreenState extends State<CallScreen> {
 
   @override
   void initState() {
-    context.read<InterviewRecordingCubit>().resetState();
+    // context.read<InterviewRecordingCubit>().resetState();
     _isJoining = true;
     _initialize();
     super.initState();
@@ -1037,12 +1038,48 @@ class AgoraVideoView extends StatelessWidget {
                   
                       return InkWell(
                         onTap: () {
-                          var interviewRecordingCubit = context.read<InterviewRecordingCubit>();
-                          if (interviewRecordingCubit.recordingStatus == RecordingStatus.notRecording) {
-                             context.read<InterviewRecordingCubit>().startRecording(
-                              channelName: _channelName,
-                            );
+                          // var interviewRecordingCubit = context.read<InterviewRecordingCubit>();
+                          // if (interviewRecordingCubit.recordingStatus == RecordingStatus.notRecording) {
+                          //    context.read<InterviewRecordingCubit>().startRecording(
+                          //     channelName: _channelName,
+                          //   );
                   
+                          // } else if (interviewRecordingCubit.recordingStatus == RecordingStatus.recording) {
+                          //    context.read<InterviewRecordingCubit>().stopRecording(
+                          //     channelName: _channelName,
+                          //     interviewId: _interviewModel.id,
+                          //   );
+                          // }
+                          var interviewRecordingCubit = context.read<InterviewRecordingCubit>();
+                          if (interviewRecordingCubit.recordingStatus == RecordingStatus.notRecording) {                  
+                            buildDialog(
+                              context,
+                              CustomDialog(
+                                desc1:
+                                    "You can only record once for an interview. If you start now, you can't pause or stop & start to record a new the recording. Are you sure you want to start recording?",
+                                descFontColor: MyColors.black,
+                                descFontSize: 12,
+                                okOnTap: () async {
+                                  var interviewRecordingCubit =
+                                      context.read<InterviewRecordingCubit>();
+                                  if (!interviewRecordingCubit.recordingsDone
+                                    .contains(_channelName)) {
+                                    context
+                                        .read<InterviewRecordingCubit>()
+                                        .startRecording(
+                                          channelName: _channelName,
+                                        );
+                                  } else {
+                                    showToast(
+                                        "Recording already done for this meet.");
+                                  }
+                                  Navigator.of(context).pop();
+                                },
+                                cancelOnTap: () {
+                                  Navigator.pop(context);
+                                },
+                                headerImagePath: MyImages.internet,
+                            ));
                           } else if (interviewRecordingCubit.recordingStatus == RecordingStatus.recording) {
                              context.read<InterviewRecordingCubit>().stopRecording(
                               channelName: _channelName,

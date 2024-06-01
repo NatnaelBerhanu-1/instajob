@@ -16,11 +16,12 @@ class InterviewRecordingCubit extends Cubit<InterviewRecordingState> {
   final JobPositionRepository repo;
   InterviewRecordingCubit(this.repo) : super(InterviewRecordingInitial());
 
+  Set<String> recordingsDone = {};
   String? recordingUid = "";
   String? resourceId = "";
   String? sId = "";
   RecordingStatus recordingStatus = RecordingStatus.notRecording;
-  
+
   Future<void> startRecording({required String? channelName}) async {
     emit(InterviewRecordingLoading());
     try {
@@ -43,6 +44,7 @@ class InterviewRecordingCubit extends Cubit<InterviewRecordingState> {
           debugPrint("LOG::fetched sId $sId [after start record]");
 
           recordingStatus = RecordingStatus.recording;
+          recordingsDone.add(channelName ?? "");
           emit(InterviewStartRecordingSuccess());
         } else {
           emit(InterviewStartRecordingErrorState(message: "Data not found"));
@@ -69,7 +71,6 @@ class InterviewRecordingCubit extends Cubit<InterviewRecordingState> {
         sid: sId,
         resourceId: resourceId,
         interviewId: interviewId,
-
       );
 
       if (response.appStatusCode == AppStatusCode.success) {

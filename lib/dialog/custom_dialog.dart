@@ -18,7 +18,9 @@ class CustomDialog extends StatefulWidget {
   final String? title;
   final Color? cancelTxtFontClr;
   final String? headerImagePath;
-  const CustomDialog({
+  final Color? descFontColor;
+  final double? descFontSize;
+  CustomDialog({
     Key? key,
     this.okOnTap,
     this.desc,
@@ -27,6 +29,8 @@ class CustomDialog extends StatefulWidget {
     this.cancelOnTap,
     this.cancelTxtFontClr,
     this.headerImagePath,
+    this.descFontColor,
+    this.descFontSize,
   }) : super(key: key);
 
   @override
@@ -37,10 +41,15 @@ class _CustomDialogState extends State<CustomDialog> {
   // int? selectedIndex;
   int? index;
   String headerImagePath = ''; //TODO: revisit
+  late final Color? descFontColor;
+  late final double? descFontSize;
+
   @override
   void initState() {
     super.initState();
     headerImagePath = widget.headerImagePath ?? MyImages.logout;
+    descFontColor = widget.descFontColor ?? MyColors.grey;
+    descFontSize = widget.descFontSize ?? 14;
   }
 
   @override
@@ -70,10 +79,13 @@ class _CustomDialogState extends State<CustomDialog> {
               ),
               CommonText(text: "Are you sure!"),
               SizedBox(height: 5),
-              CommonText(
-                text: widget.desc1 ?? "You want to LogOut",
-                fontColor: MyColors.grey,
-                fontSize: 14,
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: CommonText(
+                  text: widget.desc1 ?? "You want to LogOut",
+                  fontColor: descFontColor,
+                  fontSize: descFontSize,
+                ),
               ),
               SizedBox(height: 30),
               BlocBuilder<GlobalCubit, InitialState>(builder: (context, state) {
