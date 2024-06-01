@@ -6,6 +6,7 @@ import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_app_bar.dart';
+import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 import 'package:video_player/video_player.dart';
 
 class InterviewRecordingsScreen extends StatefulWidget {
@@ -13,7 +14,8 @@ class InterviewRecordingsScreen extends StatefulWidget {
   final ChatModel chatModel;
 
   @override
-  State<InterviewRecordingsScreen> createState() => _InterviewRecordingsScreenState();
+  State<InterviewRecordingsScreen> createState() =>
+      _InterviewRecordingsScreenState();
 }
 
 class _InterviewRecordingsScreenState extends State<InterviewRecordingsScreen> {
@@ -29,10 +31,11 @@ class _InterviewRecordingsScreenState extends State<InterviewRecordingsScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    
+
     _controller = VideoPlayerController.networkUrl(
       // Uri.parse("https://devstreaming-cdn.apple.com/videos/streaming/examples/img_bipbop_adv_example_fmp4/master.m3u8")
-      Uri.parse("https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.mp4/.m3u8"),
+      Uri.parse(
+          "https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.mp4/.m3u8"),
     );
     _initializeVideoPlayerFuture = _controller.initialize();
     // Use the controller to loop the video
@@ -41,7 +44,6 @@ class _InterviewRecordingsScreenState extends State<InterviewRecordingsScreen> {
     _controller.addListener(updateSeeker); //revisit abebe
   }
 
-  
   Future<void> updateSeeker() async {
     final newPosition = _controller.value.position;
     if (newPosition != position) {
@@ -62,43 +64,67 @@ class _InterviewRecordingsScreenState extends State<InterviewRecordingsScreen> {
     super.dispose();
   }
 
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const PreferredSize(
-        preferredSize: Size(double.infinity, kToolbarHeight),
-        child: CustomAppBar(
-          title: "",
+      // appBar: const PreferredSize(
+      //   preferredSize: Size(double.infinity, kToolbarHeight),
+      //   child: CustomAppBar(
+      //     title: "",
+      //   ),
+      // ),
+      body: SafeArea(
+        child: Stack(
+          children: [
+            _buildRecordingScreenBody(),
+            Positioned(
+              top: 38,
+              left: 16,
+              child: ImageButton(
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+                image: MyImages.backArrow,
+                height: 40,
+                width: 40,
+              ),
+            ),
+          ],
         ),
       ),
-      body: SafeArea(
-        child: FutureBuilder(
-        future: _initializeVideoPlayerFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            var duration = _controller.value.duration;
-            debugPrint("LOGGGG: duration => ${_controller.value.duration} ${duration}");
-            debugPrint("LOGGGG: position => ${_controller.value.position} ${position}");
-            debugPrint("================================");
-            
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Expanded(
-                  child: Center(
-                    child: _controller.value.isInitialized
-                        ? Stack(
+    );
+  }
+
+  FutureBuilder<void> _buildRecordingScreenBody() {
+    return FutureBuilder(
+      future: _initializeVideoPlayerFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          var duration = _controller.value.duration;
+          debugPrint(
+              "LOGGGG: duration => ${_controller.value.duration} ${duration}");
+          debugPrint(
+              "LOGGGG: position => ${_controller.value.position} ${position}");
+          debugPrint("================================");
+
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Expanded(
+                child: Center(
+                  child: _controller.value.isInitialized
+                      ? Stack(
                           children: [
-                            isMaximized ?
-                            VideoPlayer(
-                              _controller,
-                            ) : AspectRatio(
-                              aspectRatio: _controller.value.aspectRatio,
-                              child: VideoPlayer(
-                                _controller,
-                              ),
-                            ),
+                            isMaximized
+                                ? VideoPlayer(
+                                    _controller,
+                                  )
+                                : AspectRatio(
+                                    aspectRatio: _controller.value.aspectRatio,
+                                    child: VideoPlayer(
+                                      _controller,
+                                    ),
+                                  ),
                             Positioned(
                               bottom: 12,
                               right: 8,
@@ -111,17 +137,19 @@ class _InterviewRecordingsScreenState extends State<InterviewRecordingsScreen> {
                                     });
                                   },
                                   child: Icon(
-                                    isMaximized ? Icons.fullscreen_exit_outlined : Icons.fullscreen_outlined,
+                                    isMaximized
+                                        ? Icons.fullscreen_exit_outlined
+                                        : Icons.fullscreen_outlined,
                                   ),
-                                                            ),
+                                ),
                               ),
                             )
                           ],
                         )
-                        : Container(),
-                  ),
+                      : Container(),
                 ),
-                Container(
+              ),
+              Container(
                 color: MyColors.lightBlack,
                 padding: const EdgeInsets.fromLTRB(24, 10, 24, 30),
                 child: SizedBox(
@@ -135,9 +163,7 @@ class _InterviewRecordingsScreenState extends State<InterviewRecordingsScreen> {
                           setState(() {
                             _controller.seekTo(position2);
                             _controller.play();
-                            
                           });
-
                         },
                         value: position2.inSeconds.toDouble(),
                       ),
@@ -157,20 +183,23 @@ class _InterviewRecordingsScreenState extends State<InterviewRecordingsScreen> {
                               }
                             },
                             child: SvgPicture.asset(
-                              _controller.value.isPlaying ? MyImages.recordingPauseBtn : MyImages.recordingPlayBtn,
+                              _controller.value.isPlaying
+                                  ? MyImages.recordingPauseBtn
+                                  : MyImages.recordingPlayBtn,
                               height: 18,
                             ),
                           ),
                           const SizedBox(width: 14),
                           InkWell(
                             onTap: () async {
-                              _controller.seekTo(_controller.value.position - const Duration(seconds: 15));
-                            //           // await _controller
-                            //           //     .seekTo((await _controller.position) - Duration(seconds: 10));
-                            //           await _controller
-                            //               .seekTo((await _controller.position.then((value) {
-                            //                 return value! - const Duration(seconds: 10);
-                            //               })));
+                              _controller.seekTo(_controller.value.position -
+                                  const Duration(seconds: 15));
+                              //           // await _controller
+                              //           //     .seekTo((await _controller.position) - Duration(seconds: 10));
+                              //           await _controller
+                              //               .seekTo((await _controller.position.then((value) {
+                              //                 return value! - const Duration(seconds: 10);
+                              //               })));
                               // _controller.play();
                             },
                             child: SvgPicture.asset(
@@ -182,7 +211,8 @@ class _InterviewRecordingsScreenState extends State<InterviewRecordingsScreen> {
                           InkWell(
                             onTap: () {
                               setState(() {
-                                _controller.seekTo(_controller.value.position + const Duration(seconds: 15));
+                                _controller.seekTo(_controller.value.position +
+                                    const Duration(seconds: 15));
                                 // _controller.play();
                               });
                             },
@@ -192,11 +222,13 @@ class _InterviewRecordingsScreenState extends State<InterviewRecordingsScreen> {
                             ),
                           ),
                           const SizedBox(width: 14),
-                          Text("${formatTime(position.inSeconds)} / ${formatTime(duration.inSeconds)}",style: TextStyle(color: MyColors.white),),
+                          Text(
+                            "${formatTime(position.inSeconds)} / ${formatTime(duration.inSeconds)}",
+                            style: TextStyle(color: MyColors.white),
+                          ),
                           const Spacer(),
                           InkWell(
-                            onTap: () {
-                            },
+                            onTap: () {},
                             child: SvgPicture.asset(
                               MyImages.recordingHistoryBtn,
                               height: 26,
@@ -219,8 +251,7 @@ class _InterviewRecordingsScreenState extends State<InterviewRecordingsScreen> {
                           ),
                           const SizedBox(width: 14),
                           InkWell(
-                            onTap: () {
-                            },
+                            onTap: () {},
                             child: SvgPicture.asset(
                               MyImages.recordingTranscriptionBtn,
                               height: 26,
@@ -232,15 +263,16 @@ class _InterviewRecordingsScreenState extends State<InterviewRecordingsScreen> {
                   ),
                 ),
               ),
-              ],
-            );
-
-          } else {
-            return const Center(child: CircularProgressIndicator());
-          }
-        },
-      ),
-      ),
+            ],
+          );
+        } else if (snapshot.connectionState == ConnectionState.none) {
+          return const Center(
+            child: Text("No connection"),
+          );
+        } else {
+          return const Center(child: CircularProgressIndicator());
+        }
+      },
     );
   }
 }
