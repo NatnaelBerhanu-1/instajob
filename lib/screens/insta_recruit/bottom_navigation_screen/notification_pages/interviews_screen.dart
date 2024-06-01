@@ -10,6 +10,7 @@ import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
 import 'package:insta_job/bloc/job_position/job_pos_state.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/model/chat_model.dart';
+import 'package:insta_job/model/interview_model.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/widgets/custom_cards/notifications_tile/general_message_tile.dart';
 import 'package:insta_job/widgets/custom_cards/notifications_tile/interview_tile.dart';
@@ -127,7 +128,7 @@ class _InterviewScreenState extends State<InterviewScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 10), 
                   Expanded(
                       child: StreamBuilder<Object>(
                           stream: FirebaseFirestore.instance
@@ -186,12 +187,14 @@ class _InterviewScreenState extends State<InterviewScreen> {
         return _buildInterviewScheduleTabDetailsLoading();
       } else if (state is InterviewScheduleSuccess) {
         if (state.pastSchedules.isNotEmpty) {
+        // if (true) {
           return Padding(
             padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
             child: GridView.builder(
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
               itemCount: state.pastSchedules.length,
+              // itemCount: 10,
               padding: EdgeInsets.only(bottom: 8),
               itemBuilder: (c, i) {
                 return Padding(
@@ -200,6 +203,17 @@ class _InterviewScreenState extends State<InterviewScreen> {
                   child: InterviewTile(
                     isRecording: true,
                     interviewModel: state.pastSchedules[i],
+                    // interviewModel: InterviewModel(
+                    //   channelName: "", 
+                    //   companyId: 121,
+                    //   employeeId: 1,
+                    //   id: 142110, 
+                    //   jobId: 23,
+                    //   statusCall: "",
+                    //   time: Timestamp(12,23),
+                    //   timeType: "",
+                    //   token: "", userId: 121,
+                    // ),
                     chats: chats,
                   ),
                 );

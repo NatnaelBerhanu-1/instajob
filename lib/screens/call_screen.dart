@@ -18,6 +18,7 @@ import 'package:agora_rtc_engine/rtc_local_view.dart' as rtc_local_view;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as rtc_remote_view;
 import 'package:insta_job/model/agora_user.dart';
 import 'package:insta_job/model/chat_model.dart';
+import 'package:insta_job/model/interview_model.dart';
 import 'package:insta_job/screens/chat_screen.dart';
 import 'package:insta_job/utils/agora_credentials.dart';
 import 'package:insta_job/utils/app_routes.dart';
@@ -29,11 +30,13 @@ class CallScreen extends StatefulWidget {
   final String? token;
   final String channelName;
   ChatModel chatModel;
+  InterviewModel interviewModel;
   CallScreen(
       {Key? key,
       required this.token, 
       required this.channelName,
-      required this.chatModel})
+      required this.chatModel, 
+      required this.interviewModel})
       : super(key: key);
 
   @override
@@ -262,10 +265,11 @@ class _CallScreenState extends State<CallScreen> {
         ),
       );
 
-  Future<void> _onCallEnd(BuildContext context, {required String channelName}) async {
+  Future<void> _onCallEnd(BuildContext context, {required String channelName, required int? interviewId}) async {
      if (context.read<InterviewRecordingCubit>().recordingStatus == RecordingStatus.recording) {
       context.read<InterviewRecordingCubit>().stopRecording(
         channelName: channelName,
+        interviewId: interviewId,
       );
      }
     await _agoraEngine.leaveChannel();
@@ -517,6 +521,7 @@ class _CallScreenState extends State<CallScreen> {
                       onSwitchCamera: _onSwitchCamera,
                       chatModel: widget.chatModel,
                       channelName: widget.channelName,
+                      interviewModel: widget.interviewModel,
                     );
                   },
                 ),
@@ -613,7 +618,7 @@ class _CallScreenState extends State<CallScreen> {
                           backgroundColor: MyColors.red,
                           onPressed: () async {
                             // Navigator.of(context).pop();
-                            _onCallEnd(context, channelName: widget.channelName);
+                            _onCallEnd(context, channelName: widget.channelName, interviewId: widget.interviewModel.id);
                           },
                           child: Icon(Icons.call_end),
                         ),
@@ -706,14 +711,16 @@ class AgoraVideoLayout extends StatelessWidget {
     required int? currentUserId, 
     required void Function() onSwitchCamera, 
     required ChatModel chatModel, 
-    required String channelName,
+    required String channelName, 
+    required InterviewModel interviewModel,
   })  : _users = users,
         _views = views,
         _viewAspectRatio = viewAspectRatio,
         _currentUserId = currentUserId,
         _onSwitchCamera = onSwitchCamera,
         _chatModel = chatModel,
-        _channelName = channelName;
+        _channelName = channelName,
+        _interviewModel = interviewModel;
 
   final Set<AgoraUser> _users;
   final List<int> _views;
@@ -722,6 +729,7 @@ class AgoraVideoLayout extends StatelessWidget {
   final void Function() _onSwitchCamera;
   final ChatModel _chatModel;
   final String _channelName;
+  final InterviewModel _interviewModel;
 
   @override
   Widget build(BuildContext context) {
@@ -802,6 +810,7 @@ class AgoraVideoLayout extends StatelessWidget {
             isSmallerScreen: false,
             chatModel: _chatModel,
             channelName: _channelName,
+            interviewModel: _interviewModel,
           ),
         ),
         if (getOtherAgoraUsers(_users, _currentUserId).isNotEmpty)
@@ -818,6 +827,7 @@ class AgoraVideoLayout extends StatelessWidget {
             isSmallerScreen: true,
             chatModel: _chatModel,
             channelName: _channelName,
+            interviewModel: _interviewModel,
           ),
         ),
       ],
@@ -859,7 +869,8 @@ class AgoraVideoView extends StatelessWidget {
     required Set<AgoraUser> users, 
     required bool isSmallerScreen, 
     required ChatModel chatModel, 
-    required String channelName,
+    required String channelName, 
+    required InterviewModel interviewModel,
   })  : _viewAspectRatio = viewAspectRatio,
         _user = user,
         _height = height,
@@ -868,7 +879,8 @@ class AgoraVideoView extends StatelessWidget {
         _users = users,
         _isSmallerScreen = isSmallerScreen,
         _chatModel = chatModel,
-        _channelName = channelName;
+        _channelName = channelName,
+        _interviewModel = interviewModel;
 
   final double _viewAspectRatio;
   final AgoraUser _user;
@@ -879,6 +891,7 @@ class AgoraVideoView extends StatelessWidget {
   final bool _isSmallerScreen;
   final ChatModel _chatModel;
   final String _channelName;
+  final InterviewModel _interviewModel;
 
   @override
   Widget build(BuildContext context) {
@@ -1033,6 +1046,7 @@ class AgoraVideoView extends StatelessWidget {
                           } else if (interviewRecordingCubit.recordingStatus == RecordingStatus.recording) {
                              context.read<InterviewRecordingCubit>().stopRecording(
                               channelName: _channelName,
+                              interviewId: _interviewModel.id,
                             );
                           }
                           

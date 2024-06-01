@@ -57,7 +57,7 @@ class InterviewRecordingCubit extends Cubit<InterviewRecordingState> {
     }
   }
 
-  Future<void> stopRecording({required String? channelName}) async {
+  Future<void> stopRecording({required String? channelName, required int? interviewId}) async {
     print("LOGG start");
     debugPrint("LOG::[stop Recording] map channelName -> $channelName sid $sId resourceId -> $resourceId uid -> $recordingUid");
     emit(InterviewRecordingLoading());
@@ -68,6 +68,7 @@ class InterviewRecordingCubit extends Cubit<InterviewRecordingState> {
         uid: recordingUid,
         sid: sId,
         resourceId: resourceId,
+        interviewId: interviewId,
 
       );
 

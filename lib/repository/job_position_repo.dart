@@ -313,7 +313,8 @@ class JobPositionRepository {
     String? channelName,
     String? sid,
     String? resourceId,
-    String? uid,
+    String? uid, 
+    int? interviewId,
   }) async {
     try {
       var map = {
@@ -321,7 +322,9 @@ class JobPositionRepository {
         "sid": sid,
         "channel": channelName,
         "uid": uid,
+        "interview_id": interviewId.toString(), //revisit
       };
+      debugPrint("stop recording payload map ${map}");
       var urlPath = "${EndPoint.recordingBaseUrl}${EndPoint.stopRecording}";
       var response = await Dio().post(urlPath, data: map);
       return ApiResponse.withSuccess(response);
