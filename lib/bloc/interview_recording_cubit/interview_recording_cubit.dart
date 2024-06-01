@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/interview_recording_cubit/interview_recording_state.dart';
 import 'package:insta_job/network/api_response.dart';
@@ -24,19 +25,23 @@ class InterviewRecordingCubit extends Cubit<InterviewRecordingState> {
     emit(InterviewRecordingLoading());
     try {
       // String randomUid = 1000011.toString(); //TODO: REVISIT this static var //note: uid should be int converted to string
-      String randomUid = Random().nextInt(1200000).toString(); //TODO: REVISIT this static var //note: uid should be int converted to string
+      String randomUid = Random().nextInt(120000).toString(); //TODO: REVISIT this static var //note: uid should be int converted to string
       recordingUid = randomUid;
       ApiResponse response;
       response = await repo.acquireRecordingResource(channelName: channelName, uid: recordingUid);
+      debugPrint("LOG:: acquire payload channelName -> $channelName uid -> $recordingUid");
 
       if (response.appStatusCode == AppStatusCode.success) {
         var fetchedResourceId = response.response.data['data']['resourceId'];
         resourceId = fetchedResourceId;
+        debugPrint("LOG:: acquire output resourceId -> $resourceId");
         ApiResponse response2 = await repo.startRecordingResource(channelName: channelName, uid: recordingUid, resourceId: resourceId);
 
         if (response2.appStatusCode == AppStatusCode.success) {
           var fetchedSid = response2.response.data['data']['sid'];
           sId = fetchedSid;
+          debugPrint("LOG::fetched sId $sId [after start record]");
+
           recordingStatus = RecordingStatus.recording;
           emit(InterviewStartRecordingSuccess());
         } else {
@@ -54,6 +59,7 @@ class InterviewRecordingCubit extends Cubit<InterviewRecordingState> {
 
   Future<void> stopRecording({required String? channelName}) async {
     print("LOGG start");
+    debugPrint("LOG::[stop Recording] map channelName -> $channelName sid $sId resourceId -> $resourceId uid -> $recordingUid");
     emit(InterviewRecordingLoading());
     try {
       ApiResponse response;

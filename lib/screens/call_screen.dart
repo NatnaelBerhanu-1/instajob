@@ -263,9 +263,11 @@ class _CallScreenState extends State<CallScreen> {
       );
 
   Future<void> _onCallEnd(BuildContext context, {required String channelName}) async {
-     context.read<InterviewRecordingCubit>().stopRecording(
-      channelName: channelName,
-    );
+     if (context.read<InterviewRecordingCubit>().recordingStatus == RecordingStatus.recording) {
+      context.read<InterviewRecordingCubit>().stopRecording(
+        channelName: channelName,
+      );
+     }
     await _agoraEngine.leaveChannel();
     if (context.mounted) {
       Navigator.of(context).pop();
@@ -431,6 +433,7 @@ class _CallScreenState extends State<CallScreen> {
     var isUser = Global.userModel?.type == "user";
     debugPrint("screen width $screenWidth");
     debugPrint("screen height $screenHeight");
+    debugPrint("LOGG channel name ${widget.channelName}");
     debugPrint("now is Mic enabled $_isMicEnabled &&&&&&&& video camera enabled $_isCameraEnabled");
     return PopScope(
       // canPop: false,

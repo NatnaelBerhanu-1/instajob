@@ -96,4 +96,11 @@ class MyImages {
   static String recruiterMessageBtn = "$baseUrl/recruiter_msg_btn.svg";
   static String userBottomContainer = "$baseUrl/user_bottom_container.svg";
   static String userBottomContainer2 = "$baseUrl/user_bottom_container2.svg";
+  static String recordingPlayBtn = "$baseUrl/recording_play.svg";
+  static String recordingPauseBtn = "$baseUrl/recording_pause.svg";
+  static String recordingHistoryBtn = "$baseUrl/recording_history_btn.svg";
+  static String recordingRecruiterMsgBtn = "$baseUrl/recording_recruiter_msg_btn.svg";
+  static String recordingTranscriptionBtn = "$baseUrl/recording_transcription_btn.svg";
+  static String recordingSeekBackBtn = "$baseUrl/recording_seek_back.svg";
+  static String recordingSeekForwardBtn = "$baseUrl/recording_seek_forward.svg";
 }
