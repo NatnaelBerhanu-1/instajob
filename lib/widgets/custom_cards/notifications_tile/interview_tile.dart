@@ -16,6 +16,7 @@ import 'package:insta_job/model/interview_model.dart';
 import 'package:insta_job/network/end_points.dart';
 
 import 'package:insta_job/screens/call_screen.dart';
+import 'package:insta_job/screens/insta_job_user/interview_recordings/interview_recordings_screen.dart';
 import 'package:insta_job/screens/insta_recruit/recording_screens/transcription_screen.dart';
 import 'package:insta_job/utils/agora_credentials.dart';
 import 'package:insta_job/utils/app_routes.dart';
@@ -163,41 +164,42 @@ class _InterviewTileState extends State<InterviewTile> {
                       title: "Recordings",
                       onTap: () {
                         //This is repeated from the onTap, of the chat screen navigation. #todo: refactor
-                        // var interviewModel = widget.interviewModel;
-                        // String userFirebaseId =
-                        //     interviewModel.user?.firebaseId ?? "";
-                        // String otherUserFirebaseId =
-                        //     interviewModel.recruiter?.firebaseId ?? "";
-                        // String gpFound =
-                        //     "${otherUserFirebaseId}_$userFirebaseId";
+                        // TODO: //REVISIT the default values when null (e.g. userId, otherUserId, userFirebaseId, otherUserFirebaseId, etc.)
+                        var interviewModel = widget.interviewModel;
+                        String userFirebaseId =
+                            interviewModel.user?.firebaseId ?? "";
+                        String otherUserFirebaseId =
+                            interviewModel.recruiter?.firebaseId ?? "";
+                        String gpFound =
+                            "${otherUserFirebaseId}_$userFirebaseId";
 
-                        // int userId;
-                        // int otherUserId;
-                        // bool isUser = Global.userModel?.type == "user";
-                        // if (isUser) {
-                        //   userId = interviewModel.user?.id ?? 0;
-                        //   otherUserId = interviewModel.recruiter?.id ?? 1;
-                        // } else {
-                        //   userId = interviewModel.recruiter?.id ?? 1;
-                        //   otherUserId = interviewModel.user?.id ?? 0;
-                        // }
+                        int userId;
+                        int otherUserId;
+                        bool isUser = Global.userModel?.type == "user";
+                        if (isUser) {
+                          userId = interviewModel.user?.id ?? 0;
+                          otherUserId = interviewModel.recruiter?.id ?? 1;
+                        } else {
+                          userId = interviewModel.recruiter?.id ?? 1;
+                          otherUserId = interviewModel.user?.id ?? 0;
+                        }
 
-                        // debugPrint("LOG gpFound $gpFound");
-                        // //TODO: revisit the ChatModel here
-                        // ChatModel model = ChatModel(
-                        //   //selfId is always recruiter
-                        //   gp: gpFound,
-                        //   oppId: userFirebaseId,
-                        //   selfId: otherUserFirebaseId,
-                        //   oppName: interviewModel.user?.name,
-                        //   oppProfilePic:
-                        //       "${EndPoint.imageBaseUrl}interviewModel.user?.uploadPhoto",
-                        //   selfName: interviewModel.recruiter?.name,
-                        //   selfProfilePic:
-                        //       "${EndPoint.imageBaseUrl}interviewModel.recruiter?.uploadPhoto",
-                        //   userId: userId.toString(),
-                        // );
-                        // AppRoutes.push(context, InterviewRecordingsScreen(chatModel: model));
+                        debugPrint("LOG gpFound $gpFound");
+                        //TODO: revisit the ChatModel here
+                        ChatModel model = ChatModel(
+                          //selfId is always recruiter
+                          gp: gpFound,
+                          oppId: userFirebaseId,
+                          selfId: otherUserFirebaseId,
+                          oppName: interviewModel.user?.name,
+                          oppProfilePic:
+                              "${EndPoint.imageBaseUrl}interviewModel.user?.uploadPhoto",
+                          selfName: interviewModel.recruiter?.name,
+                          selfProfilePic:
+                              "${EndPoint.imageBaseUrl}interviewModel.recruiter?.uploadPhoto",
+                          userId: userId.toString(),
+                        );
+                        AppRoutes.push(context, InterviewRecordingsScreen(chatModel: model));
                       },
                     ),
                   )
