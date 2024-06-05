@@ -10,6 +10,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:insta_job/bloc/agora_bloc/agora_cubit.dart';
 import 'package:insta_job/bloc/agora_bloc/agora_state.dart';
+import 'package:insta_job/bloc/end_interview_call_cubit/end_interview_call_cubit.dart';
+import 'package:insta_job/bloc/end_interview_call_cubit/end_interview_call_state.dart';
 import 'package:insta_job/bloc/interview_recording_cubit/interview_recording_cubit.dart';
 import 'package:insta_job/bloc/interview_recording_cubit/interview_recording_state.dart';
 import 'package:insta_job/bottom_sheet/overview_bottom_sheet.dart';
@@ -20,6 +22,7 @@ import 'package:agora_rtc_engine/rtc_remote_view.dart' as rtc_remote_view;
 import 'package:insta_job/model/agora_user.dart';
 import 'package:insta_job/model/chat_model.dart';
 import 'package:insta_job/model/interview_model.dart';
+import 'package:insta_job/payload/end_call_recording_payload.dart';
 import 'package:insta_job/screens/chat_screen.dart';
 import 'package:insta_job/utils/agora_credentials.dart';
 import 'package:insta_job/utils/app_routes.dart';
@@ -266,16 +269,54 @@ class _CallScreenState extends State<CallScreen> {
         ),
       );
 
-  Future<void> _onCallEnd(BuildContext context, {required String channelName, required int? interviewId}) async {
-     if (context.read<InterviewRecordingCubit>().recordingStatus == RecordingStatus.recording) {
-      context.read<InterviewRecordingCubit>().stopRecording(
-        channelName: channelName,
-        interviewId: interviewId,
-      );
-     }
-    await _agoraEngine.leaveChannel();
-    if (context.mounted) {
-      Navigator.of(context).pop();
+  Future<void> _onCallEnd(BuildContext context, {required String channelName, required InterviewModel interviewModel}) async {
+    var isUser = Global.userModel?.type == "user";
+    // var isRecording = context.read<InterviewRecordingCubit>().recordingStatus == RecordingStatus.recording;
+    if (!isUser) { //if it's recruiter, since end call needs confirmation for recruiters(ongoing recording will also be stopped)
+      buildDialog(
+        context,
+        CustomDialog(
+          desc1: "Are you sure you want to end the call?",
+          okOnTap: () async {
+            EndCallRecordingPayload? endCallRecordingPayload;
+            var interviewId = interviewModel.id;
+
+            if (context.read<InterviewRecordingCubit>().recordingStatus == RecordingStatus.recording) {
+              // context.read<InterviewRecordingCubit>().stopRecording(
+              //   channelName: channelName,
+              //   interviewId: interviewId,
+              // );
+              var interviewRecordingCubit = context.read<InterviewRecordingCubit>();
+              endCallRecordingPayload = EndCallRecordingPayload(
+                channelName: channelName,
+                recordingUid: interviewRecordingCubit.recordingUid,
+                resourceId: interviewRecordingCubit.resourceId,
+                sId: interviewRecordingCubit.sId,
+              );
+            }
+
+            context.read<EndInterviewCallScheduleCubit>().endInterviewCallSchedule(
+                callId: interviewId.toString(), 
+                endCallRecordingPayload: endCallRecordingPayload,
+            );
+            context.read<InterviewRecordingCubit>().resetState();
+            await _agoraEngine.leaveChannel();
+            if (context.mounted) {
+              // Navigator.of(context).pop();
+              Navigator.of(context)..pop()..pop();
+            }
+            
+          },
+          cancelOnTap: () {
+            Navigator.of(context).pop();
+          },
+          headerImagePath: MyImages.delete,
+      ));
+    } else {
+      await _agoraEngine.leaveChannel();
+      if (context.mounted) {
+        Navigator.of(context).pop();
+      }
     }
   }
 
@@ -615,13 +656,25 @@ class _CallScreenState extends State<CallScreen> {
                       SizedBox(
                         width: 64,
                         height: 64,
-                        child: FloatingActionButton(
-                          backgroundColor: MyColors.red,
-                          onPressed: () async {
-                            // Navigator.of(context).pop();
-                            _onCallEnd(context, channelName: widget.channelName, interviewId: widget.interviewModel.id);
+                        child: BlocConsumer<EndInterviewCallScheduleCubit, EndInterviewCallScheduleState>(
+                          builder: (context, state) {
+                            return FloatingActionButton(
+                              backgroundColor: MyColors.red,
+                              onPressed: () async {
+                                // Navigator.of(context).pop();
+                                _onCallEnd(context, channelName: widget.channelName, interviewModel: widget.interviewModel);
+                              },
+                              child: Icon(Icons.call_end),
+                            );
                           },
-                          child: Icon(Icons.call_end),
+                          listener: (context, state) {
+                            //TODO: revisit this section (whether or not to refetch upcoming & previous interviews)
+                            if (state is EndInterviewCallScheduleSuccess) {
+                              //TODO: revisit
+                            } else if (state is EndInterviewCallScheduleErrorState) {
+                              showToast(state.message);
+                            }
+                          }
                         ),
                       ),
                       InkWell(

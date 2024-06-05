@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:insta_job/network/dio/dio_client.dart';
+import 'package:insta_job/payload/end_call_recording_payload.dart';
 
 import '../network/api_response.dart';
 import '../network/end_points.dart';
@@ -70,4 +71,18 @@ class InterviewRepo {
       return ApiResponse.withError(e);
     }
   }
+
+  Future<ApiResponse> endInterviewCallSchedule({required String callId, EndCallRecordingPayload? endCallRecordingPayload}) async {
+    try {
+      var map = {"call_id": callId, "stop_recording_payload": endCallRecordingPayload?.toMap()};
+      if (endCallRecordingPayload == null) {
+        map = {"call_id": callId};
+      }
+      var response = await dioClient.post(uri: EndPoint.endInterviewCall, data: map);
+      return ApiResponse.withSuccess(response);
+    } catch (e) {
+      return ApiResponse.withError(e);
+    }
+  }
+  
 }

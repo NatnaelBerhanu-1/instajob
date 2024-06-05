@@ -67,7 +67,7 @@ class InterviewModel {
         time: Timestamp.fromDate(DateTime.parse(map['time'])),
         timeType: map['time_type'] as String,
         statusCall: map['status_call'] as String,
-        callRecording: map['call_recording'] != null ? map['call_ecording'] as String : null,
+        callRecording: map['call_recording'] != null ? map['call_recording'] as String : null,
         user: map['user'] != null ? UserModel.fromJson(map['user'] as Map<String, dynamic>) : null,
         recruiter: map['recruiter'] != null ? UserModel.fromJson(map['recruiter'] as Map<String, dynamic>) : null,
         job: map['job'] != null ? JobPosModel.fromJson(map['job'] as Map<String, dynamic>) : null,

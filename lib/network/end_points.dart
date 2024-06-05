@@ -10,6 +10,7 @@ class EndPoint {
   // static String imageBaseUrl = "http://172.17.251.109:8000";
 
   static String recordingBaseUrl = "http://ec2-54-226-134-73.compute-1.amazonaws.com/api/";
+  static String recordingVideoResourceBaseUrl = "https://agorarecordingsbucket.s3.amazonaws.com/";
   /// MASKING RESUME
 
   /// Common api's
@@ -23,6 +24,7 @@ class EndPoint {
   static String getInterviews = "call_lists";
   static String getInterviewsAsCandidate = "candidate_call_lists";
   static String cancelInterviewSchedule = "change_status_video_call";
+  static String endInterviewCall = "end_video_call"; //CHECK WITH NATI
 
   /// ---------------- EMPLOYEE INTERFACE --------------- ///
 

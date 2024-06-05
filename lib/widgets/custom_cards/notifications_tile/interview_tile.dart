@@ -90,6 +90,9 @@ class _InterviewTileState extends State<InterviewTile> {
 
   @override
   Widget build(BuildContext context) {
+    var recordingStr = widget.interviewModel.callRecording;
+    recordingStr ??= "";
+    var hasRecording = widget.isRecording && recordingStr.isNotEmpty;
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
@@ -159,10 +162,10 @@ class _InterviewTileState extends State<InterviewTile> {
                     padding: const EdgeInsets.symmetric(horizontal: 50.0),
                     child: CustomButton(
                       height: MediaQuery.of(context).size.height * 0.042,
-                      bgColor: MyColors.blue,
+                      bgColor: hasRecording ? MyColors.blue : MyColors.grey,
                       borderRadius: BorderRadius.circular(20),
                       title: "Recordings",
-                      onTap: () {
+                      onTap: hasRecording ? () {
                         //This is repeated from the onTap, of the chat screen navigation. #todo: refactor
                         // TODO: //REVISIT the default values when null (e.g. userId, otherUserId, userFirebaseId, otherUserFirebaseId, etc.)
                         var interviewModel = widget.interviewModel;
@@ -199,8 +202,8 @@ class _InterviewTileState extends State<InterviewTile> {
                               "${EndPoint.imageBaseUrl}interviewModel.recruiter?.uploadPhoto",
                           userId: userId.toString(),
                         );
-                        AppRoutes.push(context, InterviewRecordingsScreen(chatModel: model));
-                      },
+                        AppRoutes.push(context, InterviewRecordingsScreen(chatModel: model, interviewModel: widget.interviewModel));
+                      } : null,
                     ),
                   )
                 : Row(

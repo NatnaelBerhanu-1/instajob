@@ -200,8 +200,8 @@ class _InterviewScreenState extends State<InterviewScreen> {
             userId: 5323121,
           ),
         ];
-        // var pastSchedules = state.pastSchedules;
-        var pastSchedules = mockInterviewSchedules; //todo: comment out the mock value and replace with the bloc's state value
+        var pastSchedules = state.pastSchedules;
+        // var pastSchedules = mockInterviewSchedules; //todo: comment out the mock value and replace with the bloc's state value
 
         if (pastSchedules.isNotEmpty) {
           return Padding(

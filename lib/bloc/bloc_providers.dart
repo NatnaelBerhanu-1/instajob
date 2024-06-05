@@ -6,6 +6,7 @@ import 'package:insta_job/bloc/cancel_interview_schedule_cubit/cancel_interview_
 import 'package:insta_job/bloc/career_learning_bloc/career_learning_bloc.dart';
 import 'package:insta_job/bloc/choose_image_bloc/pick_image_cubit.dart';
 import 'package:insta_job/bloc/company_bloc/company_bloc.dart';
+import 'package:insta_job/bloc/end_interview_call_cubit/end_interview_call_cubit.dart';
 import 'package:insta_job/bloc/feedback_bloc/feedback_bloc.dart';
 import 'package:insta_job/bloc/get_declined_job_position/get_denied_job_poision_bloc.dart';
 import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
@@ -42,4 +43,5 @@ final List<SingleChildWidget> blocProviders = [
   BlocProvider(create: (_) => di.sl<ResumeDetailsCubit>()),
   BlocProvider(create: (_) => di.sl<GetDeniedJobPositionCubit>()),
   BlocProvider(create: (_) => di.sl<InterviewRecordingCubit>()),
+  BlocProvider(create: (_) => di.sl<EndInterviewCallScheduleCubit>()),
 ];

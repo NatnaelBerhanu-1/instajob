@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:insta_job/model/chat_model.dart';
+import 'package:insta_job/model/interview_model.dart';
+import 'package:insta_job/network/end_points.dart';
 import 'package:insta_job/screens/chat_screen.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_colors.dart';
@@ -10,8 +12,9 @@ import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 import 'package:video_player/video_player.dart';
 
 class InterviewRecordingsScreen extends StatefulWidget {
-  const InterviewRecordingsScreen({super.key, required this.chatModel});
+  const InterviewRecordingsScreen({super.key, required this.chatModel, required this.interviewModel});
   final ChatModel chatModel;
+  final InterviewModel interviewModel;
 
   @override
   State<InterviewRecordingsScreen> createState() =>
@@ -32,10 +35,12 @@ class _InterviewRecordingsScreenState extends State<InterviewRecordingsScreen> {
     // TODO: implement initState
     super.initState();
 
+    // var urlPath = "https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.mp4/.m3u8";
+    var urlPath = "${EndPoint.recordingVideoResourceBaseUrl}${widget.interviewModel.callRecording}";
     _controller = VideoPlayerController.networkUrl(
-      // Uri.parse("https://devstreaming-cdn.apple.com/videos/streaming/examples/img_bipbop_adv_example_fmp4/master.m3u8")
       Uri.parse(
-          "https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.mp4/.m3u8"),
+          urlPath,
+      ),
     );
     _initializeVideoPlayerFuture = _controller.initialize();
     // Use the controller to loop the video
@@ -73,6 +78,7 @@ class _InterviewRecordingsScreenState extends State<InterviewRecordingsScreen> {
       //     title: "",
       //   ),
       // ),
+      backgroundColor: MyColors.grey.withOpacity(0.5),
       body: SafeArea(
         child: Stack(
           children: [
@@ -120,7 +126,8 @@ class _InterviewRecordingsScreenState extends State<InterviewRecordingsScreen> {
                                     _controller,
                                   )
                                 : AspectRatio(
-                                    aspectRatio: _controller.value.aspectRatio,
+                                    // aspectRatio: _controller.value.aspectRatio,
+                                    aspectRatio: 1.0,
                                     child: VideoPlayer(
                                       _controller,
                                     ),
