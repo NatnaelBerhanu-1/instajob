@@ -20,6 +20,7 @@ class CustomDialog extends StatefulWidget {
   final String? headerImagePath;
   final Color? descFontColor;
   final double? descFontSize;
+  final bool showLoadingState;
   CustomDialog({
     Key? key,
     this.okOnTap,
@@ -31,6 +32,7 @@ class CustomDialog extends StatefulWidget {
     this.headerImagePath,
     this.descFontColor,
     this.descFontSize,
+    this.showLoadingState = false,
   }) : super(key: key);
 
   @override
@@ -43,6 +45,7 @@ class _CustomDialogState extends State<CustomDialog> {
   String headerImagePath = ''; //TODO: revisit
   late final Color? descFontColor;
   late final double? descFontSize;
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -87,7 +90,16 @@ class _CustomDialogState extends State<CustomDialog> {
                   fontSize: descFontSize,
                 ),
               ),
-              SizedBox(height: 30),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: SizedBox(
+                  width: 16,
+                  height: 16,
+                  child: isLoading ? CircularProgressIndicator(
+                    strokeWidth: 2,
+                  ) : Text(""),
+                ),
+              ),
               BlocBuilder<GlobalCubit, InitialState>(builder: (context, state) {
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -117,7 +129,14 @@ class _CustomDialogState extends State<CustomDialog> {
                     ),
                     SizedBox(width: 40),
                     CustomCommonCard(
-                      onTap: widget.okOnTap ??
+                      onTap: widget.okOnTap != null ? () {
+                        if (widget.showLoadingState) {
+                          setState(() {
+                            isLoading = true;
+                          });
+                        }
+                        widget.okOnTap!();
+                      } :
                           () {
                             index = 2;
                             print('INDEX2 ------  $selectedIndex');

@@ -14,6 +14,7 @@ import 'package:insta_job/bloc/end_interview_call_cubit/end_interview_call_cubit
 import 'package:insta_job/bloc/end_interview_call_cubit/end_interview_call_state.dart';
 import 'package:insta_job/bloc/interview_recording_cubit/interview_recording_cubit.dart';
 import 'package:insta_job/bloc/interview_recording_cubit/interview_recording_state.dart';
+import 'package:insta_job/bloc/interview_schedule_cubit/interview_schedule_cubit.dart';
 import 'package:insta_job/bloc/interview_transcription_cubit/interview_transcription_cubit.dart';
 import 'package:insta_job/bottom_sheet/overview_bottom_sheet.dart';
 import 'package:insta_job/dialog/custom_dialog.dart';
@@ -181,9 +182,11 @@ class _CallScreenState extends State<CallScreen> {
             debugPrint(info);
             debugPrint("${_users.map((e) => "${e.uid}: ${e.uid != _currentUid}")}");
 
-            context.read<InterviewTranscriptionCubit>().startTranscription(
-              channelName: widget.channelName,
-            );
+            if (uid != 222) {
+              context.read<InterviewTranscriptionCubit>().startTranscription(
+                channelName: widget.channelName,
+              );
+            }
             
             // _users.removeWhere((element) => element.uid != _currentUid);
             //     debugPrint('Users[userJoined]: $_users, $_currentUid');
@@ -196,21 +199,24 @@ class _CallScreenState extends State<CallScreen> {
             //       ),
             //     ),
             //   );
-            _users = {
-              AgoraUser(
-                  uid: _currentUid!,
-                  isAudioEnabled: _isMicEnabled,
-                  isVideoEnabled: _isCameraEnabled,
-                  view: const rtc_local_view.SurfaceView(),
-                ),
+            
+            if (uid != 222) {
+              _users = {
                 AgoraUser(
-                  uid: uid,
-                  view: rtc_remote_view.SurfaceView(
-                    channelId: widget.channelName,
-                    uid: uid,
+                    uid: _currentUid!,
+                    isAudioEnabled: _isMicEnabled,
+                    isVideoEnabled: _isCameraEnabled,
+                    view: const rtc_local_view.SurfaceView(),
                   ),
-                )
-            };
+                  AgoraUser(
+                    uid: uid,
+                    view: rtc_remote_view.SurfaceView(
+                      channelId: widget.channelName,
+                      uid: uid,
+                    ),
+                  )
+              };
+            }
             setState(
               () {
               }
@@ -318,7 +324,6 @@ class _CallScreenState extends State<CallScreen> {
             await _agoraEngine.leaveChannel();
             if (context.mounted) {
               // Navigator.of(context).pop();
-              Navigator.of(context)..pop()..pop();
             }
             
           },
@@ -326,6 +331,7 @@ class _CallScreenState extends State<CallScreen> {
             Navigator.of(context).pop();
           },
           headerImagePath: MyImages.delete,
+          showLoadingState: true,
       ));
     } else {
       await _agoraEngine.leaveChannel();
@@ -686,6 +692,8 @@ class _CallScreenState extends State<CallScreen> {
                             //TODO: revisit this section (whether or not to refetch upcoming & previous interviews)
                             if (state is EndInterviewCallScheduleSuccess) {
                               //TODO: revisit
+                              context.read<InterviewScheduleCubit>().getInterviewSchedules(Global.userModel!.id.toString());
+                              Navigator.of(context)..pop()..pop();
                             } else if (state is EndInterviewCallScheduleErrorState) {
                               showToast(state.message);
                             }
