@@ -14,6 +14,7 @@ import 'package:insta_job/bloc/end_interview_call_cubit/end_interview_call_cubit
 import 'package:insta_job/bloc/end_interview_call_cubit/end_interview_call_state.dart';
 import 'package:insta_job/bloc/interview_recording_cubit/interview_recording_cubit.dart';
 import 'package:insta_job/bloc/interview_recording_cubit/interview_recording_state.dart';
+import 'package:insta_job/bloc/interview_transcription_cubit/interview_transcription_cubit.dart';
 import 'package:insta_job/bottom_sheet/overview_bottom_sheet.dart';
 import 'package:insta_job/dialog/custom_dialog.dart';
 import 'package:insta_job/globals.dart';
@@ -23,6 +24,7 @@ import 'package:insta_job/model/agora_user.dart';
 import 'package:insta_job/model/chat_model.dart';
 import 'package:insta_job/model/interview_model.dart';
 import 'package:insta_job/payload/end_call_recording_payload.dart';
+import 'package:insta_job/payload/end_call_transcription_payload.dart';
 import 'package:insta_job/screens/chat_screen.dart';
 import 'package:insta_job/utils/agora_credentials.dart';
 import 'package:insta_job/utils/app_routes.dart';
@@ -178,6 +180,11 @@ class _CallScreenState extends State<CallScreen> {
             final info = 'LOG::userJoined: $uid';
             debugPrint(info);
             debugPrint("${_users.map((e) => "${e.uid}: ${e.uid != _currentUid}")}");
+
+            context.read<InterviewTranscriptionCubit>().startTranscription(
+              channelName: widget.channelName,
+            );
+            
             // _users.removeWhere((element) => element.uid != _currentUid);
             //     debugPrint('Users[userJoined]: $_users, $_currentUid');
             //     _users.add(
@@ -279,6 +286,7 @@ class _CallScreenState extends State<CallScreen> {
           desc1: "Are you sure you want to end the call?",
           okOnTap: () async {
             EndCallRecordingPayload? endCallRecordingPayload;
+            EndCallTranscriptionPayload? endCallTranscriptionPayload;
             var interviewId = interviewModel.id;
 
             if (context.read<InterviewRecordingCubit>().recordingStatus == RecordingStatus.recording) {
@@ -295,9 +303,16 @@ class _CallScreenState extends State<CallScreen> {
               );
             }
 
+            var interviewTranscriptionCubit = context.read<InterviewTranscriptionCubit>();
+            debugPrint("LOG:: transcription ABT TO END CALL ${interviewTranscriptionCubit.builderToken}");
+            endCallTranscriptionPayload = EndCallTranscriptionPayload(
+              builderToken: interviewTranscriptionCubit.builderToken,
+            );
+
             context.read<EndInterviewCallScheduleCubit>().endInterviewCallSchedule(
                 callId: interviewId.toString(), 
                 endCallRecordingPayload: endCallRecordingPayload,
+                endCallTranscriptionPayload: endCallTranscriptionPayload,
             );
             context.read<InterviewRecordingCubit>().resetState();
             await _agoraEngine.leaveChannel();

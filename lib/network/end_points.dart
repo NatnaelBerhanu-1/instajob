@@ -91,6 +91,9 @@ class EndPoint {
   // /agora/start_recording -- start a recording session, params (channel, uid (0), resource)
   // /agora/stop_recording -- stops a recording session, params (resource, sid, channel, uid (0) )
 
+  //transcription
+  static String startTranscription = "agora/start_rt_transcription";
+
   ///search
   static String searchJob = "search_job";
 

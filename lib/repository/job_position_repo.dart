@@ -309,6 +309,25 @@ class JobPositionRepository {
   }
 
     
+  startTranscription({
+    String? channelName,
+  }) async {
+    try {
+      var map = {
+        "channel_name": channelName,
+      };
+      var urlPath = "${EndPoint.recordingBaseUrl}${EndPoint.startTranscription}";
+      var response = await Dio().post(urlPath, data: map);
+      // var response = await dioClient.post(data: map, uri: EndPoint.startRecording);
+      return ApiResponse.withSuccess(response);
+    } on DioException catch (e) {
+      return ApiResponse.withError(e.response);
+    } catch (e) {
+      return ApiResponse.withError("e.response");
+    }
+  }
+
+    
   stopRecordingResource({
     String? channelName,
     String? sid,
