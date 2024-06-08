@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:insta_job/model/payment_user.dart';
 import 'package:insta_job/screens/insta_recruit/send_money/amount_page.dart';
 import 'package:insta_job/screens/insta_recruit/send_money/payment_user_tile.dart';
 import 'package:insta_job/utils/app_routes.dart';
@@ -21,6 +22,37 @@ class _SendMoneyBottomSheetChildState extends State<SendMoneyBottomSheetChild> {
   // final debouncer = Debouncer(milliseconds: 1000);
   final debouncer = Debouncer(milliseconds: 10);
   final TextEditingController searchController = TextEditingController();
+  var users = mockPaymentUsers;
+  var mockPaymentUsers2 = mockPaymentUsers; //for search results
+  int? selectedUserIndexFromRecentUsers;
+  int? selectedUserIndexFromSearchResults;
+  
+  get userIsSelected {
+    var res = selectedUserIndexFromRecentUsers != null || selectedUserIndexFromSearchResults != null;
+    return res;
+  }
+  PaymentUser? get selectedUser {
+    if (selectedUserIndexFromRecentUsers != null) {
+      return mockPaymentUsers[selectedUserIndexFromRecentUsers!];
+    } else if (selectedUserIndexFromSearchResults != null) {
+      return mockPaymentUsers2[selectedUserIndexFromSearchResults!];
+    }
+    return null;
+  }
+  
+  @override
+  void initState() {
+    super.initState();
+    users.shuffle();
+  }
+
+  
+  void updateSelectedUser(value) {
+    setState(() {
+      selectedUserIndexFromRecentUsers = value;
+    });
+  }
+  
 
 
   @override
@@ -40,11 +72,13 @@ class _SendMoneyBottomSheetChildState extends State<SendMoneyBottomSheetChild> {
             ),
           ),
           const SizedBox(height: 12),
-          const Text(
+          Text(
             "Choose an employee to continue",
             textAlign: TextAlign.start,
             style: TextStyle(
+              color: MyColors.greyTxt,
               fontSize: 16,
+              fontWeight: FontWeight.w700,
             ),
           ),
           const SizedBox(height: 20,),
@@ -62,23 +96,27 @@ class _SendMoneyBottomSheetChildState extends State<SendMoneyBottomSheetChild> {
               debouncer.run(() {
                 debugPrint("value $value");
                 searchController.text = value;
+                selectedUserIndexFromRecentUsers = null; // nothing is selected when search text field is updating, selectedItem(if any) goes unselected
+                selectedUserIndexFromSearchResults = null; // nothing is selected when search text field is updating, selectedItem(if any) goes unselected
                 setState(() {});
               });
             },
           ),
           if (searchController.text.isEmpty)
             Column(
+              mainAxisSize: MainAxisSize.min,//remove ig june
               children: [
                 const SizedBox(height: 16,),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     children: [
-                      _buildEmployeeAvatarAndName(),
-                      _buildEmployeeAvatarAndName(),
-                      _buildEmployeeAvatarAndName(isSelected: true),
-                      _buildEmployeeAvatarAndName(),
-                      _buildEmployeeAvatarAndName(),
+                      // _buildEmployeeAvatarAndName(),
+                      // _buildEmployeeAvatarAndName(),
+                      // _buildEmployeeAvatarAndName(isSelected: true),
+                      // _buildEmployeeAvatarAndName(),
+                      // _buildEmployeeAvatarAndName(),
+                      ...users.asMap().entries.map((item) => _buildEmployeeAvatarAndName(paymentUser: item.value, currentIdx: item.key, isSelected: selectedUserIndexFromRecentUsers == item.key, updateSelectedUser: updateSelectedUser)).toList(),
                     ],
                   ),
                 ),
@@ -125,7 +163,7 @@ class _SendMoneyBottomSheetChildState extends State<SendMoneyBottomSheetChild> {
                 ),
                 const SizedBox(height: 16,),
                 ListView.separated(
-                  itemCount: 4,
+                  itemCount: mockPaymentUsers2.length,
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   separatorBuilder: (context, state) {
@@ -134,11 +172,15 @@ class _SendMoneyBottomSheetChildState extends State<SendMoneyBottomSheetChild> {
                   itemBuilder: (context, index) {
                      return PaymentUserTile(
                       onClick: () {
+                        setState(() {
+                          selectedUserIndexFromSearchResults = index;
+                        });
                       },
-                      index: 1,
-                      selectedIndex: 1,
+                      index: index,
+                      selectedIndex: selectedUserIndexFromSearchResults,
                       image: MyImages.visaCardBlue,
                       isSelectMode: true,
+                      user: mockPaymentUsers2[index],
                     );
                 }),
                 const SizedBox(height: 32,),
@@ -147,10 +189,11 @@ class _SendMoneyBottomSheetChildState extends State<SendMoneyBottomSheetChild> {
           CustomButton(
             title: "Continue",
             fontColor: MyColors.white,
-            borderColor: MyColors.blue,
-            onTap: () {
+            bgColor: userIsSelected ? MyColors.blue : MyColors.grey,
+            borderColor: userIsSelected ? MyColors.blue : MyColors.grey,
+            onTap: userIsSelected ? () {
               AppRoutes.push(context, const PaymentAmountScreen());
-            },
+            } : null,
           ),
           const SizedBox(height: 48,),
         ]),
@@ -158,57 +201,65 @@ class _SendMoneyBottomSheetChildState extends State<SendMoneyBottomSheetChild> {
     );
   }
 
-  Padding _buildEmployeeAvatarAndName({bool isSelected = false}) {
-    var namesMock = ["Alex A.", "Nicholas M." , "Sarah D.", "Omar M.", "Sarah D.", "Mariam", "Omar", "Henry", "Adam", "Jacob", "Russell"];
-    namesMock.shuffle();
+  Widget _buildEmployeeAvatarAndName({bool isSelected = false, required PaymentUser paymentUser, required int currentIdx, required void Function(dynamic value) updateSelectedUser}) {
+    // var namesMock = ["Alex A.", "Nicholas M." , "Sarah D.", "Omar M.", "Sarah D.", "Mariam", "Omar", "Henry", "Adam", "Jacob", "Russell"];
+    // namesMock.shuffle();
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: Column(
-        children: [
-          Container(
-            width: 68,
-            height: 68,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: isSelected ? Colors.red : null,
-            ),
-            child: Center(
-              child: Container(
-                width: 64,
-                height: 64,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.white,
-                ),
-                child: Center(
-                  child: Container(
-                    width: 60,
-                    height: 60,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Color.fromARGB(255, 26, 26, 26),
-                    ),
-                    child: const CircleAvatar(
-                      radius: 28,
-                      backgroundImage: CachedNetworkImageProvider(""),
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () {
+          //TODO:
+          debugPrint("idx $currentIdx");
+          updateSelectedUser(currentIdx);
+        },
+        child: Column(
+          children: [
+            Container(
+              width: 68,
+              height: 68,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: isSelected ? MyColors.blue : null,
+              ),
+              child: Center(
+                child: Container(
+                  width: 64,
+                  height: 64,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white,
+                  ),
+                  child: Center(
+                    child: Container(
+                      width: 60,
+                      height: 60,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Color.fromARGB(255, 26, 26, 26),
+                      ),
+                      child: const CircleAvatar(
+                        radius: 28,
+                        backgroundImage: CachedNetworkImageProvider(""),
+                      ),
                     ),
                   ),
                 ),
               ),
             ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            // "Alex A.",
-            namesMock.first,
-            textAlign: TextAlign.start,
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 15,
-              color: isSelected ? MyColors.blue : null,
+            const SizedBox(height: 4),
+            Text(
+              // "Alex A.",
+              paymentUser.name ?? "",
+              textAlign: TextAlign.start,
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 15,
+                color: isSelected ? MyColors.blue : null,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -266,7 +317,7 @@ class TransactionTile extends StatelessWidget {
             fontSize: 16,
             color: MyColors.black,
             overflow: TextOverflow.clip,
-            fontWeight: FontWeight.w700,
+            fontWeight: FontWeight.w800,
             letterSpacing: 1.2,
           ),
         ),

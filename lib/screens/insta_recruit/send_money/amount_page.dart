@@ -90,6 +90,7 @@ class _PaymentAmountScreenState extends State<PaymentAmountScreen> {
                 ),
                 const SizedBox(height: 32,),
                 _buildSelectedCard(),
+                // _buildAddNewCardButton(),
                 const SizedBox(height: 36,),
                 CustomMoneyTextField(
                   // controller: amountSendingController,
@@ -223,6 +224,41 @@ class _PaymentAmountScreenState extends State<PaymentAmountScreen> {
                     color: MyColors.blue,
                   ),
                 ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAddNewCardButton() {
+    return Container(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: MyColors.grey.withOpacity(.15)),
+          ),
+      child: ListTile(
+        onTap: () {
+        },
+        shape: RoundedRectangleBorder(side: BorderSide(color: MyColors.grey), borderRadius: BorderRadius.circular(10)),
+        tileColor: MyColors.blue.withOpacity(0.9),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.add,
+              color: MyColors.white,
+            ),
+            SizedBox(width: 2),
+            Text(
+              "Add new card",
+              style: TextStyle(
+                fontSize: 16,
+                color: MyColors.white,
+                overflow: TextOverflow.clip,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 1.2,
               ),
             ),
           ],
