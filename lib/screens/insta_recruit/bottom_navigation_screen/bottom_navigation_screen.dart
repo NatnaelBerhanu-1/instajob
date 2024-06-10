@@ -15,6 +15,7 @@ import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/notific
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/assigned_company_screen.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
+import 'package:insta_job/utils/notification_service.dart';
 
 import '../../../bloc/bottom_bloc/bottom_bloc.dart';
 import '../../../bloc/company_bloc/company_bloc.dart';
@@ -42,6 +43,8 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
   @override
   void initState() {
     super.initState();
+    NotificationService notificationService = NotificationService();
+    notificationService.init(context: context); // Initialize your notification service
     getData();
   }
 

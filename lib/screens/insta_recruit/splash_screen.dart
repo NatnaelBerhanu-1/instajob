@@ -34,8 +34,6 @@ class _SplashScreenState extends State<SplashScreen> {
     permission();
     super.initState();
     
-    NotificationService notificationService = NotificationService();
-    notificationService.init(context: context); // Initialize your notification service
   }
 
   @override
