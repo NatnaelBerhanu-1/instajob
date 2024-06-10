@@ -76,7 +76,10 @@ class NotificationService {
     _firebaseMessaging.getToken().then((token) {
       // You can store this token in Firestore for each user
       _logger.i("FCM Token from get token: $token");
-      updateCurrentUserToken(context, token);
+      var userModel = Global.userModel;
+      if (userModel != null) {
+        updateCurrentUserToken(context, token);
+      }
 
     });
 
