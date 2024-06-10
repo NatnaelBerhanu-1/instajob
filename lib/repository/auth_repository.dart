@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/network/api_response.dart';
 import 'package:insta_job/network/dio/dio_client.dart';
@@ -96,7 +97,8 @@ class AuthRepository {
     String? phoneNumber,
     String? profilePhoto,
     String? dOB,
-    String? resumeOrCv,
+    String? resumeOrCv, 
+    String? fcmToken,
   }) async {
     try {
       var map = {
@@ -107,11 +109,17 @@ class AuthRepository {
         "phone_number": phoneNumber,
         "upload_photo": profilePhoto,
         "cv": resumeOrCv,
+        "fcm_token": fcmToken,
       };
       Response response = await dioClient.post(data: map, uri: EndPoint.updateUser);
+      debugPrint("LOGG: update user success");
       return ApiResponse.withSuccess(response);
     } on DioException catch (e) {
+      debugPrint("LOGG: update user error");
       return ApiResponse.withError(e.response);
+    } catch(e) {
+      debugPrint("LOGG: update user error catch");
+      return ApiResponse.withError(e);
     }
   }
 
@@ -120,7 +128,8 @@ class AuthRepository {
     String? companyName,
     // String? phoneNumber,
     String? profilePhoto,
-    String? resumeOrCv,
+    String? resumeOrCv, 
+    String? fcmToken,
   }) async {
     try {
       var map = {
@@ -130,11 +139,18 @@ class AuthRepository {
         "email": "${Global.userModel?.email}",
         "upload_photo": profilePhoto,
         "cv": resumeOrCv,
+        "fcm_token": fcmToken,
       };
+      debugPrint("LOGG: update recruiter payload ${map}");
       Response response = await dioClient.post(data: map, uri: EndPoint.employeeUpdate);
+      debugPrint("LOGG: update recruiter success");
       return ApiResponse.withSuccess(response);
     } on DioException catch (e) {
+      debugPrint("LOGG: update recruiter error");
       return ApiResponse.withError(e.response);
+    } catch(e) {
+      debugPrint("LOGG: update recruiter error catch");
+      return ApiResponse.withError(e);
     }
   }
 

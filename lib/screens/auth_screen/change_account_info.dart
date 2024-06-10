@@ -345,6 +345,7 @@ class _ChangeAccInfoScreenState extends State<ChangeAccInfoScreen> {
                                       authData.updateEmpData(
                                         profilePhoto: image.imgUrl,
                                         name: name.text,
+                                        fromTokenStore: false,
                                       );
                                     }
                                     image.clearImgUrl();

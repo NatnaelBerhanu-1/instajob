@@ -7,6 +7,7 @@ import 'package:insta_job/bloc/location_cubit/location_cubit.dart';
 import 'package:insta_job/screens/insta_recruit/user_type_screen.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
+import 'package:insta_job/utils/notification_service.dart';
 import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 
 import '../../widgets/custom_cards/custom_common_card.dart';
@@ -32,6 +33,9 @@ class _SplashScreenState extends State<SplashScreen> {
   initState() {
     permission();
     super.initState();
+    
+    NotificationService notificationService = NotificationService();
+    notificationService.init(context: context); // Initialize your notification service
   }
 
   @override

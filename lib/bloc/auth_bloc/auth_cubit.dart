@@ -217,6 +217,7 @@ class AuthCubit extends Cubit<AuthInitialState> {
     String? profilePhoto,
     String? dOB,
     String? resumeOrCv,
+    String? fcmToken,
   }) async {
     emit(AuthLoadingState());
     ApiResponse response = await authRepository.updateUser(
@@ -225,6 +226,7 @@ class AuthCubit extends Cubit<AuthInitialState> {
       dOB: dOB,
       profilePhoto: profilePhoto,
       resumeOrCv: resumeOrCv,
+      fcmToken: fcmToken,
     );
     if (response.response.statusCode == 500) {
       emit(ErrorState("Something went wrong"));
@@ -247,12 +249,15 @@ class AuthCubit extends Cubit<AuthInitialState> {
     String? name,
     // String? phoneNumber,
     String? profilePhoto,
+    String? fcmToken,
+    required bool fromTokenStore,
   }) async {
     emit(AuthLoadingState());
     ApiResponse response = await authRepository.updateEmp(
       // phoneNumber: phoneNumber,
       companyName: name,
       profilePhoto: profilePhoto,
+      fcmToken: fcmToken,
     );
     if (response.response.statusCode == 500) {
       emit(ErrorState("Something went wrong"));
@@ -262,12 +267,16 @@ class AuthCubit extends Cubit<AuthInitialState> {
       var userModel = UserModel.fromJson(response.response.data['data']);
       Global.userModel = userModel;
       emit(AuthState(userModel: userModel));
-      navigationKey.currentState?.pop();
-      navigationKey.currentState?.pop();
+      if (fromTokenStore == false) {
+        navigationKey.currentState?.pop();
+        navigationKey.currentState?.pop();
+      }
       user.add(UserEvent());
     }
     if (response.response.statusCode == 400) {
       emit(ErrorState("${response.response.data['message']}"));
+    } else {
+      emit(ErrorState("Something happened"));
     }
   }
 
@@ -574,5 +583,40 @@ class AuthCubit extends Cubit<AuthInitialState> {
     if (response.response.statusCode == 400) {
       emit(ErrorState("${response.response.data['message']}"));
     }
+  }
+
+  /// UPDATE USER TOKEN
+  updateUserTokenData({
+    String? name,
+    String? phoneNumber,
+    String? profilePhoto,
+    String? dOB,
+    String? resumeOrCv,
+    String? fcmToken,
+  }) async {
+    ApiResponse response = await authRepository.updateUser(
+      phoneNumber: phoneNumber,
+      name: name,
+      dOB: dOB,
+      profilePhoto: profilePhoto,
+      resumeOrCv: resumeOrCv,
+      fcmToken: fcmToken,
+    );
+  }
+
+  /// EMPLOYEE TOKEN UPDATE
+  updateEmpTokenData({
+    String? name,
+    // String? phoneNumber,
+    String? profilePhoto,
+    String? fcmToken,
+  }) async {
+    emit(AuthLoadingState());
+    ApiResponse response = await authRepository.updateEmp(
+      // phoneNumber: phoneNumber,
+      companyName: name,
+      profilePhoto: profilePhoto,
+      fcmToken: fcmToken,
+    );
   }
 }
