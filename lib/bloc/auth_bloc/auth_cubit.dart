@@ -611,7 +611,6 @@ class AuthCubit extends Cubit<AuthInitialState> {
     String? profilePhoto,
     String? fcmToken,
   }) async {
-    emit(AuthLoadingState());
     ApiResponse response = await authRepository.updateEmp(
       // phoneNumber: phoneNumber,
       companyName: name,
