@@ -320,20 +320,57 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
 
     on<SortListOrDenyEvent>((event, emit) async {
       if (event.shortListOrDenyAction == ShortListOrDenyAction.shortlist) {
+        debugPrint("LOG shortlist loading");
         emit(ShorlistLoading());
       } else {
+        debugPrint("LOG deny loading");
         emit(DenyLoading());
       }
-      ApiResponse response = await jobPositionRepository.shortlistOrDenied(
-          appliedListId: event.appliedListId, status: event.status); //TODO: get status from shortListOrDenyAction
-      if (response.response.statusCode == 500) {
-        emit(const JobErrorState("Something went wrong"));
-      } else if (response.response.statusCode == 200) {
-        emit(SortListDenyState());
-      } else if (response.response.statusCode == 400) {
-        emit(JobErrorState(response.response.data['message']));
-      } else {
-        emit(JobErrorState(response.response.data['message']));
+      try {
+        ApiResponse response = await jobPositionRepository.shortlistOrDenied(
+            appliedListId: event.appliedListId, status: event.status); //TODO: get status from shortListOrDenyAction
+        if (response.response.statusCode == 500) {
+          debugPrint("LOG shortlist or deny 500");
+          emit(const JobErrorState("Something went wrong"));
+        } else if (response.response.statusCode == 200) {
+          debugPrint("LOG shortlist or deny 200");
+          emit(SortListDenyState());
+        } else if (response.response.statusCode == 400) {
+          debugPrint("LOG shortlist or deny 400");
+          emit(JobErrorState(response.response.data['message']));
+        } else {
+          debugPrint("LOG shortlist or deny else");
+          emit(JobErrorState(response.response.data['message']));
+        }
+      } catch(e) {
+          debugPrint("LOG shortlist or deny catch error");
+          emit(const JobErrorState("Something happened!"));
+      }
+    });
+
+    on<HireCandidateEvent>((event, emit) async {
+      emit(HireLoading());
+      try {
+        debugPrint("LOG hire candidate loading");
+        ApiResponse response = await jobPositionRepository.hireCandidate(
+            appliedListId: event.appliedListId);
+        debugPrint("LOG hire candidate request completed");
+        if (response.response.statusCode == 500) {
+          debugPrint("LOG hire candidate 500");
+          emit(const JobErrorState("Something went wrong"));
+        } else if (response.response.statusCode == 200) {
+          debugPrint("LOG hire candidate 200");
+          emit(SortListDenyState()); //TODO: REVISIT //leaving this the same as ShortListDenyState to have the same refresh calls as the ShortListOrDeny functionality
+        } else if (response.response.statusCode == 400) {
+          debugPrint("LOG hire candidate 400");
+          emit(JobErrorState(response.response.data['message']));
+        } else {
+          debugPrint("LOG hire candidate error else");
+          emit(JobErrorState(response.response.data['message']));
+        }
+      } catch(e) {
+        debugPrint("hire candidate error catch");
+        emit(const JobErrorState("Error! Something happened"));
       }
     });
 

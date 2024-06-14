@@ -67,6 +67,7 @@ class _ApplicantsState extends State<Applicants> {
   @override
   Widget build(BuildContext context) {
     var tab = context.watch<GlobalCubit>();
+    debugPrint("LOGG tab(selected) ->> ${tab.selectedTab}");
 
     return Scaffold(
       appBar: PreferredSize(
@@ -230,6 +231,24 @@ class _ApplicantsState extends State<Applicants> {
                                         ));
                                   },
                                 )),
+                                tab.selectedTab != 1 ? SizedBox() : SizedBox(width: 15),
+                                tab.selectedTab != 1
+                                    ? SizedBox()
+                                    : Expanded(
+                                        child: CustomButton(
+                                        bgColor: MyColors.green,
+                                        height: MediaQuery.of(context).size.height * 0.055,
+                                        title: "Hire",
+                                        loading: state is HireLoading,
+                                        onTap: () {
+                                          debugPrint('jobPosModel: ${jobPosModel?.toJson()}');
+                                          debugPrint('hire btn clicked');
+                                          context.read<JobPositionBloc>().add(HireCandidateEvent(
+                                            appliedListId:
+                                                "${jobPosModel?.appliedId}" //NEW call here
+                                              ));
+                                        },
+                                      )),
                                 tab.selectedTab == 1 ? SizedBox() : SizedBox(width: 15),
                                 tab.selectedTab == 1
                                     ? SizedBox()
@@ -242,7 +261,7 @@ class _ApplicantsState extends State<Applicants> {
                                         onTap: () {
                                           context.read<JobPositionBloc>().add(SortListOrDenyEvent(
                                                   appliedListId:
-                                                      "${jobPosModel?.appliedId}",
+                                                      "${jobPosModel?.appliedId}", //the previous call
                                                   status: "shortlisted",
                                                   shortListOrDenyAction:
                                                       ShortListOrDenyAction

@@ -98,7 +98,7 @@ class JobPosModel {
     cLog = json['c_log'];
     requirements = json['Requirements'];
     responsibilities = json['Responsilibites'];
-    topSkills = jsonDecode(json['Topskills']).cast<String>() ?? [];
+    topSkills = jsonDecode(json['Topskills']).cast<String?>() ?? [];
     salaries = json['salaries'];
     areaDistance = json['Area_Distance'];
     jobsType = json['jobs_Type'];

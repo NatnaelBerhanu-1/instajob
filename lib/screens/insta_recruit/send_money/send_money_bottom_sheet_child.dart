@@ -1,5 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:insta_job/bloc/get_hired_job_position/get_hired_candidates_bloc.dart';
+import 'package:insta_job/bloc/get_hired_job_position/get_hired_candidates_state.dart';
+import 'package:insta_job/model/hired_candidate.dart';
 import 'package:insta_job/model/payment_user.dart';
 import 'package:insta_job/screens/insta_recruit/send_money/amount_page.dart';
 import 'package:insta_job/screens/insta_recruit/send_money/payment_user_tile.dart';
@@ -22,8 +26,9 @@ class _SendMoneyBottomSheetChildState extends State<SendMoneyBottomSheetChild> {
   // final debouncer = Debouncer(milliseconds: 1000);
   final debouncer = Debouncer(milliseconds: 10);
   final TextEditingController searchController = TextEditingController();
-  var users = mockPaymentUsers;
-  var mockPaymentUsers2 = mockPaymentUsers; //for search results
+  var users = [];
+  // var searchResults = []; //for search results
+  var searchResults = []; //for search results
   int? selectedUserIndexFromRecentUsers;
   int? selectedUserIndexFromSearchResults;
   
@@ -31,11 +36,11 @@ class _SendMoneyBottomSheetChildState extends State<SendMoneyBottomSheetChild> {
     var res = selectedUserIndexFromRecentUsers != null || selectedUserIndexFromSearchResults != null;
     return res;
   }
-  PaymentUser? get selectedUser {
+  HiredCandidate? get selectedUser {
     if (selectedUserIndexFromRecentUsers != null) {
-      return mockPaymentUsers[selectedUserIndexFromRecentUsers!];
+      return users[selectedUserIndexFromRecentUsers!];
     } else if (selectedUserIndexFromSearchResults != null) {
-      return mockPaymentUsers2[selectedUserIndexFromSearchResults!];
+      return searchResults[selectedUserIndexFromSearchResults!];
     }
     return null;
   }
@@ -43,7 +48,7 @@ class _SendMoneyBottomSheetChildState extends State<SendMoneyBottomSheetChild> {
   @override
   void initState() {
     super.initState();
-    users.shuffle();
+    context.read<GetHiredCandidatesCubit>().execute();
   }
 
   
@@ -61,147 +66,167 @@ class _SendMoneyBottomSheetChildState extends State<SendMoneyBottomSheetChild> {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12).copyWith(top: 0)
           .copyWith(top: 0),
       height: MediaQuery.of(context).size.height * 0.84,
-      child: SingleChildScrollView(
-        child: Column(children: [
-          const Text(
-            "Send Money",
-            textAlign: TextAlign.start,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 22,
-            ),
-          ),
-          const SizedBox(height: 12),
-          Text(
-            "Choose an employee to continue",
-            textAlign: TextAlign.start,
-            style: TextStyle(
-              color: MyColors.greyTxt,
-              fontSize: 16,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-          const SizedBox(height: 20,),
-          IconTextField(
-            controller: searchController,
-            prefixIcon: ImageButton(
-              image: MyImages.searchGrey,
-              padding: const EdgeInsets.all(14),
-              height: 10,
-              width: 10,
-            ),
-            borderRadius: 25,
-            hint: "search",
-            onChanged: (value) {
-              debouncer.run(() {
-                debugPrint("value $value");
-                searchController.text = value;
-                selectedUserIndexFromRecentUsers = null; // nothing is selected when search text field is updating, selectedItem(if any) goes unselected
-                selectedUserIndexFromSearchResults = null; // nothing is selected when search text field is updating, selectedItem(if any) goes unselected
-                setState(() {});
-              });
-            },
-          ),
-          if (searchController.text.isEmpty)
-            Column(
-              mainAxisSize: MainAxisSize.min,//remove ig june
-              children: [
-                const SizedBox(height: 16,),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      // _buildEmployeeAvatarAndName(),
-                      // _buildEmployeeAvatarAndName(),
-                      // _buildEmployeeAvatarAndName(isSelected: true),
-                      // _buildEmployeeAvatarAndName(),
-                      // _buildEmployeeAvatarAndName(),
-                      ...users.asMap().entries.map((item) => _buildEmployeeAvatarAndName(paymentUser: item.value, currentIdx: item.key, isSelected: selectedUserIndexFromRecentUsers == item.key, updateSelectedUser: updateSelectedUser)).toList(),
-                    ],
-                  ),
+      child: BlocBuilder<GetHiredCandidatesCubit, GetHiredCandidatesState>(
+          builder: (context, state) {
+            if (state is GetHiredCandidatesLoaded) {
+              users = state.hiredList;
+              searchResults = state.hiredList;
+            }
+          return SingleChildScrollView(
+            child: Column(children: [
+              const Text(
+                "Send Money",
+                textAlign: TextAlign.start,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22,
                 ),
-                const SizedBox(height: 24,),
-                const Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Recent Transactions",
-                    textAlign: TextAlign.start,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 18,
-                    ),
-                  ),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                "Choose an employee to continue",
+                textAlign: TextAlign.start,
+                style: TextStyle(
+                  color: MyColors.greyTxt,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
                 ),
-                const SizedBox(height: 16,),
-                ListView.separated(
-                  itemCount: 4,
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  separatorBuilder: (context, state) {
-                    return const SizedBox(height: 12);
-                  },
-                  itemBuilder: (context, index) {
-                    return const TransactionTile();
-                }),
-                const SizedBox(height: 32,),
-              ]
-            ),
-          if (searchController.text.isNotEmpty)
-            Column(
-              children: [
-                const SizedBox(height: 40,),
-                const Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Search Results",
-                    textAlign: TextAlign.start,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 18,
-                    ),
-                  ),
+              ),
+              const SizedBox(height: 20,),
+              IconTextField(
+                controller: searchController,
+                prefixIcon: ImageButton(
+                  image: MyImages.searchGrey,
+                  padding: const EdgeInsets.all(14),
+                  height: 10,
+                  width: 10,
                 ),
-                const SizedBox(height: 16,),
-                ListView.separated(
-                  itemCount: mockPaymentUsers2.length,
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  separatorBuilder: (context, state) {
-                    return const SizedBox(height: 12);
-                  },
-                  itemBuilder: (context, index) {
-                     return PaymentUserTile(
-                      onClick: () {
-                        setState(() {
-                          selectedUserIndexFromSearchResults = index;
-                        });
-                      },
-                      index: index,
-                      selectedIndex: selectedUserIndexFromSearchResults,
-                      image: MyImages.visaCardBlue,
-                      isSelectMode: true,
-                      user: mockPaymentUsers2[index],
-                    );
-                }),
-                const SizedBox(height: 32,),
-              ]
-            ),
-          CustomButton(
-            title: "Continue",
-            fontColor: MyColors.white,
-            bgColor: userIsSelected ? MyColors.blue : MyColors.grey,
-            borderColor: userIsSelected ? MyColors.blue : MyColors.grey,
-            onTap: userIsSelected ? () {
-              AppRoutes.push(context, const PaymentAmountScreen());
-            } : null,
-          ),
-          const SizedBox(height: 48,),
-        ]),
+                borderRadius: 25,
+                hint: "search",
+                onChanged: (value) {
+                  debouncer.run(() {
+                    debugPrint("value $value");
+                    searchController.text = value;
+                    selectedUserIndexFromRecentUsers = null; // nothing is selected when search text field is updating, selectedItem(if any) goes unselected
+                    selectedUserIndexFromSearchResults = null; // nothing is selected when search text field is updating, selectedItem(if any) goes unselected
+                    setState(() {});
+                  });
+                },
+              ),
+              if (state is GetHiredCandidatesLoading) 
+               const Column(
+                 children: [
+                  SizedBox(height: 50,),
+                   Center(child: CircularProgressIndicator()),
+                 ],
+               ),
+              if (state is GetHiredCandidatesLoaded) 
+                Column(
+                  children: [
+                    if (searchController.text.isEmpty)
+                      Column(
+                        mainAxisSize: MainAxisSize.min,//remove ig june
+                        children: [
+                          const SizedBox(height: 16,),
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: [
+                                // _buildEmployeeAvatarAndName(),
+                                // _buildEmployeeAvatarAndName(),
+                                // _buildEmployeeAvatarAndName(isSelected: true),
+                                // _buildEmployeeAvatarAndName(),
+                                // _buildEmployeeAvatarAndName(),
+                                ...users.asMap().entries.map((item) => _buildEmployeeAvatarAndName(hiredCandidate: item.value, currentIdx: item.key, isSelected: selectedUserIndexFromRecentUsers == item.key, updateSelectedUser: updateSelectedUser)).toList(),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 24,),
+                          const Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "Recent Transactions",
+                              textAlign: TextAlign.start,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 18,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 16,),
+                          ListView.separated(
+                            itemCount: 4,
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            separatorBuilder: (context, state) {
+                              return const SizedBox(height: 12);
+                            },
+                            itemBuilder: (context, index) {
+                              return const TransactionTile();
+                          }),
+                          const SizedBox(height: 32,),
+                        ]
+                      ),
+                    if (searchController.text.isNotEmpty)
+                      Column(
+                        children: [
+                          const SizedBox(height: 40,),
+                          const Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "Search Results",
+                              textAlign: TextAlign.start,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 18,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 16,),
+                          ListView.separated(
+                            itemCount: searchResults.length,
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            separatorBuilder: (context, state) {
+                              return const SizedBox(height: 12);
+                            },
+                            itemBuilder: (context, index) {
+                              return PaymentUserTile(
+                                onClick: () {
+                                  setState(() {
+                                    selectedUserIndexFromSearchResults = index;
+                                  });
+                                },
+                                index: index,
+                                selectedIndex: selectedUserIndexFromSearchResults,
+                                image: MyImages.visaCardBlue,
+                                isSelectMode: true,
+                                hiredCandidate: searchResults[index],
+                              );
+                          }),
+                          const SizedBox(height: 32,),
+                        ]
+                      ),
+                      CustomButton(
+                        title: "Continue",
+                        fontColor: MyColors.white,
+                        bgColor: userIsSelected ? MyColors.blue : MyColors.grey,
+                        borderColor: userIsSelected ? MyColors.blue : MyColors.grey,
+                        onTap: userIsSelected ? () {
+                          AppRoutes.push(context, const PaymentAmountScreen());
+                        } : null,
+                      ),
+                  ],
+                ),
+              const SizedBox(height: 48,),
+            ]),
+          );
+        }
       ),
     );
   }
 
-  Widget _buildEmployeeAvatarAndName({bool isSelected = false, required PaymentUser paymentUser, required int currentIdx, required void Function(dynamic value) updateSelectedUser}) {
+  Widget _buildEmployeeAvatarAndName({bool isSelected = false, required HiredCandidate hiredCandidate, required int currentIdx, required void Function(dynamic value) updateSelectedUser}) {
     // var namesMock = ["Alex A.", "Nicholas M." , "Sarah D.", "Omar M.", "Sarah D.", "Mariam", "Omar", "Henry", "Adam", "Jacob", "Russell"];
     // namesMock.shuffle();
     return Padding(
@@ -250,7 +275,7 @@ class _SendMoneyBottomSheetChildState extends State<SendMoneyBottomSheetChild> {
             const SizedBox(height: 4),
             Text(
               // "Alex A.",
-              paymentUser.name ?? "",
+              hiredCandidate.user.name ?? "",
               textAlign: TextAlign.start,
               style: TextStyle(
                 fontWeight: FontWeight.w600,

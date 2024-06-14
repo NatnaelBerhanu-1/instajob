@@ -134,6 +134,15 @@ class SortListOrDenyEvent extends JobPosEvent {
   List<Object?> get props => [];
 }
 
+class HireCandidateEvent extends JobPosEvent {
+  final String appliedListId;
+
+  HireCandidateEvent(
+      {required this.appliedListId});
+  @override
+  List<Object?> get props => [appliedListId];
+}
+
 class SetInterviewEvent extends JobPosEvent {
   final String? companyId;
   final String? employeeId;

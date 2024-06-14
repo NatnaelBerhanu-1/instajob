@@ -98,11 +98,25 @@ class JobPositionRepository {
 
   Future<ApiResponse> shortlistOrDenied({required String appliedListId, String? status}) async {
     var map = {"id": appliedListId, "status": status ?? "applied"};
+    debugPrint("LOGG shortlist or denied map $map");
     try {
       Response response = await dioClient.post(data: map, uri: EndPoint.shortlistOrDenied);
       return ApiResponse.withSuccess(response);
     } on DioException catch (e) {
       return ApiResponse.withError(e.response);
+    }
+  }
+
+  Future<ApiResponse> hireCandidate({required String appliedListId}) async {
+    var map = {"id": appliedListId, "status": "hired"};
+    debugPrint("LOGG hire map $map");
+    try {
+      Response response = await dioClient.post(data: map, uri: EndPoint.shortlistOrDenied);
+      return ApiResponse.withSuccess(response);
+    } on DioException catch (e) {
+      return ApiResponse.withError(e.response);
+    } catch(e) {
+      return ApiResponse.withError(e);
     }
   }
 
@@ -414,4 +428,18 @@ class JobPositionRepository {
       return 0;
     }
   }
+
+  Future<ApiResponse> getHiredCandidates({String? jobId}) async {
+    String emp_id = Global.userModel?.id.toString() ?? "";
+    var map = {"employee_id": emp_id};
+    print("LOGG get hired list map ${map}");
+    try {
+      Response response = await dioClient.post(
+          data: map, uri: EndPoint.getHiredCandidates); //note: this endpoint is for all (applied, shortlisted, declined), AND hired(newly added status)
+      return ApiResponse.withSuccess(response);
+    } on DioException catch (e) {
+      return ApiResponse.withError(e.response);
+    }
+  }
+
 }

@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:insta_job/model/hired_candidate.dart';
 import 'package:insta_job/model/payment_user.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
@@ -13,7 +14,7 @@ class PaymentUserTile extends StatelessWidget {
   final int? selectedIndex;
   final void Function()? onClick;
   final bool isSelectMode;
-  final PaymentUser user;
+  final HiredCandidate hiredCandidate;
   const PaymentUserTile(
       {Key? key,
       this.image,
@@ -22,7 +23,7 @@ class PaymentUserTile extends StatelessWidget {
       this.selectedIndex,
       this.onClick, 
       this.isSelectMode = true,
-      required this.user,
+      required this.hiredCandidate,
     })
       : super(key: key);
 
@@ -76,7 +77,7 @@ class PaymentUserTile extends StatelessWidget {
                         Text(
                           // "Nicholas M.",
                           // user.name ?? "",
-                          user.name ?? "Unknown",
+                          hiredCandidate.user.name ?? "Unknown",
                           style: TextStyle(
                             fontSize: 16,
                             color: MyColors.black,

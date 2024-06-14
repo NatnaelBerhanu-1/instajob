@@ -53,6 +53,7 @@ class EndPoint {
   static String applyForJob = "apply";
   static String getAppliedJob = "apply_show_list";
   static String shortlistOrDenied = "shortlist_or_denied";
+  static String getHiredCandidates = "hired_candidates";
 
   /// feedBack
   static String feedbackInsert = "feedback_insert";
