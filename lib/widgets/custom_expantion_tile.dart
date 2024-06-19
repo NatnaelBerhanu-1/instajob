@@ -83,7 +83,7 @@ Widget buildTopSkillsTile(JobPosModel jobPosModel) {
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
-              children: List.generate(jobPosModel.topSkills!.length, (index) {
+              children: List.generate(jobPosModel.topSkills?.length ?? 0, (index) {
                 // print("TOPPPPPPPPPPPPPPPPP ${jobPosModel.topskills?[index]}");
                 return Padding(
                   padding: const EdgeInsets.all(4.0),
