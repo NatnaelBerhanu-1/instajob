@@ -92,6 +92,7 @@ dependencies:
   flutter_local_notifications: ^15.1.0+1
   # flutter_local_notifications: any
   logger: 1.1.0
+  country_picker: any
 
 dev_dependencies:
   flutter_test:

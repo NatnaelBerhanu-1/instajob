@@ -345,6 +345,9 @@ class CustomPhonePickerTextField extends StatelessWidget {
   final ValueChanged<PhoneNumber>? onInputChanged;
   final PhoneNumber initialValue;
   final ImageButton? prefixIcon; //todo: define in the widget
+  final String? hintText;
+  final SelectorConfig? selectorConfig;
+  final Color? labelColor;
 
   CustomPhonePickerTextField(
       {Key? key,
@@ -354,7 +357,10 @@ class CustomPhonePickerTextField extends StatelessWidget {
       this.onInputValidated,
       this.onInputChanged,
       required this.initialValue,
-      this.prefixIcon})
+      this.prefixIcon,
+      this.hintText,
+      this.selectorConfig, 
+      this.labelColor})
       : super(key: key);
   InputBorder border = OutlineInputBorder(
       borderSide: BorderSide(color: MyColors.lightgrey, width: 1), borderRadius: BorderRadius.circular(10));
@@ -368,7 +374,7 @@ class CustomPhonePickerTextField extends StatelessWidget {
             ? SizedBox()
             : Text(
                 "$label",
-                style: TextStyle(color: MyColors.grey, fontSize: 13.5, fontWeight: FontWeight.w400),
+                style: TextStyle(color: labelColor ?? MyColors.grey, fontSize: 13.5, fontWeight: FontWeight.w400),
               ),
         SizedBox(height: 9),
         InternationalPhoneNumberInput(
@@ -378,7 +384,7 @@ class CustomPhonePickerTextField extends StatelessWidget {
           validator: validator,
           // autoValidateMode: AutovalidateMode.always,
 
-          selectorConfig: const SelectorConfig(
+          selectorConfig: selectorConfig ?? const SelectorConfig(
               selectorType: PhoneInputSelectorType.DIALOG,
               leadingPadding: 10,
               setSelectorButtonAsPrefixIcon: true,
@@ -400,7 +406,7 @@ class CustomPhonePickerTextField extends StatelessWidget {
             fillColor: MyColors.white,
             filled: true,
             contentPadding: EdgeInsets.all(8),
-            hintText: "",
+            hintText: hintText ?? "",
             hintStyle: TextStyle(fontSize: 13),
             border: border,
             enabledBorder: border,

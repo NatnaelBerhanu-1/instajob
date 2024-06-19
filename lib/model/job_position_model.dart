@@ -78,6 +78,12 @@ class JobPosModel {
       this.jobId});
 
   JobPosModel.fromJson(Map<String, dynamic> json) {
+    try {
+      topSkills = List<String>.from(jsonDecode(json['Topskills']));
+    } catch(e) {
+      topSkills = [];
+    }
+
     id = json['id'];
     jobId = json['id'].toString();
     userId = json['user_id'];
@@ -98,7 +104,7 @@ class JobPosModel {
     cLog = json['c_log'];
     requirements = json['Requirements'];
     responsibilities = json['Responsilibites'];
-    topSkills = jsonDecode(json['Topskills']).cast<String?>() ?? [];
+    topSkills = topSkills;
     salaries = json['salaries'];
     areaDistance = json['Area_Distance'];
     jobsType = json['jobs_Type'];

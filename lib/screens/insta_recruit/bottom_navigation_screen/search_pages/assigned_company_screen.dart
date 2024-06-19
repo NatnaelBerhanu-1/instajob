@@ -5,8 +5,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/company_bloc/company_bloc.dart';
 import 'package:insta_job/bloc/company_bloc/company_event.dart';
 import 'package:insta_job/bloc/company_bloc/company_state.dart';
+import 'package:insta_job/screens/bank_info/add_bank_info_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/add_new_company.dart';
 import 'package:insta_job/screens/insta_recruit/send_money/send_money_bottom_sheet_child.dart';
+import 'package:insta_job/screens/kyc/upload_kyc_screen.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
@@ -167,6 +169,12 @@ class _AssignCompanyState extends State<AssignCompany> {
                 },
               );
             }, child: Text("Payment related screens"),),
+            // TextButton(onPressed: () {
+            //   AppRoutes.push(context, UploadKycScreen());
+            // }, child: Text("Kyc related screens"),),
+            TextButton(onPressed: () {
+              AppRoutes.push(context, AddBankInfoScreen());
+            }, child: Text("Add Banking Info screens"),),
           ],
         ));
   }

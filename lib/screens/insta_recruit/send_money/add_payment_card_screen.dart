@@ -18,11 +18,21 @@ class _AddPaymentCardBottomSheetChildState extends State<AddPaymentCardBottomShe
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height  * 0.6,
-      padding: const EdgeInsets.all(20.0),
+      height: MediaQuery.of(context).size.height  * 0.5,
+      padding: const EdgeInsets.fromLTRB(20, 4, 20, 20),
       child: Column(
         children: [
-          SizedBox(height: 20),
+          Text(
+            "Add new card",
+            style: TextStyle(
+              fontSize: 18,
+              color: MyColors.black,
+              overflow: TextOverflow.clip,
+              fontWeight: FontWeight.w700,
+              letterSpacing: 1.1,
+            ),
+          ),
+          SizedBox(height: 28),
           Material(
             elevation: 7,
             shadowColor: MyColors.grey.withOpacity(.14),
