@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/widgets/custom_app_bar.dart';
+import 'package:insta_job/widgets/custom_button/custom_btn.dart';
 import 'package:insta_job/widgets/custom_drop_down.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
@@ -17,7 +18,8 @@ class _UploadKycScreenState extends State<UploadKycScreen> {
   int tabIndex = 0;
   TextEditingController phoneController = TextEditingController();
   var initialValue = PhoneNumber(isoCode: "US");
-  List<String> businessTypes = ["Financial entity", "Business entity"].cast<String>();
+  List<String> businessTypes =
+      ["Financial entity", "Business entity"].cast<String>();
   String? selectedBusinessType;
 
   @override
@@ -246,6 +248,7 @@ class _UploadKycScreenState extends State<UploadKycScreen> {
   }
 
   Widget _buildIdInfoPage() {
+    List<String> documentTypes = ["Driving License", "Passport", "ID Card"];
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 22),
       child: Column(
@@ -264,8 +267,27 @@ class _UploadKycScreenState extends State<UploadKycScreen> {
           const SizedBox(
             height: 20,
           ),
+          Wrap(
+            children: [
+              _buildDocumentType(
+                documentTypeName: "Driving License",
+                index: 0,
+                isSelected: false,
+              ),
+              _buildDocumentType(
+                documentTypeName: "Passport",
+                index: 1,
+                isSelected: false,
+              ),
+              _buildDocumentType(
+                documentTypeName: "ID Card",
+                index: 2,
+                isSelected: false,
+              ),
+            ],
+          ),
           const SizedBox(
-            height: 20,
+            height: 30,
           ),
           Text(
             "Upload ID Proof",
@@ -277,9 +299,63 @@ class _UploadKycScreenState extends State<UploadKycScreen> {
               letterSpacing: 1.2,
             ),
           ),
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: CustomButton(
+                  title: "Front",
+                  width: 150,
+                  height: 150,
+                  bgColor: MyColors.white,
+                  borderColor: MyColors.blue,
+                  fontColor: MyColors.blue,
+                  onTap: () async {},
+                ),
+              ),
+              const SizedBox(width: 30),
+              Expanded(
+                child: CustomButton(
+                  title: "Back",
+                  width: 150,
+                  height: 150,
+                  bgColor: MyColors.white,
+                  borderColor: MyColors.blue,
+                  fontColor: MyColors.blue,
+                  onTap: () async {},
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
         ],
       ),
     );
   }
 
+  Container _buildDocumentType({
+    required String documentTypeName,
+    required bool isSelected,
+    required int index,
+  }) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 5),
+      decoration: BoxDecoration(
+          color:
+              isSelected ? MyColors.lightBlue.withOpacity(0.1) : MyColors.white,
+          border: Border.all(
+            color: isSelected ? MyColors.lightBlue : MyColors.grey,
+            width: 1,
+          ),
+          borderRadius: BorderRadius.circular(25)),
+      padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 18),
+      child: Text(
+        documentTypeName,
+        style: TextStyle(
+          color: isSelected ? MyColors.blue : MyColors.greyTxt,
+        ),
+      ),
+    );
+  }
 }

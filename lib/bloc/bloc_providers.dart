@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/agora_bloc/agora_cubit.dart';
 import 'package:insta_job/bloc/attachment_download_cubit/attachment_download_cubit.dart';
 import 'package:insta_job/bloc/auth_bloc/auth_cubit.dart';
+import 'package:insta_job/bloc/banking_info_bloc/add_banking_info/add_banking_info_cubit.dart';
 import 'package:insta_job/bloc/cancel_interview_schedule_cubit/cancel_interview_schedule_cubit.dart';
 import 'package:insta_job/bloc/career_learning_bloc/career_learning_bloc.dart';
 import 'package:insta_job/bloc/choose_image_bloc/pick_image_cubit.dart';
@@ -48,4 +49,5 @@ final List<SingleChildWidget> blocProviders = [
   BlocProvider(create: (_) => di.sl<EndInterviewCallScheduleCubit>()),
   BlocProvider(create: (_) => di.sl<InterviewTranscriptionCubit>()),
   BlocProvider(create: (_) => di.sl<GetHiredCandidatesCubit>()),
+  BlocProvider(create: (_) => di.sl<AddBankingInfoCubit>()),
 ];

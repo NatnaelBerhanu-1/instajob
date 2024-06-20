@@ -144,39 +144,46 @@ class _AssignCompanyState extends State<AssignCompany> {
               }
               return Container();
             })),
-            TextButton(onPressed: () {
-              showModalBottomSheet(
-                context: context,
-                isScrollControlled: true,
-                // isDismissible: true,  
-                showDragHandle: true,
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(20),
+            TextButton(
+              onPressed: () {
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  // isDismissible: true,
+                  showDragHandle: true,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(20),
+                    ),
                   ),
-                ),
-                builder: (context) {
-                  return Builder(
-                  // return DraggableScrollableSheet(
-                    // initialChildSize: 0.75,
-                    // maxChildSize: 0.75,
-                    // minChildSize: 0.75,
-                    // builder: (BuildContext context, ScrollController scrollController) {
-                    builder: (BuildContext context) {
+                  builder: (context) {
+                    return Builder(
+                        // return DraggableScrollableSheet(
+                        // initialChildSize: 0.75,
+                        // maxChildSize: 0.75,
+                        // minChildSize: 0.75,
+                        // builder: (BuildContext context, ScrollController scrollController) {
+                        builder: (BuildContext context) {
                       return SafeArea(child: SendMoneyBottomSheetChild());
-                    }
-                  );
-                },
-              );
-            }, child: Text("Payment related screens"),),
-            // TextButton(onPressed: () {
-            //   AppRoutes.push(context, UploadKycScreen());
-            // }, child: Text("Kyc related screens"),),
-            TextButton(onPressed: () {
-              AppRoutes.push(context, AddBankInfoScreen());
-            }, child: Text("Add Banking Info screens"),),
+                    });
+                  },
+                );
+              },
+              child: Text("Payment related screens"),
+            ),
+            TextButton(
+              onPressed: () {
+                AppRoutes.push(context, UploadKycScreen());
+              },
+              child: Text("Kyc related screens"),
+            ),
+            TextButton(
+              onPressed: () {
+                AppRoutes.push(context, AddBankInfoScreen());
+              },
+              child: Text("Add Banking Info screens"),
+            ),
           ],
         ));
   }
-
 }
