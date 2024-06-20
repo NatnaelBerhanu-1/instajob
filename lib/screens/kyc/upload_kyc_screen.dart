@@ -21,12 +21,25 @@ class _UploadKycScreenState extends State<UploadKycScreen> {
   List<String> businessTypes =
       ["Financial entity", "Business entity"].cast<String>();
   String? selectedBusinessType;
+  final PageController _pageController = PageController(initialPage: 0);
+  int _currentPage = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController.addListener(() {
+      setState(() {
+        _currentPage = _pageController.page?.round() ?? 0;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    debugPrint("curr  page $_currentPage");
     return Scaffold(
       appBar: PreferredSize(
-          preferredSize: Size(double.infinity, kToolbarHeight),
+          preferredSize: const Size(double.infinity, kToolbarHeight),
           child: CustomAppBar(
             useLeadingImage: false,
             title: "Upload KYC",
@@ -40,38 +53,119 @@ class _UploadKycScreenState extends State<UploadKycScreen> {
                   color: MyColors.grey,
                 )),
           )),
-      body: DefaultTabController(
-        length: 3,
-        child: Column(
-          children: [
-            TabBar(
-                padding: EdgeInsets.zero,
-                labelPadding: EdgeInsets.zero,
-                unselectedLabelColor: MyColors.tabClr,
-                labelColor: MyColors.blue,
-                indicatorColor: MyColors.blue,
-                onTap: (val) {
-                  tabIndex = val;
-                  // context.read<InterviewScheduleCubit>().getInterviewSchedules(Global.userModel!.id.toString());
+      body: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _buildItem(
+                  index: 0,
+                  selectedIndex: _currentPage,
+                  title: "Personal Info"),
+              _buildItem(
+                  index: 1,
+                  selectedIndex: _currentPage,
+                  title: "Business Info"),
+              _buildItem(
+                  index: 2, selectedIndex: _currentPage, title: "ID Proof"),
+            ],
+          ),
+          Flexible(
+            child: PageView(
+                controller: _pageController,
+                onPageChanged: (i) {
                   setState(() {});
                 },
-                tabs: const [
-                  Tab(text: "Personal Info"),
-                  Tab(text: "Business Info"),
-                  Tab(text: "ID Proof"),
+                children: [
+                  _buildPersonalInfoPage(),
+                  _buildBusinessInfoPage(),
+                  _buildIdInfoPage(),
                 ]),
-            Expanded(
-              child: Builder(builder: (context) {
-                return TabBarView(
-                  children: [
-                    _buildPersonalInfoPage(),
-                    _buildBusinessInfoPage(),
-                    _buildIdInfoPage(),
-                  ],
-                );
-              }),
-            )
-          ],
+          ),
+          const SizedBox(height: 20),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 22),
+            child: Row(
+              children: [
+                if (_currentPage > 0)
+                  Expanded(
+                      child: CustomButton(
+                    title: "Back",
+                    bgColor: MyColors.white,
+                    borderColor: MyColors.blue,
+                    fontColor: MyColors.blue,
+                    height: 48,
+                    onTap: () {
+                      _pageController.previousPage(
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeInOut,
+                      );
+                      setState(() {});
+                    },
+                  )),
+                const SizedBox(width: 15),
+                if (_currentPage < 2)
+                  Expanded(
+                    child: CustomButton(
+                      title: "Next",
+                      // width: 120,
+                      height: 48,
+                      onTap: () async {
+                        _pageController.nextPage(
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.easeInOut,
+                        );
+                        setState(() {});
+                      },
+                    ),
+                  ),
+                if (_currentPage == 2)
+                  Expanded(
+                    child: CustomButton(
+                      title: "Submit",
+                      // width: 120,
+                      height: 48,
+                      onTap: () async {
+                        setState(() {});
+                      },
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 4),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildItem(
+      {required String title, required int selectedIndex, required int index}) {
+    var itemIsCompletedOrCurrentStage = index <= selectedIndex;
+    var isPreviousStage = index < selectedIndex;
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 4),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: itemIsCompletedOrCurrentStage
+                ? MyColors.blue
+                : Colors.transparent,
+            width: 2.0,
+          ),
+        ),
+      ),
+      child: Center(
+        child: Text(
+          title,
+          style: TextStyle(
+            color: itemIsCompletedOrCurrentStage
+                ? isPreviousStage
+                    ? MyColors.black
+                    : MyColors.blue
+                : MyColors.tabClr,
+          ),
         ),
       ),
     );
