@@ -23,6 +23,7 @@ class _UploadKycScreenState extends State<UploadKycScreen> {
   String? selectedBusinessType;
   final PageController _pageController = PageController(initialPage: 0);
   int _currentPage = 0;
+  int selectedDocumentTypeIndex = 0;
 
   @override
   void initState() {
@@ -362,23 +363,7 @@ class _UploadKycScreenState extends State<UploadKycScreen> {
             height: 20,
           ),
           Wrap(
-            children: [
-              _buildDocumentType(
-                documentTypeName: "Driving License",
-                index: 0,
-                isSelected: false,
-              ),
-              _buildDocumentType(
-                documentTypeName: "Passport",
-                index: 1,
-                isSelected: false,
-              ),
-              _buildDocumentType(
-                documentTypeName: "ID Card",
-                index: 2,
-                isSelected: false,
-              ),
-            ],
+            children: _buildDocumentTypes(documentTypes),
           ),
           const SizedBox(
             height: 30,
@@ -428,28 +413,43 @@ class _UploadKycScreenState extends State<UploadKycScreen> {
     );
   }
 
-  Container _buildDocumentType({
+  Widget _buildDocumentType({
     required String documentTypeName,
     required bool isSelected,
     required int index,
   }) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 5),
-      decoration: BoxDecoration(
-          color:
-              isSelected ? MyColors.lightBlue.withOpacity(0.1) : MyColors.white,
-          border: Border.all(
-            color: isSelected ? MyColors.lightBlue : MyColors.grey,
-            width: 1,
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          selectedDocumentTypeIndex = index;
+        });
+      },
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 5),
+        decoration: BoxDecoration(
+            color:
+                isSelected ? MyColors.lightBlue.withOpacity(0.1) : MyColors.white,
+            border: Border.all(
+              color: isSelected ? MyColors.lightBlue : MyColors.grey,
+              width: 1,
+            ),
+            borderRadius: BorderRadius.circular(25)),
+        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 18),
+        child: Text(
+          documentTypeName,
+          style: TextStyle(
+            color: isSelected ? MyColors.blue : MyColors.greyTxt,
           ),
-          borderRadius: BorderRadius.circular(25)),
-      padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 18),
-      child: Text(
-        documentTypeName,
-        style: TextStyle(
-          color: isSelected ? MyColors.blue : MyColors.greyTxt,
         ),
       ),
     );
+  }
+  
+  List<Widget> _buildDocumentTypes(List<String> documentTypes) {
+    return documentTypes.asMap().entries.map((item) => _buildDocumentType(
+      documentTypeName: item.value,
+      index: item.key,
+      isSelected: item.key == selectedDocumentTypeIndex,
+    )).toList();
   }
 }
