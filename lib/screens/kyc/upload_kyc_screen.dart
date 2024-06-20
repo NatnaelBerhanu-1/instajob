@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:insta_job/bloc/choose_image_bloc/pick_image_cubit.dart';
+import 'package:insta_job/bloc/choose_image_bloc/pick_image_state.dart';
+import 'package:insta_job/di_container.dart';
+import 'package:insta_job/network/end_points.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/widgets/custom_app_bar.dart';
 import 'package:insta_job/widgets/custom_button/custom_btn.dart';
+import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:insta_job/widgets/custom_drop_down.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
@@ -24,6 +30,10 @@ class _UploadKycScreenState extends State<UploadKycScreen> {
   final PageController _pageController = PageController(initialPage: 0);
   int _currentPage = 0;
   int selectedDocumentTypeIndex = 0;
+  String idFrontImgUrl = "";
+  String idBackImgUrl = "";
+  var frontImageBloc = PickImageCubit(sl());
+  var backImageBloc = PickImageCubit(sl());
 
   @override
   void initState() {
@@ -38,6 +48,7 @@ class _UploadKycScreenState extends State<UploadKycScreen> {
   @override
   Widget build(BuildContext context) {
     debugPrint("curr  page $_currentPage");
+    debugPrint("LOGG:: front $idFrontImgUrl back $idBackImgUrl");
     return Scaffold(
       appBar: PreferredSize(
           preferredSize: const Size(double.infinity, kToolbarHeight),
@@ -298,17 +309,16 @@ class _UploadKycScreenState extends State<UploadKycScreen> {
               letterSpacing: 1.2,
             ),
           ),
-          
           const SizedBox(
             height: 20,
           ),
           CustomDropdown(
             list: businessTypes
-                    .map((e) => DropdownMenuItem(
-                          value: e,
-                          child: Text(e.toString()),
-                        ))
-                    .toList(),
+                .map((e) => DropdownMenuItem(
+                      value: e,
+                      child: Text(e.toString()),
+                    ))
+                .toList(),
             value: selectedBusinessType,
             onChanged: (val) {
               // endMonth = val;
@@ -383,27 +393,65 @@ class _UploadKycScreenState extends State<UploadKycScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-                child: CustomButton(
-                  title: "Front",
-                  width: 150,
-                  height: 150,
-                  bgColor: MyColors.white,
-                  borderColor: MyColors.blue,
-                  fontColor: MyColors.blue,
-                  onTap: () async {},
-                ),
+                child: BlocConsumer<PickImageCubit, InitialImage>(
+                    bloc: frontImageBloc,
+                    listener: (context, state) {
+                      if (state is PickImageState) {
+                        idFrontImgUrl = state.url;
+                        setState(() {});
+                      }
+                    },
+                    builder: (context, state) {
+                      if (state is PickImageState) {
+                        return _buildSelectedImage(
+                          idFrontImgUrl,
+                          onTap: onFrontImageTap,
+                        );
+                      }
+                      return CustomButton(
+                        title: "Front",
+                        width: 150,
+                        height: 150,
+                        bgColor: MyColors.white,
+                        borderColor: MyColors.blue,
+                        fontColor: MyColors.blue,
+                        loading: state is LoadingImageState,
+                        loadingIndicatorColor: MyColors.blue,
+                        onTap: () async {
+                          frontImageBloc.getImage();
+                        },
+                      );
+                    }),
               ),
               const SizedBox(width: 30),
               Expanded(
-                child: CustomButton(
-                  title: "Back",
-                  width: 150,
-                  height: 150,
-                  bgColor: MyColors.white,
-                  borderColor: MyColors.blue,
-                  fontColor: MyColors.blue,
-                  onTap: () async {},
-                ),
+                child: BlocConsumer<PickImageCubit, InitialImage>(
+                    bloc: backImageBloc,
+                    listener: (context, state) {
+                      if (state is PickImageState) {
+                        idBackImgUrl = state.url;
+                        setState(() {});
+                      }
+                    },
+                    builder: (context, state) {
+                      if (state is PickImageState) {
+                        return _buildSelectedImage(idBackImgUrl,
+                            onTap: onBackImageTap);
+                      }
+                      return CustomButton(
+                        title: "Back",
+                        width: 150,
+                        height: 150,
+                        loading: state is LoadingImageState,
+                        loadingIndicatorColor: MyColors.blue,
+                        bgColor: MyColors.white,
+                        borderColor: MyColors.blue,
+                        fontColor: MyColors.blue,
+                        onTap: () async {
+                          backImageBloc.getImage();
+                        },
+                      );
+                    }),
               ),
             ],
           ),
@@ -411,6 +459,40 @@ class _UploadKycScreenState extends State<UploadKycScreen> {
         ],
       ),
     );
+  }
+
+  Widget _buildSelectedImage(String url, {required void Function() onTap}) {
+    return CustomCommonCard(
+      onTap: () {
+        onTap();
+      },
+      bgColor: MyColors.blue.withOpacity(.10),
+      borderRadius: BorderRadius.circular(10),
+      borderColor: MyColors.lightBlue,
+      height: 150,
+      width: 150,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: Padding(
+          padding: EdgeInsets.zero,
+          child: Image.network(
+            // "${EndPoint.imageBaseUrl}${state.url}",
+            "${EndPoint.imageBaseUrl}$url",
+            fit: BoxFit.cover,
+            width: double.maxFinite,
+            height: double.maxFinite,
+          ),
+        ),
+      ),
+    );
+  }
+
+  void onFrontImageTap() {
+    frontImageBloc.getImage();
+  }
+
+  void onBackImageTap() {
+    backImageBloc.getImage();
   }
 
   Widget _buildDocumentType({
