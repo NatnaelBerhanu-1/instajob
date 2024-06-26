@@ -30,6 +30,7 @@ class _UploadKycScreenState extends State<UploadKycScreen> {
   final PageController _pageController = PageController(initialPage: 0);
   int _currentPage = 0;
   int selectedDocumentTypeIndex = 0;
+  int selectedBankAccountTypeIndex = 0;
   String idFrontImgUrl = "";
   String idBackImgUrl = "";
   var frontImageBloc = PickImageCubit(sl());
@@ -49,6 +50,7 @@ class _UploadKycScreenState extends State<UploadKycScreen> {
   Widget build(BuildContext context) {
     debugPrint("curr  page $_currentPage");
     debugPrint("LOGG:: front $idFrontImgUrl back $idBackImgUrl");
+    debugPrint("LOGG:: select 1 $selectedDocumentTypeIndex $selectedBusinessType $selectedBankAccountTypeIndex");
     return Scaffold(
       appBar: PreferredSize(
           preferredSize: const Size(double.infinity, kToolbarHeight),
@@ -81,6 +83,8 @@ class _UploadKycScreenState extends State<UploadKycScreen> {
                   title: "Business Info"),
               _buildItem(
                   index: 2, selectedIndex: _currentPage, title: "ID Proof"),
+              _buildItem(
+                  index: 3, selectedIndex: _currentPage, title: "Bank"),
             ],
           ),
           Flexible(
@@ -93,6 +97,7 @@ class _UploadKycScreenState extends State<UploadKycScreen> {
                   _buildPersonalInfoPage(),
                   _buildBusinessInfoPage(),
                   _buildIdInfoPage(),
+                  _buildBankInfoPage(),
                 ]),
           ),
           const SizedBox(height: 20),
@@ -117,7 +122,7 @@ class _UploadKycScreenState extends State<UploadKycScreen> {
                     },
                   )),
                 const SizedBox(width: 15),
-                if (_currentPage < 2)
+                if (_currentPage < 3)
                   Expanded(
                     child: CustomButton(
                       title: "Next",
@@ -132,7 +137,7 @@ class _UploadKycScreenState extends State<UploadKycScreen> {
                       },
                     ),
                   ),
-                if (_currentPage == 2)
+                if (_currentPage == 3)
                   Expanded(
                     child: CustomButton(
                       title: "Submit",
@@ -461,6 +466,115 @@ class _UploadKycScreenState extends State<UploadKycScreen> {
     );
   }
 
+  Widget _buildBankInfoPage() {
+    List<String> bankAccountTypes = ["Checking", "Saving"];
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 22),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Choose Document Type",
+            style: TextStyle(
+              fontSize: 16,
+              color: MyColors.black,
+              overflow: TextOverflow.clip,
+              fontWeight: FontWeight.w700,
+              letterSpacing: 1.2,
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Wrap(
+            children: _buildBankAccountTypes(bankAccountTypes),
+          ),
+          const SizedBox(
+            height: 30,
+          ),
+          Text(
+            "Upload ID Proof",
+            style: TextStyle(
+              fontSize: 16,
+              color: MyColors.black,
+              overflow: TextOverflow.clip,
+              fontWeight: FontWeight.w700,
+              letterSpacing: 1.2,
+            ),
+          ),
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: BlocConsumer<PickImageCubit, InitialImage>(
+                    bloc: frontImageBloc,
+                    listener: (context, state) {
+                      if (state is PickImageState) {
+                        idFrontImgUrl = state.url;
+                        setState(() {});
+                      }
+                    },
+                    builder: (context, state) {
+                      if (state is PickImageState) {
+                        return _buildSelectedImage(
+                          idFrontImgUrl,
+                          onTap: onFrontImageTap,
+                        );
+                      }
+                      return CustomButton(
+                        title: "Front",
+                        width: 150,
+                        height: 150,
+                        bgColor: MyColors.white,
+                        borderColor: MyColors.blue,
+                        fontColor: MyColors.blue,
+                        loading: state is LoadingImageState,
+                        loadingIndicatorColor: MyColors.blue,
+                        onTap: () async {
+                          frontImageBloc.getImage();
+                        },
+                      );
+                    }),
+              ),
+              const SizedBox(width: 30),
+              Expanded(
+                child: BlocConsumer<PickImageCubit, InitialImage>(
+                    bloc: backImageBloc,
+                    listener: (context, state) {
+                      if (state is PickImageState) {
+                        idBackImgUrl = state.url;
+                        setState(() {});
+                      }
+                    },
+                    builder: (context, state) {
+                      if (state is PickImageState) {
+                        return _buildSelectedImage(idBackImgUrl,
+                            onTap: onBackImageTap);
+                      }
+                      return CustomButton(
+                        title: "Back",
+                        width: 150,
+                        height: 150,
+                        loading: state is LoadingImageState,
+                        loadingIndicatorColor: MyColors.blue,
+                        bgColor: MyColors.white,
+                        borderColor: MyColors.blue,
+                        fontColor: MyColors.blue,
+                        onTap: () async {
+                          backImageBloc.getImage();
+                        },
+                      );
+                    }),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+        ],
+      ),
+    );
+  }
+
   Widget _buildSelectedImage(String url, {required void Function() onTap}) {
     return CustomCommonCard(
       onTap: () {
@@ -498,14 +612,11 @@ class _UploadKycScreenState extends State<UploadKycScreen> {
   Widget _buildDocumentType({
     required String documentTypeName,
     required bool isSelected,
-    required int index,
+    required int index, 
+    required void Function() onTap,
   }) {
     return GestureDetector(
-      onTap: () {
-        setState(() {
-          selectedDocumentTypeIndex = index;
-        });
-      },
+      onTap: onTap,
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 5),
         decoration: BoxDecoration(
@@ -532,6 +643,26 @@ class _UploadKycScreenState extends State<UploadKycScreen> {
       documentTypeName: item.value,
       index: item.key,
       isSelected: item.key == selectedDocumentTypeIndex,
+      onTap: () {
+        setState(() {
+          var index = item.key;
+          selectedDocumentTypeIndex = index;
+        });
+      },
+    )).toList();
+  }
+
+  List<Widget> _buildBankAccountTypes(List<String> documentTypes) {
+    return documentTypes.asMap().entries.map((item) => _buildDocumentType(
+      documentTypeName: item.value,
+      index: item.key,
+      isSelected: item.key == selectedBankAccountTypeIndex,
+      onTap: () {
+        setState(() {
+          var index = item.key;
+          selectedBankAccountTypeIndex = index;
+        });
+      }
     )).toList();
   }
 }
