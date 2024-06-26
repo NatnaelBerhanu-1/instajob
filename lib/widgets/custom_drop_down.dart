@@ -15,6 +15,8 @@ class CustomDropdown extends StatelessWidget {
   final Color? iconColor;
   final Color? bgColor;
   final Color? borderColor;
+  final Color? errorBorderColor;
+  final AutovalidateMode? autovalidateMode;
   const CustomDropdown({
     Key? key,
     this.onChanged,
@@ -23,10 +25,12 @@ class CustomDropdown extends StatelessWidget {
     this.hintText,
     this.iconSize,
     this.borderColor,
+    this.errorBorderColor,
     this.iconColor,
     this.isExpanded,
     this.bgColor,
-    this.validator,
+    this.validator, 
+    this.autovalidateMode,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -35,16 +39,21 @@ class CustomDropdown extends StatelessWidget {
       borderSide:
           BorderSide(color: borderColor ?? MyColors.greyTxt.withOpacity(.15)),
     );
+    var errorBorder = OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10),
+      borderSide:
+          BorderSide(color: errorBorderColor ?? MyColors.red.withOpacity(.9)),
+    );
     return DropdownButtonHideUnderline(
       child: DropdownButtonFormField(
-          autovalidateMode: AutovalidateMode.onUserInteraction,
+          autovalidateMode: AutovalidateMode.always,
           decoration: InputDecoration(
               contentPadding: EdgeInsets.all(10),
               errorStyle: TextStyle(height: 0),
-              focusedErrorBorder: border,
+              focusedErrorBorder: errorBorder,
               enabledBorder: border,
               border: border,
-              errorBorder: border,
+              errorBorder: errorBorder,
               focusedBorder: border),
           elevation: 6,
           isDense: true,

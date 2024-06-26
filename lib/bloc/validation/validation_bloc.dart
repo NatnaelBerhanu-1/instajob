@@ -37,6 +37,16 @@ String? requiredValidationn(String s) {
   return null;
 }
 
+String? requiredValidationn2(String? s) {
+  if (s == null) {
+    return "* Field can't be empty";
+  }
+  if (s.isEmpty || s == "") {
+    return "* Field can't be empty";
+  }
+  return null;
+}
+
 String? emailValidation(String s) {
   RegExp pattern = RegExp(r'^.+@[a-zA-Z]+\.[a-zA-Z]+(\.?[a-zA-Z]+)$');
   if (s.isEmpty) {

@@ -142,6 +142,7 @@ class CustomTextField extends StatelessWidget {
   final bool? readOnly;
   final VoidCallback? onPressed;
   final TextInputType? keyboardType;
+  final AutovalidateMode? autovalidateMode;
 
   const CustomTextField({
     Key? key,
@@ -165,6 +166,7 @@ class CustomTextField extends StatelessWidget {
     this.suffixIcon,
     this.borderRadius,
     this.textCapitalization,
+    this.autovalidateMode,
   }) : super(key: key);
 
   @override
@@ -186,6 +188,7 @@ class CustomTextField extends StatelessWidget {
         SizedBox(height: 5),
         TextFormField(
           style: TextStyle(color: MyColors.black, fontSize: 14),
+          autovalidateMode: autovalidateMode,
           onChanged: onChanged,
           onTap: onPressed,
           maxLines: maxLine,
@@ -348,6 +351,7 @@ class CustomPhonePickerTextField extends StatelessWidget {
   final String? hintText;
   final SelectorConfig? selectorConfig;
   final Color? labelColor;
+  final AutovalidateMode? autovalidateMode;
 
   CustomPhonePickerTextField(
       {Key? key,
@@ -360,7 +364,8 @@ class CustomPhonePickerTextField extends StatelessWidget {
       this.prefixIcon,
       this.hintText,
       this.selectorConfig, 
-      this.labelColor})
+      this.labelColor,
+      this.autovalidateMode})
       : super(key: key);
   InputBorder border = OutlineInputBorder(
       borderSide: BorderSide(color: MyColors.lightgrey, width: 1), borderRadius: BorderRadius.circular(10));
@@ -383,7 +388,7 @@ class CustomPhonePickerTextField extends StatelessWidget {
           errorMessage: "",
           validator: validator,
           // autoValidateMode: AutovalidateMode.always,
-
+          autoValidateMode: autovalidateMode ?? AutovalidateMode.disabled,
           selectorConfig: selectorConfig ?? const SelectorConfig(
               selectorType: PhoneInputSelectorType.DIALOG,
               leadingPadding: 10,
