@@ -20,6 +20,7 @@ import 'package:insta_job/bloc/location_cubit/location_cubit.dart';
 import 'package:insta_job/bloc/mask_resumes_cubit/mask_resumes_cubit.dart';
 import 'package:insta_job/bloc/resume_bloc/resume_bloc.dart';
 import 'package:insta_job/bloc/resume_details_cubit/resume_details_cubit.dart';
+import 'package:insta_job/bloc/upload_kyc_bloc/upload_kyc_cubit.dart';
 import 'package:insta_job/bloc/validation/validation_bloc.dart';
 import 'package:insta_job/di_container.dart' as di;
 import 'package:provider/single_child_widget.dart';
@@ -50,4 +51,5 @@ final List<SingleChildWidget> blocProviders = [
   BlocProvider(create: (_) => di.sl<InterviewTranscriptionCubit>()),
   BlocProvider(create: (_) => di.sl<GetHiredCandidatesCubit>()),
   BlocProvider(create: (_) => di.sl<AddBankingInfoCubit>()),
+  BlocProvider(create: (_) => di.sl<UploadKycCubit>()),
 ];

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/choose_image_bloc/pick_image_cubit.dart';
 import 'package:insta_job/bloc/choose_image_bloc/pick_image_state.dart';
+import 'package:insta_job/bloc/upload_kyc_bloc/upload_kyc_cubit.dart';
+import 'package:insta_job/bloc/upload_kyc_bloc/upload_kyc_state.dart';
 import 'package:insta_job/bloc/validation/validation_bloc.dart';
 import 'package:insta_job/di_container.dart';
 import 'package:insta_job/globals.dart';
@@ -152,19 +154,23 @@ class _UploadKycScreenState extends State<UploadKycScreen> {
               children: [
                 if (_currentPage > 0)
                   Expanded(
-                      child: CustomButton(
-                    title: "Back",
-                    bgColor: MyColors.white,
-                    borderColor: MyColors.blue,
-                    fontColor: MyColors.blue,
-                    height: 48,
-                    onTap: () {
-                      _pageController.previousPage(
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.easeInOut,
+                    child: BlocBuilder<UploadKycCubit, UploadKycState>(
+                    builder: (context, state) {
+                      return CustomButton(
+                        title: "Back",
+                        bgColor: MyColors.white,
+                        borderColor: MyColors.blue,
+                        fontColor: MyColors.blue,
+                        height: 48,
+                        onTap: state is UploadKycLoading ? null : () {
+                          _pageController.previousPage(
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.easeInOut,
+                          );
+                          setState(() {});
+                        },
                       );
-                      setState(() {});
-                    },
+                    }
                   )),
                 const SizedBox(width: 15),
                 if (_currentPage < lastPageIndex)
@@ -209,51 +215,72 @@ class _UploadKycScreenState extends State<UploadKycScreen> {
                   ),
                 if (_currentPage == lastPageIndex)
                   Expanded(
-                    child: CustomButton(
-                      title: "Submit",
-                      // width: 120,
-                      height: 48,
-                      onTap: () async {
-                        if (userIsCandidate() == true) {
-                          var clientPayload = UploadCandidateKycPayload(
-                            fullName: nameController.text,
-                            phoneNumber: phoneController.text,
-                            email: emailController.text,
-                            documentType: documentTypes[selectedDocumentTypeIndex],
-                            // frontIdImageUrl: "",
-                            frontIdImageUrl: frontImageBloc.imgUrl,
-                            // backIdImageUrl: "",
-                            backIdImageUrl: backImageBloc.imgUrl,
-                            bankAccountNumber: accountNumberController.text,
-                            bankAccountType: bankAccountTypes[selectedBankAccountTypeIndex],
-                            countryCode: countryCodeController.text,
-                            bankAccountOwnerFullName: accountOwnerController.text,
+                    child: BlocConsumer<UploadKycCubit, UploadKycState>(
+                        listener: (context, state) {
+                          if (state is UploadKycSuccess) {
+                            // AppRoutes.pop(context);
+                            Navigator.of(context).pop();
+                          } else if (state is UploadKycErrorState) {
+                            showToast("Something went wrong: Upload KYC failed");
+                          }
+                        },
+                        builder: (context, state) {
+                      return CustomButton(
+                        title: "Submit",
+                        // width: 120,
+                        height: 48,
+                        loading: state is UploadKycLoading,
+                        onTap: () async {
+                          if (userIsCandidate() == true) {
+                            var clientPayload = UploadCandidateKycPayload(
+                              fullName: nameController.text,
+                              phoneNumber: phoneController.text,
+                              email: emailController.text,
+                              documentType:
+                                  documentTypes[selectedDocumentTypeIndex],
+                              // frontIdImageUrl: "",
+                              frontIdImageUrl: frontImageBloc.imgUrl,
+                              // backIdImageUrl: "",
+                              backIdImageUrl: backImageBloc.imgUrl,
+                              bankAccountNumber: accountNumberController.text,
+                              bankAccountType: bankAccountTypes[
+                                  selectedBankAccountTypeIndex],
+                              countryCode: countryCodeController.text,
+                              bankAccountOwnerFullName:
+                                  accountOwnerController.text,
+                            );
+                            print(
+                                "LOGG payload (client) ${clientPayload.toMap()}");
+                            context
+                                .read<UploadKycCubit>()
+                                .uploadKyc(uploadKycPayload: clientPayload);
+                          } else {
+                            var recruiterPayload = UploadRecruiterKycPayload(
+                              fullName: nameController.text,
+                              phoneNumber: phoneController.text,
+                              email: emailController.text,
+                              businessName: businessNameController.text,
+                              businessType:
+                                  businessTypeController.text, //TODO: revisit
+                              businessAddress: businessAddressController.text,
+                              documentType:
+                                  documentTypes[selectedDocumentTypeIndex],
+                              // frontIdImageUrl: "",
+                              frontIdImageUrl: frontImageBloc.imgUrl,
+                              // backIdImageUrl: "",
+                              backIdImageUrl: backImageBloc.imgUrl,
+                            );
+                            print(
+                                "LOGG payload (recruiter) ${recruiterPayload.toMap()}");
+                            context
+                                .read<UploadKycCubit>()
+                                .uploadKyc(uploadKycPayload: recruiterPayload);
+                          }
 
-                          );
-                          print("LOGG payload (client) ${clientPayload.toMap()}");
-                          
-                        } else {
-                          var recruiterPayload = UploadRecruiterKycPayload(
-                            fullName: nameController.text,
-                            phoneNumber: phoneController.text,
-                            email: emailController.text,
-                            businessName: businessNameController.text,
-                            businessType: businessTypeController.text, //TODO: revisit
-                            businessAddress: businessAddressController.text,
-                            documentType: documentTypes[selectedDocumentTypeIndex],
-                            // frontIdImageUrl: "",
-                            frontIdImageUrl: frontImageBloc.imgUrl,
-                            // backIdImageUrl: "",
-                            backIdImageUrl: backImageBloc.imgUrl,
-                          );
-                          print("LOGG payload (recruiter) ${recruiterPayload.toMap()}");
-                          
-
-                        }
-                        
-                        setState(() {});
-                        
-                      },
+                          setState(() {});
+                        },
+                      );
+                    }
                     ),
                   ),
               ],

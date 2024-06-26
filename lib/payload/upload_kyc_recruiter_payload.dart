@@ -1,4 +1,6 @@
-class UploadRecruiterKycPayload {
+import 'package:insta_job/payload/upload_kyc_payload.dart';
+
+class UploadRecruiterKycPayload extends UploadKycPayload {
   String fullName;
   String phoneNumber;
   String email;
