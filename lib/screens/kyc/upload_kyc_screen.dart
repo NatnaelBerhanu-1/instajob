@@ -66,6 +66,7 @@ class _UploadKycScreenState extends State<UploadKycScreen> {
   final businessInfoSectionFormKey = GlobalKey<FormState>();
   final idProofSectionFormKey = GlobalKey<FormState>();
   final bankInfoSectionFormKey = GlobalKey<FormState>();
+  bool showUploadIdValidationError = false;
   
 
   @override
@@ -199,7 +200,18 @@ class _UploadKycScreenState extends State<UploadKycScreen> {
                           }
                         }
 
-                        if (formKey.currentState!.validate()) {
+                        var imageUploadedOrNotOnIdProofSection = formKey != idProofSectionFormKey ||
+                          (frontImageBloc.imgUrl.isNotEmpty 
+                          && backImageBloc.imgUrl.isNotEmpty);
+                        
+                        if (imageUploadedOrNotOnIdProofSection == false) {
+                          showUploadIdValidationError = true;
+                          setState(() {
+                            
+                          });
+                        }
+
+                        if (formKey.currentState!.validate() && imageUploadedOrNotOnIdProofSection) { //if it's on idProofSection, validates the images are uploaded to continue
                           print("LOGG validated");
                           _pageController.nextPage(
                             duration: const Duration(milliseconds: 300),
@@ -221,7 +233,7 @@ class _UploadKycScreenState extends State<UploadKycScreen> {
                             // AppRoutes.pop(context);
                             Navigator.of(context).pop();
                           } else if (state is UploadKycErrorState) {
-                            showToast("Something went wrong: Upload KYC failed");
+                            showToast(state.message);
                           }
                         },
                         builder: (context, state) {
@@ -231,52 +243,82 @@ class _UploadKycScreenState extends State<UploadKycScreen> {
                         height: 48,
                         loading: state is UploadKycLoading,
                         onTap: () async {
+                          var formKey;
                           if (userIsCandidate() == true) {
-                            var clientPayload = UploadCandidateKycPayload(
-                              fullName: nameController.text,
-                              phoneNumber: phoneController.text,
-                              email: emailController.text,
-                              documentType:
-                                  documentTypes[selectedDocumentTypeIndex],
-                              // frontIdImageUrl: "",
-                              frontIdImageUrl: frontImageBloc.imgUrl,
-                              // backIdImageUrl: "",
-                              backIdImageUrl: backImageBloc.imgUrl,
-                              bankAccountNumber: accountNumberController.text,
-                              bankAccountType: bankAccountTypes[
-                                  selectedBankAccountTypeIndex],
-                              countryCode: countryCodeController.text,
-                              bankAccountOwnerFullName:
-                                  accountOwnerController.text,
-                            );
-                            print(
-                                "LOGG payload (client) ${clientPayload.toMap()}");
-                            context
-                                .read<UploadKycCubit>()
-                                .uploadKyc(uploadKycPayload: clientPayload);
+                            formKey = bankInfoSectionFormKey;
                           } else {
-                            var recruiterPayload = UploadRecruiterKycPayload(
-                              fullName: nameController.text,
-                              phoneNumber: phoneController.text,
-                              email: emailController.text,
-                              businessName: businessNameController.text,
-                              businessType:
-                                  businessTypeController.text, //TODO: revisit
-                              businessAddress: businessAddressController.text,
-                              documentType:
-                                  documentTypes[selectedDocumentTypeIndex],
-                              // frontIdImageUrl: "",
-                              frontIdImageUrl: frontImageBloc.imgUrl,
-                              // backIdImageUrl: "",
-                              backIdImageUrl: backImageBloc.imgUrl,
-                            );
-                            print(
-                                "LOGG payload (recruiter) ${recruiterPayload.toMap()}");
-                            context
-                                .read<UploadKycCubit>()
-                                .uploadKyc(uploadKycPayload: recruiterPayload);
+                            formKey = idProofSectionFormKey;
                           }
 
+                          var imageUploadedOrNotOnIdProofSection = formKey != idProofSectionFormKey ||
+                            (frontImageBloc.imgUrl.isNotEmpty 
+                            && backImageBloc.imgUrl.isNotEmpty);
+                          
+                          if (imageUploadedOrNotOnIdProofSection == false) {
+                            showUploadIdValidationError = true;
+                            setState(() {
+                              
+                            });
+                          }
+
+                          bool formIsValid = formKey.currentState!.validate() 
+                              && frontImageBloc.imgUrl.isNotEmpty 
+                              && backImageBloc.imgUrl.isNotEmpty;
+
+                          if ((formIsValid)) { 
+                            print("LOGG validated");
+                            showUploadIdValidationError = false;
+                            if (userIsCandidate() == true) {
+                              var clientPayload = UploadCandidateKycPayload(
+                                fullName: nameController.text,
+                                phoneNumber: phoneController.text,
+                                email: emailController.text,
+                                documentType:
+                                    documentTypes[selectedDocumentTypeIndex],
+                                // frontIdImageUrl: "",
+                                frontIdImageUrl: frontImageBloc.imgUrl,
+                                // backIdImageUrl: "",
+                                backIdImageUrl: backImageBloc.imgUrl,
+                                bankAccountNumber: accountNumberController.text,
+                                bankAccountType: bankAccountTypes[
+                                    selectedBankAccountTypeIndex],
+                                bankCode: bankRoutingNumberController.text,
+                                countryCode: countryCodeController.text,
+                                bankAccountOwnerFullName:
+                                    accountOwnerController.text,
+                              );
+                              print(
+                                  "LOGG payload (client) ${clientPayload.toMap()}");
+                              context
+                                  .read<UploadKycCubit>()
+                                  .uploadKyc(uploadKycPayload: clientPayload);
+                            } else {
+                              var recruiterPayload = UploadRecruiterKycPayload(
+                                fullName: nameController.text,
+                                phoneNumber: phoneController.text,
+                                email: emailController.text,
+                                businessName: businessNameController.text,
+                                businessType:
+                                    businessTypeController.text, //TODO: revisit
+                                businessAddress: businessAddressController.text,
+                                documentType:
+                                    documentTypes[selectedDocumentTypeIndex],
+                                // frontIdImageUrl: "",
+                                frontIdImageUrl: frontImageBloc.imgUrl,
+                                // backIdImageUrl: "",
+                                backIdImageUrl: backImageBloc.imgUrl,
+                              );
+                              print(
+                                  "LOGG payload (recruiter) ${recruiterPayload.toMap()}");
+                              context
+                                  .read<UploadKycCubit>()
+                                  .uploadKyc(uploadKycPayload: recruiterPayload);
+                            }
+                          } else {
+                            print("LOGG submit invalid, form incomplete");
+                            showUploadIdValidationError = true;
+                          }                          
+                          
                           setState(() {});
                         },
                       );
@@ -593,7 +635,7 @@ class _UploadKycScreenState extends State<UploadKycScreen> {
                             width: 150,
                             height: 150,
                             bgColor: MyColors.white,
-                            borderColor: MyColors.blue,
+                            borderColor: showUploadIdValidationError ? MyColors.red : MyColors.blue,
                             fontColor: MyColors.blue,
                             loading: state is LoadingImageState,
                             loadingIndicatorColor: MyColors.blue,
@@ -625,7 +667,7 @@ class _UploadKycScreenState extends State<UploadKycScreen> {
                             loading: state is LoadingImageState,
                             loadingIndicatorColor: MyColors.blue,
                             bgColor: MyColors.white,
-                            borderColor: MyColors.blue,
+                            borderColor: showUploadIdValidationError ? MyColors.red : MyColors.blue,
                             fontColor: MyColors.blue,
                             onTap: () async {
                               backImageBloc.getImage();

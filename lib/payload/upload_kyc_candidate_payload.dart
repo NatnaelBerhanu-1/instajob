@@ -9,6 +9,7 @@ class UploadCandidateKycPayload extends UploadKycPayload {
   String backIdImageUrl;
   String bankAccountNumber;
   String bankAccountType;
+  String bankCode;
   String countryCode;
   String bankAccountOwnerFullName;
   UploadCandidateKycPayload({
@@ -20,6 +21,7 @@ class UploadCandidateKycPayload extends UploadKycPayload {
     required this.backIdImageUrl,
     required this.bankAccountNumber,
     required this.bankAccountType,
+    required this.bankCode,
     required this.countryCode,
     required this.bankAccountOwnerFullName,
   });
@@ -35,6 +37,7 @@ class UploadCandidateKycPayload extends UploadKycPayload {
     String? backIdImageUrl,
     String? bankAccountNumber,
     String? bankAccountType,
+    String? bankCode,
     String? countryCode,
     String? bankAccountOwnerFullName,
   }) {
@@ -47,6 +50,7 @@ class UploadCandidateKycPayload extends UploadKycPayload {
       backIdImageUrl: backIdImageUrl ?? this.backIdImageUrl,
       bankAccountNumber: bankAccountNumber ?? this.bankAccountNumber,
       bankAccountType: bankAccountType ?? this.bankAccountType,
+      bankCode: bankCode ?? this.bankCode,
       countryCode: countryCode ?? this.countryCode,
       bankAccountOwnerFullName: bankAccountOwnerFullName ?? this.bankAccountOwnerFullName,
     );
@@ -54,21 +58,22 @@ class UploadCandidateKycPayload extends UploadKycPayload {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'fullName': fullName,
-      'phoneNumber': phoneNumber,
+      'name': fullName,
+      'phone_number': phoneNumber,
       'email': email,
-      'documentType': documentType,
-      'frontIdImageUrl': frontIdImageUrl,
-      'backIdImageUrl': backIdImageUrl,
-      'accountNumber': bankAccountNumber,
-      'accountType': bankAccountType,
-      'countryCode': countryCode,
-      'bankAccountOwnerFullName': bankAccountOwnerFullName,
+      'document_type': documentType,
+      'id_front': frontIdImageUrl,
+      'id_back': backIdImageUrl,
+      'account_number': bankAccountNumber,
+      'account_type': bankAccountType,
+      'bank_code': bankCode,
+      'country_code': countryCode,
+      'owner_full_name': bankAccountOwnerFullName,
     };
   }
 
   @override
   String toString() {
-    return 'UploadCandidateKycPayload(fullName: $fullName, phoneNumber: $phoneNumber, email: $email, documentType: $documentType, frontIdImageUrl: $frontIdImageUrl, backIdImageUrl: $backIdImageUrl, accountNumber: $bankAccountNumber, accountType: $bankAccountType, countryCode: $countryCode, bankAccountOwnerFullName: $bankAccountOwnerFullName)';
+    return 'UploadCandidateKycPayload(fullName: $fullName, phoneNumber: $phoneNumber, email: $email, documentType: $documentType, frontIdImageUrl: $frontIdImageUrl, backIdImageUrl: $backIdImageUrl, accountNumber: $bankAccountNumber, accountType: $bankAccountType, bankCode: $bankCode, countryCode: $countryCode, bankAccountOwnerFullName: $bankAccountOwnerFullName)';
   }
 }

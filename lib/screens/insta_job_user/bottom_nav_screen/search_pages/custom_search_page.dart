@@ -10,6 +10,7 @@ import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
 import 'package:insta_job/bloc/job_position/job_pos_event.dart';
 import 'package:insta_job/bloc/job_position/job_pos_state.dart';
 import 'package:insta_job/globals.dart';
+import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/assigned_company_screen.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_button/custom_btn.dart';
 import 'package:insta_job/widgets/custom_chip.dart';
@@ -148,6 +149,9 @@ class CompanyJobChip extends StatelessWidget {
                         }
                         return SizedBox();
                       })),
+                      showPaymentRelatedScreensTempButton(context),
+                      showKycRelatedScreensTempButton(context),
+                      showAddBankingInfoScreensTempButton(context),
           ],
         ),
       ),

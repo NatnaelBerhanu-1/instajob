@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:dio/dio.dart';
 import 'package:insta_job/network/dio/dio_client.dart';
+import 'package:insta_job/network/end_points.dart';
 import 'package:insta_job/payload/upload_kyc_candidate_payload.dart';
 import 'package:insta_job/payload/upload_kyc_recruiter_payload.dart';
 
@@ -10,30 +13,28 @@ class KycRepo {
 
   KycRepo({required this.dioClient});
 
-  Future<ApiResponse> uploadCandidateKyc({required UploadCandidateKycPayload payload}) async {
-    //todo: pass stuff (impl)
-    throw Exception();
+  Future<ApiResponse> uploadCandidateKyc({required UploadCandidateKycPayload payload, required String userId}) async {
     try {
       var map = {
-        "job_id": "",
-        "user_id": "",
+        // "user_id": Random().nextInt(1000) + 10000,
+        "user_id": userId,
+        ...payload.toMap(),
       };
-      var response = await dioClient.post(data: map, uri: "endpoint");
+      var response = await dioClient.post(data: map, uri: EndPoint.uploadKycCandidate);
       return ApiResponse.withSuccess(response);
     } on DioException catch (e) {
       return ApiResponse.withError(e.response);
     }
   }
 
-   Future<ApiResponse> uploadRecruiterKyc({required UploadRecruiterKycPayload payload}) async {
-    //todo: pass stuff (impl)
-    throw Exception();
+   Future<ApiResponse> uploadRecruiterKyc({required UploadRecruiterKycPayload payload, required String userId}) async {
     try {
       var map = {
-        "job_id": "",
-        "user_id": "",
+        // "user_id": Random().nextInt(1000) + 10000,
+        "user_id": userId,
+        ...payload.toMap(),
       };
-      var response = await dioClient.post(data: map, uri: "endpoint");
+      var response = await dioClient.post(data: map, uri: EndPoint.uploadKycRecruiter);
       return ApiResponse.withSuccess(response);
     } on DioException catch (e) {
       return ApiResponse.withError(e.response);

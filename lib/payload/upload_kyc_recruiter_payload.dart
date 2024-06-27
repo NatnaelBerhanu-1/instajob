@@ -50,15 +50,15 @@ class UploadRecruiterKycPayload extends UploadKycPayload {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'fullName': fullName,
-      'phoneNumber': phoneNumber,
+      'name': fullName,
+      'phone_number': phoneNumber,
       'email': email,
-      'businessName': businessName,
-      'businessType': businessType,
-      'businessAddress': businessAddress,
-      'documentType': documentType,
-      'frontIdImageUrl': frontIdImageUrl,
-      'backIdImageUrl': backIdImageUrl,
+      'business_name': businessName,
+      'business_as': businessType,
+      'business_address': businessAddress,
+      'document_type': documentType,
+      'id_front': frontIdImageUrl,
+      'id_back': backIdImageUrl,
     };
   }
 
