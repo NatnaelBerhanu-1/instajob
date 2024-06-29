@@ -12,6 +12,8 @@ import 'package:insta_job/bloc/agora_bloc/agora_cubit.dart';
 import 'package:insta_job/bloc/agora_bloc/agora_state.dart';
 import 'package:insta_job/bloc/end_interview_call_cubit/end_interview_call_cubit.dart';
 import 'package:insta_job/bloc/end_interview_call_cubit/end_interview_call_state.dart';
+import 'package:insta_job/bloc/generated_questions/get_generated_initial_questions_bloc.dart';
+import 'package:insta_job/bloc/generated_questions/get_generated_initial_questions_state.dart';
 import 'package:insta_job/bloc/interview_recording_cubit/interview_recording_cubit.dart';
 import 'package:insta_job/bloc/interview_recording_cubit/interview_recording_state.dart';
 import 'package:insta_job/bloc/interview_schedule_cubit/interview_schedule_cubit.dart';
@@ -562,33 +564,33 @@ class _CallScreenState extends State<CallScreen> {
         body: SafeArea(
           child: Column(
             children: [
-              Expanded(
-                child: Builder(
-                  builder: (context) {
-                    // final isPortrait = orientation == Orientation.portrait;
-                    final isPortrait = true;
-                    if (_users.isEmpty) {
-                      return const SizedBox();
-                    }
-                    // WidgetsBinding.instance.addPostFrameCallback(
-                    //   (_) => setState(
-                    //       () => _viewAspectRatio = isPortrait ? 2 / 3 : 3 / 2),
-                    // );
-                    // final layoutViews = _createLayout(_users.length);
-                    return AgoraVideoLayout(
-                      users: _users,
-                      // views: layoutViews,
-                      views: [],
-                      viewAspectRatio: _viewAspectRatio,
-                      currentUserId: _currentUid,
-                      onSwitchCamera: _onSwitchCamera,
-                      chatModel: widget.chatModel,
-                      channelName: widget.channelName,
-                      interviewModel: widget.interviewModel,
-                    );
-                  },
-                ),
-              ),
+              // Expanded(
+              //   child: Builder(
+              //     builder: (context) {
+              //       // final isPortrait = orientation == Orientation.portrait;
+              //       final isPortrait = true;
+              //       if (_users.isEmpty) {
+              //         return const SizedBox();
+              //       }
+              //       // WidgetsBinding.instance.addPostFrameCallback(
+              //       //   (_) => setState(
+              //       //       () => _viewAspectRatio = isPortrait ? 2 / 3 : 3 / 2),
+              //       // );
+              //       // final layoutViews = _createLayout(_users.length);
+              //       return AgoraVideoLayout(
+              //         users: _users,
+              //         // views: layoutViews,
+              //         views: [],
+              //         viewAspectRatio: _viewAspectRatio,
+              //         currentUserId: _currentUid,
+              //         onSwitchCamera: _onSwitchCamera,
+              //         chatModel: widget.chatModel,
+              //         channelName: widget.channelName,
+              //         interviewModel: widget.interviewModel,
+              //       );
+              //     },
+              //   ),
+              // ),
               // Expanded(flex: 1, child: Container(),),
               // Text("HI"),
               // Container(width: 200,height: 20, color: Colors.red),
@@ -714,14 +716,32 @@ class _CallScreenState extends State<CallScreen> {
                           height: 48,
                         ),
                       ),
-                      InkWell(
-                        onTap: () {
-                          _onSwitchCamera();
-                        },
-                        child: SvgPicture.asset(
-                          MyImages.recruiterQuestionsBtn,
-                          height: 48,
-                        ),
+                      BlocBuilder<GetGeneratedInitialQuestionsCubit,
+                              GetGeneratedInitialQuestionsState>(
+                          // bloc: getGeneratedInitialQuestionsCubit,
+                          builder: (context2, state2) {
+                        return InkWell(
+                          onTap: () {
+                            // _onSwitchCamera();
+                            GetGeneratedInitialQuestionsCubit bloc = context
+                                .read<GetGeneratedInitialQuestionsCubit>();
+                            var user = widget.interviewModel.user;
+                            var recruiter = widget.interviewModel.recruiter;
+                            var jobDescription =
+                                widget.interviewModel.job?.jobDetails;
+                            var x = 12;
+                            // bloc.execute(cvUrl: user?.cv, jobDescription: jobDescription);
+                            overviewBottomSheet(context,
+                                interviewModel: widget.interviewModel,
+                                getGeneratedInitialQuestionsCubitContext:
+                                    context2);
+                          },
+                          child: SvgPicture.asset(
+                            MyImages.recruiterQuestionsBtn,
+                            height: 48,
+                          ),
+                        );
+                      }
                       ),
                     ],
                   ),

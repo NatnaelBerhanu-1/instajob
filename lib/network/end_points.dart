@@ -98,6 +98,12 @@ class EndPoint {
   //transcription
   static String startTranscription = "agora/start_rt_transcription";
 
+  //ai questions generator
+  static String questionGeneratorBaseUrl = "http://44.221.123.67:8000/";
+  static String generateInitialQuestions = "generate_initial_questions/";
+  static String summarizeInterview = "/summarize_interview/";
+  static String generateFollowUpQuestion = "/generate_followup_question/";
+
   ///search
   static String searchJob = "search_job";
 
