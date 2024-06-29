@@ -10,7 +10,7 @@ import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
 
 overviewBottomSheet(
-  context, {
+  BuildContext context, {
   required InterviewModel interviewModel,
   required BuildContext getGeneratedInitialQuestionsCubitContext,
 }) {
@@ -28,7 +28,8 @@ overviewBottomSheet(
       builder: (_) => MultiBlocProvider(
             providers: [
               BlocProvider<GetGeneratedInitialQuestionsCubit>.value(
-                value: context.read<GetGeneratedInitialQuestionsCubit>(),
+                value: getGeneratedInitialQuestionsCubitContext
+                    .read<GetGeneratedInitialQuestionsCubit>(),
               ),
             ],
             child: SizedBox(
@@ -89,11 +90,12 @@ overviewBottomSheet(
                                     debugPrint(
                                         "LOG job description ${jobDescription}");
                                     // context
-                                    //     .read<
-                                    //         GetGeneratedInitialQuestionsCubit>()
-                                    //     .execute(
-                                    //         cvUrl: user?.cv,
-                                    //         jobDescription: jobDescription);
+                                    getGeneratedInitialQuestionsCubitContext
+                                        .read<
+                                            GetGeneratedInitialQuestionsCubit>()
+                                        .execute(
+                                            cvUrl: user?.cv,
+                                            jobDescription: jobDescription);
                                     // getGeneratedInitialQuestionsCubit.execute(cvUrl: user?.cv, jobDescription: jobDescription);
                                     // var x1 = 112;
                                     // var x2 = 112;
@@ -229,59 +231,162 @@ Widget _buildAiQuestionsTab() {
       // bloc: getGeneratedInitialQuestionsCubit,
       builder: (context, state) {
     if (state is GetGeneratedInitialQuestionsLoading) {
-      // if (true) {
       return Center(
         child: CircularProgressIndicator(),
       );
     }
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: ListView.builder(
-        itemCount: 5,
-        itemBuilder: (c, i) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(14),
-                    color: MyColors.lightGrey,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: CommonText(
-                      text: "00:12",
-                      fontSize: 13,
-                      fontColor: Colors.grey,
-                    ),
+    if (state is GetGeneratedInitialQuestionsLoaded) {
+      var generalQuestionList = state.aiQuestionsModel.questions.quesList;
+      var questionListJob = state.aiQuestionsModel.questions.quesListJob;
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(14),
+                  color: MyColors.lightGrey,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: CommonText(
+                    text: "General Questions",
+                    fontSize: 13,
+                    fontColor: Colors.grey,
                   ),
                 ),
-                SizedBox(height: 7),
-                Row(
-                  children: [
-                    Expanded(
-                      flex: 0,
-                      child: CommonText(
-                        text: "Teressa William:",
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                      ),
+              ),
+              SizedBox(height: 7),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: generalQuestionList.length,
+                itemBuilder: (c, i) {
+                  return Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Flexible(
+                              child: CommonText(
+                                text: "** ${generalQuestionList[i]} ?? " "",
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
                     ),
-                    Expanded(
-                      child: CommonText(
-                        text: "Hey, Hope you are doing well!",
-                        fontSize: 14,
-                      ),
+                  );
+                },
+              ),
+              SizedBox(height: 10),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(14),
+                  color: MyColors.lightGrey,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: CommonText(
+                    text: "Job specific Questions",
+                    fontSize: 13,
+                    fontColor: Colors.grey,
+                  ),
+                ),
+              ),
+              SizedBox(height: 7),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: questionListJob.length,
+                itemBuilder: (c, i) {
+                  return Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Flexible(
+                              child: CommonText(
+                                text: "** ${questionListJob[i]} ?? " "",
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                              ),
+          
+                            ),
+                          ],
+                        )
+                      ],
                     ),
-                  ],
-                )
-              ],
-            ),
-          );
-        },
-      ),
-    );
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+    if (state is GetGeneratedInitialQuestionsErrorState) {
+      return Text(
+          "Error"); //TODO: add retry button from other screens? //also show toast
+    }
+    return SizedBox.shrink();
+    // return Padding(
+    //   padding: const EdgeInsets.all(8.0),
+    //   child: ListView.builder(
+    //     itemCount: 5,
+    //     itemBuilder: (c, i) {
+    //       return Padding(
+    //         padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
+    //         child: Column(
+    //           crossAxisAlignment: CrossAxisAlignment.start,
+    //           children: [
+    //             Container(
+    //               decoration: BoxDecoration(
+    //                 borderRadius: BorderRadius.circular(14),
+    //                 color: MyColors.lightGrey,
+    //               ),
+    //               child: Padding(
+    //                 padding: const EdgeInsets.all(5.0),
+    //                 child: CommonText(
+    //                   text: "00:12",
+    //                   fontSize: 13,
+    //                   fontColor: Colors.grey,
+    //                 ),
+    //               ),
+    //             ),
+    //             SizedBox(height: 7),
+    //             Row(
+    //               children: [
+    //                 Expanded(
+    //                   flex: 0,
+    //                   child: CommonText(
+    //                     text: "Teressa William:",
+    //                     fontSize: 15,
+    //                     fontWeight: FontWeight.w600,
+    //                   ),
+    //                 ),
+    //                 Expanded(
+    //                   child: CommonText(
+    //                     text: "Hey, Hope you are doing well!",
+    //                     fontSize: 14,
+    //                   ),
+    //                 ),
+    //               ],
+    //             )
+    //           ],
+    //         ),
+    //       );
+    //     },
+    //   ),
+    // );
   });
 }

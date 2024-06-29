@@ -723,8 +723,8 @@ class _CallScreenState extends State<CallScreen> {
                         return InkWell(
                           onTap: () {
                             // _onSwitchCamera();
-                            GetGeneratedInitialQuestionsCubit bloc = context
-                                .read<GetGeneratedInitialQuestionsCubit>();
+                            // GetGeneratedInitialQuestionsCubit bloc = context
+                            //     .read<GetGeneratedInitialQuestionsCubit>();
                             var user = widget.interviewModel.user;
                             var recruiter = widget.interviewModel.recruiter;
                             var jobDescription =
