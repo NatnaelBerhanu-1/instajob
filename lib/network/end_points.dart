@@ -86,6 +86,9 @@ class EndPoint {
   static String deleteWorkingExp = "working_exp_delete";
   static String deleteEducation = "eduction_delete";
 
+  // generate payment link 
+  static String paymentLink = "generate_payment_link";
+
 
   //agora recording
   static String acquireRecording = "agora/acquire_recording";

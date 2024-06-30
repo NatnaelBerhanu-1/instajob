@@ -564,33 +564,33 @@ class _CallScreenState extends State<CallScreen> {
         body: SafeArea(
           child: Column(
             children: [
-              // Expanded(
-              //   child: Builder(
-              //     builder: (context) {
-              //       // final isPortrait = orientation == Orientation.portrait;
-              //       final isPortrait = true;
-              //       if (_users.isEmpty) {
-              //         return const SizedBox();
-              //       }
-              //       // WidgetsBinding.instance.addPostFrameCallback(
-              //       //   (_) => setState(
-              //       //       () => _viewAspectRatio = isPortrait ? 2 / 3 : 3 / 2),
-              //       // );
-              //       // final layoutViews = _createLayout(_users.length);
-              //       return AgoraVideoLayout(
-              //         users: _users,
-              //         // views: layoutViews,
-              //         views: [],
-              //         viewAspectRatio: _viewAspectRatio,
-              //         currentUserId: _currentUid,
-              //         onSwitchCamera: _onSwitchCamera,
-              //         chatModel: widget.chatModel,
-              //         channelName: widget.channelName,
-              //         interviewModel: widget.interviewModel,
-              //       );
-              //     },
-              //   ),
-              // ),
+              Expanded(
+                child: Builder(
+                  builder: (context) {
+                    // final isPortrait = orientation == Orientation.portrait;
+                    final isPortrait = true;
+                    if (_users.isEmpty) {
+                      return const SizedBox();
+                    }
+                    // WidgetsBinding.instance.addPostFrameCallback(
+                    //   (_) => setState(
+                    //       () => _viewAspectRatio = isPortrait ? 2 / 3 : 3 / 2),
+                    // );
+                    // final layoutViews = _createLayout(_users.length);
+                    return AgoraVideoLayout(
+                      users: _users,
+                      // views: layoutViews,
+                      views: [],
+                      viewAspectRatio: _viewAspectRatio,
+                      currentUserId: _currentUid,
+                      onSwitchCamera: _onSwitchCamera,
+                      chatModel: widget.chatModel,
+                      channelName: widget.channelName,
+                      interviewModel: widget.interviewModel,
+                    );
+                  },
+                ),
+              ),
               // Expanded(flex: 1, child: Container(),),
               // Text("HI"),
               // Container(width: 200,height: 20, color: Colors.red),

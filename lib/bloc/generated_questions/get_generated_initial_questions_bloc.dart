@@ -16,8 +16,8 @@ class GetGeneratedInitialQuestionsCubit
       {required String? cvUrl, required String? jobDescription}) async {
     print("LOGG abt to start loading");
     emit(const GetGeneratedInitialQuestionsLoading());
-    await Future.delayed(const Duration(seconds: 3));
-    print("LOGG finished loading");
+    // await Future.delayed(const Duration(seconds: 3));
+    // print("LOGG finished loading");
     try {
       // var x = mockJson;
       // AiQuestionsModel res = AiQuestionsModel.fromJson(x);
@@ -37,9 +37,9 @@ class GetGeneratedInitialQuestionsCubit
         // List<AiQuestionsModel> list = (response.response.data['questions'] as List)
         //     .map((e) => JobPosModel.fromJson(e).copyWith(jobId: jobId))
         //     .toList();
-        var x = response.response;
+        Map<String, dynamic> x = response.response.data;
         print("LOGG sth $x");
-        AiQuestionsModel res = AiQuestionsModel.fromJson(response.response);
+        AiQuestionsModel res = AiQuestionsModel.fromJson(x);
         emit(GetGeneratedInitialQuestionsLoaded(
           aiQuestionsModel: res,
         ));
@@ -49,11 +49,13 @@ class GetGeneratedInitialQuestionsCubit
       } else {
         emit(const GetGeneratedInitialQuestionsErrorState(
             message: 'Something went wrong'));
-      }
-      emit(GetGeneratedInitialQuestionsLoaded(
-        aiQuestionsModel: response.response,
-      ));
-    } catch (e) {
+      } 
+      // emit(GetGeneratedInitialQuestionsLoaded(
+      //   aiQuestionsModel: response.response,
+      // ));
+    } catch (e, stk) {
+      debugPrint(e.toString());
+      debugPrintStack(stackTrace: stk);
       emit(const GetGeneratedInitialQuestionsErrorState(
           message: 'Something went wrong'));
     }
