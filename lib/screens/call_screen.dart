@@ -688,9 +688,7 @@ class _CallScreenState extends State<CallScreen> {
                             );
                           },
                           listener: (context, state) {
-                            //TODO: revisit this section (whether or not to refetch upcoming & previous interviews)
-                            if (state is EndInterviewCallScheduleSuccess) {
-                              //TODO: revisit
+                          if (state is EndInterviewCallScheduleSuccess) {
                               context.read<InterviewScheduleCubit>().getInterviewSchedules(Global.userModel!.id.toString());
                               Navigator.of(context)..pop()..pop();
                             } else if (state is EndInterviewCallScheduleErrorState) {
