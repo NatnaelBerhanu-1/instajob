@@ -14,14 +14,8 @@ class GetGeneratedInitialQuestionsCubit
 
   Future<void> execute(
       {required String? cvUrl, required String? jobDescription}) async {
-    print("LOGG abt to start loading");
     emit(const GetGeneratedInitialQuestionsLoading());
-    await Future.delayed(const Duration(seconds: 3));
-    print("LOGG finished loading");
     try {
-      // var x = mockJson;
-      // AiQuestionsModel res = AiQuestionsModel.fromJson(x);
-
       ApiResponse response = await aiQuestionsRepository.getInitialQuestions(
           cvUrl: cvUrl, jobDescription: jobDescription);
       if (response.response.statusCode == 500) {
@@ -29,16 +23,7 @@ class GetGeneratedInitialQuestionsCubit
             message: 'Something went wrong'));
       }
       if (response.response.statusCode == 200) {
-        // debugPrint('response ${response.response.data['data']}');
-        debugPrint('LOGG response 200');
-        // List<JobPosModel> list = (response.response.data['data'] as List)
-        //     .map((e) => JobPosModel.fromJson(e).copyWith(jobId: jobId))
-        //     .toList();
-        // List<AiQuestionsModel> list = (response.response.data['questions'] as List)
-        //     .map((e) => JobPosModel.fromJson(e).copyWith(jobId: jobId))
-        //     .toList();
         var x = response.response;
-        print("LOGG sth $x");
         AiQuestionsModel res = AiQuestionsModel.fromJson(response.response);
         emit(GetGeneratedInitialQuestionsLoaded(
           aiQuestionsModel: res,
@@ -61,21 +46,19 @@ class GetGeneratedInitialQuestionsCubit
 
 
   
-  // Future<void> execute(
-  //     {required String? cvUrl, required String? jobDescription}) async {
-  //   print("LOGG abt to start loading");
-  //   emit(const GetGeneratedInitialQuestionsLoading());
-  //   await Future.delayed(const Duration(seconds: 3));
-  //   print("LOGG finished loading");
-  //   try {
-  //     var x = mockJson;
-  //     AiQuestionsModel res = AiQuestionsModel.fromJson(x);
-  //     emit(GetGeneratedInitialQuestionsLoaded(
-  //       aiQuestionsModel: res,
-  //     ));
-  //   } catch (e) {
-  //     emit(const GetGeneratedInitialQuestionsErrorState(
-  //         message: 'Something went wrong'));
-  //   }
-  // }
+  Future<void> executeMock(
+      {required String? cvUrl, required String? jobDescription}) async {
+    emit(const GetGeneratedInitialQuestionsLoading());
+    await Future.delayed(const Duration(seconds: 3));
+    try {
+      var x = mockJson;
+      AiQuestionsModel res = AiQuestionsModel.fromJson(x);
+      emit(GetGeneratedInitialQuestionsLoaded(
+        aiQuestionsModel: res,
+      ));
+    } catch (e) {
+      emit(const GetGeneratedInitialQuestionsErrorState(
+          message: 'Something went wrong'));
+    }
+  }
 }

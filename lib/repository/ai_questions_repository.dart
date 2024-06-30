@@ -11,23 +11,16 @@ class AiQuestionsRepository {
   Future<ApiResponse> getInitialQuestions(
       {String? cvUrl, String? jobDescription}) async {
     try {
-      //     data: map, uri: EndPoint.getHiredCandidates); //note: this endpoint is for all (applied, shortlisted, declined), AND hired(newly added status)
       var urlPath =
           "${EndPoint.questionGeneratorBaseUrl}${EndPoint.generateInitialQuestions}";
-      var queryParams = {
-        // 'cv_url': cvUrl,
-        "cv_url":
-            "https://shaybani-web-crimson-water-6355.fly.dev//storage/files/663345b510d7a.pdf",
+      var data = {
+        "cv_url": cvUrl,
         'job_description': jobDescription,
       };
 
-      // FormData formData = FormData.fromMap(
-      //     {'cv_url': cvUrl, 'job_description': jobDescription});
-
-      // final response = await Dio().post(urlPath, data: formData);
       Response response = await Dio().post(
         urlPath,
-        data: queryParams,
+        data: data,
         options: Options(
           contentType: Headers.formUrlEncodedContentType,
         ),
@@ -40,8 +33,8 @@ class AiQuestionsRepository {
 
   Future<ApiResponse> getSummarizedQuestions(
       {String? conversationContent}) async {
+    //not tested
     try {
-      //     data: map, uri: EndPoint.getHiredCandidates); //note: this endpoint is for all (applied, shortlisted, declined), AND hired(newly added status)
       var urlPath =
           "${EndPoint.questionGeneratorBaseUrl}${EndPoint.summarizeInterview}";
       var map = {

@@ -6,6 +6,7 @@ import 'package:insta_job/bloc/generated_questions/get_generated_initial_questio
 import 'package:insta_job/bloc/generated_questions/get_generated_initial_questions_state.dart';
 import 'package:insta_job/model/interview_model.dart';
 import 'package:insta_job/utils/my_colors.dart';
+import 'package:insta_job/widgets/custom_button/custom_btn.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
 
@@ -76,29 +77,16 @@ overviewBottomSheet(
                                 labelColor: MyColors.blue,
                                 indicatorColor: MyColors.blue,
                                 onTap: (val) {
-                                  print("LOGG ontap cliecked $val");
                                   if (val == 0) {
                                     var user = interviewModel.user;
-                                    var recruiter = interviewModel.recruiter;
                                     var jobDescription =
                                         interviewModel.job?.jobDetails;
-                                    var x = 12;
-                                    debugPrint(
-                                        "LOG user-model candidate ${user?.name} ${user?.cv}");
-                                    debugPrint(
-                                        "LOG user-model recruiter ${recruiter?.name} ${recruiter?.cv}");
-                                    debugPrint(
-                                        "LOG job description ${jobDescription}");
-                                    // context
                                     getGeneratedInitialQuestionsCubitContext
                                         .read<
                                             GetGeneratedInitialQuestionsCubit>()
                                         .execute(
                                             cvUrl: user?.cv,
                                             jobDescription: jobDescription);
-                                    // getGeneratedInitialQuestionsCubit.execute(cvUrl: user?.cv, jobDescription: jobDescription);
-                                    // var x1 = 112;
-                                    // var x2 = 112;
                                   } else {}
                                 },
                                 tabs: [
@@ -108,7 +96,11 @@ overviewBottomSheet(
                           ),
                           Expanded(
                               child: TabBarView(children: [
-                            _buildAiQuestionsTab(),
+                            _buildAiQuestionsTab(
+                              interviewModel: interviewModel,
+                              getGeneratedInitialQuestionsCubitContext:
+                                  getGeneratedInitialQuestionsCubitContext,
+                            ),
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Column(
@@ -225,10 +217,12 @@ overviewBottomSheet(
           ));
 }
 
-Widget _buildAiQuestionsTab() {
+Widget _buildAiQuestionsTab({
+  required InterviewModel interviewModel,
+  required BuildContext getGeneratedInitialQuestionsCubitContext,
+}) {
   return BlocBuilder<GetGeneratedInitialQuestionsCubit,
-          GetGeneratedInitialQuestionsState>(
-      // bloc: getGeneratedInitialQuestionsCubit,
+      GetGeneratedInitialQuestionsState>(
       builder: (context, state) {
     if (state is GetGeneratedInitialQuestionsLoading) {
       return Center(
@@ -335,58 +329,84 @@ Widget _buildAiQuestionsTab() {
       );
     }
     if (state is GetGeneratedInitialQuestionsErrorState) {
-      return Text(
-          "Error"); //TODO: add retry button from other screens? //also show toast
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(state.message),
+            SizedBox(
+              height: 10,
+            ),
+            CustomButton(
+              title: 'Try again',
+              width: 100,
+              height: 40,
+              onTap: () {
+                var user = interviewModel.user;
+                var jobDescription = interviewModel.job?.jobDetails;
+                getGeneratedInitialQuestionsCubitContext
+                    .read<GetGeneratedInitialQuestionsCubit>()
+                    .execute(cvUrl: user?.cv, jobDescription: jobDescription);
+              },
+            )
+          ],
+        ),
+      );
     }
     return SizedBox.shrink();
-    // return Padding(
-    //   padding: const EdgeInsets.all(8.0),
-    //   child: ListView.builder(
-    //     itemCount: 5,
-    //     itemBuilder: (c, i) {
-    //       return Padding(
-    //         padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
-    //         child: Column(
-    //           crossAxisAlignment: CrossAxisAlignment.start,
-    //           children: [
-    //             Container(
-    //               decoration: BoxDecoration(
-    //                 borderRadius: BorderRadius.circular(14),
-    //                 color: MyColors.lightGrey,
-    //               ),
-    //               child: Padding(
-    //                 padding: const EdgeInsets.all(5.0),
-    //                 child: CommonText(
-    //                   text: "00:12",
-    //                   fontSize: 13,
-    //                   fontColor: Colors.grey,
-    //                 ),
-    //               ),
-    //             ),
-    //             SizedBox(height: 7),
-    //             Row(
-    //               children: [
-    //                 Expanded(
-    //                   flex: 0,
-    //                   child: CommonText(
-    //                     text: "Teressa William:",
-    //                     fontSize: 15,
-    //                     fontWeight: FontWeight.w600,
-    //                   ),
-    //                 ),
-    //                 Expanded(
-    //                   child: CommonText(
-    //                     text: "Hey, Hope you are doing well!",
-    //                     fontSize: 14,
-    //                   ),
-    //                 ),
-    //               ],
-    //             )
-    //           ],
-    //         ),
-    //       );
-    //     },
-    //   ),
-    // );
+    // return _buildStaticMockWidget();
   });
+}
+
+Padding _buildStaticMockWidget() {
+  //created only to show the sample ui
+  return Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: ListView.builder(
+      itemCount: 5,
+      itemBuilder: (c, i) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(14),
+                  color: MyColors.lightGrey,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: CommonText(
+                    text: "00:12",
+                    fontSize: 13,
+                    fontColor: Colors.grey,
+                  ),
+                ),
+              ),
+              SizedBox(height: 7),
+              Row(
+                children: [
+                  Expanded(
+                    flex: 0,
+                    child: CommonText(
+                      text: "Teressa William:",
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  Expanded(
+                    child: CommonText(
+                      text: "Hey, Hope you are doing well!",
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
+        );
+      },
+    ),
+  );
 }
