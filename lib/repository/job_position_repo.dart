@@ -442,4 +442,49 @@ class JobPositionRepository {
     }
   }
 
+  Future<ApiResponse> getPaymentLink(String name, double amount) async {
+    final dio = Dio(
+      BaseOptions(
+        baseUrl: 'https://finix.sandbox-payments-api.com/',
+        headers: {
+          'Content-Type': 'application/json',
+          'Finix-Version': '2022-02-01',
+          'Authorization': 'Basic ' + base64Encode(utf8.encode('USksBJMwkNUz5GyxPevL2yFY:71b641c1-861d-435b-9a9c-532760731c5e')),
+        },
+      ),
+    );
+    final data = {
+      "merchant_id": 'merchantId',// change merchant id
+      "payment_frequency": "ONE_TIME",
+      "allowed_payment_methods": [
+        "PAYMENT_CARD",
+        "BANK_ACCOUNT"
+      ],
+      "nickname": 'nickname', //
+      "amount_details": {
+        "amount_type": "FIXED",
+        "total_amount": amount,
+        "currency": "USD"
+      },
+      "items": [
+        {
+          "name": name,
+          "quantity": "1",
+          "image_details": {
+           
+          },
+          "price_details": {
+            "sale_amount": amount,
+            "currency": "USD"
+          }
+        }
+      ]
+    };
+    try {
+      final response = await dio.post('/payment_links', data: data);
+          return ApiResponse.withSuccess(response);
+    } on DioException catch (e) {
+      return ApiResponse.withError(e.response);
+    }
+  }
 }

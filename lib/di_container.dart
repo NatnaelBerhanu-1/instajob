@@ -13,6 +13,7 @@ import 'package:insta_job/bloc/feedback_bloc/feedback_bloc.dart';
 import 'package:insta_job/bloc/generated_questions/get_generated_initial_questions_bloc.dart';
 import 'package:insta_job/bloc/get_declined_job_position/get_denied_job_poision_bloc.dart';
 import 'package:insta_job/bloc/get_hired_job_position/get_hired_candidates_bloc.dart';
+import 'package:insta_job/bloc/get_payment_link_bloc/get_payment_link_bloc.dart';
 import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
 import 'package:insta_job/bloc/interview_cubit/interview_cubit.dart';
 import 'package:insta_job/bloc/interview_recording_cubit/interview_recording_cubit.dart';
@@ -93,6 +94,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => EndInterviewCallScheduleCubit(sl()));
   sl.registerLazySingleton(() => InterviewTranscriptionCubit(sl()));
   sl.registerLazySingleton(() => GetHiredCandidatesCubit(sl()));
+  sl.registerLazySingleton(() => GetPaymentLinkCubit(sl()));
   sl.registerLazySingleton(() => AddBankingInfoCubit(sl()));
   sl.registerLazySingleton(() => UploadKycCubit(sl()));
   sl.registerLazySingleton(() => GetGeneratedInitialQuestionsCubit(sl()));
