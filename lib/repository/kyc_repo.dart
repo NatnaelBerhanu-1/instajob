@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:insta_job/network/dio/dio_client.dart';
 import 'package:insta_job/network/end_points.dart';
 import 'package:insta_job/payload/upload_kyc_candidate_payload.dart';
@@ -23,6 +24,7 @@ class KycRepo {
       var response = await dioClient.post(data: map, uri: EndPoint.uploadKycCandidate);
       return ApiResponse.withSuccess(response);
     } on DioException catch (e) {
+      debugPrint("LOGG error MSG ${e.response?.data}");
       return ApiResponse.withError(e.response);
     }
   }
@@ -35,6 +37,35 @@ class KycRepo {
         ...payload.toMap(),
       };
       var response = await dioClient.post(data: map, uri: EndPoint.uploadKycRecruiter);
+      return ApiResponse.withSuccess(response);
+    } on DioException catch (e) {
+      return ApiResponse.withError(e.response);
+    }
+  }
+
+  
+  Future<ApiResponse> checkKycRecruiterAvailability(
+      {required String userId}) async {
+    try {
+      var map = {
+        "recruiter_id": userId,
+      };
+      var response =
+          await dioClient.post(data: map, uri: EndPoint.checkKycRecruiterAvailable);
+      return ApiResponse.withSuccess(response);
+    } on DioException catch (e) {
+      return ApiResponse.withError(e.response);
+    }
+  }
+
+  Future<ApiResponse> checkKycCandidateAvailability(
+      {required String userId}) async {
+    try {
+      var map = {
+        "user_id": userId,
+      };
+      var response =
+          await dioClient.post(data: map, uri: EndPoint.checkKycCandidateAvailable);
       return ApiResponse.withSuccess(response);
     } on DioException catch (e) {
       return ApiResponse.withError(e.response);

@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/bottom_bloc/bottom_bloc.dart';
 import 'package:insta_job/bloc/career_learning_bloc/career_learning_bloc.dart';
+import 'package:insta_job/bloc/check_kyc_availability/check_kyc_availability_bloc.dart';
+import 'package:insta_job/bloc/check_kyc_availability/check_kyc_availability_state.dart';
 import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
 import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
 import 'package:insta_job/bloc/job_position/job_pos_event.dart';
@@ -19,6 +21,7 @@ import 'package:insta_job/screens/insta_job_user/career_cluster_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/user_account/automate_messages/automate_message_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/user_account/setting_pages/setting_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/user_account/subscribe_pages/job_board_screen.dart';
+import 'package:insta_job/screens/kyc/upload_kyc_screen.dart';
 import 'package:insta_job/screens/resume_edit_screens/cv_template_screen.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_colors.dart';
@@ -40,6 +43,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    debugPrint("LOGG init state of home page");
+    String userId = (Global.userModel?.id  ?? "").toString();
+    context.read<CheckKycAvailabilityCubit>().execute(userId: userId);
+  }
+
   @override
   Widget build(BuildContext context) {
     var selectedIndex = context.watch<GlobalCubit>().sIndex;
@@ -291,6 +302,33 @@ class _HomePageState extends State<HomePage> {
                                   img: MyImages.settings,
                                   title: "Settings",
                                 ),
+                              ),
+                              BlocBuilder<CheckKycAvailabilityCubit, 
+                               CheckKycAvailabilityState>(
+                                builder: (context, state) {
+                                  if (state is CheckKycAvailabilityNotFound) { //meaning kyc not uploaded yet, hence show the button
+                                    return Expanded(
+                                      child: Row(
+                                        children: [
+                                          SizedBox(width: 15),
+                                          Expanded(
+                                            child: CustomAccDetails(
+                                              onTap: () {
+                                                AppRoutes.push(context, UploadKycScreen());                                    
+                                              },
+                                              index: 4,
+                                              selectedIndex: selectedIndex,
+                                              width: double.infinity,
+                                              img: MyImages.settings,
+                                              title: "Fill KYC Info",
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  }
+                                  return SizedBox.shrink();
+                                }
                               ),
                             ],
                           ),

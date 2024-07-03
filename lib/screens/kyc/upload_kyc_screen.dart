@@ -78,6 +78,8 @@ class _UploadKycScreenState extends State<UploadKycScreen> {
       });
     });
     // selectedBusinessType = businessTypes[0]; //TODO: keep this or add validation check for dropdown
+    frontImageBloc.isCamera = true;
+    backImageBloc.isCamera = true;
   }
 
   bool userIsCandidate() {

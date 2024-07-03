@@ -5,6 +5,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:insta_job/bloc/check_kyc_availability/check_kyc_availability_bloc.dart';
+import 'package:insta_job/bloc/check_kyc_availability/check_kyc_availability_state.dart';
 import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
 import 'package:insta_job/bloc/global_cubit/global_state.dart';
 import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
@@ -12,9 +14,13 @@ import 'package:insta_job/bloc/job_position/job_pos_event.dart';
 import 'package:insta_job/bloc/job_position/job_pos_state.dart';
 import 'package:insta_job/bloc/location_cubit/location_cubit.dart';
 import 'package:insta_job/bloc/location_cubit/location_state.dart';
+import 'package:insta_job/globals.dart';
 import 'package:insta_job/screens/insta_job_user/bottom_nav_screen/search_pages/custom_search_page.dart';
+import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/assigned_company_screen.dart';
+import 'package:insta_job/screens/kyc/upload_kyc_screen.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_images.dart';
+import 'package:insta_job/widgets/custom_button/custom_btn.dart';
 import 'package:insta_job/widgets/custom_cards/insta_job_user_cards/filter_tiles/custom_filter_tile.dart';
 import 'package:insta_job/widgets/custom_cards/insta_job_user_cards/map_tile.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
@@ -39,6 +45,9 @@ class _SearchJobsScreenState extends State<SearchJobsScreen> {
   void initState() {
     context.read<JobPositionBloc>().add(LoadJobPosListEvent());
     super.initState();
+    String userId = (Global.userModel?.id  ?? "").toString();
+    context.read<CheckKycAvailabilityCubit>().execute(userId: userId);
+    
   }
 
   // Set<Marker> setOfMarker = {};
@@ -134,6 +143,34 @@ class _SearchJobsScreenState extends State<SearchJobsScreen> {
               var value = context.read<GlobalCubit>();
               return Column(
                 children: [
+                  BlocBuilder<CheckKycAvailabilityCubit, 
+                    CheckKycAvailabilityState>(
+                    builder: (context, state) {
+                      // if (state is CheckKycAvailabilityNotFound) {
+                      // }
+                      return CustomButton(
+                        width: 240,
+                        height: 36,
+                        loading: false,
+                        loadingIndicatorHeight: 22,
+                        loadingIndicatorWidth: 22,
+                        loadingIndicatorSeparatorWidth: 8,
+                        onTap: () {
+                          if (state is CheckKycAvailabilityFound) {
+                            showPaymentFlowBottomSheet(context);
+                          } else if (state is CheckKycAvailabilityNotFound) {
+                            AppRoutes.push(context, UploadKycScreen());
+                          } else if (state is CheckKycAvailabilityErrorState) {
+                            AppRoutes.push(context, UploadKycScreen());
+                          } else { //loading, initial state etc
+                          }
+
+                              },
+                        title: "Pay your employees",
+                      );
+                    }
+                  ),
+                  SizedBox(height: 16),
                   Padding(
                     padding: jobDistanceIndex == 1 || jobDistanceIndex == 2
                         ? EdgeInsets.only(left: 10.0, top: 10)

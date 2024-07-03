@@ -174,29 +174,33 @@ class _AssignCompanyState extends State<AssignCompany> {
   TextButton showPaymentRelatedScreensTempButton(BuildContext context) {
     return TextButton(
             onPressed: () {
-              showModalBottomSheet(
-                context: context,
-                isScrollControlled: true,
-                // isDismissible: true,
-                showDragHandle: true,
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(20),
-                  ),
-                ),
-                builder: (context) {
-                  return Builder(
-                      // return DraggableScrollableSheet(
-                      // initialChildSize: 0.75,
-                      // maxChildSize: 0.75,
-                      // minChildSize: 0.75,
-                      // builder: (BuildContext context, ScrollController scrollController) {
-                      builder: (BuildContext context) {
-                    return SafeArea(child: SendMoneyBottomSheetChild());
-                  });
-                },
-              );
+              showPaymentFlowBottomSheet(context);
             },
             child: Text("Payment related screens"),
           );
+  }
+
+  Future<dynamic> showPaymentFlowBottomSheet(BuildContext context) {
+    return showModalBottomSheet(
+              context: context,
+              isScrollControlled: true,
+              // isDismissible: true,
+              showDragHandle: true,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(20),
+                ),
+              ),
+              builder: (context) {
+                return Builder(
+                    // return DraggableScrollableSheet(
+                    // initialChildSize: 0.75,
+                    // maxChildSize: 0.75,
+                    // minChildSize: 0.75,
+                    // builder: (BuildContext context, ScrollController scrollController) {
+                    builder: (BuildContext context) {
+                  return SafeArea(child: SendMoneyBottomSheetChild());
+                });
+              },
+            );
   }

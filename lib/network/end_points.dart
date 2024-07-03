@@ -27,6 +27,8 @@ class EndPoint {
   static String endInterviewCall = "end_video_call"; //CHECK WITH NATI
   static String uploadKycRecruiter = "update_kyc_recruiter";
   static String uploadKycCandidate = "update_kyc_candidate";
+  static String checkKycCandidateAvailable = "check_kyc_candidate";
+  static String checkKycRecruiterAvailable = "check_kyc_recruiter";
 
 
   /// ---------------- EMPLOYEE INTERFACE --------------- ///

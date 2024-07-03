@@ -5,6 +5,7 @@ import 'package:insta_job/bloc/auth_bloc/auth_cubit.dart';
 import 'package:insta_job/bloc/banking_info_bloc/add_banking_info/add_banking_info_cubit.dart';
 import 'package:insta_job/bloc/cancel_interview_schedule_cubit/cancel_interview_schedule_cubit.dart';
 import 'package:insta_job/bloc/career_learning_bloc/career_learning_bloc.dart';
+import 'package:insta_job/bloc/check_kyc_availability/check_kyc_availability_bloc.dart';
 import 'package:insta_job/bloc/choose_image_bloc/pick_image_cubit.dart';
 import 'package:insta_job/bloc/company_bloc/company_bloc.dart';
 import 'package:insta_job/bloc/end_interview_call_cubit/end_interview_call_cubit.dart';
@@ -54,4 +55,5 @@ final List<SingleChildWidget> blocProviders = [
   BlocProvider(create: (_) => di.sl<AddBankingInfoCubit>()),
   BlocProvider(create: (_) => di.sl<UploadKycCubit>()),
   BlocProvider(create: (_) => di.sl<GetGeneratedInitialQuestionsCubit>()),
+  BlocProvider(create: (_) => di.sl<CheckKycAvailabilityCubit>()),
 ];
