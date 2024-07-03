@@ -30,6 +30,9 @@ class UploadKycScreen extends StatefulWidget {
 class _UploadKycScreenState extends State<UploadKycScreen> {
   List<String> documentTypes = ["Driving License", "Passport", "ID Card"];
   List<String> bankAccountTypes = ["Checking", "Saving"];
+  
+  List<String> documentTypesForAPI = ["drivers_license", "passport", "id_card"]; // TODO: change to extensions on string maybe? Or define as tuple
+  List<String> bankAccountTypesForAPI = ["checking", "saving"]; // TODO: change to extensions on string maybe? Or define as tuple
 
   int tabIndex = 0;
   TextEditingController phoneController = TextEditingController();
@@ -276,13 +279,13 @@ class _UploadKycScreenState extends State<UploadKycScreen> {
                                 phoneNumber: phoneController.text,
                                 email: emailController.text,
                                 documentType:
-                                    documentTypes[selectedDocumentTypeIndex],
+                                    documentTypesForAPI[selectedDocumentTypeIndex],
                                 // frontIdImageUrl: "",
                                 frontIdImageUrl: frontImageBloc.imgUrl,
                                 // backIdImageUrl: "",
                                 backIdImageUrl: backImageBloc.imgUrl,
                                 bankAccountNumber: accountNumberController.text,
-                                bankAccountType: bankAccountTypes[
+                                bankAccountType: bankAccountTypesForAPI[
                                     selectedBankAccountTypeIndex],
                                 bankCode: bankRoutingNumberController.text,
                                 countryCode: countryCodeController.text,
@@ -304,7 +307,7 @@ class _UploadKycScreenState extends State<UploadKycScreen> {
                                     businessTypeController.text, //TODO: revisit
                                 businessAddress: businessAddressController.text,
                                 documentType:
-                                    documentTypes[selectedDocumentTypeIndex],
+                                    documentTypesForAPI[selectedDocumentTypeIndex],
                                 // frontIdImageUrl: "",
                                 frontIdImageUrl: frontImageBloc.imgUrl,
                                 // backIdImageUrl: "",
