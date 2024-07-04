@@ -303,36 +303,37 @@ class _HomePageState extends State<HomePage> {
                                   title: "Settings",
                                 ),
                               ),
-                              BlocBuilder<CheckKycAvailabilityCubit, 
-                               CheckKycAvailabilityState>(
-                                builder: (context, state) {
-                                  // if (state is CheckKycAvailabilityNotFound) { //meaning kyc not uploaded yet, hence show the button
-                                  if (true) {
-                                    return Expanded(
-                                      child: Row(
-                                        children: [
-                                          SizedBox(width: 15),
-                                          Expanded(
-                                            child: CustomAccDetails(
-                                              onTap: () {
-                                                AppRoutes.push(context, UploadKycScreen());                                    
-                                              },
-                                              index: 4,
-                                              selectedIndex: selectedIndex,
-                                              width: double.infinity,
-                                              // img: MyImages.settings,
-                                              img: MyImages.edit,
-                                              // title: "Fill KYC Info",
-                                              title: "Update banking info",
+                              if (Global.userModel?.type == "user")
+                                BlocBuilder<CheckKycAvailabilityCubit, 
+                                CheckKycAvailabilityState>(
+                                  builder: (context, state) {
+                                    // if (state is CheckKycAvailabilityNotFound) { //meaning kyc not uploaded yet, hence show the button
+                                    if (true) {
+                                      return Expanded(
+                                        child: Row(
+                                          children: [
+                                            SizedBox(width: 15),
+                                            Expanded(
+                                              child: CustomAccDetails(
+                                                onTap: () {
+                                                  AppRoutes.push(context, UploadKycScreen());                                    
+                                                },
+                                                index: 4,
+                                                selectedIndex: selectedIndex,
+                                                width: double.infinity,
+                                                // img: MyImages.settings,
+                                                img: MyImages.edit,
+                                                // title: "Fill KYC Info",
+                                                title: "Update banking info",
+                                              ),
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                    );
+                                          ],
+                                        ),
+                                      );
+                                    }
+                                    return SizedBox.shrink();
                                   }
-                                  return SizedBox.shrink();
-                                }
-                              ),
+                                ),
                             ],
                           ),
                           SizedBox(height: 25),
