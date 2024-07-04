@@ -1,5 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/check_kyc_availability/check_kyc_availability_state.dart';
+import 'package:insta_job/bloc/check_kyc_availability/model/fetched_kyc_candidate_data.dart';
+import 'package:insta_job/bloc/check_kyc_availability/model/fetched_kyc_data.dart';
+import 'package:insta_job/bloc/check_kyc_availability/model/fetched_kyc_recruiter_data.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/network/api_response.dart';
 import 'package:insta_job/repository/kyc_repo.dart';
@@ -24,7 +27,15 @@ class CheckKycAvailabilityCubit extends Cubit<CheckKycAvailabilityState> {
       }
       if (response.response.statusCode == 200) {
         // TODO: decide whether to parse data or if it's not needed (Only needed if prefill is required for kyc for edit KYC feature maybe?)
-        emit(const CheckKycAvailabilityFound());
+        FetchedKycData data;
+        var responseData = response.response.data["data"] as Map<String, dynamic>; //TODO: revisit
+        if (userIsCandidate() == true) {
+          data = FetchedKycCandidateData.fromMap(responseData);
+          
+        } else {
+          data = FetchedKycRecruiterData.fromMap(responseData);
+        }
+        emit(CheckKycAvailabilityFound(data: data));
       } else if (response.response.statusCode == 400) {
         emit(const CheckKycAvailabilityNotFound());
       } else {

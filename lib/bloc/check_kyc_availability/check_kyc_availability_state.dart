@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:insta_job/bloc/check_kyc_availability/model/fetched_kyc_data.dart';
 
 class CheckKycAvailabilityState extends Equatable {
   const CheckKycAvailabilityState();
@@ -13,7 +14,8 @@ class CheckKycAvailabilityLoading extends CheckKycAvailabilityState {
 }
 
 class CheckKycAvailabilityFound extends CheckKycAvailabilityState {
-  const CheckKycAvailabilityFound(); //TODO: consider receiving the found kyc data for prefill? (if needed for edit feature)
+  const CheckKycAvailabilityFound({required this.data}); //TODO: consider receiving the found kyc data for prefill? (if needed for edit feature)
+  final FetchedKycData data;
 
   @override
   List<Object?> get props => [];
