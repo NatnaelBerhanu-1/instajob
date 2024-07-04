@@ -98,6 +98,7 @@ class _SendMoneyBottomSheetChildState extends State<SendMoneyBottomSheetChild> {
                 ),
               ),
               BlocConsumer<GetPaymentLinkCubit, GetPaymentLinkState>(listener: (context, state) {
+                debugPrint('State: $state');
                 if (state is GetPaymentLinkLoaded) {
                   var link = state.linkUrl; 
                   showModalBottomSheet(
@@ -121,7 +122,7 @@ class _SendMoneyBottomSheetChildState extends State<SendMoneyBottomSheetChild> {
                   borderColor: MyColors.blue,
                   iconColor: MyColors.white,
                   onclick: () async {
-                    context.read<GetPaymentLinkCubit>().getPaymentLink('Hello', 1200);
+                    context.read<GetPaymentLinkCubit>().getPaymentLink('1', '1', 1000);
                   },
                 );
               }), 

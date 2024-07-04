@@ -9,17 +9,17 @@ class GetPaymentLinkCubit extends Cubit<GetPaymentLinkState> {
   GetPaymentLinkCubit(this.jobPositionRepository)
       : super(GetPaymentLinkInitialState());
 
-  Future<void> getPaymentLink(String name, double price) async {
+  Future<void> getPaymentLink(String user_id, String recruiter_id, double amount) async {
     emit(const GetPaymentLinkLoading());
-    ApiResponse response = await jobPositionRepository.getPaymentLink(name, price);
+    ApiResponse response = await jobPositionRepository.getPaymentLink(user_id, recruiter_id, amount);
     if (response.response.statusCode == 500) {
       emit(const GetPaymentLinkErrorState(message: 'Something went wrong'));
     }
     if (response.response.statusCode == 200) {
       debugPrint('LOGGresponse ${response.response.data['data']}');
-      var list = response.response.data['data'] as Map<String,dynamic>;
-      debugPrint('LOGG get-hired list $list');
-      emit(GetPaymentLinkLoaded(linkUrl: list['link_url']));
+      var link = response.response.data['data'];
+
+      emit(GetPaymentLinkLoaded(linkUrl: link));
     } else if (response.response.statusCode == 400) {
       emit(const GetPaymentLinkErrorState(message: "Data Not Found"));
     } else {
