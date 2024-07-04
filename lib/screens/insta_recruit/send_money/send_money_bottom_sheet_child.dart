@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/get_hired_job_position/get_hired_candidates_bloc.dart';
 import 'package:insta_job/bloc/get_hired_job_position/get_hired_candidates_state.dart';
+import 'package:insta_job/bloc/get_payment_link_bloc/get_payment_link_bloc.dart';
+import 'package:insta_job/bloc/get_payment_link_bloc/get_payment_link_state.dart';
 import 'package:insta_job/model/hired_candidate.dart';
 import 'package:insta_job/model/payment_user.dart';
 import 'package:insta_job/screens/insta_recruit/send_money/amount_page.dart';
@@ -14,6 +16,9 @@ import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_button/custom_btn.dart';
 import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 import 'package:insta_job/widgets/custom_text_field.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class SendMoneyBottomSheetChild extends StatefulWidget {
   const SendMoneyBottomSheetChild({super.key});
@@ -92,6 +97,35 @@ class _SendMoneyBottomSheetChildState extends State<SendMoneyBottomSheetChild> {
                   fontWeight: FontWeight.w700,
                 ),
               ),
+              BlocConsumer<GetPaymentLinkCubit, GetPaymentLinkState>(listener: (context, state) {
+                debugPrint('State: $state');
+                if (state is GetPaymentLinkLoaded) {
+                  var link = state.linkUrl; 
+                  showModalBottomSheet(
+                    context: context, 
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+                    ),
+                    //enableDrag: true,
+                    isScrollControlled: true,
+                    showDragHandle: true,
+                    builder:(context) => _openLinkInBottomSheet(context, link),
+                  );
+                }
+              }, builder: (context, state) {
+                return CustomIconButton(
+                  image: MyImages.arrowWhite,
+                  title: "Pay",
+                  backgroundColor: MyColors.blue,
+                  fontColor: MyColors.white,
+                  loading: state is GetPaymentLinkLoading ? true : false,
+                  borderColor: MyColors.blue,
+                  iconColor: MyColors.white,
+                  onclick: () async {
+                    context.read<GetPaymentLinkCubit>().getPaymentLink('1', '1', 1000);
+                  },
+                );
+              }), 
               const SizedBox(height: 20,),
               IconTextField(
                 controller: searchController,
@@ -223,6 +257,37 @@ class _SendMoneyBottomSheetChildState extends State<SendMoneyBottomSheetChild> {
           );
         }
       ),
+    );
+  }
+
+  _openLinkInBottomSheet(BuildContext context, String url) {
+    final Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers = {
+      Factory(() => EagerGestureRecognizer())
+    }; 
+    return DraggableScrollableSheet( 
+      initialChildSize: 0.8, // 80% of screen height
+      maxChildSize: 1.0,
+      minChildSize: 0.5,
+      expand: false,
+      builder: (context, scrollController) {
+        //return PayrexxGatewayWidget(gatewayUrl: url,);
+        return Container(
+          child: WebView(
+            initialUrl: url,
+            gestureRecognizers: gestureRecognizers,
+            javascriptMode: JavascriptMode.unrestricted,
+            navigationDelegate: (NavigationRequest request) async {
+              // if (isPaymentCompleteUrl(request.url) && invoiceId != null) {
+              //   //final redirectResult = extractRedirectResult(request.url);
+              //   await verifyPayment(invoiceId!);
+              //   Navigator.pop(context);
+              //   return NavigationDecision.prevent; // Prevents the WebView from navigating to the next page
+              // }
+              return NavigationDecision.navigate; 
+            },
+          ),
+        );
+      }
     );
   }
 

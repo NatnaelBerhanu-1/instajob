@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:insta_job/network/api_response.dart';
 import 'package:insta_job/network/dio/dio_client.dart';
 import 'package:insta_job/network/end_points.dart';
@@ -26,7 +27,9 @@ class AiQuestionsRepository {
         ),
       );
       return ApiResponse.withSuccess(response);
-    } on DioException catch (e) {
+    } on DioException catch (e, stk) {
+      debugPrint('$e');
+      debugPrintStack(stackTrace: stk);
       return ApiResponse.withError(e.response);
     }
   }

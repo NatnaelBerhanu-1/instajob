@@ -23,8 +23,17 @@ class GetGeneratedInitialQuestionsCubit
             message: 'Something went wrong'));
       }
       if (response.response.statusCode == 200) {
-        var x = response.response;
-        AiQuestionsModel res = AiQuestionsModel.fromJson(response.response);
+        // debugPrint('response ${response.response.data['data']}');
+        debugPrint('LOGG response 200');
+        // List<JobPosModel> list = (response.response.data['data'] as List)
+        //     .map((e) => JobPosModel.fromJson(e).copyWith(jobId: jobId))
+        //     .toList();
+        // List<AiQuestionsModel> list = (response.response.data['questions'] as List)
+        //     .map((e) => JobPosModel.fromJson(e).copyWith(jobId: jobId))
+        //     .toList();
+        Map<String, dynamic> x = response.response.data;
+        print("LOGG sth $x");
+        AiQuestionsModel res = AiQuestionsModel.fromJson(x);
         emit(GetGeneratedInitialQuestionsLoaded(
           aiQuestionsModel: res,
         ));
@@ -34,11 +43,13 @@ class GetGeneratedInitialQuestionsCubit
       } else {
         emit(const GetGeneratedInitialQuestionsErrorState(
             message: 'Something went wrong'));
-      }
-      emit(GetGeneratedInitialQuestionsLoaded(
-        aiQuestionsModel: response.response,
-      ));
-    } catch (e) {
+      } 
+      // emit(GetGeneratedInitialQuestionsLoaded(
+      //   aiQuestionsModel: response.response,
+      // ));
+    } catch (e, stk) {
+      debugPrint(e.toString());
+      debugPrintStack(stackTrace: stk);
       emit(const GetGeneratedInitialQuestionsErrorState(
           message: 'Something went wrong'));
     }

@@ -442,4 +442,56 @@ class JobPositionRepository {
     }
   }
 
+  Future<ApiResponse> getPaymentLink(String user_id, String recruiter_id, double amount) async {
+    // final dio = Dio(
+    //   BaseOptions(
+    //     baseUrl: 'https://finix.sandbox-payments-api.com/',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //       'Finix-Version': '2022-02-01',
+    //       'Authorization': 'Basic ' + base64Encode(utf8.encode('USksBJMwkNUz5GyxPevL2yFY:71b641c1-861d-435b-9a9c-532760731c5e')),
+    //     },
+    //   ),
+    // );
+    // final data = {
+    //   "merchant_id": 'merchantId',// change merchant id
+    //   "payment_frequency": "ONE_TIME",
+    //   "allowed_payment_methods": [
+    //     "PAYMENT_CARD",
+    //     "BANK_ACCOUNT"
+    //   ],
+    //   "nickname": 'nickname', //
+    //   "amount_details": {
+    //     "amount_type": "FIXED",
+    //     "total_amount": amount,
+    //     "currency": "USD"
+    //   },
+    //   "items": [
+    //     {
+    //       "name": name,
+    //       "quantity": "1",
+    //       "image_details": {
+           
+    //       },
+    //       "price_details": {
+    //         "sale_amount": amount,
+    //         "currency": "USD"
+    //       }
+    //     }
+    //   ]
+    // };
+    try {
+      Response response = await dioClient.post(
+          data: {'user_id':user_id,
+            'recruiter_id':recruiter_id,
+            'amount':amount,}, uri: EndPoint.paymentLink);
+      if(response.statusCode == 200) {
+      return ApiResponse.withSuccess(response);
+      }else{
+        return ApiResponse.withError(response);
+      }
+    } on DioException catch (e) {
+      return ApiResponse.withError(e.response);
+    }
+  }
 }

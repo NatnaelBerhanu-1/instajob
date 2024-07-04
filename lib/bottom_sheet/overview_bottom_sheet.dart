@@ -44,18 +44,18 @@ overviewBottomSheet(
                     },
                     child: Column(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 12.0),
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 2, horizontal: 20),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              color: MyColors.lightgrey,
-                            ),
-                            child: SizedBox(),
-                          ),
-                        ),
+                        // Padding(
+                        //   padding: const EdgeInsets.symmetric(vertical: 12.0),
+                        //   child: Container(
+                        //     padding: EdgeInsets.symmetric(
+                        //         vertical: 2, horizontal: 20),
+                        //     decoration: BoxDecoration(
+                        //       borderRadius: BorderRadius.circular(5),
+                        //       color: MyColors.lightgrey,
+                        //     ),
+                        //     child: SizedBox(),
+                        //   ),
+                        // ),
                         CommonText(
                           text: "Overview",
                           fontSize: 18,
