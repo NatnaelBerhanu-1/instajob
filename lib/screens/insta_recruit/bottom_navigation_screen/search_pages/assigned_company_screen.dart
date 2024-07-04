@@ -2,9 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:insta_job/bloc/check_kyc_availability/check_kyc_availability_bloc.dart';
+import 'package:insta_job/bloc/check_kyc_availability/check_kyc_availability_state.dart';
 import 'package:insta_job/bloc/company_bloc/company_bloc.dart';
 import 'package:insta_job/bloc/company_bloc/company_event.dart';
 import 'package:insta_job/bloc/company_bloc/company_state.dart';
+import 'package:insta_job/globals.dart';
 import 'package:insta_job/screens/bank_info/add_bank_info_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/add_new_company.dart';
 import 'package:insta_job/screens/insta_recruit/send_money/send_money_bottom_sheet_child.dart';
@@ -13,6 +16,7 @@ import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_app_bar.dart';
+import 'package:insta_job/widgets/custom_button/custom_btn.dart';
 import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 import 'package:insta_job/widgets/custom_cards/assign_companies_tile.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
@@ -36,6 +40,8 @@ class _AssignCompanyState extends State<AssignCompany> {
     context.read<CompanyBloc>().add(LoadCompanyListEvent());
     // context.read<JobPositionBloc>().add(
     //     LoadJobPosListEvent()); //TODO: double check if this is necessary, IDTS
+    String userId = (Global.userModel?.id  ?? "").toString();
+    context.read<CheckKycAvailabilityCubit>().execute(userId: userId);
   }
 
   @override
@@ -49,11 +55,40 @@ class _AssignCompanyState extends State<AssignCompany> {
             title: "Assigned Companies",
           ),
         ),
-        body: Column(
-          children: [
-            Expanded(
-              flex: 0,
-              child: Container(
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4),
+                child: BlocBuilder<CheckKycAvailabilityCubit, 
+                  CheckKycAvailabilityState>(
+                  builder: (context, state) {
+                    // if (state is CheckKycAvailabilityNotFound) {
+                    // }
+                    return CustomButton(
+                      width: 240,
+                      height: 36,
+                      loading: false,
+                      loadingIndicatorHeight: 22,
+                      loadingIndicatorWidth: 22,
+                      loadingIndicatorSeparatorWidth: 8,
+                      onTap: () {
+                        if (state is CheckKycAvailabilityFound) {
+                          showPaymentFlowBottomSheet(context);
+                        } else if (state is CheckKycAvailabilityNotFound) {
+                          AppRoutes.push(context, UploadKycScreen());
+                        } else if (state is CheckKycAvailabilityErrorState) {
+                          AppRoutes.push(context, UploadKycScreen());
+                        } else { //loading, initial state etc
+                        }
+                
+                            },
+                      title: "Pay your employees",
+                    );
+                  }
+                ),
+              ),
+              Container(
                 color: MyColors.white,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20),
@@ -117,37 +152,37 @@ class _AssignCompanyState extends State<AssignCompany> {
                   ),
                 ),
               ),
-            ),
-            divider(),
-            Expanded(child: BlocBuilder<CompanyBloc, CompanyState>(builder: (context, state) {
-              if (state is CompanyLoading) {
-                return Center(child: CircularProgressIndicator());
-              }
-              if (state is ErrorState) {
-                // showToast(state.error);
-                return Center(child: Text(state.error));
-              }
-              if (state is CompanyLoaded) {
-                return ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: state.companyList.length,
-                    itemBuilder: (c, i) {
-                      var data = context.read<CompanyBloc>();
-                      data.companyModel = state.companyList[i];
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 7.0, horizontal: 20),
-                        child: AssignCompaniesTile(
-                          companyModel: data.companyModel,
-                        ),
-                      );
-                    });
-              }
-              return Container();
-            })),
-            showPaymentRelatedScreensTempButton(context),
-            showKycRelatedScreensTempButton(context),
-            showAddBankingInfoScreensTempButton(context),
-          ],
+              divider(),
+              BlocBuilder<CompanyBloc, CompanyState>(builder: (context, state) {
+                if (state is CompanyLoading) {
+                  return Center(child: CircularProgressIndicator());
+                }
+                if (state is ErrorState) {
+                  // showToast(state.error);
+                  return Center(child: Text(state.error));
+                }
+                if (state is CompanyLoaded) {
+                  return ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: state.companyList.length,
+                      itemBuilder: (c, i) {
+                        var data = context.read<CompanyBloc>();
+                        data.companyModel = state.companyList[i];
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 7.0, horizontal: 20),
+                          child: AssignCompaniesTile(
+                            companyModel: data.companyModel,
+                          ),
+                        );
+                      });
+                }
+                return Container();
+              }),
+              showPaymentRelatedScreensTempButton(context),
+              showKycRelatedScreensTempButton(context),
+              showAddBankingInfoScreensTempButton(context),
+            ],
+          ),
         ));
   }
 }

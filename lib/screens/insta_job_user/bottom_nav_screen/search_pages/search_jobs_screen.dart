@@ -45,9 +45,6 @@ class _SearchJobsScreenState extends State<SearchJobsScreen> {
   void initState() {
     context.read<JobPositionBloc>().add(LoadJobPosListEvent());
     super.initState();
-    String userId = (Global.userModel?.id  ?? "").toString();
-    context.read<CheckKycAvailabilityCubit>().execute(userId: userId);
-    
   }
 
   // Set<Marker> setOfMarker = {};
@@ -143,34 +140,6 @@ class _SearchJobsScreenState extends State<SearchJobsScreen> {
               var value = context.read<GlobalCubit>();
               return Column(
                 children: [
-                  BlocBuilder<CheckKycAvailabilityCubit, 
-                    CheckKycAvailabilityState>(
-                    builder: (context, state) {
-                      // if (state is CheckKycAvailabilityNotFound) {
-                      // }
-                      return CustomButton(
-                        width: 240,
-                        height: 36,
-                        loading: false,
-                        loadingIndicatorHeight: 22,
-                        loadingIndicatorWidth: 22,
-                        loadingIndicatorSeparatorWidth: 8,
-                        onTap: () {
-                          if (state is CheckKycAvailabilityFound) {
-                            showPaymentFlowBottomSheet(context);
-                          } else if (state is CheckKycAvailabilityNotFound) {
-                            AppRoutes.push(context, UploadKycScreen());
-                          } else if (state is CheckKycAvailabilityErrorState) {
-                            AppRoutes.push(context, UploadKycScreen());
-                          } else { //loading, initial state etc
-                          }
-
-                              },
-                        title: "Pay your employees",
-                      );
-                    }
-                  ),
-                  SizedBox(height: 16),
                   Padding(
                     padding: jobDistanceIndex == 1 || jobDistanceIndex == 2
                         ? EdgeInsets.only(left: 10.0, top: 10)

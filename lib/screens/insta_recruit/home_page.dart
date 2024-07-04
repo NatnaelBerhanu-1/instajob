@@ -306,7 +306,8 @@ class _HomePageState extends State<HomePage> {
                               BlocBuilder<CheckKycAvailabilityCubit, 
                                CheckKycAvailabilityState>(
                                 builder: (context, state) {
-                                  if (state is CheckKycAvailabilityNotFound) { //meaning kyc not uploaded yet, hence show the button
+                                  // if (state is CheckKycAvailabilityNotFound) { //meaning kyc not uploaded yet, hence show the button
+                                  if (true) {
                                     return Expanded(
                                       child: Row(
                                         children: [
@@ -319,8 +320,10 @@ class _HomePageState extends State<HomePage> {
                                               index: 4,
                                               selectedIndex: selectedIndex,
                                               width: double.infinity,
-                                              img: MyImages.settings,
-                                              title: "Fill KYC Info",
+                                              // img: MyImages.settings,
+                                              img: MyImages.edit,
+                                              // title: "Fill KYC Info",
+                                              title: "Update banking info",
                                             ),
                                           ),
                                         ],
