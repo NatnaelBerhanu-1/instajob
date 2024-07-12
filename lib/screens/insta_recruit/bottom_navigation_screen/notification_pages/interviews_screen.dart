@@ -274,7 +274,7 @@ class _InterviewScreenState extends State<InterviewScreen> {
             ),
           );
         }
-        return Center(child: Text('No upcomming interviews.'));
+        return Center(child: Text('No upcoming interviews.'));
       }
       return SizedBox();
     });

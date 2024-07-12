@@ -32,7 +32,7 @@ class _OccupationDetailsScreenState extends State<OccupationDetailsScreen> {
     "Experience Requirement",
     "Worker Requirement",
     "Worker Characteristics",
-    "WorkForce Characteristics",
+    //"WorkForce Characteristics",
   ];
 
   @override

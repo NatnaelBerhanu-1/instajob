@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/generated_questions/get_generated_initial_questions_bloc.dart';
 import 'package:insta_job/bloc/generated_questions/get_generated_initial_questions_state.dart';
+import 'package:insta_job/globals.dart';
 import 'package:insta_job/model/interview_model.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/widgets/custom_button/custom_btn.dart';
@@ -72,7 +73,7 @@ overviewBottomSheet(
                         children: [
                           Expanded(
                             flex: 0,
-                            child: TabBar(
+                            child: Global.userModel?.type != 'user' ? TabBar(
                                 unselectedLabelColor: MyColors.tabClr,
                                 labelColor: MyColors.blue,
                                 indicatorColor: MyColors.blue,
@@ -92,121 +93,18 @@ overviewBottomSheet(
                                 tabs: [
                                   Tab(text: "AI Questions"),
                                   Tab(text: "Notes"),
-                                ]),
+                                ]) : SizedBox.shrink(),
                           ),
                           Expanded(
-                              child: TabBarView(children: [
+                              child: Global.userModel?.type != 'user' ? TabBarView(children: [
                             _buildAiQuestionsTab(
                               interviewModel: interviewModel,
                               getGeneratedInitialQuestionsCubitContext:
                                   getGeneratedInitialQuestionsCubitContext,
                             ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                children: [
-                                  Expanded(
-                                    child: ListView.builder(
-                                      itemCount: 5,
-                                      itemBuilder: (c, i) {
-                                        return Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 5, vertical: 8),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Container(
-                                                decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                        color:
-                                                            MyColors.lightGrey),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10)),
-                                                child: Padding(
-                                                  padding: const EdgeInsets.all(
-                                                      10.0),
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Row(
-                                                        children: [
-                                                          Expanded(
-                                                            child: CommonText(
-                                                              text: "Note 1",
-                                                              fontSize: 15,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600,
-                                                            ),
-                                                          ),
-                                                          Expanded(
-                                                            flex: 0,
-                                                            child: CommonText(
-                                                              text: "00:12",
-                                                              fontSize: 13,
-                                                              fontColor:
-                                                                  Colors.grey,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      SizedBox(height: 7),
-                                                      CommonText(
-                                                        text:
-                                                            "Lorem Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae ",
-                                                        fontSize: 13,
-                                                        fontColor: Colors.grey,
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                  IconTextField(
-                                    controller: TextEditingController(),
-                                    textCapitalization:
-                                        TextCapitalization.sentences,
-                                    // color: MyColors.lightGrey,
-                                    // prefixIcon: null,
-                                    color: MyColors.lightGrey,
-                                    borderRadius: 25,
-                                    hint: "Write message here..",
-                                    suffixIcon: GestureDetector(
-                                      onTap: () {},
-                                      child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(right: 2.0),
-                                        child: Container(
-                                          // alignment: Alignment.center,
-                                          decoration: BoxDecoration(
-                                              color: MyColors.blue,
-                                              borderRadius:
-                                                  BorderRadius.circular(25)),
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 13.5, horizontal: 18),
-                                            child: CommonText(
-                                              text: "Send",
-                                              fontColor: MyColors.white,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ]))
+                            _buildNotes()
+                          ]) : _buildNotes()
+                          )
                         ],
                       ),
                     ),
@@ -407,6 +305,114 @@ Padding _buildStaticMockWidget() {
           ),
         );
       },
+    ),
+  );
+}
+
+Widget _buildNotes(){
+  return Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: Column(
+      children: [
+        Expanded(
+          child: ListView.builder(
+            itemCount: 5,
+            itemBuilder: (c, i) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 5, vertical: 8),
+                child: Column(
+                  crossAxisAlignment:
+                      CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              color:
+                                  MyColors.lightGrey),
+                          borderRadius:
+                              BorderRadius.circular(
+                                  10)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(
+                            10.0),
+                        child: Column(
+                          crossAxisAlignment:
+                              CrossAxisAlignment
+                                  .start,
+                          children: [
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: CommonText(
+                                    text: "Note 1",
+                                    fontSize: 15,
+                                    fontWeight:
+                                        FontWeight
+                                            .w600,
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 0,
+                                  child: CommonText(
+                                    text: "00:12",
+                                    fontSize: 13,
+                                    fontColor:
+                                        Colors.grey,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 7),
+                            CommonText(
+                              text:
+                                  "Lorem Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae ",
+                              fontSize: 13,
+                              fontColor: Colors.grey,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+        IconTextField(
+          controller: TextEditingController(),
+          textCapitalization:
+              TextCapitalization.sentences,
+          // color: MyColors.lightGrey,
+          // prefixIcon: null,
+          color: MyColors.lightGrey,
+          borderRadius: 25,
+          hint: "Write message here..",
+          suffixIcon: GestureDetector(
+            onTap: () {},
+            child: Padding(
+              padding:
+                  const EdgeInsets.only(right: 2.0),
+              child: Container(
+                // alignment: Alignment.center,
+                decoration: BoxDecoration(
+                    color: MyColors.blue,
+                    borderRadius:
+                        BorderRadius.circular(25)),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 13.5, horizontal: 18),
+                  child: CommonText(
+                    text: "Send",
+                    fontColor: MyColors.white,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
     ),
   );
 }

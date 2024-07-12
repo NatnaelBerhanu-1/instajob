@@ -181,7 +181,7 @@ class _ApplyScreenState extends State<ApplyScreen> {
               Expanded(
                 flex: 0,
                 child: CustomButton(
-                  title: "Generate Cover Letter",
+                  title: "Write Cover Letter",
                   bgColor: MyColors.transparent,
                   borderColor: MyColors.blue,
                   fontColor: MyColors.blue,

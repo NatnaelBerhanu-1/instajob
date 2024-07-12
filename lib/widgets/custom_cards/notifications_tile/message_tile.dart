@@ -135,13 +135,13 @@ class MessageTile extends StatelessWidget {
                                     fontSize: 13,
                                     fontColor: MyColors.green,
                                   ),
-                                  SizedBox(width: 10),
-                                  ImageButton(
-                                    image: MyImages.cancelGreen,
-                                    padding: EdgeInsets.zero,
-                                    height: 17,
-                                    width: 17,
-                                  )
+                                  // SizedBox(width: 10),
+                                  // ImageButton(
+                                  //   image: MyImages.cancelGreen,
+                                  //   padding: EdgeInsets.zero,
+                                  //   height: 17,
+                                  //   width: 17,
+                                  // )
                                 ],
                               ),
                             ),

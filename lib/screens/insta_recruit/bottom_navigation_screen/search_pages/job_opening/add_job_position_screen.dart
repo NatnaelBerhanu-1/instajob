@@ -518,45 +518,45 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                           ),
                         );
                       }),
-                      SizedBox(height: 15),
-                      CommonText(
-                        text: "Area Distance",
-                        fontSize: 14,
-                      ),
-                      SizedBox(height: 10),
-                      BlocBuilder<GlobalCubit, InitialState>(
-                          builder: (context, state) {
-                        var value = context.read<GlobalCubit>();
-                        return CustomCommonCard(
-                          borderColor: MyColors.grey.withOpacity(.30),
-                          borderRadius: BorderRadius.circular(7),
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                CommonText(
-                                  text:
-                                      "With in ${value.range.toStringAsFixed(0)} miles",
-                                  fontSize: 12,
-                                  fontColor: MyColors.blue,
-                                ),
-                                SizedBox(height: 10),
-                                divider(color: MyColors.grey.withOpacity(.40)),
-                                SizedBox(height: 10),
-                                Slider(
-                                  value: value.range,
-                                  onChanged: (val) {
-                                    value.rangeVal(val);
-                                  },
-                                  max: 100,
-                                  min: 0,
-                                )
-                              ],
-                            ),
-                          ),
-                        );
-                      }),
+                      // SizedBox(height: 15),
+                      // CommonText(
+                      //   text: "Area Distance",
+                      //   fontSize: 14,
+                      // ),
+                      // SizedBox(height: 10),
+                      // BlocBuilder<GlobalCubit, InitialState>(
+                      //     builder: (context, state) {
+                      //   var value = context.read<GlobalCubit>();
+                      //   return CustomCommonCard(
+                      //     borderColor: MyColors.grey.withOpacity(.30),
+                      //     borderRadius: BorderRadius.circular(7),
+                      //     child: Padding(
+                      //       padding: const EdgeInsets.all(10.0),
+                      //       child: Column(
+                      //         crossAxisAlignment: CrossAxisAlignment.start,
+                      //         children: [
+                      //           CommonText(
+                      //             text:
+                      //                 "With in ${value.range.toStringAsFixed(0)} miles",
+                      //             fontSize: 12,
+                      //             fontColor: MyColors.blue,
+                      //           ),
+                      //           SizedBox(height: 10),
+                      //           divider(color: MyColors.grey.withOpacity(.40)),
+                      //           SizedBox(height: 10),
+                      //           Slider(
+                      //             value: value.range,
+                      //             onChanged: (val) {
+                      //               value.rangeVal(val);
+                      //             },
+                      //             max: 100,
+                      //             min: 0,
+                      //           )
+                      //         ],
+                      //       ),
+                      //     ),
+                      //   );
+                      // }),
                       SizedBox(height: 15),
                       CommonText(
                         text: "Jobs Type",
@@ -595,16 +595,16 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                                         value.jobType("Part Time");
                                       },
                                     ),
-                                    divider(
-                                        color: MyColors.grey.withOpacity(.40)),
-                                    jobTypeTile(
-                                      title: "Contact",
-                                      value: value.jobTypeValue,
-                                      selectedValue: "Contact",
-                                      onTap: () {
-                                        value.jobType("Contact");
-                                      },
-                                    ),
+                                    // divider(
+                                    //     color: MyColors.grey.withOpacity(.40)),
+                                    // jobTypeTile(
+                                    //   title: "Contact",
+                                    //   value: value.jobTypeValue,
+                                    //   selectedValue: "Contact",
+                                    //   onTap: () {
+                                    //     value.jobType("Contact");
+                                    //   },
+                                    // ),
                                     divider(
                                         color: MyColors.grey.withOpacity(.40)),
                                     jobTypeTile(

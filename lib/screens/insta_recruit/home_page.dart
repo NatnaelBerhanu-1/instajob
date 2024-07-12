@@ -154,68 +154,63 @@ class _HomePageState extends State<HomePage> {
                     SizedBox(height: 15),
                     Padding(
                       padding: const EdgeInsets.only(left: 15.0),
-                      child: CommonText(
-                        text: "Account Details",
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        fontColor: MyColors.userFont,
-                      ),
-                    ),
-                    SizedBox(height: 25),
-                    Row(
-                      children: [
-                        Global.userModel?.type == "user"
-                            ? Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 15.0),
-                                  child: CustomAccDetails(
-                                    onTap: () async {
-                                      // var pref =
-                                      //     await SharedPreferences.getInstance();
-                                      // var isGetStarted =
-                                      //     pref.getBool("isGetStarted");
-                                      // if (isGetStarted == true) {
-                                      //   AppRoutes.push(
-                                      //       context, CvTemplateScreen());
-                                      // } else {
-                                      //   context
-                                      //       .read<GlobalCubit>()
-                                      //       .changeIndex(0);
-                                      //   AppRoutes.push(
-                                      //       context, OnBoardingScreen());
-                                      // }
-                                    },
-                                    index: 0,
-                                    isLock: true,
-                                    selectedIndex: selectedIndex,
-                                    width: double.infinity,
-                                    img: MyImages.automateMsg,
-                                    title: "Edit Resume/Bio",
-                                  ),
-                                ),
-                              )
-                            : SizedBox(),
-                        SizedBox(width: 15),
-                        Expanded(
-                          child: CustomAccDetails(
-                            onTap: () {
-                              context.read<GlobalCubit>().changeIndex(1);
-                              AppRoutes.push(context, FeedBackScreen());
-                            },
-                            index: 1,
-                            selectedIndex: selectedIndex,
-                            width: double.infinity,
-                            img: MyImages.rate,
-                            title: "Feedbacks",
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 25),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 15.0),
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          CommonText(
+                            text: "Account Details",
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            fontColor: MyColors.userFont,
+                          ),
+                          SizedBox(height: 25),
+                          Row(
+                            children: [
+                              Global.userModel?.type == "user"
+                                  ? Expanded(
+                                      child: CustomAccDetails(
+                                        onTap: () async {
+                                          // var pref =
+                                          //     await SharedPreferences.getInstance();
+                                          // var isGetStarted =
+                                          //     pref.getBool("isGetStarted");
+                                          // if (isGetStarted == true) {
+                                          //   AppRoutes.push(
+                                          //       context, CvTemplateScreen());
+                                          // } else {
+                                          //   context
+                                          //       .read<GlobalCubit>()
+                                          //       .changeIndex(0);
+                                          //   AppRoutes.push(
+                                          //       context, OnBoardingScreen());
+                                          // }
+                                        },
+                                        index: 0,
+                                        isLock: true,
+                                        selectedIndex: selectedIndex,
+                                        width: double.infinity,
+                                        img: MyImages.automateMsg,
+                                        title: "Edit Resume/Bio",
+                                      ),
+                                    )
+                                  : SizedBox(),
+                              SizedBox(width: 15),
+                              Expanded(
+                                child: CustomAccDetails(
+                                  onTap: () {
+                                    context.read<GlobalCubit>().changeIndex(1);
+                                    AppRoutes.push(context, FeedBackScreen());
+                                  },
+                                  index: 1,
+                                  selectedIndex: selectedIndex,
+                                  width: double.infinity,
+                                  img: MyImages.rate,
+                                  title: "Feedbacks",
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 25),
                           Row(
                             children: [
                               Expanded(
@@ -303,6 +298,7 @@ class _HomePageState extends State<HomePage> {
                                   title: "Settings",
                                 ),
                               ),
+                              SizedBox(width: 15),
                               if (Global.userModel?.type == "user")
                                 BlocBuilder<CheckKycAvailabilityCubit, 
                                 CheckKycAvailabilityState>(
@@ -310,24 +306,18 @@ class _HomePageState extends State<HomePage> {
                                     // if (state is CheckKycAvailabilityNotFound) { //meaning kyc not uploaded yet, hence show the button
                                     if (true) {
                                       return Expanded(
-                                        child: Row(
-                                          children: [
-                                            SizedBox(width: 15),
-                                            Expanded(
-                                              child: CustomAccDetails(
-                                                onTap: () {
-                                                  AppRoutes.push(context, UploadKycScreen());                                    
-                                                },
-                                                index: 4,
-                                                selectedIndex: selectedIndex,
-                                                width: double.infinity,
-                                                // img: MyImages.settings,
-                                                img: MyImages.edit,
-                                                // title: "Fill KYC Info",
-                                                title: "Update banking info",
-                                              ),
-                                            ),
-                                          ],
+                                        child: CustomAccDetails(
+                                          onTap: () {
+                                            context.read<GlobalCubit>().changeIndex(5);
+                                            AppRoutes.push(context, UploadKycScreen());                                    
+                                          },
+                                          index: 5,
+                                          selectedIndex: selectedIndex,
+                                          width: double.infinity,
+                                          // img: MyImages.settings,
+                                          img: MyImages.edit,
+                                          // title: "Fill KYC Info",
+                                          title: "Update banking info",
                                         ),
                                       );
                                     }

@@ -13,7 +13,7 @@ class CompanyRepository {
     try {
       var map = {
         "employe_id":
-            Global.userModel?.type == "user" ? "" : Global.userModel?.id
+            Global.userModel?.type == "user" ? 9 : Global.userModel?.id
       };
       print("TYPE *********** !!!!!!!!!!!!  ${Global.userModel?.type}");
       var response =
