@@ -149,9 +149,9 @@ class CompanyJobChip extends StatelessWidget {
                         }
                         return SizedBox();
                       })),
-                      showPaymentRelatedScreensTempButton(context),
-                      showKycRelatedScreensTempButton(context),
-                      showAddBankingInfoScreensTempButton(context),
+                      // showPaymentRelatedScreensTempButton(context),
+                      // showKycRelatedScreensTempButton(context),
+                      // showAddBankingInfoScreensTempButton(context),
           ],
         ),
       ),

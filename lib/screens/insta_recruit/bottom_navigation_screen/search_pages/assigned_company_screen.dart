@@ -7,6 +7,8 @@ import 'package:insta_job/bloc/check_kyc_availability/check_kyc_availability_sta
 import 'package:insta_job/bloc/company_bloc/company_bloc.dart';
 import 'package:insta_job/bloc/company_bloc/company_event.dart';
 import 'package:insta_job/bloc/company_bloc/company_state.dart';
+import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
+import 'package:insta_job/bloc/job_position/job_pos_event.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/screens/bank_info/add_bank_info_screen.dart';
 import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/search_pages/add_new_company.dart';
@@ -38,8 +40,8 @@ class _AssignCompanyState extends State<AssignCompany> {
   void initState() {
     super.initState();
     context.read<CompanyBloc>().add(LoadCompanyListEvent());
-    // context.read<JobPositionBloc>().add(
-    //     LoadJobPosListEvent()); //TODO: double check if this is necessary, IDTS
+    context.read<JobPositionBloc>().add(
+        LoadJobPosListEvent()); //TODO: double check if this is necessary, IDTS
     String userId = (Global.userModel?.id  ?? "").toString();
     context.read<CheckKycAvailabilityCubit>().execute(userId: userId);
   }
@@ -58,36 +60,6 @@ class _AssignCompanyState extends State<AssignCompany> {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 4),
-                child: BlocBuilder<CheckKycAvailabilityCubit, 
-                  CheckKycAvailabilityState>(
-                  builder: (context, state) {
-                    // if (state is CheckKycAvailabilityNotFound) {
-                    // }
-                    return CustomButton(
-                      width: 240,
-                      height: 36,
-                      loading: false,
-                      loadingIndicatorHeight: 22,
-                      loadingIndicatorWidth: 22,
-                      loadingIndicatorSeparatorWidth: 8,
-                      onTap: () {
-                        if (state is CheckKycAvailabilityFound) {
-                          showPaymentFlowBottomSheet(context);
-                        } else if (state is CheckKycAvailabilityNotFound) {
-                          AppRoutes.push(context, UploadKycScreen());
-                        } else if (state is CheckKycAvailabilityErrorState) {
-                          AppRoutes.push(context, UploadKycScreen());
-                        } else { //loading, initial state etc
-                        }
-                
-                            },
-                      title: "Pay your employees",
-                    );
-                  }
-                ),
-              ),
               Container(
                 color: MyColors.white,
                 child: Padding(
@@ -153,6 +125,38 @@ class _AssignCompanyState extends State<AssignCompany> {
                 ),
               ),
               divider(),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4,horizontal: 20),
+                child: BlocBuilder<CheckKycAvailabilityCubit, 
+                  CheckKycAvailabilityState>(
+                  builder: (context, state) {
+                    // if (state is CheckKycAvailabilityNotFound) {
+                    // }
+                    debugPrint("STATE: $state");
+                    return CustomButton(
+                      // width: 240,
+                      height: 50,
+                      loading: false,
+                      loadingIndicatorHeight: 22,
+                      loadingIndicatorWidth: 22,
+                      loadingIndicatorSeparatorWidth: 8,
+                      onTap: () {
+                        if (state is CheckKycAvailabilityFound) {
+                          showPaymentFlowBottomSheet(context);
+                        } else if (state is CheckKycAvailabilityNotFound) {
+                          AppRoutes.push(context, UploadKycScreen());
+                        } else if (state is CheckKycAvailabilityErrorState) {
+                          AppRoutes.push(context, UploadKycScreen());
+                        } else { //loading, initial state etc
+                        }
+                
+                            },
+                      title: "Pay your employees",
+                    );
+                  }
+                ),
+              ),
+              SizedBox(height: 10,),
               BlocBuilder<CompanyBloc, CompanyState>(builder: (context, state) {
                 if (state is CompanyLoading) {
                   return Center(child: CircularProgressIndicator());
@@ -178,9 +182,9 @@ class _AssignCompanyState extends State<AssignCompany> {
                 }
                 return Container();
               }),
-              showPaymentRelatedScreensTempButton(context),
-              showKycRelatedScreensTempButton(context),
-              showAddBankingInfoScreensTempButton(context),
+              // showPaymentRelatedScreensTempButton(context),
+              // showKycRelatedScreensTempButton(context),
+              // showAddBankingInfoScreensTempButton(context),
             ],
           ),
         ));
@@ -220,7 +224,7 @@ class _AssignCompanyState extends State<AssignCompany> {
               context: context,
               isScrollControlled: true,
               // isDismissible: true,
-              showDragHandle: true,
+              showDragHandle: true, 
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.vertical(
                   top: Radius.circular(20),
@@ -234,7 +238,7 @@ class _AssignCompanyState extends State<AssignCompany> {
                     // minChildSize: 0.75,
                     // builder: (BuildContext context, ScrollController scrollController) {
                     builder: (BuildContext context) {
-                  return SafeArea(child: SendMoneyBottomSheetChild());
+                  return SendMoneyBottomSheetChild();
                 });
               },
             );

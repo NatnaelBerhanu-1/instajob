@@ -14,6 +14,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "616151795227-9nj5kecjunjeam2m77kf708461qi3nrq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.saurabhinfosys.insta_job",
+            "certificate_hash": "19afa53a8b4489e66ab7cc28f99ac4f36662c141"
+          }
+        },
+        {
+          "client_id": "616151795227-aiao6q9l1jib0qv0hbotb4qsq3ka3gio.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.saurabhinfosys.insta_job",
+            "certificate_hash": "396e68a54c38d3cc3f5d460e5e854e01c84fa08e"
+          }
+        },
+        {
           "client_id": "616151795227-khaj25gv75odudi2esu1qh03m2blnk1u.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -61,6 +77,13 @@
             {
               "client_id": "616151795227-a1djldpcj582gdvjkqlufl89235blm9s.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "616151795227-s7rrj3csb009ubnusdbmj19omilmu8i6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.saurabhinfosys.instaJob"
+              }
             }
           ]
         }

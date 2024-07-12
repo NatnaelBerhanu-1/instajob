@@ -1,5 +1,1 @@
-{
-  "emulators": {
-    "singleProjectMode": true
-  }
-}
+{"emulators":{"singleProjectMode":true},"flutter":{"platforms":{"android":{"default":{"projectId":"instajob-1ec28","appId":"1:616151795227:android:9c541b0f954c8216505abe","fileOutput":"android/app/google-services.json"}},"ios":{"default":{"projectId":"instajob-1ec28","appId":"1:616151795227:ios:e17294da7511380f505abe","uploadDebugSymbols":false,"fileOutput":"ios/Runner/GoogleService-Info.plist"}},"dart":{"lib/firebase_options.dart":{"projectId":"instajob-1ec28","configurations":{"android":"1:616151795227:android:9c541b0f954c8216505abe","ios":"1:616151795227:ios:e17294da7511380f505abe"}}}}}}

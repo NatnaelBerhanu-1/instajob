@@ -1,10 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_job/bloc/get_hired_job_position/get_hired_candidates_bloc.dart';
 import 'package:insta_job/bloc/get_hired_job_position/get_hired_candidates_state.dart';
 import 'package:insta_job/bloc/get_payment_link_bloc/get_payment_link_bloc.dart';
 import 'package:insta_job/bloc/get_payment_link_bloc/get_payment_link_state.dart';
+import 'package:insta_job/bloc/validation/validation_bloc.dart';
+import 'package:insta_job/globals.dart';
 import 'package:insta_job/model/hired_candidate.dart';
 import 'package:insta_job/model/payment_user.dart';
 import 'package:insta_job/screens/insta_recruit/send_money/amount_page.dart';
@@ -31,13 +34,15 @@ class _SendMoneyBottomSheetChildState extends State<SendMoneyBottomSheetChild> {
   // final debouncer = Debouncer(milliseconds: 1000);
   final debouncer = Debouncer(milliseconds: 10);
   final TextEditingController searchController = TextEditingController();
+  TextEditingController amountSendingController = TextEditingController();
+
   var users = [];
   // var searchResults = []; //for search results
   var searchResults = []; //for search results
   int? selectedUserIndexFromRecentUsers;
   int? selectedUserIndexFromSearchResults;
   
-  get userIsSelected {
+   get userIsSelected {
     var res = selectedUserIndexFromRecentUsers != null || selectedUserIndexFromSearchResults != null;
     return res;
   }
@@ -69,192 +74,243 @@ class _SendMoneyBottomSheetChildState extends State<SendMoneyBottomSheetChild> {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12).copyWith(top: 0)
-          .copyWith(top: 0),
-      height: MediaQuery.of(context).size.height * 0.84,
+          .copyWith(bottom: MediaQuery.of(context).viewInsets.bottom),
+      // height: MediaQuery.of(context).size.height * 0.84,
       child: BlocBuilder<GetHiredCandidatesCubit, GetHiredCandidatesState>(
           builder: (context, state) {
             if (state is GetHiredCandidatesLoaded) {
               users = state.hiredList;
               searchResults = state.hiredList;
             }
-          return SingleChildScrollView(
-            child: Column(children: [
-              const Text(
-                "Send Money",
-                textAlign: TextAlign.start,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 22,
-                ),
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+            const Text(
+              "Send Money",
+              textAlign: TextAlign.start,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 22,
               ),
-              const SizedBox(height: 12),
-              Text(
-                "Choose an employee to continue",
-                textAlign: TextAlign.start,
-                style: TextStyle(
-                  color: MyColors.greyTxt,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700,
-                ),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              "Choose an employee to continue",
+              textAlign: TextAlign.start,
+              style: TextStyle(
+                color: MyColors.greyTxt,
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
               ),
-              BlocConsumer<GetPaymentLinkCubit, GetPaymentLinkState>(listener: (context, state) {
-                debugPrint('State: $state');
-                if (state is GetPaymentLinkLoaded) {
-                  var link = state.linkUrl; 
-                  showModalBottomSheet(
-                    context: context, 
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+            ),
+            // BlocConsumer<GetPaymentLinkCubit, GetPaymentLinkState>(listener: (context, state) {
+            //   debugPrint('State: $state');
+            //   if (state is GetPaymentLinkLoaded) {
+            //     var link = state.linkUrl; 
+            //     showModalBottomSheet(
+            //       context: context, 
+            //       shape: const RoundedRectangleBorder(
+            //         borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+            //       ),
+            //       //enableDrag: true,
+            //       isScrollControlled: true,
+            //       showDragHandle: true,
+            //       builder:(context) => _openLinkInBottomSheet(context, link),
+            //     );
+            //   }
+            // }, builder: (context, state) {
+            //   return CustomIconButton(
+            //     image: MyImages.arrowWhite,
+            //     title: "Pay",
+            //     backgroundColor: MyColors.blue,
+            //     fontColor: MyColors.white,
+            //     loading: state is GetPaymentLinkLoading ? true : false,
+            //     borderColor: MyColors.blue,
+            //     iconColor: MyColors.white,
+            //     onclick: () async {
+            //       context.read<GetPaymentLinkCubit>().getPaymentLink('1', '1', 1000);
+            //     },
+            //   );
+            // }), 
+            const SizedBox(height: 20,),
+            IconTextField(
+              controller: searchController,
+              prefixIcon: ImageButton(
+                image: MyImages.searchGrey,
+                padding: const EdgeInsets.all(14),
+                height: 10,
+                width: 10,
+              ),
+              borderRadius: 25,
+              hint: "search",
+              onChanged: (value) {
+                debouncer.run(() {
+                  debugPrint("value $value");
+                  searchController.text = value;
+                  selectedUserIndexFromRecentUsers = null; // nothing is selected when search text field is updating, selectedItem(if any) goes unselected
+                  selectedUserIndexFromSearchResults = null; // nothing is selected when search text field is updating, selectedItem(if any) goes unselected
+                  setState(() {});
+                });
+              },
+            ),
+            if (state is GetHiredCandidatesLoading) 
+             const Column(
+               children: [
+                SizedBox(height: 50,),
+                 Center(child: CircularProgressIndicator()),
+               ],
+             ),
+            if (state is GetHiredCandidatesLoaded) 
+              Column(
+                children: [
+                  if (searchController.text.isEmpty)
+                    Column(
+                      mainAxisSize: MainAxisSize.min,//remove ig june
+                      children: [
+                        const SizedBox(height: 16,),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              // _buildEmployeeAvatarAndName(),
+                              // _buildEmployeeAvatarAndName(),
+                              // _buildEmployeeAvatarAndName(isSelected: true),
+                              // _buildEmployeeAvatarAndName(),
+                              // _buildEmployeeAvatarAndName(),
+                              ...users.asMap().entries.map((item) => _buildEmployeeAvatarAndName(hiredCandidate: item.value, currentIdx: item.key, isSelected: selectedUserIndexFromRecentUsers == item.key, updateSelectedUser: updateSelectedUser)).toList(),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 24,),
+                        // const Align(
+                        //   alignment: Alignment.centerLeft,
+                        //   child: Text(
+                        //     "Recent Transactions",
+                        //     textAlign: TextAlign.start,
+                        //     style: TextStyle(
+                        //       fontWeight: FontWeight.w700,
+                        //       fontSize: 18,
+                        //     ),
+                        //   ),
+                        // ),
+                        // const SizedBox(height: 16,),
+                        // TODO: integrate transactions here
+                        // ListView.separated(
+                        //   itemCount: 4,
+                        //   physics: const NeverScrollableScrollPhysics(),
+                        //   shrinkWrap: true,
+                        //   separatorBuilder: (context, state) {
+                        //     return const SizedBox(height: 12);
+                        //   },
+                        //   itemBuilder: (context, index) {
+                        //     return const TransactionTile();
+                        // }),
+                        const SizedBox(height: 32,),
+                      ]
                     ),
-                    //enableDrag: true,
-                    isScrollControlled: true,
-                    showDragHandle: true,
-                    builder:(context) => _openLinkInBottomSheet(context, link),
-                  );
-                }
-              }, builder: (context, state) {
-                return CustomIconButton(
-                  image: MyImages.arrowWhite,
-                  title: "Pay",
-                  backgroundColor: MyColors.blue,
-                  fontColor: MyColors.white,
-                  loading: state is GetPaymentLinkLoading ? true : false,
-                  borderColor: MyColors.blue,
-                  iconColor: MyColors.white,
-                  onclick: () async {
-                    context.read<GetPaymentLinkCubit>().getPaymentLink('1', '1', 1000);
-                  },
+                  if (searchController.text.isNotEmpty)
+                    Column(
+                      children: [
+                        const SizedBox(height: 40,),
+                        const Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "Search Results",
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 16,),
+                        ListView.separated(
+                          itemCount: searchResults.length,
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          separatorBuilder: (context, state) {
+                            return const SizedBox(height: 12);
+                          },
+                          itemBuilder: (context, index) {
+                            return PaymentUserTile(
+                              onClick: () {
+                                setState(() {
+                                  selectedUserIndexFromSearchResults = index;
+                                });
+                              },
+                              index: index,
+                              selectedIndex: selectedUserIndexFromSearchResults,
+                              image: MyImages.visaCardBlue,
+                              isSelectMode: true,
+                              hiredCandidate: searchResults[index],
+                            );
+                        }),
+                        const SizedBox(height: 32,),
+                      ]
+                    ),
+                    if(userIsSelected)CustomMoneyTextField(
+                      // controller: amountSendingController,
+                      hint: "\$ 00.00",
+                      validator: (val) => requiredValidationn(val!),
+                      onChanged: (val) {
+                        if (val != null && val is String && val.isNotEmpty && val == "\$ ") {
+                          amountSendingController.text = "";
+                        } else {
+                          debugPrint('Val:${val}');
+                          if((int.tryParse((val as String).substring(1)) ?? 0) > 0) {
+                          amountSendingController.text = val;
+                          }
+                        }
+                        setState(() {});
+                      },
+                      inputFormatter: [
+                        _CurrencyInputFormatter(),
+                      ],
+                    ),
+                    const SizedBox(height: 20,),
+                    BlocConsumer<GetPaymentLinkCubit, GetPaymentLinkState>(
+                      listener:(context, state) {
+                        debugPrint('State: $state');
+              if (state is GetPaymentLinkLoaded) {
+                var link = state.linkUrl; 
+                showModalBottomSheet(
+                  context: context, 
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+                  ),
+                  //enableDrag: true,
+                  isScrollControlled: true,
+                  showDragHandle: true,
+                  builder:(context) => _openLinkInBottomSheet(context, link),
                 );
-              }), 
-              const SizedBox(height: 20,),
-              IconTextField(
-                controller: searchController,
-                prefixIcon: ImageButton(
-                  image: MyImages.searchGrey,
-                  padding: const EdgeInsets.all(14),
-                  height: 10,
-                  width: 10,
-                ),
-                borderRadius: 25,
-                hint: "search",
-                onChanged: (value) {
-                  debouncer.run(() {
-                    debugPrint("value $value");
-                    searchController.text = value;
-                    selectedUserIndexFromRecentUsers = null; // nothing is selected when search text field is updating, selectedItem(if any) goes unselected
-                    selectedUserIndexFromSearchResults = null; // nothing is selected when search text field is updating, selectedItem(if any) goes unselected
-                    setState(() {});
-                  });
-                },
+              }else if(state is GetPaymentLinkErrorState) {
+                showToast('Something went wrong while processing payment');
+              }
+                      },
+                      builder: (context, state) {
+                        return CustomButton(
+                                            title: "Continue",
+                                            fontColor: MyColors.white,
+                                            bgColor: userIsSelected ? MyColors.blue : MyColors.grey,
+                                            loading: state is GetPaymentLinkLoading ? true : false,
+                                            borderColor: userIsSelected ? MyColors.blue : MyColors.grey,
+                                            onTap: userIsSelected != null ? () {
+                                              debugPrint('SelectedUSEr: $selectedUser, ${Global.userModel!.id}');
+                                              debugPrint('amount:${amountSendingController.text}');
+                                              var amount = int.tryParse(amountSendingController.text.substring(1));
+                                              if(amount != null && amount > 0) {
+context.read<GetPaymentLinkCubit>().getPaymentLink(selectedUser!.id.toString(), Global.userModel!.id.toString(), amount * 100);
+                                              }else {
+                                                showToast("Amount invalid");
+                                              }
+                                            } : null,
+                                          );
+                      },
+                    ),
+                ],
               ),
-              if (state is GetHiredCandidatesLoading) 
-               const Column(
-                 children: [
-                  SizedBox(height: 50,),
-                   Center(child: CircularProgressIndicator()),
-                 ],
-               ),
-              if (state is GetHiredCandidatesLoaded) 
-                Column(
-                  children: [
-                    if (searchController.text.isEmpty)
-                      Column(
-                        mainAxisSize: MainAxisSize.min,//remove ig june
-                        children: [
-                          const SizedBox(height: 16,),
-                          SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Row(
-                              children: [
-                                // _buildEmployeeAvatarAndName(),
-                                // _buildEmployeeAvatarAndName(),
-                                // _buildEmployeeAvatarAndName(isSelected: true),
-                                // _buildEmployeeAvatarAndName(),
-                                // _buildEmployeeAvatarAndName(),
-                                ...users.asMap().entries.map((item) => _buildEmployeeAvatarAndName(hiredCandidate: item.value, currentIdx: item.key, isSelected: selectedUserIndexFromRecentUsers == item.key, updateSelectedUser: updateSelectedUser)).toList(),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 24,),
-                          const Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              "Recent Transactions",
-                              textAlign: TextAlign.start,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 18,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 16,),
-                          ListView.separated(
-                            itemCount: 4,
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            separatorBuilder: (context, state) {
-                              return const SizedBox(height: 12);
-                            },
-                            itemBuilder: (context, index) {
-                              return const TransactionTile();
-                          }),
-                          const SizedBox(height: 32,),
-                        ]
-                      ),
-                    if (searchController.text.isNotEmpty)
-                      Column(
-                        children: [
-                          const SizedBox(height: 40,),
-                          const Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              "Search Results",
-                              textAlign: TextAlign.start,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 18,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 16,),
-                          ListView.separated(
-                            itemCount: searchResults.length,
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            separatorBuilder: (context, state) {
-                              return const SizedBox(height: 12);
-                            },
-                            itemBuilder: (context, index) {
-                              return PaymentUserTile(
-                                onClick: () {
-                                  setState(() {
-                                    selectedUserIndexFromSearchResults = index;
-                                  });
-                                },
-                                index: index,
-                                selectedIndex: selectedUserIndexFromSearchResults,
-                                image: MyImages.visaCardBlue,
-                                isSelectMode: true,
-                                hiredCandidate: searchResults[index],
-                              );
-                          }),
-                          const SizedBox(height: 32,),
-                        ]
-                      ),
-                      CustomButton(
-                        title: "Continue",
-                        fontColor: MyColors.white,
-                        bgColor: userIsSelected ? MyColors.blue : MyColors.grey,
-                        borderColor: userIsSelected ? MyColors.blue : MyColors.grey,
-                        onTap: userIsSelected ? () {
-                          AppRoutes.push(context, const PaymentAmountScreen());
-                        } : null,
-                      ),
-                  ],
-                ),
-              const SizedBox(height: 48,),
-            ]),
-          );
+            const SizedBox(height: 48,),
+          ]);
         }
       ),
     );
@@ -413,5 +469,24 @@ class TransactionTile extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class _CurrencyInputFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+    newValue.text.replaceAll('\$ ', '');
+    if (newValue.text.isEmpty) {
+      // return newValue.copyWith(text: '\$ ');
+      return newValue;
+    }
+    if (!newValue.text.startsWith('\$ ')) {
+      final newText = '\$ ${newValue.text.replaceAll(RegExp(r'\D'), '')}';
+      return newValue.copyWith(
+        text: newText,
+        selection: TextSelection.collapsed(offset: newText.length),
+      );
+    }
+    return newValue;
   }
 }

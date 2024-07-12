@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>616151795227-s7rrj3csb009ubnusdbmj19omilmu8i6.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.616151795227-s7rrj3csb009ubnusdbmj19omilmu8i6</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>616151795227-9nj5kecjunjeam2m77kf708461qi3nrq.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDNe25H9FkxGFlgvCG4SRUgAn0EuELuIAs</string>
+	<key>GCM_SENDER_ID</key>
+	<string>616151795227</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.saurabhinfosys.instaJob</string>
+	<key>PROJECT_ID</key>
+	<string>instajob-1ec28</string>
+	<key>STORAGE_BUCKET</key>
+	<string>instajob-1ec28.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:616151795227:ios:e17294da7511380f505abe</string>
+</dict>
+</plist>

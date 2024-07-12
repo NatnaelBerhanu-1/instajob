@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:insta_job/bloc/check_kyc_availability/check_kyc_availability_bloc.dart';
+import 'package:insta_job/bloc/check_kyc_availability/check_kyc_availability_state.dart';
+import 'package:insta_job/bloc/check_kyc_availability/model/fetched_kyc_candidate_data.dart';
+import 'package:insta_job/bloc/check_kyc_availability/model/fetched_kyc_recruiter_data.dart';
 import 'package:insta_job/bloc/choose_image_bloc/pick_image_cubit.dart';
 import 'package:insta_job/bloc/choose_image_bloc/pick_image_state.dart';
 import 'package:insta_job/bloc/upload_kyc_bloc/upload_kyc_cubit.dart';
@@ -21,7 +25,7 @@ import 'package:insta_job/widgets/custom_text_field.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 class UploadKycScreen extends StatefulWidget {
-  const UploadKycScreen({super.key});
+  const UploadKycScreen({super.key, });
 
   @override
   State<UploadKycScreen> createState() => _UploadKycScreenState();
@@ -70,6 +74,7 @@ class _UploadKycScreenState extends State<UploadKycScreen> {
   final idProofSectionFormKey = GlobalKey<FormState>();
   final bankInfoSectionFormKey = GlobalKey<FormState>();
   bool showUploadIdValidationError = false;
+  late final checkKycAvailCubit = BlocProvider.of<CheckKycAvailabilityCubit>(context);
   
 
   @override
@@ -83,6 +88,36 @@ class _UploadKycScreenState extends State<UploadKycScreen> {
     // selectedBusinessType = businessTypes[0]; //TODO: keep this or add validation check for dropdown
     frontImageBloc.isCamera = true;
     backImageBloc.isCamera = true;
+    if(checkKycAvailCubit.state is CheckKycAvailabilityFound) {
+      var state = checkKycAvailCubit.state as CheckKycAvailabilityFound;
+      if(userIsCandidate()){
+        var data  = state.data as FetchedKycCandidateData;
+        phoneController.text = data.phoneNumber;
+        nameController.text = data.name;
+        emailController.text = data.email;
+        idFrontImgUrl = data.idFront;
+        idBackImgUrl = data.idBack;
+        selectedAccountType = data.accountType;
+        accountNumberController.text = data.accountNumber;
+        bankRoutingNumberController.text = data.bankCode;
+        accountOwnerController.text = data.ownerFullName;
+        countryCodeController.text = data.countryCode;
+        frontImageBloc.imgUrl = data.idFront;
+        backImageBloc.imgUrl = data.idBack;
+      }else {
+        var data  = state.data as FetchedKycRecruiterData;
+        phoneController.text = data.phoneNumber;
+        nameController.text = data.name;
+        emailController.text = data.email;
+        idFrontImgUrl = data.idFront;
+        idBackImgUrl = data.idBack;
+        businessNameController.text = data.businessName;
+        businessAddressController.text = data.businessAddress;
+        businessTypeController.text = data.businessAs;
+        frontImageBloc.imgUrl = data.idFront;
+        backImageBloc.imgUrl = data.idBack;
+      }
+    }
   }
 
   bool userIsCandidate() {

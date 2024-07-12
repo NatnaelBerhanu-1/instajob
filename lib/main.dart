@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:insta_job/bloc/bloc_providers.dart';
+import 'package:insta_job/firebase_options.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/screens/insta_recruit/splash_screen.dart';
 
@@ -13,7 +14,9 @@ import 'utils/my_colors.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform
+  );
 
   // await FlutterDownloader.initialize(debug: true, ignoreSsl: true);
   

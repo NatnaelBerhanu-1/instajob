@@ -69,7 +69,7 @@ dependencies:
   firebase_core: ^2.8.0
   firebase_auth: ^4.3.0
   google_sign_in: ^6.0.2
-  firebase_storage: ^11.1.0
+  firebase_storage: ^11.6.0
   flutter_facebook_auth: ^5.0.8
   # agora_rtc_engine: ^6.2.6
   agora_rtc_engine: 5.3.1

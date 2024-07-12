@@ -11,7 +11,8 @@ class GetPaymentLinkCubit extends Cubit<GetPaymentLinkState> {
 
   Future<void> getPaymentLink(String user_id, String recruiter_id, double amount) async {
     emit(const GetPaymentLinkLoading());
-    ApiResponse response = await jobPositionRepository.getPaymentLink(user_id, recruiter_id, amount);
+    try {
+      ApiResponse response = await jobPositionRepository.getPaymentLink(user_id, recruiter_id, amount);
     if (response.response.statusCode == 500) {
       emit(const GetPaymentLinkErrorState(message: 'Something went wrong'));
     }
@@ -24,6 +25,9 @@ class GetPaymentLinkCubit extends Cubit<GetPaymentLinkState> {
       emit(const GetPaymentLinkErrorState(message: "Data Not Found"));
     } else {
       emit(const GetPaymentLinkErrorState(message: 'Something went wrong'));
+    }
+    } catch (e) {
+     emit(const GetPaymentLinkErrorState(message: 'Something went wrong'));
     }
   }
 }
