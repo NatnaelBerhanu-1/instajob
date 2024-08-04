@@ -27,6 +27,7 @@ import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
+import 'package:insta_job/widgets/guest_login_info.dart';
 import 'package:insta_job/widgets/user_tile/custom_acc_details.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -46,9 +47,11 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    debugPrint("LOGG init state of home page");
-    String userId = (Global.userModel?.id  ?? "").toString();
-    context.read<CheckKycAvailabilityCubit>().execute(userId: userId);
+    if(Global.userModel?.id != null) {
+      debugPrint("LOGG init state of home page");
+      String userId = (Global.userModel?.id  ?? "").toString();
+      context.read<CheckKycAvailabilityCubit>().execute(userId: userId);
+    }
   }
 
   @override
@@ -63,7 +66,7 @@ class _HomePageState extends State<HomePage> {
         return true;
       },
       child: Scaffold(
-        body: SafeArea(
+        body: Global.userModel?.id != null ? SafeArea(
           child: Padding(
             padding: const EdgeInsets.only(right: 15.0, top: 15),
             child: BlocBuilder<GlobalCubit, InitialState>(
@@ -213,7 +216,7 @@ class _HomePageState extends State<HomePage> {
                           SizedBox(height: 25),
                           Row(
                             children: [
-                              Expanded(
+                              Global.userModel?.type == "user" ? Expanded(
                                 child: CustomAccDetails(
                                   onTap: () {
                                     if (Global.userModel?.type == "user") {
@@ -243,7 +246,7 @@ class _HomePageState extends State<HomePage> {
                                       ? "Career Learning"
                                       : "Subscribe",
                                 ),
-                              ),
+                              ) : SizedBox(), // TODO: Needs to be changed when subscription implemented
                               SizedBox(width: 15),
                               Expanded(
                                 child:
@@ -335,7 +338,7 @@ class _HomePageState extends State<HomePage> {
               );
             }),
           ),
-        ),
+        ) : GuestLoginInfoWidget(),
       ),
     );
   }

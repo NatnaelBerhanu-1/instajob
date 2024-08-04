@@ -22,6 +22,7 @@ import 'package:insta_job/widgets/custom_button/custom_btn.dart';
 import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:insta_job/widgets/custom_expantion_tile.dart';
+import 'package:insta_job/widgets/guest_login_info.dart';
 
 import '../../../../../bloc/bottom_bloc/bottom_bloc.dart';
 import '../../../../../utils/my_colors.dart';
@@ -225,6 +226,14 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                                           ? CustomButton(
                                               title: "Apply",
                                               onTap: () {
+                                                if(Global.userModel?.id == null) {
+                                                  showDialog(context: context, builder:(context) => AlertDialog(
+                                                    content: SizedBox(
+                                                      height: 300,
+                                                      child: GuestLoginInfoWidget()),
+                                                  ));
+                                                  return;
+                                                }
                                                 AppRoutes.push(
                                                     context,
                                                     ApplyScreen(
@@ -298,7 +307,7 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
               return Positioned(
                 top: MediaQuery.of(context).size.height * 0.334,
                 right: 20,
-                child: Global.userModel?.type == "user"
+                child: Global.userModel?.type == "user" && Global.userModel?.id != null
                     ? CustomCommonCard(
                         onTap: () {
                           isSaved = !isSaved;

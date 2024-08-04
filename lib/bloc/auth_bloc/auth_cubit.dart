@@ -149,6 +149,8 @@ class AuthCubit extends Cubit<AuthInitialState> {
           emit(VerificationCompletedState(credential));
         },
         verificationFailed: (FirebaseAuthException exception) {
+          debugPrint("Error: ${exception.message}");
+          debugPrintStack(stackTrace:exception.stackTrace);
           emit(ErrorState(exception.message.toString()));
         },
         codeSent: (String verificationId, int? resendToken) {
@@ -356,30 +358,36 @@ class AuthCubit extends Cubit<AuthInitialState> {
   }
 
   /// facebook
-  faceBookAuth({bool isUser = false}) async {
-    final LoginResult loginResult = await FacebookAuth.instance.login(permissions: ['email', 'public_profile']);
+  faceBookAuth(BuildContext context,{bool isUser = false}) async {
 
     try {
+    final LoginResult loginResult = await FacebookAuth.instance.login(permissions: ['email', 'public_profile']);
       if (loginResult.status == LoginStatus.success) {
         final AccessToken accessToken = loginResult.accessToken!;
         final OAuthCredential facebookCredential = FacebookAuthProvider.credential(accessToken.token);
         FirebaseAuth.instance.signInWithCredential(facebookCredential).then((value) async {
           print('THENN ');
           if (value.user != null) {
+            if(value.user?.email == null) {
+              showToast("No email address associated with this apple id, email address is required to create an account.", durationInSeconds: 5);
+                  loading(value: false);
+              return;
+            }
             ApiResponse response = await authRepository.checkUser(value.user!.email.toString());
             debugPrint('ResponseCode: ${response.response.statusCode}');
             if (response.response.statusCode == 200) {
-              // login(
-              //     email: value.user!.email,
-              //     isUser: isUser,
-              //     password: value.user!.uid);
-              // navigationKey.currentState?.pushAndRemoveUntil(
-              //     MaterialPageRoute(builder: (_) => const BottomNavScreen()),
-              //     (route) => false);
+              login(
+                context,
+                  email: value.user!.email,
+                  isUser: isUser,
+                  password: value.user!.uid);
+              navigationKey.currentState?.pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (_) => const BottomNavScreen()),
+                  (route) => false);
             } else {
-              userName = value.user!.displayName!;
-              email = value.user!.email!;
-              password = value.user!.uid;
+              userName = value.user?.displayName ?? "";
+              email = value.user?.email ?? "";
+              password = value.user?.uid ?? "";
               getData();
               navigationKey.currentState?.push(
                 MaterialPageRoute(builder: (_) => isUser ? const RegMoreInfoScreen() : const BecameAnEmployer()),
@@ -403,16 +411,69 @@ class AuthCubit extends Cubit<AuthInitialState> {
       } else {
         print('TOKENN ----------          ');
       }
-    } on FirebaseAuthException catch (e) {
-      print('EEEEEEEEEEEEEEEEEEEEE ${e.message}');
+    } catch (e) {
+      print('EEEEEEEEEEEEEEEEEEEEE ${e.toString()}');
 
       emit(ErrorState(e.toString()));
     }
   }
 
+  appleAuth(BuildContext context) async {
+    loading(value: true);
+
+    final appleProvider = AppleAuthProvider();
+    appleProvider.addScope('email');
+    appleProvider.addScope('name');
+    var type = sharedPreferences.getString("type");
+
+    try {
+      final credential = await FirebaseAuth.instance.signInWithProvider(appleProvider);
+      var email = credential.user!.email;
+      debugPrint('Email: ${credential.user!.email.toString()}');
+      if(email == null) {
+        showToast("No email address associated with this apple id, email address is required to create an account.", durationInSeconds: 5);
+            loading(value: false);
+        return;
+      }
+      ApiResponse response = await authRepository.checkUser(credential.user!.email.toString());
+
+      if (response.response.statusCode == 200) {
+            login(
+              context,
+              email: credential.user!.email,
+              isUser: type == "user" ? true : false,
+              password: "123456",
+            );
+            // navigationKey.currentState?.pushAndRemoveUntil(
+            //     MaterialPageRoute(builder: (_) => const BottomNavScreen()),
+            //     (route) => false);
+          } else {
+            userName = credential.user?.displayName ?? "";
+            email = credential.user?.email ?? "";
+            password = "123456";
+            getData();
+    loading(value: false);
+            
+            if (type == "user") {
+              navigationKey.currentState?.push(
+                MaterialPageRoute(builder: (_) => const RegMoreInfoScreen()),
+              );
+            } else {
+              navigationKey.currentState?.push(MaterialPageRoute(builder: (_) => const BecameAnEmployer()));
+            }
+          }
+    } catch (e, stk) {
+    loading(value: false);
+      debugPrint("Error: $e");
+      debugPrintStack(stackTrace: stk);
+    }
+    
+  }
+
   ///logout
   logOut() async {
-    emit(AuthLoadingState());
+    try {
+      emit(AuthLoadingState());
     //TODO: wrap calls in try catch
     ApiResponse response = await authRepository.logOutUser();
     GoogleSignIn googleSignIn = GoogleSignIn();
@@ -435,6 +496,9 @@ class AuthCubit extends Cubit<AuthInitialState> {
       navigationKey.currentState
           ?.pushAndRemoveUntil(MaterialPageRoute(builder: (_) => const UserTypeScreen()), (route) => false);
     } else {
+      emit(ErrorState("Something went wrong"));
+    }
+    } catch (e) {
       emit(ErrorState("Something went wrong"));
     }
   }
@@ -493,6 +557,7 @@ class AuthCubit extends Cubit<AuthInitialState> {
     }
     if (response.response.statusCode == 400) {
       if (response.response.data["success"] == 400) {
+        debugPrint("Verifying Phone Number");
         await verifyPhone(context);
       } else {
         emit(ErrorState("Something went wrong"));
@@ -617,5 +682,17 @@ class AuthCubit extends Cubit<AuthInitialState> {
       profilePhoto: profilePhoto,
       fcmToken: fcmToken,
     );
+  }
+
+Future<ApiResponse> deleteAccount(
+    String user_id,
+    String userType
+  ) async {
+ApiResponse response = await authRepository.deleteAccount(
+      // phoneNumber: phoneNumber,
+      user_id: user_id,
+      userType: userType,
+    );
+    return response;
   }
 }

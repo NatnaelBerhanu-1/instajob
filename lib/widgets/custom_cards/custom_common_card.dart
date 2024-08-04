@@ -53,6 +53,7 @@ class CommonText extends StatelessWidget {
   final TextDecoration? decoration;
   final TextOverflow? overflow;
   final bool? padding;
+  final TextAlign? textAlign;
   const CommonText(
       {super.key,
       this.text,
@@ -61,6 +62,7 @@ class CommonText extends StatelessWidget {
       this.fontColor,
       this.decoration,
       this.overflow,
+      this.textAlign,
       this.padding});
 
   @override
@@ -69,6 +71,7 @@ class CommonText extends StatelessWidget {
       padding: padding == true ? const EdgeInsets.all(5.0) : EdgeInsets.zero,
       child: Text(
         "$text",
+        textAlign: textAlign,
         style: TextStyle(
           fontSize: fontSize ?? 15,
           color: fontColor ?? MyColors.black,

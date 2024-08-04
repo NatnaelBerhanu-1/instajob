@@ -376,12 +376,12 @@ Future<Uint8List> makePdf(BuildContext context, {int? color, font, String? image
   return pdf.save();
 }
 
-showToast(message, {color, textColor, bool isError = true}) {
+showToast(message, {color, textColor, bool isError = true, int? durationInSeconds}) {
   EasyLoading.instance
     ..toastPosition = EasyLoadingToastPosition.top
     ..textColor = textColor ?? MyColors.white
     ..backgroundColor = isError ? MyColors.darkRed : MyColors.black;
-  EasyLoading.showToast(message);
+  EasyLoading.showToast(message, duration: durationInSeconds != null ? Duration(seconds: durationInSeconds) : EasyLoading.instance.displayDuration);
 }
 
 dynamic loading({@required bool? value, String? title, bool closeOverlays = false}) {

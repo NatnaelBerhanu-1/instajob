@@ -2,6 +2,7 @@ class EndPoint {
   static String baseUrl = "https://shaybani-web-crimson-water-6355.fly.dev/api/";
   // static String baseUrl = "https://shaybani-web.flutterclone.com/api/";
   // static String baseUrl = "http://10.0.2.2:8000/api/";
+  // static String baseUrl = "http://localhost:8000/api/";
   // static String baseUrl = "http://172.17.251.109:8000/api/";
 
   static String imageBaseUrl = "https://shaybani-web-crimson-water-6355.fly.dev";
@@ -19,12 +20,13 @@ class EndPoint {
   static String sendCode = "forgotpassword";
   static String checkVerificationCode = "checkcodemail";
   static String changePassword = "changepassword";
+  static String deleteAccount = "delete_account";
   static String checkPhoneNumber = "check_phone_number";
   static String createVideoCall = "create_videocall";
   static String getInterviews = "call_lists";
   static String getInterviewsAsCandidate = "candidate_call_lists";
   static String cancelInterviewSchedule = "change_status_video_call";
-  static String endInterviewCall = "end_video_call"; //CHECK WITH NATI
+  static String endInterviewCall = "end_video_call"; //CHECK
   static String uploadKycRecruiter = "update_kyc_recruiter";
   static String uploadKycCandidate = "update_kyc_candidate";
   static String checkKycCandidateAvailable = "check_kyc_candidate";
@@ -90,6 +92,9 @@ class EndPoint {
 
   // generate payment link 
   static String paymentLink = "generate_payment_link";
+  // get parsed resumet link
+  static String getParsedResume = "get_parsed_resume";
+
 
 
   //agora recording

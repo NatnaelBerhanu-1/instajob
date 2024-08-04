@@ -1,4 +1,4 @@
-package com.saurabhinfosys.insta_job
+package com.instajob.online
 
 import io.flutter.embedding.android.FlutterActivity
 

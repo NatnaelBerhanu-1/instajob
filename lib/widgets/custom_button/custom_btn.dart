@@ -2,6 +2,7 @@
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:insta_job/utils/helpers.dart';
 
 import '../../utils/my_colors.dart';
 import '../custom_cards/custom_common_card.dart';
@@ -122,10 +123,11 @@ class CustomIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return GestureDetector(
       onTap: loading ? null : onclick,
       child: Container(
-          height: height ?? MediaQuery.of(context).size.height * 0.075,
+          height: height ?? (Helpers.getDeviceType(context) == DeviceType.tablet ? 60 :  MediaQuery.of(context).size.height * 0.075),
           width: width ?? MediaQuery.of(context).size.width,
           alignment: Alignment.center,
           decoration: BoxDecoration(

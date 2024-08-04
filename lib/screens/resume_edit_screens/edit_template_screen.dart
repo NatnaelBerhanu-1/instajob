@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:insta_job/bloc/choose_image_bloc/pick_image_cubit.dart';
 import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
 import 'package:insta_job/bloc/global_cubit/global_state.dart';
@@ -311,7 +312,7 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
                               await SharedPreferences.getInstance();
                           var imageBloc = context.read<PickImageCubit>();
                           imageBloc.isCamera = true;
-                          await imageBloc.getImage();
+                          await imageBloc.getImage(context, ImageSource.camera);
                           profileImage =
                               "${EndPoint.imageBaseUrl}${imageBloc.imgUrl}";
                           pref.setString("resumeImg", profileImage);
@@ -331,7 +332,7 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
 
                           var imageBloc = context.read<PickImageCubit>();
                           imageBloc.isCamera = false;
-                          await imageBloc.getImage();
+                          await imageBloc.getImage(context, ImageSource.gallery);
                           profileImage =
                               "${EndPoint.imageBaseUrl}${imageBloc.imgUrl}";
                           pref.setString("resumeImg", profileImage);

@@ -45,5 +45,37 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Enable camera access to be able to take photos and add them to your records.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Enable photo libarary access to be able to select photos then add them to your records.</string>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<true/>
+	<key>UIFileSharingEnabled</key>
+	<true/>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Enable Location access to be see job postings near you.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Enable Location access to be see job postings near you.</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string></string>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.616151795227-7iphlom0hia022abahiht6aierji7uil</string>
+				<string>fb1233788384660832</string>
+			</array>
+		</dict>
+	</array>
+	<key>FacebookAppID</key>
+	<string>1233788384660832</string>
+	<key>FacebookClientToken</key>
+	<string>878fcac2d2afa893fb9ba19174212d20</string>
+	<key>FacebookDisplayName</key>
+	<string>InstaJob</string>
 </dict>
 </plist>

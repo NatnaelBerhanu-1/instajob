@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:insta_job/bloc/check_kyc_availability/check_kyc_availability_bloc.dart';
 import 'package:insta_job/bloc/check_kyc_availability/check_kyc_availability_state.dart';
 import 'package:insta_job/bloc/check_kyc_availability/model/fetched_kyc_candidate_data.dart';
@@ -41,6 +42,9 @@ class _UploadKycScreenState extends State<UploadKycScreen> {
   int tabIndex = 0;
   TextEditingController phoneController = TextEditingController();
   TextEditingController nameController = TextEditingController();
+  TextEditingController ssnController = TextEditingController();
+  TextEditingController cityController = TextEditingController();
+  TextEditingController streetAddressController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController businessNameController = TextEditingController();
   TextEditingController businessTypeController = TextEditingController();
@@ -88,13 +92,19 @@ class _UploadKycScreenState extends State<UploadKycScreen> {
     // selectedBusinessType = businessTypes[0]; //TODO: keep this or add validation check for dropdown
     frontImageBloc.isCamera = true;
     backImageBloc.isCamera = true;
+    debugPrint('State: ${checkKycAvailCubit.state}');
     if(checkKycAvailCubit.state is CheckKycAvailabilityFound) {
       var state = checkKycAvailCubit.state as CheckKycAvailabilityFound;
+      debugPrint("State:$state");
       if(userIsCandidate()){
         var data  = state.data as FetchedKycCandidateData;
+        debugPrint('Data: ${data.toString()}');
         phoneController.text = data.phoneNumber;
         nameController.text = data.name;
         emailController.text = data.email;
+        ssnController.text = data.ssn;
+        cityController.text = data.city;
+        streetAddressController.text = data.streetAddress;
         idFrontImgUrl = data.idFront;
         idBackImgUrl = data.idBack;
         selectedAccountType = data.accountType;
@@ -272,6 +282,7 @@ class _UploadKycScreenState extends State<UploadKycScreen> {
                           if (state is UploadKycSuccess) {
                             // AppRoutes.pop(context);
                             Navigator.of(context).pop();
+                            checkKycAvailCubit.execute(userId: Global.userModel!.id!.toString());
                           } else if (state is UploadKycErrorState) {
                             showToast(state.message);
                           }
@@ -297,7 +308,6 @@ class _UploadKycScreenState extends State<UploadKycScreen> {
                           if (imageUploadedOrNotOnIdProofSection == false) {
                             showUploadIdValidationError = true;
                             setState(() {
-                              
                             });
                           }
 
@@ -318,6 +328,9 @@ class _UploadKycScreenState extends State<UploadKycScreen> {
                                 // frontIdImageUrl: "",
                                 frontIdImageUrl: frontImageBloc.imgUrl,
                                 // backIdImageUrl: "",
+                                socialSecurityNumber: ssnController.text,
+                                city: cityController.text,
+                                streetAddress: streetAddressController.text,
                                 backIdImageUrl: backImageBloc.imgUrl,
                                 bankAccountNumber: accountNumberController.text,
                                 bankAccountType: bankAccountTypesForAPI[
@@ -327,11 +340,13 @@ class _UploadKycScreenState extends State<UploadKycScreen> {
                                 bankAccountOwnerFullName:
                                     accountOwnerController.text,
                               );
-                              print(
+                              debugPrint(
                                   "LOGG payload (client) ${clientPayload.toMap()}");
                               context
                                   .read<UploadKycCubit>()
                                   .uploadKyc(uploadKycPayload: clientPayload);
+                              
+                              
                             } else {
                               var recruiterPayload = UploadRecruiterKycPayload(
                                 fullName: nameController.text,
@@ -353,6 +368,7 @@ class _UploadKycScreenState extends State<UploadKycScreen> {
                               context
                                   .read<UploadKycCubit>()
                                   .uploadKyc(uploadKycPayload: recruiterPayload);
+                              
                             }
                           } else {
                             print("LOGG submit invalid, form incomplete");
@@ -469,17 +485,57 @@ class _UploadKycScreenState extends State<UploadKycScreen> {
                 height: 20,
               ),
               CustomTextField(
-                // controller: nameController,
                 controller: emailController,
                 lblColor: MyColors.black,
                 label: "Email",
                 hint: "Enter the email",
                 onChanged: (val) {
-                  // nameVal = val;
                   setState(() {});
                 },
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 validator: (val) => requiredValidationn2(val!), //revisit: email validation
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              CustomTextField(
+                controller: ssnController,
+                lblColor: MyColors.black,
+                label: "Social Security Number (SSN)",
+                hint: "Enter your ssn",
+                onChanged: (val) {
+                  setState(() {});
+                },
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: (val) => ssnValidation(val!), //revisit: email validation
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              CustomTextField(
+                controller: cityController,
+                lblColor: MyColors.black,
+                label: "City or town, state or province, country, and ZIP or foreign postal code",
+                hint: "Enter your city or town, state or province, country, and ZIP or foreign postal code",
+                onChanged: (val) {
+                  setState(() {});
+                },
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: (val) => requiredValidation(val!,'City or town'),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              CustomTextField(
+                controller: streetAddressController,
+                lblColor: MyColors.black,
+                label: "Street address (including apt. no.)",
+                hint: "Enter your street address (including apt. no.)",
+                onChanged: (val) {
+                  setState(() {});
+                },
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: (val) => requiredValidation(val!,'Street Address'), 
               ),
               // const SizedBox(
               //   height: 20,
@@ -680,7 +736,7 @@ class _UploadKycScreenState extends State<UploadKycScreen> {
                             loading: state is LoadingImageState,
                             loadingIndicatorColor: MyColors.blue,
                             onTap: () async {
-                              frontImageBloc.getImage();
+                              frontImageBloc.getImage(context, ImageSource.gallery);
                             },
                           );
                         }),
@@ -710,7 +766,7 @@ class _UploadKycScreenState extends State<UploadKycScreen> {
                             borderColor: showUploadIdValidationError ? MyColors.red : MyColors.blue,
                             fontColor: MyColors.blue,
                             onTap: () async {
-                              backImageBloc.getImage();
+                              backImageBloc.getImage(context, ImageSource.gallery);
                             },
                           );
                         }),
@@ -856,11 +912,11 @@ class _UploadKycScreenState extends State<UploadKycScreen> {
   }
 
   void onFrontImageTap() {
-    frontImageBloc.getImage();
+    frontImageBloc.getImage(context, ImageSource.gallery);
   }
 
   void onBackImageTap() {
-    backImageBloc.getImage();
+    backImageBloc.getImage(context, ImageSource.gallery);
   }
 
   Widget _buildDocumentType({

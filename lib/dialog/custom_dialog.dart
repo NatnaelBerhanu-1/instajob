@@ -21,6 +21,8 @@ class CustomDialog extends StatefulWidget {
   final Color? descFontColor;
   final double? descFontSize;
   final bool showLoadingState;
+  final String? confirmBtnLabel;
+  final bool popAfterOnTap;
   CustomDialog({
     Key? key,
     this.okOnTap,
@@ -33,6 +35,8 @@ class CustomDialog extends StatefulWidget {
     this.descFontColor,
     this.descFontSize,
     this.showLoadingState = false,
+    this.confirmBtnLabel,
+    this.popAfterOnTap = false
   }) : super(key: key);
 
   @override
@@ -80,7 +84,8 @@ class _CustomDialogState extends State<CustomDialog> {
                 height: 60,
                 width: 70,
               ),
-              CommonText(text: "Are you sure!"),
+              SizedBox(height: 10,),
+              CommonText(text: widget.title ??"Are you sure!"),
               SizedBox(height: 5),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -88,6 +93,7 @@ class _CustomDialogState extends State<CustomDialog> {
                   text: widget.desc1 ?? "You want to LogOut",
                   fontColor: descFontColor,
                   fontSize: descFontSize,
+                  textAlign: TextAlign.center,
                 ),
               ),
               Padding(
@@ -105,8 +111,9 @@ class _CustomDialogState extends State<CustomDialog> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     CustomCommonCard(
-                      onTap: widget.cancelOnTap ??
+                      onTap:
                           () {
+                            widget.cancelOnTap?.call();
                             index = 1;
                             print('INDEX1 ------  $selectedIndex');
                             context.read<GlobalCubit>().changeIndex(index);
@@ -136,6 +143,9 @@ class _CustomDialogState extends State<CustomDialog> {
                           });
                         }
                         widget.okOnTap!();
+                        if(widget.popAfterOnTap) {
+                          Navigator.pop(context);
+                        }
                       } :
                           () {
                             index = 2;
@@ -150,7 +160,7 @@ class _CustomDialogState extends State<CustomDialog> {
                         padding: const EdgeInsets.symmetric(
                             vertical: 12.0, horizontal: 30),
                         child: CommonText(
-                          text: "Yes",
+                          text: widget.confirmBtnLabel ?? "Yes",
                           fontColor: selectedIndex == 2
                               ? MyColors.white
                               : MyColors.black,

@@ -5,8 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:insta_job/bloc/auth_bloc/auth_cubit.dart';
+import 'package:insta_job/dialog/custom_dialog.dart';
 import 'package:insta_job/globals.dart';
+import 'package:insta_job/utils/my_images.dart';
 import 'package:logger/logger.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NotificationService {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -41,7 +45,7 @@ class NotificationService {
   // Initialize the service
   Future<void> init({required BuildContext context}) async {
     _isAndroidPermissionGranted();
-    _requestPermissions();
+    _requestPermissions(context);
 
     // Android notification channel setup
     const AndroidInitializationSettings androidInitializationSettings =
@@ -188,24 +192,40 @@ class NotificationService {
     }
   }
 
-  Future<void> _requestPermissions() async {
-    if (Platform.isIOS || Platform.isMacOS) {
-      await flutterLocalNotificationsPlugin
+  Future<void> _requestPermissions(BuildContext context) async {
+    if (Platform.isIOS) {
+      var sharedPrefs = await SharedPreferences.getInstance();
+      debugPrint("NotificationPermission: ${sharedPrefs.getBool('notification_denied')}");
+      if(sharedPrefs.getBool('notification_denied') != true) {
+        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        buildDialog(context, CustomDialog(
+          headerImagePath: MyImages.cancel,
+          confirmBtnLabel: "Continue",
+          popAfterOnTap: true,
+          title: "Notification permission",
+          desc1: Global.userModel?.type == "user" ? "Enable notification permission in to recieve notifications about status of your job applications." : "Enable notification permission in to recieve notifications about status of your job postings.",
+          cancelOnTap: () async{
+            await sharedPrefs.setBool("notification_denied", true);
+          },
+          okOnTap: () async {
+                var status = await flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<
           IOSFlutterLocalNotificationsPlugin>()
           ?.requestPermissions(
-        alert: true,
-        badge: true,
-        sound: true,
-      );
-      await flutterLocalNotificationsPlugin
-          .resolvePlatformSpecificImplementation<
-          MacOSFlutterLocalNotificationsPlugin>()
-          ?.requestPermissions(
-        alert: true,
-        badge: true,
-        sound: true,
-      );
+            alert: true,
+            badge: true,
+            sound: true,
+          );
+          if(status != true) {
+            await sharedPrefs.setBool("notification_denied", true);
+            showToast('Notification permissions denied. please enable in settings');
+          }
+        },
+      ));
+      });
+      }
+      
+      
     } else if (Platform.isAndroid) {
       final AndroidFlutterLocalNotificationsPlugin? androidImplementation =
       flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<

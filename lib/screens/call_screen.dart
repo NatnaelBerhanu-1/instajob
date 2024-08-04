@@ -329,9 +329,6 @@ class _CallScreenState extends State<CallScreen> {
             }
             
           },
-          cancelOnTap: () {
-            Navigator.of(context).pop();
-          },
           headerImagePath: MyImages.delete,
           showLoadingState: true,
       ));
@@ -1168,9 +1165,6 @@ class AgoraVideoView extends StatelessWidget {
                                         "Recording already done for this meet.");
                                   }
                                   Navigator.of(context).pop();
-                                },
-                                cancelOnTap: () {
-                                  Navigator.pop(context);
                                 },
                                 headerImagePath: MyImages.internet,
                             ));

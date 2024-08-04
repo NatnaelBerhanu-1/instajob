@@ -26,7 +26,8 @@ class UserTypeCard extends StatelessWidget {
           ),
           Positioned(
             top: 20,
-            left: 30,
+            left: 0,
+            right: 0,
             child: Center(
               child: Container(
                 decoration: BoxDecoration(

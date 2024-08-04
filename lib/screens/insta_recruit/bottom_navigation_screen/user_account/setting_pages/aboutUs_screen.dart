@@ -92,7 +92,7 @@ class AboutUsScreen extends StatelessWidget {
                         width: 16,
                       ),
                       label: Text(
-                        '+91 9344321876',
+                        '+1 (734) 883-2142',
                         style: TextStyle(
                             color: MyColors.black,
                             fontWeight: FontWeight.w400),
@@ -113,7 +113,7 @@ class AboutUsScreen extends StatelessWidget {
                         width: 18,
                       ),
                       label: Text(
-                        '${Global.userModel?.email}',
+                        'mohammad@instajob.online',
                         style: TextStyle(
                             color: MyColors.black,
                             fontWeight: FontWeight.w400),

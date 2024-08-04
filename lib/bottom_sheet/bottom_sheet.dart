@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:insta_job/bloc/choose_image_bloc/pick_image_cubit.dart';
 import 'package:insta_job/bloc/choose_image_bloc/pick_image_state.dart';
 import 'package:insta_job/utils/my_colors.dart';
@@ -233,7 +234,7 @@ choosePhoto(context) {
                     print("Camera");
                     imageBloc.isCamera = true;
                     Navigator.pop(context);
-                    await imageBloc.getImage();
+                    await imageBloc.getImage(context, ImageSource.camera);
                   },
                   child: Container(
                     color: Colors.transparent,
@@ -265,7 +266,7 @@ choosePhoto(context) {
                     print("Gallery");
                     imageBloc.isCamera = false;
                     Navigator.pop(context);
-                    await imageBloc.getImage();
+                    await imageBloc.getImage(context, ImageSource.gallery);
                   },
                   child: Container(
                     color: Colors.transparent,

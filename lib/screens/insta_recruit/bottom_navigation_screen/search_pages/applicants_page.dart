@@ -52,7 +52,7 @@ class _ApplicantsState extends State<Applicants> {
     super.initState();
     jobPosModel = widget.fullFilteredApplicantsList[widget.selectedIndex];
     _pageController = PageController(initialPage: widget.selectedIndex);
-    context.read<ResumeDetailsCubit>().execute(resumeUrl: jobPosModel?.uploadResume);
+    context.read<ResumeDetailsCubit>().execute(userId: jobPosModel!.userId.toString());
     jobId = jobPosModel?.jobId;
     debugPrint("LOG jobId check $jobId");
   }
@@ -102,7 +102,7 @@ class _ApplicantsState extends State<Applicants> {
           onPageChanged: (i) {
             setState(() {
               jobPosModel = widget.fullFilteredApplicantsList[i];
-              context.read<ResumeDetailsCubit>().execute(resumeUrl: jobPosModel?.uploadResume);
+              context.read<ResumeDetailsCubit>().execute(userId: jobPosModel!.userId.toString());
             });
           },
           itemCount: widget.fullFilteredApplicantsList.length,
@@ -329,8 +329,8 @@ class _ApplicantsState extends State<Applicants> {
       }
       if (state is ResumeDetailsSuccess) {
         ResumeDetailModel resumeDetail = state.resumeDetail;
-        List<EducationDetail>? educationDetailList =
-            resumeDetail?.educationDetail;
+        List<String>? educationDetailList =
+            resumeDetail.educationDetail;
         if (educationDetailList == null || educationDetailList.isEmpty) {
           return Center(
             child: Text("No data"),
@@ -347,7 +347,7 @@ class _ApplicantsState extends State<Applicants> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "${i + 1}. ${item.name}",
+                      "${i + 1}. $item",
                       style: TextStyle(fontSize: 14),
                     ),
                     divider()
@@ -368,7 +368,7 @@ class _ApplicantsState extends State<Applicants> {
         builder: (context, state) {
       if (state is ResumeDetailsSuccess) {
         ResumeDetailModel resumeDetail = state.resumeDetail;
-        List<Experience>? experienceList = resumeDetail.experience;
+        List<String>? experienceList = resumeDetail.experience;
         if (experienceList == null || experienceList.isEmpty) {
           return Center(
             child: Text("No data"),
@@ -385,7 +385,7 @@ class _ApplicantsState extends State<Applicants> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "${item.title}(${item.organization})",
+                      item,
                       style: TextStyle(fontSize: 14),
                     ),
                     divider()

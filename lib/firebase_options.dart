@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyC3FTs5iUlT7MljdebAK5RfZfLXHc9i2uo',
-    appId: '1:616151795227:android:9c541b0f954c8216505abe',
+    appId: '1:616151795227:android:c86056a7f5968a55505abe',
     messagingSenderId: '616151795227',
     projectId: 'instajob-1ec28',
     storageBucket: 'instajob-1ec28.appspot.com',
@@ -59,12 +59,13 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyDNe25H9FkxGFlgvCG4SRUgAn0EuELuIAs',
-    appId: '1:616151795227:ios:e17294da7511380f505abe',
+    appId: '1:616151795227:ios:2e012e5e4ef40ab8505abe',
     messagingSenderId: '616151795227',
     projectId: 'instajob-1ec28',
     storageBucket: 'instajob-1ec28.appspot.com',
     androidClientId: '616151795227-9nj5kecjunjeam2m77kf708461qi3nrq.apps.googleusercontent.com',
-    iosClientId: '616151795227-s7rrj3csb009ubnusdbmj19omilmu8i6.apps.googleusercontent.com',
-    iosBundleId: 'com.saurabhinfosys.instaJob',
+    iosClientId: '616151795227-7iphlom0hia022abahiht6aierji7uil.apps.googleusercontent.com',
+    iosBundleId: 'com.instajob.online',
   );
+
 }

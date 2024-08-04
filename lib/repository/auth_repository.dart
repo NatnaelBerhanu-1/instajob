@@ -230,4 +230,14 @@ class AuthRepository {
       return ApiResponse.withError(e.response);
     }
   }
+
+  Future<ApiResponse> deleteAccount({required String user_id, required String userType}) async {
+    try {
+      var map = {"user_id": user_id, "user_type": userType};
+      Response response = await dioClient.post(data: map, uri: EndPoint.deleteAccount);
+      return ApiResponse.withSuccess(response);
+    } on DioException catch (e) {
+      return ApiResponse.withError(e.response?.data['message']);
+    }
+  }
 }

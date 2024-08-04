@@ -78,6 +78,7 @@ class _SearchJobsScreenState extends State<SearchJobsScreen> {
     // ];
     var jobDistanceIndex = context.watch<GlobalCubit>().fIndex;
     var selectedSearchIndex = context.read<GlobalCubit>().sIndex;
+    debugPrint("SearchJobsScreen: $jobDistanceIndex, $selectedSearchIndex");
     return PopScope(
       canPop: false,
       onPopInvoked: (val) {
@@ -255,7 +256,8 @@ class _SearchJobsScreenState extends State<SearchJobsScreen> {
                         children: [
                           BlocBuilder<JobPositionBloc, JobPosState>(builder: (context, jobState) {
                             var jobData = context.read<JobPositionBloc>();
-                            print("STATE: $jobState");
+                            debugPrint("STATE: $jobState");
+                            debugPrint("LocationData: $locationData");
                             return Stack(
                               children: [
                                 Container(

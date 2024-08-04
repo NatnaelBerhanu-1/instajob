@@ -173,25 +173,13 @@ class ResumeRepository {
     }
   }
 
-  getParsedResumeDetails({required String? resumeUrl}) async {
+  getParsedResumeDetails({required String userId}) async {
     try {
-      if (resumeUrl == null) {
-        return ApiResponse.withError("No resume given");
-      }
-      var fullResumeUrl = "${EndPoint.imageBaseUrl}$resumeUrl";
-      var queryParams = {"url": fullResumeUrl};
-      var fullEndpointUrlPath = "https://api.apilayer.com/resume_parser/url";
-      var response = await Dio().get(
-        fullEndpointUrlPath,
-        options: Options(
-          headers: {
-            // "Content-Type": "application/json",
-            "apikey": "qBCCB5UVnBS3JDSSfxTeXAb27bg8o9Ce"
-          },
-        ),
-        queryParameters: queryParams,
+      
+      var response = await dioClient.post(
+        data: {"user_id": userId},
+        uri: EndPoint.getParsedResume
       );
-      debugPrint('resumeUrl: $fullResumeUrl');
       debugPrint('Response: $response');
       if (response.statusCode == 200) {
         ResumeDetailModel resumeDetails = ResumeDetailModel.fromJson(response.data);

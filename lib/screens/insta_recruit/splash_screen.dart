@@ -21,9 +21,9 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   permission() async {
-    if (userType == "user") {
-      await context.read<LocationCubit>().getCurrentLocation();
-    }
+    // if (userType == "user") {
+    //   await context.read<LocationCubit>().getCurrentLocation(context);
+    // }
     context.read<BottomBloc>().add(UserEvent());
 
     // }

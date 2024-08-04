@@ -11,10 +11,12 @@ import 'package:insta_job/bloc/job_position/job_pos_state.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/model/chat_model.dart';
 import 'package:insta_job/model/interview_model.dart';
+import 'package:insta_job/utils/helpers.dart';
 import 'package:insta_job/utils/my_colors.dart';
 import 'package:insta_job/widgets/custom_cards/notifications_tile/general_message_tile.dart';
 import 'package:insta_job/widgets/custom_cards/notifications_tile/interview_tile.dart';
 import 'package:insta_job/widgets/custom_cards/notifications_tile/message_tile.dart';
+import 'package:insta_job/widgets/guest_login_info.dart';
 
 import '../../../../widgets/custom_cards/custom_common_card.dart';
 
@@ -31,7 +33,9 @@ class _InterviewScreenState extends State<InterviewScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<InterviewScheduleCubit>().getInterviewSchedules(Global.userModel!.id.toString());
+    if(Global.userModel?.id != null) {
+      context.read<InterviewScheduleCubit>().getInterviewSchedules(Global.userModel!.id.toString());
+    }
   }
 
   @override
@@ -47,7 +51,7 @@ class _InterviewScreenState extends State<InterviewScreen> {
             fontSize: 20,
           ),
         ),
-        body: Column(
+        body: Global.userModel?.id != null ? Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
@@ -101,6 +105,7 @@ class _InterviewScreenState extends State<InterviewScreen> {
             ),
             SizedBox(height: 15),
             Expanded(
+              flex: Helpers.getDeviceType(context) == DeviceType.tablet ? 2 : 1,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -176,7 +181,7 @@ class _InterviewScreenState extends State<InterviewScreen> {
               ),
             ),
           ],
-        ));
+        ) : GuestLoginInfoWidget() );
   }
 
   Widget _buildPreviousInterviewTabDetails(

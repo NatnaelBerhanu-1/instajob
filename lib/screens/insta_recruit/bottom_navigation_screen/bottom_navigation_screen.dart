@@ -36,15 +36,23 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
     const HomePage(),
   ];
   getData() async {
-    await context.read<LocationCubit>().getCurrentLocation();
+    if (Global.userModel?.type == "user") {
+      await context.read<LocationCubit>().getCurrentLocation(context);
+    }
     context.read<CompanyBloc>().add(LoadCompanyListEvent());
   }
-
+  NotificationService notificationService = NotificationService();
+  Future<void> initNotificationServices() async{
+    await notificationService.init(context: context); 
+  }
+  
   @override
   void initState() {
     super.initState();
-    NotificationService notificationService = NotificationService();
-    notificationService.init(context: context); // Initialize your notification service
+    // Initialize your notification service
+    if(Global.userModel?.id != null) {
+      initNotificationServices();
+    }
     getData();
   }
 
@@ -147,4 +155,5 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
       ),
     );
   }
+  
 }

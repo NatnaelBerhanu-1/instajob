@@ -10,6 +10,8 @@ import 'package:insta_job/globals.dart';
 import 'package:insta_job/screens/auth_screen/login_screen.dart';
 import 'package:insta_job/screens/auth_screen/reg_more_information.dart';
 import 'package:insta_job/screens/insta_recruit/became_an_employeer.dart';
+import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/user_account/setting_pages/privacy_policy_screen.dart';
+import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/user_account/setting_pages/termsofuse_screen.dart';
 import 'package:insta_job/screens/insta_recruit/membership_screen.dart';
 import 'package:insta_job/utils/app_routes.dart';
 import 'package:insta_job/widgets/custom_button/custom_all_small_button.dart';
@@ -238,9 +240,30 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     TextSpan(
                                       recognizer: TapGestureRecognizer()
                                         ..onTap = () {
-                                          AppRoutes.push(context, MemberShipScreen(isAgreement: false));
+                                          AppRoutes.push(context, TermsOfUseScreen());
                                         },
-                                      text: "Terms & Conditions",
+                                      text: "Terms of use",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        color: MyColors.grey,
+                                        decoration: TextDecoration.underline,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text: " & ",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        color: MyColors.grey,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () {
+                                          AppRoutes.push(context, PrivacyPolicyScreen());
+                                        },
+                                      text: "Privacy policy",
                                       style: TextStyle(
                                         fontWeight: FontWeight.w500,
                                         color: MyColors.grey,

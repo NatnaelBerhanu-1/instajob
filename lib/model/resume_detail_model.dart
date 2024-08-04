@@ -6,10 +6,10 @@ String resumeDetailsToJson(ResumeDetailModel data) => json.encode(data.toJson())
 
 class ResumeDetailModel {
   final String? address;
-  final List<EducationDetail>? educationDetail;
+  final List<String>? educationDetail;
   final String? email;
   final String? phone;
-  final List<Experience>? experience;
+  final List<String>? experience;
   final String? name;
   final List<String>? skills;
 
@@ -25,10 +25,10 @@ class ResumeDetailModel {
 
   ResumeDetailModel copyWith({
     String? address,
-    List<EducationDetail>? educationDetail,
+    List<String>? educationDetail,
     String? email,
     String? phone,
-    List<Experience>? experience,
+    List<String>? experience,
     String? name,
     List<String>? skills,
   }) =>
@@ -42,28 +42,42 @@ class ResumeDetailModel {
         skills: skills ?? this.skills,
       );
 
+  // factory ResumeDetailModel.fromJson(Map<String, dynamic> json) => ResumeDetailModel(
+  //       address: json["address"],
+  //       educationDetail: json["education"] == null
+  //           ? null
+  //           : List<EducationDetail>.from(json["education"].map((x) => EducationDetail.fromJson(x))),
+  //       email: json["email"],
+  //       phone: json["phone"],
+  //       experience: json["experience"] == null
+  //           ? null
+  //           : List<Experience>.from(json["experience"].map((x) => Experience.fromJson(x))),
+  //       name: json["name"],
+  //       skills: json["skills"] == null ? null : List<String>.from(json["skills"].map((x) => x)),
+  //     );
+
   factory ResumeDetailModel.fromJson(Map<String, dynamic> json) => ResumeDetailModel(
         address: json["address"],
         educationDetail: json["education"] == null
             ? null
-            : List<EducationDetail>.from(json["education"].map((x) => EducationDetail.fromJson(x))),
+            : (json["educations"] as String).split(','),
         email: json["email"],
         phone: json["phone"],
         experience: json["experience"] == null
             ? null
-            : List<Experience>.from(json["experience"].map((x) => Experience.fromJson(x))),
+            : (json["experience"] as String).split(','),
         name: json["name"],
-        skills: json["skills"] == null ? null : List<String>.from(json["skills"].map((x) => x)),
+        skills: json["skills"] == null ? null : (json["skills"] as String).split(','),
       );
 
   Map<String, dynamic> toJson() => {
         "address": address,
-        if (educationDetail != null) "educationDetail": List<dynamic>.from(educationDetail!.map((x) => x.toJson())),
+        if (educationDetail != null) "educationDetail": educationDetail.toString(),
         "email": email,
         "phone": phone,
-        if (experience != null) "experience": List<dynamic>.from(experience!.map((x) => x.toJson())),
+        if (experience != null) "experience": experience.toString(),
         "name": name,
-        if (skills != null) "skills": List<dynamic>.from(skills!.map((x) => x)),
+        if (skills != null) "skills": skills.toString(),
       };
 }
 

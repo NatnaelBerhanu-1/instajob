@@ -208,9 +208,6 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                                           AppRoutes.push(
                                               context, BottomNavScreen());
                                         },
-                                        cancelOnTap: () {
-                                          Navigator.pop(context);
-                                        },
                                       ));
                                 },
                                 child: Container(

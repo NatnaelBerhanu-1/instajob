@@ -84,6 +84,13 @@ String? phoneValidation(String s) {
   return null;
 }
 
+String? ssnValidation(String s) {
+  if (s.isEmpty || s == "" || s.length != 9) {
+    return "SSN length must be 9";
+  }
+  return null;
+}
+
 String? passwordValidation(String s) {
   if (s.isEmpty || s == "") {
     // showToast("Password cannot be empty");

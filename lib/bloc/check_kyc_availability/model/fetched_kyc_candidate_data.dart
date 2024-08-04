@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:insta_job/bloc/check_kyc_availability/model/fetched_kyc_data.dart';
 
 class FetchedKycCandidateData extends FetchedKycData {
@@ -16,6 +17,9 @@ class FetchedKycCandidateData extends FetchedKycData {
     final DateTime createdAt;
     final DateTime updatedAt;
     final String phoneNumber;
+    final String ssn;
+    final String streetAddress;
+    final String city;
 
     FetchedKycCandidateData({
         required this.id,
@@ -33,6 +37,9 @@ class FetchedKycCandidateData extends FetchedKycData {
         required this.createdAt,
         required this.updatedAt,
         required this.phoneNumber,
+        required this.ssn,
+        required this.city,
+        required this.streetAddress,
     });
 
     FetchedKycCandidateData copyWith({
@@ -51,6 +58,9 @@ class FetchedKycCandidateData extends FetchedKycData {
         DateTime? createdAt,
         DateTime? updatedAt,
         String? phoneNumber,
+        String? ssn,
+        String? city,
+        String? streetAddress,
     }) => 
         FetchedKycCandidateData(
             id: id ?? this.id,
@@ -68,6 +78,9 @@ class FetchedKycCandidateData extends FetchedKycData {
             createdAt: createdAt ?? this.createdAt,
             updatedAt: updatedAt ?? this.updatedAt,
             phoneNumber: phoneNumber ?? this.phoneNumber,
+            ssn: ssn ?? this.ssn,
+            city: city ?? this.city,
+            streetAddress: streetAddress ?? this.streetAddress,
         );
 
     factory FetchedKycCandidateData.fromMap(Map<String, dynamic> map) {
@@ -87,6 +100,14 @@ class FetchedKycCandidateData extends FetchedKycData {
         createdAt: DateTime.parse(map["created_at"]),
         updatedAt: DateTime.parse(map["updated_at"]),
         phoneNumber: map["phone_number"],
+        ssn: map["ssn"],
+        city: map["city"],
+        streetAddress: map["street_address"],
     );
     }
+
+  @override
+  String toString() {
+    return 'FetchedKycCandidateData(id: $id, userId: $userId, name: $name, email: $email, documentType: $documentType, idFront: $idFront, idBack: $idBack, accountNumber: $accountNumber, accountType: $accountType, bankCode: $bankCode, countryCode: $countryCode, ownerFullName: $ownerFullName, createdAt: $createdAt, updatedAt: $updatedAt, phoneNumber: $phoneNumber, ssn: $ssn, streetAddress: $streetAddress, city: $city)';
+  }
 }

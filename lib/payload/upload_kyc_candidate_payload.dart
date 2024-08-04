@@ -12,6 +12,9 @@ class UploadCandidateKycPayload extends UploadKycPayload {
   String bankCode;
   String countryCode;
   String bankAccountOwnerFullName;
+  String socialSecurityNumber;
+  String city;
+  String streetAddress;
   UploadCandidateKycPayload({
     required this.fullName,
     required this.phoneNumber,
@@ -24,6 +27,9 @@ class UploadCandidateKycPayload extends UploadKycPayload {
     required this.bankCode,
     required this.countryCode,
     required this.bankAccountOwnerFullName,
+    required this.socialSecurityNumber,
+    required this.city,
+    required this.streetAddress,
   });
 
 
@@ -40,6 +46,9 @@ class UploadCandidateKycPayload extends UploadKycPayload {
     String? bankCode,
     String? countryCode,
     String? bankAccountOwnerFullName,
+    String? socialSecurityNumber,
+    String? city,
+    String? streetAddress,
   }) {
     return UploadCandidateKycPayload(
       fullName: fullName ?? this.fullName,
@@ -53,6 +62,9 @@ class UploadCandidateKycPayload extends UploadKycPayload {
       bankCode: bankCode ?? this.bankCode,
       countryCode: countryCode ?? this.countryCode,
       bankAccountOwnerFullName: bankAccountOwnerFullName ?? this.bankAccountOwnerFullName,
+      socialSecurityNumber: socialSecurityNumber ?? this.socialSecurityNumber,
+      city: city ?? this.city,
+      streetAddress: streetAddress ?? this.streetAddress,
     );
   }
 
@@ -69,11 +81,14 @@ class UploadCandidateKycPayload extends UploadKycPayload {
       'bank_code': bankCode,
       'country_code': countryCode,
       'owner_full_name': bankAccountOwnerFullName,
+      'ssn': socialSecurityNumber,
+      'city': city,
+      'street_address': streetAddress
     };
   }
 
   @override
   String toString() {
-    return 'UploadCandidateKycPayload(fullName: $fullName, phoneNumber: $phoneNumber, email: $email, documentType: $documentType, frontIdImageUrl: $frontIdImageUrl, backIdImageUrl: $backIdImageUrl, accountNumber: $bankAccountNumber, accountType: $bankAccountType, bankCode: $bankCode, countryCode: $countryCode, bankAccountOwnerFullName: $bankAccountOwnerFullName)';
+    return 'UploadCandidateKycPayload(fullName: $fullName, phoneNumber: $phoneNumber, email: $email, documentType: $documentType, frontIdImageUrl: $frontIdImageUrl, backIdImageUrl: $backIdImageUrl, accountNumber: $bankAccountNumber, accountType: $bankAccountType, bankCode: $bankCode, countryCode: $countryCode, bankAccountOwnerFullName: $bankAccountOwnerFullName), ssn: $socialSecurityNumber';
   }
 }

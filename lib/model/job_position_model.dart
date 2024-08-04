@@ -121,7 +121,7 @@ class JobPosModel {
     shortlistedReviewContent = json['shortlisted_review_content'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    matchScore = json['match_score'] ?? 0;
+    matchScore = json['score'] != null ? int.parse(json['score']) : 0;
   }
 
   Map<String, dynamic> toJson() {
@@ -162,7 +162,7 @@ class JobPosModel {
     data['shortlisted_review_content'] = shortlistedReviewContent;
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
-    data['match_score'] = matchScore;
+    data['score'] = matchScore;
     return data;
   }
 

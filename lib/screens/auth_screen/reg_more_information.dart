@@ -151,7 +151,7 @@ class _RegMoreInfoScreenState extends State<RegMoreInfoScreen> {
                   borderColor: MyColors.blue,
                   fontColor: MyColors.blue,
                   onTap: () {
-                    image.getCvImage();
+                    image.getCvImage(context);
                   },
                 );
               }),

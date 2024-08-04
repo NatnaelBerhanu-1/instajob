@@ -6,11 +6,14 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:insta_job/bloc/job_position/job_poision_bloc.dart';
 import 'package:insta_job/bloc/location_cubit/location_state.dart';
+import 'package:insta_job/dialog/custom_dialog.dart';
 import 'package:insta_job/globals.dart';
 import 'package:insta_job/model/location_model.dart';
 import 'package:insta_job/network/api_response.dart';
 import 'package:insta_job/repository/job_position_repo.dart';
+import 'package:insta_job/utils/my_images.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LocationCubit extends Cubit<LocationInitial> {
   final JobPositionRepository jobPosRepository;
@@ -86,8 +89,8 @@ class LocationCubit extends Cubit<LocationInitial> {
   /// ========== CURRENT LOCATION ==========///
   List<Placemark> placeMarks = [];
 
-  getCurrentLocation() async {
-    Position position = await determinePosition();
+  getCurrentLocation(BuildContext context) async {
+    Position position = await determinePosition(context);
     latitude = position.latitude;
     longitude = position.longitude;
     placeMarks =
@@ -100,7 +103,7 @@ class LocationCubit extends Cubit<LocationInitial> {
     print("############## $longitude");
   }
 
-  Future<Position> determinePosition() async {
+  Future<Position> determinePosition(BuildContext context) async {
     bool serviceEnabled;
     LocationPermission permission;
 
@@ -115,26 +118,50 @@ class LocationCubit extends Cubit<LocationInitial> {
 
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
+      var sharedPreferences = await SharedPreferences.getInstance();
+      if(sharedPreferences.getBool("location_denied")  != true) {
+        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        buildDialog(context, CustomDialog(
+          headerImagePath: MyImages.cancel,
+          confirmBtnLabel: "Continue",
+          popAfterOnTap: true,
+          title: "Location Permission",
+          desc1: "Location permission is needed to filter jobs near you. please enable?",
+          cancelOnTap: () async{
+            await sharedPreferences.setBool("location_denied", true);
+          },
+                          okOnTap: () async {
+                            permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           showToast('Location permissions are denied.');
         });
         return Future.error('Location permissions are denied');
       }
+                          },
+                        ));
+      });
+      }
+      
+      
     }
 
     if (permission == LocationPermission.deniedForever) {
       // Permissions are denied forever, handle appropriately.
-      openAppSettings();
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        showToast(
-            'Location permissions are permanently denied, we cannot request permissions.');
-      });
+      // openAppSettings();
+      // WidgetsBinding.instance.addPostFrameCallback((_) {
+      //   showToast(
+      //       'Location permissions are permanently denied, we cannot request permissions.');
+      // });
       return Future.error(
           'Location permissions are permanently denied, we cannot request permissions.');
     }
 
-    return await Geolocator.getCurrentPosition();
+    try {
+      return await Geolocator.getCurrentPosition();
+    } catch (e) {
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
   }
 }

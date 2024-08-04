@@ -235,9 +235,6 @@ class _InterviewTileState extends State<InterviewTile> {
                                           .pop(); //revisit, double check that it's ok to pop first and call other items below(whether everything gets executed, whether to remote the setState etc/ consider dispose method too)
                                       context.read<CancelInterviewScheduleCubit>().cancelInterviewSchedule(callId: widget.interviewModel.id.toString(), statusCall: "cancel");
                                     },
-                                    cancelOnTap: () {
-                                      Navigator.pop(context);
-                                    },
                                     headerImagePath: MyImages.delete,
                                   ));
                               },

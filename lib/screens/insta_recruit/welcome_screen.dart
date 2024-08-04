@@ -1,15 +1,20 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:insta_job/bloc/auth_bloc/auth_cubit.dart';
+import 'package:insta_job/bloc/global_cubit/global_cubit.dart';
 import 'package:insta_job/globals.dart';
+import 'package:insta_job/model/user_model.dart';
 import 'package:insta_job/screens/auth_screen/login_screen.dart';
 import 'package:insta_job/screens/auth_screen/register_screen.dart';
+import 'package:insta_job/screens/insta_recruit/bottom_navigation_screen/bottom_navigation_screen.dart';
 import 'package:insta_job/utils/app_routes.dart';
+import 'package:insta_job/utils/helpers.dart';
 import 'package:insta_job/utils/my_images.dart';
 import 'package:insta_job/widgets/custom_button/custom_all_small_button.dart';
 import 'package:insta_job/widgets/custom_button/custom_btn.dart';
@@ -121,6 +126,18 @@ class WelcomeScreen extends StatelessWidget {
                         AppRoutes.push(context, RegisterScreen());
                       },
                     ),
+                    if(userType == "user") ...[SizedBox(height: 20),
+                    Align(
+                      alignment: Alignment.center,
+                      child: GestureDetector(
+                        onTap: (){
+                          // Navigate to home page
+                          Global.userModel = UserModel(type: "user");
+                          context.read<GlobalCubit>().changeIndex(1);
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => BottomNavScreen()));
+                          
+                        },
+                        child: Text("Continue as Guest", textAlign: TextAlign.center, style: TextStyle(decoration: TextDecoration.underline),))),],
                     SizedBox(height: 30),
                     CustomDivider(),
                     SizedBox(height: 30),
@@ -133,6 +150,12 @@ class WelcomeScreen extends StatelessWidget {
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
+                          if(Platform.isIOS) CustomSocialButton(
+                            image: MyImages.apple,
+                            onTap: () {
+                              auth.appleAuth(context);
+                            },
+                          ),
                           CustomSocialButton(
                             image: MyImages.google,
                             onTap: () {
@@ -145,13 +168,13 @@ class WelcomeScreen extends StatelessWidget {
                               await auth.signInWithTwitter(isUser: userType == "user" ? true : false);
                             },
                           ),
-                          CustomSocialButton(
-                            image: MyImages.facebook,
-                            onTap: () {
-                              // showToast("Currently Not Working");
-                              auth.faceBookAuth(isUser: userType == "user" ? true : false);
-                            },
-                          ),
+                          // CustomSocialButton(
+                          //   image: MyImages.facebook,
+                          //   onTap: () {
+                          //     // showToast("Currently Not Working");
+                          //     auth.faceBookAuth(context, isUser: userType == "user" ? true : false);
+                          //   },
+                          // ),
                         ],
                       );
                     })

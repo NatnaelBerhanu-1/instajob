@@ -307,7 +307,7 @@ class _ChangeAccInfoScreenState extends State<ChangeAccInfoScreen> {
                                 borderColor: MyColors.blue,
                                 fontColor: MyColors.blue,
                                 onTap: () {
-                                  image.getCvImage();
+                                  image.getCvImage(context);
                                   debugPrint("LOG here cv img -> ${image.cvUrl} ORR? ${Global.userModel?.cv}");
                                 },
                               );

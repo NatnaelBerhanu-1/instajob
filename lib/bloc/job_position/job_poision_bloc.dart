@@ -133,40 +133,40 @@ class JobPositionBloc extends Bloc<JobPosEvent, JobPosState> {
         appliedOnly: appliedOnly,
         shortlisted: shortlisted,
       ));
-      List<JobPosModel> _appliedOnly = [];
-      List<JobPosModel> _shortlisted = [];
-      // iterate over the list and get the score
-      var requests = <Future<int>>[];
-      for (JobPosModel job in list) {
-        requests.add(jobPositionRepository.getJobMatchScore(
-            job.userId!, job.jobDetails!, "${EndPoint.imageBaseUrl}${job.uploadResume}"));
-      }
-      try {
-        var result = await Future.wait(requests, eagerError: true);
-        for (var i = 0; i < result.length; i++) {
-          var score = result[i];
-          list[i].matchScore = score;
-          // Filter based on candidateStatus
-          if (list[i].candidateStatus == "applied") {
-            // Add to appliedOnly list
-            _appliedOnly.add(list[i]);
-          } else if (list[i].candidateStatus == "shortlisted") {
-            // Add to shortlisted list
-            _shortlisted.add(list[i]);
-          }
-        }
-        debugPrint('State[NewState]: $state');
-        if (state is AppliedJobLoaded) {
-          emit(AppliedJobLoaded(
-            appliedJobList: list,
-            appliedOnly: _appliedOnly,
-            shortlisted: _shortlisted,
-          ));
-        }
-      } catch (e, stk) {
-        debugPrintStack(stackTrace: stk);
-        emit(const ApplyErrorState('Something went wrong'));
-      }
+      // List<JobPosModel> _appliedOnly = [];
+      // List<JobPosModel> _shortlisted = [];
+      // // iterate over the list and get the score
+      // var requests = <Future<int>>[];
+      // for (JobPosModel job in list) {
+      //   requests.add(jobPositionRepository.getJobMatchScore(
+      //       job.userId!, job.jobDetails!, "${EndPoint.imageBaseUrl}${job.uploadResume}"));
+      // }
+      // try {
+      //   var result = await Future.wait(requests, eagerError: true);
+      //   for (var i = 0; i < result.length; i++) {
+      //     var score = result[i];
+      //     list[i].matchScore = score;
+      //     // Filter based on candidateStatus
+      //     if (list[i].candidateStatus == "applied") {
+      //       // Add to appliedOnly list
+      //       _appliedOnly.add(list[i]);
+      //     } else if (list[i].candidateStatus == "shortlisted") {
+      //       // Add to shortlisted list
+      //       _shortlisted.add(list[i]);
+      //     }
+      //   }
+      //   debugPrint('State[NewState]: $state');
+      //   if (state is AppliedJobLoaded) {
+      //     emit(AppliedJobLoaded(
+      //       appliedJobList: list,
+      //       appliedOnly: _appliedOnly,
+      //       shortlisted: _shortlisted,
+      //     ));
+      //   }
+      // } catch (e, stk) {
+      //   debugPrintStack(stackTrace: stk);
+      //   emit(const ApplyErrorState('Something went wrong'));
+      // }
 
       //todo: add another emit loaded state after checking resume matcher endpoint
       // return list; //delete return
