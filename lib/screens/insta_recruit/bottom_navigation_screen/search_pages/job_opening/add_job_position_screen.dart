@@ -63,6 +63,7 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   late var uploadPhoto = context.read<PickImageCubit>();
   SalariesOptionChosen salariesOptionChosen = SalariesOptionChosen.allSalaries;
+  FocusNode topSkillFocusNode = FocusNode();
 
   updateData() {
     var value = context.read<GlobalCubit>();
@@ -365,9 +366,21 @@ class _AddJobPositionScreenState extends State<AddJobPositionScreen> {
                                   Expanded(
                                     child: CustomTextField(
                                       controller: topSkills,
+                                      focusNode: topSkillFocusNode,
                                       hint: "",
                                       textCapitalization:
                                           TextCapitalization.words,
+                                      onFiledSubmitted: (value) {
+                                        debugPrint("OnFieldSubmitted: $value");
+                                        if (topSkills.text.isNotEmpty) {
+                                        skillList.topSkills(value);
+                                        topSkills.clear();
+                                      } else {
+                                        showToast('Please fill the text');
+                                      }
+                                        topSkillFocusNode.requestFocus();
+
+                                      },
                                       // validator: (val) => requiredValidation(val!, "Skills"),
                                     ),
                                   ),

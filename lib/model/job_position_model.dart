@@ -41,6 +41,7 @@ class JobPosModel {
   String? updatedAt;
   int? matchScore;
   String? jobId;
+  String? redirectionUrl;
 
   JobPosModel(
       {this.id,
@@ -75,7 +76,8 @@ class JobPosModel {
       this.createdAt,
       this.updatedAt,
       this.matchScore,
-      this.jobId});
+      this.jobId,
+      this.redirectionUrl});
 
   JobPosModel.fromJson(Map<String, dynamic> json) {
     try {
@@ -122,6 +124,7 @@ class JobPosModel {
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     matchScore = json['score'] != null ? int.parse(json['score']) : 0;
+    redirectionUrl = json['redirection_url'];
   }
 
   Map<String, dynamic> toJson() {
@@ -163,6 +166,7 @@ class JobPosModel {
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
     data['score'] = matchScore;
+    data['redirection_url'] = redirectionUrl;
     return data;
   }
 
@@ -204,6 +208,7 @@ class JobPosModel {
     String? updatedAt,
     int? matchScore,
     String? jobId,
+    String? redirectionUrl,
   }) {
     return JobPosModel(
       id: id ?? this.id,
@@ -239,6 +244,7 @@ class JobPosModel {
       updatedAt: updatedAt ?? this.updatedAt,
       matchScore: matchScore ?? this.matchScore,
       jobId: jobId ?? this.jobId,
+      redirectionUrl: redirectionUrl ?? this.redirectionUrl,
     );
   }
 }

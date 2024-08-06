@@ -27,7 +27,8 @@ import '../../utils/my_colors.dart';
 import 'user_type_screen.dart';
 
 class WelcomeScreen extends StatelessWidget {
-  const WelcomeScreen({Key? key}) : super(key: key);
+  Function(BuildContext context)? onBackPressed;
+  WelcomeScreen({Key? key, this.onBackPressed}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +71,7 @@ class WelcomeScreen extends StatelessWidget {
                         image: MyImages.backArrow,
                         height: 30,
                         width: 30,
-                        onTap: () {
+                        onTap: onBackPressed != null ? () => onBackPressed!.call(context) : () {
                           FocusManager.instance.primaryFocus?.unfocus();
                           AppRoutes.pop(context);
                         },

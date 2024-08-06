@@ -6,7 +6,7 @@ class MyImages {
   static String arrow_white_circle = "$baseUrl/arrow_white_circle.png";
   static String bg_search_girl = "$baseUrl/bg_search_girl.png";
   static String arrowBlueLeft = "$baseUrl/arrow_blue_left.png";
-  static String logo = "$baseUrl/logo.png";
+  static String logo = "$baseUrl/playstore.png";
   static String about = "$baseUrl/about.png";
   static String addCard = "$baseUrl/add_card.png";
   static String apple = "$baseUrl/apple.png";

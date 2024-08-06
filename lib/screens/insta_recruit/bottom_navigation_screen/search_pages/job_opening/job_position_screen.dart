@@ -23,6 +23,7 @@ import 'package:insta_job/widgets/custom_button/custom_img_button.dart';
 import 'package:insta_job/widgets/custom_cards/custom_common_card.dart';
 import 'package:insta_job/widgets/custom_expantion_tile.dart';
 import 'package:insta_job/widgets/guest_login_info.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../../bloc/bottom_bloc/bottom_bloc.dart';
 import '../../../../../utils/my_colors.dart';
@@ -90,7 +91,7 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
               top: 0,
               left: 0,
               child: CachedNetworkImage(
-                imageUrl: "${EndPoint.imageBaseUrl}${widget.jobPosModel!.uploadPhoto}",
+                imageUrl: widget.jobPosModel!.uploadPhoto?.startsWith("http") ?? false ? widget.jobPosModel!.uploadPhoto! :  "${EndPoint.imageBaseUrl}${widget.jobPosModel!.uploadPhoto}",
                 fit: BoxFit.cover,
                 width: MediaQuery.of(context).size.width,
                 height: 300,
@@ -225,13 +226,21 @@ class _JobPositionScreenState extends State<JobPositionScreen> {
                                       return Global.userModel?.type == "user"
                                           ? CustomButton(
                                               title: "Apply",
-                                              onTap: () {
+                                              onTap: () async{
                                                 if(Global.userModel?.id == null) {
                                                   showDialog(context: context, builder:(context) => AlertDialog(
                                                     content: SizedBox(
                                                       height: 300,
                                                       child: GuestLoginInfoWidget()),
                                                   ));
+                                                  return;
+                                                }else if(widget.jobPosModel!.redirectionUrl != null) {
+                                                  var uri = Uri.parse(widget.jobPosModel!.redirectionUrl!);
+                                                  if(await canLaunchUrl(uri)) {
+                                                    launchUrl(uri);
+                                                  }else {
+                                                    showToast("Unable to apply to this job position now");
+                                                  }
                                                   return;
                                                 }
                                                 AppRoutes.push(

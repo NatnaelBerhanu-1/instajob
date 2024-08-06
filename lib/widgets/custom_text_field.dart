@@ -143,6 +143,8 @@ class CustomTextField extends StatelessWidget {
   final VoidCallback? onPressed;
   final TextInputType? keyboardType;
   final AutovalidateMode? autovalidateMode;
+  final Function(String? value)? onFiledSubmitted;
+  final FocusNode? focusNode;
 
   const CustomTextField({
     Key? key,
@@ -167,6 +169,8 @@ class CustomTextField extends StatelessWidget {
     this.borderRadius,
     this.textCapitalization,
     this.autovalidateMode,
+    this.onFiledSubmitted,
+    this.focusNode
   }) : super(key: key);
 
   @override
@@ -187,10 +191,12 @@ class CustomTextField extends StatelessWidget {
               ),
         SizedBox(height: 5),
         TextFormField(
+          focusNode: focusNode,
           style: TextStyle(color: MyColors.black, fontSize: 14),
           autovalidateMode: autovalidateMode,
           onChanged: onChanged,
           onTap: onPressed,
+          onFieldSubmitted: onFiledSubmitted,
           maxLines: maxLine,
           validator: validator,
           readOnly: readOnly ?? false,

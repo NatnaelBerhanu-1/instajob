@@ -92,7 +92,7 @@ class _AddNewCompanyState extends State<AddNewCompany> {
                   Center(child: Image.asset(MyImages.resume)),
                   SizedBox(height: 30),
                   CommonText(
-                    text: "Add Clients Information",
+                    text: "Add Location",
                     fontWeight: FontWeight.w500,
                     fontSize: 16,
                   ),

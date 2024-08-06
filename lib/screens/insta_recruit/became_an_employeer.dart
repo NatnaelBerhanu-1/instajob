@@ -83,7 +83,7 @@ class _BecameAnEmployerState extends State<BecameAnEmployer> {
                           // Spacer(),
                           ImageButton(
                               onTap: () {
-                                AppRoutes.pushAndRemoveUntil(context, WelcomeScreen());
+                                Navigator.of(context).pop();
                               },
                               image: MyImages.backArrow,
                               height: 30,

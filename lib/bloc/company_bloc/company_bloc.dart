@@ -29,7 +29,7 @@ class CompanyBloc extends Bloc<CompanyEvent, CompanyState> {
   CompanyBloc(this.companyRepository) : super(Initial()) {
     on<LoadCompanyListEvent>((event, emit) async {
       emit(CompanyLoading());
-      List<CompanyModel> companyList = await _getList(emit);
+      List<CompanyModel> companyList = (await _getList(emit)) ?? [];
       emit(CompanyLoaded(companyList));
       if (companyList.isEmpty) {
         emit(const ErrorState("Data not found"));

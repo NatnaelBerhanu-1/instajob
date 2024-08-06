@@ -283,11 +283,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               ),
                             ),
                             SizedBox(height: 20),
-                            BlocConsumer<AuthCubit, AuthInitialState>(listener: (context, state) {
-                              if (state is ErrorState) {
-                                showToast(state.error);
+                            BlocConsumer<AuthCubit, AuthInitialState>(listener: (context, authState) {
+                              if (authState is ErrorState) {
+                                showToast(authState.error);
                               }
-                            }, builder: (context, snapshot) {
+                            }, builder: (context, authState) {
                               var authData = context.read<AuthCubit>();
                               return CustomIconButton(
                                 image: MyImages.arrowWhite,
@@ -296,7 +296,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 fontColor: MyColors.white,
                                 borderColor: MyColors.blue,
                                 iconColor: MyColors.white,
-                                loading: state is AuthLoadingState ? true : false,
+                                loading: authState is AuthLoadingState,
                                 onclick: () async {
                                   FocusManager.instance.primaryFocus?.unfocus();
                                   if (formKey.currentState!.validate()) {
@@ -304,10 +304,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       authData.userName = name.text;
                                       authData.email = email.text;
                                       authData.password = password.text;
-                                      setState(() {});
                                       var checkEmail = await authData.checkUser(authData.email, context);
                                       var pref = await SharedPreferences.getInstance();
-
                                       var type = pref.getString("type");
                                       if (!checkEmail) {
                                         if (type == "user") {

@@ -286,7 +286,7 @@ class AuthCubit extends Cubit<AuthInitialState> {
   bool isSocialAuth = false;
   googleAuth(BuildContext context) async {
     loading(value: true);
-    GoogleSignIn googleSignIn = GoogleSignIn();
+    GoogleSignIn googleSignIn = GoogleSignIn(scopes: ['email']);
     final googleUser = await googleSignIn.signIn();
     var type = sharedPreferences.getString("type");
     try {
@@ -294,9 +294,14 @@ class AuthCubit extends Cubit<AuthInitialState> {
       isSocialAuth = true;
       emit(AuthInitialState());
       final googleAuth = await googleUser?.authentication;
+      debugPrint("GoogleAuth: $googleAuth");
+      if(googleAuth == null) {
+        emit(ErrorState("Cancelled by user"));
+        return;
+      }
       final credential = GoogleAuthProvider.credential(
-        idToken: googleAuth?.idToken,
-        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth.idToken,
+        accessToken: googleAuth.accessToken,
       );
       await FirebaseAuth.instance.signInWithCredential(credential).then((value) async {
         if (value.user != null) {
@@ -340,8 +345,9 @@ class AuthCubit extends Cubit<AuthInitialState> {
           print('USERRRR ------------------           ${value.user}');
         }
       });
-    } catch (e) {
+    } catch (e, stk) {
       debugPrint("Error:${e.toString()}");
+      debugPrintStack(stackTrace: stk);
       loading(value: false);
       emit(ErrorState("Something went wrong"));
     }
@@ -349,10 +355,15 @@ class AuthCubit extends Cubit<AuthInitialState> {
 
   /// CHECK USER
   Future<bool> checkUser(String email, BuildContext context) async {
+    debugPrint("State: ${state}");
+    emit(AuthLoadingState());
+    debugPrint("State: ${state}");
     ApiResponse response = await authRepository.checkUser(email);
     if (response.response.statusCode == 200) {
+      emit(AuthInitialState());
       return true;
     } else {
+      emit(AuthInitialState());
       return false;
     }
   }
